@@ -1,1 +1,0 @@
-/Users/Eduard.Ganiukov/.vimrc
