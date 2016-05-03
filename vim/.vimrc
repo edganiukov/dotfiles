@@ -5,25 +5,23 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Plugins
+Plugin 'VundleVim/Vundle.vim'
+
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'chriskempson/base16-vim'
-Plugin 'Shougo/echodoc.vim'
-Plugin 'Shougo/neocomplete.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
-
 Plugin 'fatih/vim-go'
-Plugin 'garyburd/go-explorer'
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'klen/python-mode'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'mitsuhiko/vim-jinja'
 
 call vundle#end()
@@ -109,33 +107,9 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet']
 
-" neocomplete
+" youcompleteme
 set completeopt-=preview
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:echodoc_enable_at_startup = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 1
-let g:neocomplete#enable_auto_close_preview = 1
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
-	\ <SID>check_back_space() ? "\<TAB>" :
-    \ neocomplete#start_manual_complete()
-function! s:check_back_space() "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-
-if !exists('g:neocomplete#sources')
-  let g:neocomplete#sources = {}
-endif
-let g:neocomplete#sources._ = []
-let g:neocomplete#sources.go = ['omni']
-let g:neocomplete#sources.rust = ['omni']
-
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '[^.[:digit:] *\t]\.\w*'
+let g:ycm_add_preview_to_completeopt = 0
 
 " gocode config
 let g:go_disable_autoinstall = 0
@@ -212,6 +186,7 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
+let g:jedi#completions_command = "<C-Space>"
 let g:jedi#goto_command = "<leader>d"
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>f"
@@ -223,8 +198,3 @@ let g:jedi#rename_command = "<leader>r"
 autocmd FileType python setlocal omnifunc=jedi#completions
 let g:jedi#completions_enabled = 0
 let g:jedi#auto_vim_configuration = 0
-
-if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
