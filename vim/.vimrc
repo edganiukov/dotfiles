@@ -193,8 +193,3 @@ let g:jedi#goto_definitions_command = "<leader>f"
 let g:jedi#documentation_command = "<leader>gd"
 let g:jedi#usages_command = "<leader>n"
 let g:jedi#rename_command = "<leader>r"
-
-
-autocmd FileType python setlocal omnifunc=jedi#completions
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
