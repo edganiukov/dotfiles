@@ -1,2 +1,4 @@
 # dotfiles
-My config files including vim, awesome wm etc.
+## To use it clone config files and init submodule:
+1. `git clone https://github.com/edganiukov/dotfiles.git`
+2. `git submodule init`
