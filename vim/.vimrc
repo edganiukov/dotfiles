@@ -7,8 +7,9 @@ call vundle#begin()
 " Plugins
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'jlanzarotta/bufexplorer'
 Plugin 'chriskempson/base16-vim'
+Plugin 'fatih/molokai'
+Plugin 'jlanzarotta/bufexplorer'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/YouCompleteMe'
@@ -30,6 +31,11 @@ filetype plugin indent on
 colorscheme base16-eighties
 set guifont=Consolas:h13
 set background=dark
+if has("gui_running")
+    colorscheme base16-eighties
+else
+    colorscheme molokai
+endif
 
 syntax on
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
@@ -62,6 +68,10 @@ set smartcase
 set incsearch
 set hlsearch
 
+set cursorline
+set gcr=a:blinkon0
+set scrolloff=3
+
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <F10> :set invnumber<CR>
 noremap <F11> :set list!<CR>
@@ -93,7 +103,7 @@ set noswapfile
 " NERDTree
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
-let NERDTreeIgnore=['bin/*', 'build/*', 'pkg/*', '\.test$']
+let NERDTreeIgnore=['*/bin/*', '*/build/*', '*/pkg/*', '\.test$']
 let g:NERDTreeWinSize=40
 
 "map <leader>f :NERDTreeFind<cr>
@@ -110,6 +120,10 @@ let g:syntastic_go_checkers = ['golint', 'govet']
 " youcompleteme
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_key_detailed_diagnostics = ['<leader>w']
+
 
 " gocode config
 let g:go_disable_autoinstall = 0
@@ -152,14 +166,21 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
-au FileType go nmap <Leader>b <Plug>(go-build)
-au FileType go nmap <Leader>t <Plug>(go-test)
-au FileType go nmap <Leader>r <Plug>(go-rename)
-au FileType go nmap <Leader>c <Plug>(go-coverage)
-au FileType go nmap <Leader>d <Plug>(go-def)
-au FileType go nmap <Leader>s <Plug>(go-implements)
-au FileType go nmap <Leader>i <Plug>(go-info)
-au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>e <Plug>(go-rename)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>cc <Plug>(go-coverage-clear)
+
+au FileType go nmap <leader>d <Plug>(go-def)
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+au FileType go nmap <leader>s <Plug>(go-implements)
+au FileType go nmap <leader>i <Plug>(go-info)
+au FileType go nmap <leader>gd <Plug>(go-doc)
 
 " rust
 set hidden
