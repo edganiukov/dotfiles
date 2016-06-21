@@ -10,6 +10,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'tomasr/molokai'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/YouCompleteMe'
@@ -24,21 +25,32 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'klen/python-mode'
 Plugin 'mitsuhiko/vim-jinja'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'SirVer/ultisnips'
 
 call vundle#end()
 filetype plugin indent on
 
-colorscheme base16-eighties
 set guifont=Consolas:h13
-set background=dark
 if has("gui_running")
-    colorscheme base16-eighties
+    colorscheme molokai
+    set background=dark
 else
     colorscheme molokai
 endif
 
+if $TERM_PROGRAM =~ "iTerm"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
 syntax on
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+
+set go-=L
+set go-=r
+set go-=m
+set go-=T
 
 set noerrorbells
 set novisualbell
@@ -71,6 +83,8 @@ set hlsearch
 set cursorline
 set gcr=a:blinkon0
 set scrolloff=3
+
+set backspace=2
 
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <F10> :set invnumber<CR>
@@ -106,7 +120,6 @@ let NERDTreeMinimalUI=1
 let NERDTreeIgnore=['*/bin/*', '*/build/*', '*/pkg/*', '\.test$']
 let g:NERDTreeWinSize=40
 
-"map <leader>f :NERDTreeFind<cr>
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -115,7 +128,7 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_enable_signs=1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_go_checkers = ['golint', 'govet']
+let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
 " youcompleteme
 set completeopt-=preview
@@ -124,6 +137,14 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_key_detailed_diagnostics = ['<leader>w']
 
+" ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ }
 
 " gocode config
 let g:go_disable_autoinstall = 0
@@ -131,11 +152,12 @@ let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
+let g:go_highlight_build_constraints = -1
 let g:go_highlight_interfaces = 1
 
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "gofmt"
 let g:go_fmt_fail_silently = 1
+let g:go_def_mode = "godef"
 
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_type_go = {
@@ -179,7 +201,7 @@ au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 
 au FileType go nmap <leader>s <Plug>(go-implements)
-au FileType go nmap <leader>i <Plug>(go-info)
+au FileType go nmap <leader>i <Plug>(go-imports)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
 " rust
