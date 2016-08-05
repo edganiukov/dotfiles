@@ -27,16 +27,15 @@ Plugin 'klen/python-mode'
 Plugin 'mitsuhiko/vim-jinja'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'SirVer/ultisnips'
+Plugin 'lervag/vimtex'
 
 call vundle#end()
 filetype plugin indent on
 
-set guifont=Consolas:h13
+set guifont=Consolas:h14
+colorscheme molokai
 if has("gui_running")
-    colorscheme molokai
-    set background=dark
-else
-    colorscheme molokai
+        set background=dark
 endif
 
 if $TERM_PROGRAM =~ "iTerm"
@@ -89,6 +88,7 @@ set backspace=2
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <F10> :set invnumber<CR>
 noremap <F11> :set list!<CR>
+noremap <C-d> :sh<cr>
 inoremap <F11> <Esc>:set list!<CR>a
 map <C-c><C-Right> :bn!<CR>
 map <C-c><C-Left> :bp!<CR>
@@ -214,7 +214,7 @@ let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 0
 
-let g:pymode_lint = 1
+let g:pymode_lint = 0
 let g:pymode_lint_checker = "pyflakes,pep8"
 let g:pymode_lint_ignore="E501,W601,C0110"
 let g:pymode_lint_write = 1
