@@ -33,18 +33,18 @@ Plugin 'lervag/vimtex'
 call vundle#end()
 filetype plugin indent on
 
-colorscheme onedark
-
-
-
 if $TERM_PROGRAM =~ "iTerm"
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-syntax on
-highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
+" fixes for clipboard
+set clipboard^=unnamed
+set clipboard^=unnamedplus
 
+syntax on
+colorscheme onedark
+highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 set encoding=utf-8
 set noerrorbells
@@ -95,8 +95,6 @@ if has("gui_running")
 endif
 
 " mappings
-let mapleader = ","
-
 nnoremap <leader><space> :nohlsearch<CR>
 
 noremap <F10> :set list!<CR>
@@ -112,7 +110,6 @@ map <C-m> :cp<CR>
 nnoremap <leader>a :cclose<CR>
 
 noremap <C-d> :sh<cr>
-
 nnoremap Y y$
 
 let g:bufferline_echo = 0
@@ -133,10 +130,10 @@ match ExtraWhitespace /\s\+$/
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\.git', '\.test$']
+let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$']
 let g:NERDTreeWinSize=40
 
-map <C-n> :NERDTreeToggle<CR>
+map <F8> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " syntastic
@@ -160,14 +157,18 @@ let g:neocomplete#sources.go = ['omni']
 " disable sorting
 call neocomplete#custom#source('_', 'sorters', [])
 
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+
 " ctrlp
-let g:ctrlp_map = '<c-p>'
+let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ }
+
+let g:ctrlp_switch_buffer = 'et'
 
 " lightline
 let g:lightline = {
@@ -189,44 +190,6 @@ let g:lightline = {
 vnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gb :Gblame<CR>
 
-" ultisnips
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-                return "\<TAB>"
-            endif
-        endif
-    endif
-
-    return ""
-endfunction
-
-function! g:UltiSnips_Reverse()
-    call UltiSnips#JumpBackwards()
-    if g:ulti_jump_backwards_res == 0
-        return "\<C-P>"
-    endif
-
-    return ""
-endfunction
-
-
-if !exists("g:UltiSnipsJumpForwardTrigger")
-    let g:UltiSnipsJumpForwardTrigger = "<tab>"
-endif
-
-if !exists("g:UltiSnipsJumpBackwardTrigger")
-    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-endif
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
-
 " vim-go config
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
@@ -239,12 +202,12 @@ let g:go_highlight_interfaces = 0
 let g:go_auto_sameids = 1
 let g:go_decls_included = "func,type"
 
-let g:go_fmt_command = "gofmt"
+let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
-nmap <F8> :TagbarToggle<CR>
+nmap <F9> :TagbarToggle<CR>
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -318,7 +281,7 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
-let g:jedi#completions_command = "<C-Space>"
+let g:jedi#completions_command = "<C-x><C-o>"
 let g:jedi#goto_command = "<leader>d"
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>f"
