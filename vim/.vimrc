@@ -1,39 +1,36 @@
-set nocompatible
-filetype off
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
 " Plugins
-Plugin 'VundleVim/Vundle.vim'
+Plug 'joshdick/onedark.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/syntastic'
+Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'SirVer/ultisnips'
 
-Plugin 'chriskempson/base16-vim'
-Plugin 'joshdick/onedark.vim'
-Plugin 'tomasr/molokai'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'majutsushi/tagbar'
-Plugin 'itchyny/lightline.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'fatih/vim-go'
-Plugin 'rust-lang/rust.vim'
-Plugin 'racer-rust/vim-racer'
-Plugin 'klen/python-mode'
-Plugin 'mitsuhiko/vim-jinja'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'lervag/vimtex'
+Plug 'fatih/vim-go'
+Plug 'klen/python-mode'
+Plug 'mitsuhiko/vim-jinja'
+Plug 'davidhalter/jedi-vim'
+Plug 'lervag/vimtex'
 
-call vundle#end()
-filetype plugin indent on
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'zchee/deoplete-go', { 'do': 'make'}
+else
+    Plug 'Shougo/neocomplete.vim'
+endif
 
-if $TERM_PROGRAM =~ "iTerm"
+call plug#end()
+
+if exists('$ITERM_PROFILE')
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
@@ -46,11 +43,31 @@ syntax on
 colorscheme onedark
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-set encoding=utf-8
+if !has('nvim')
+    set nocompatible
+    filetype off
+    filetype plugin indent on
+
+    set ttyfast
+    set ttymouse=xterm2
+    set ttyscroll=3
+
+    set laststatus=2
+    set encoding=utf-8
+    set autoread
+    set autoindent
+    set incsearch
+    set hlsearch
+    set backspace=indent,eol,start
+
+    set mouse=a
+else
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+endif
+
 set noerrorbells
 set novisualbell
 
-set autoindent
 set expandtab
 set wrap
 set number
@@ -59,8 +76,7 @@ set wildmenu
 
 set ignorecase
 set smartcase
-set incsearch
-set hlsearch
+
 
 set nobackup
 set nowb
@@ -74,15 +90,13 @@ set lazyredraw
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set laststatus=2
 set cursorline
 set scrolloff=4
 set backspace=2
-set pumheight=10
 set gcr=a:blinkon0
-set mouse=a
 set tm=500
 set completeopt=menu,menuone
+set pumheight=15
 
 if has("gui_running")
     set guifont=Consolas:h14
@@ -109,8 +123,12 @@ map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 nnoremap <leader>a :cclose<CR>
 
-noremap <C-d> :sh<cr>
 nnoremap Y y$
+
+if has("nvim")
+else
+    noremap <C-d> :sh<CR>
+endif
 
 let g:bufferline_echo = 0
 
@@ -124,6 +142,8 @@ let g:netrw_special_syntax= 1
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
 
 " Plugins config
 " NERDTree
@@ -144,18 +164,32 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
 " neocomplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#ignore_sources = {}
+    let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
+    let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
+    let g:deoplete#sources#go#align_class = 1
 
-if !exists('g:neocomplete#sources')
-    let g:neocomplete#sources = {}
+
+    " Use partial fuzzy matches like YouCompleteMe
+    call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+    call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+    call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+else
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+    if !exists('g:neocomplete#sources')
+        let g:neocomplete#sources = {}
+    endif
+    let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
+    let g:neocomplete#sources.go = ['omni']
+
+    " disable sorting
+    call neocomplete#custom#source('_', 'sorters', [])
 endif
-let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
-let g:neocomplete#sources.go = ['omni']
-
-" disable sorting
-call neocomplete#custom#source('_', 'sorters', [])
 
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
@@ -163,28 +197,73 @@ inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.test
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ }
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ }
 
 let g:ctrlp_switch_buffer = 'et'
 
+" fzf
+set rtp+=/usr/local/opt/fzf
+
+let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+let g:fzf_layout = { 'down': '~30%' }
+
+let g:fzf_colors = {
+    \ 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment']
+    \ }
+
+if has("nvim")
+    noremap <C-l> :FZF<CR>
+endif
+
 " lightline
 let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste'],
-      \             [ 'fugitive', 'filename', 'modified', 'ctrlpmark' ],
-      \             [ 'go'] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'inactive': {
-      \   'left': [ [ 'go'] ],
-      \ },
-      \ }
+    \ 'active': {
+    \'left': [
+        \ [ 'mode', 'paste'],
+        \ [ 'fugitive', 'filename', 'modified' ],
+        \ [ 'go']
+        \ ],
+    \ 'right': [
+        \ [ 'lineinfo' ],
+        \ [ 'percent' ],
+        \ [ 'fileformat', 'fileencoding', 'filetype' ]
+        \ ]
+    \ },
+    \ 'inactive': {
+        \ 'left': [ [ 'go'] ],
+        \ },
+    \ 'component_function': {
+        \ 'go': 'LightLineGo',
+        \ 'fugitive': 'LightLineFugitive',
+        \ },
+    \ 'subseparator': { 'left': '>', 'right': '<' }
+    \ }
 
+function! LightLineFugitive()
+    return exists('*fugitive#head') ? fugitive#head() : ''
+endfunction
+
+function! LightLineGo()
+    return exists('*go#jobcontrol#Statusline') ? go#jobcontrol#Statusline() : ''
+endfunction
 
 " fugitive
 vnoremap <leader>gb :Gblame<CR>
@@ -208,6 +287,7 @@ let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
 nmap <F9> :TagbarToggle<CR>
+
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -222,19 +302,19 @@ let g:tagbar_type_go = {
         \ 'm:methods',
         \ 'r:constructor',
         \ 'f:functions'
-    \ ],
+        \ ],
     \ 'sro' : '.',
     \ 'kind2scope' : {
         \ 't' : 'ctype',
         \ 'n' : 'ntype'
-    \ },
+        \ },
     \ 'scope2kind' : {
         \ 'ctype' : 't',
         \ 'ntype' : 'n'
-    \ },
+        \ },
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
-\ }
+    \ }
 
 "au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
@@ -254,12 +334,6 @@ au FileType go nmap <leader>e <Plug>(go-info)
 
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
-
-
-" rust
-set hidden
-let g:racer_cmd = "racer"
-let g:rustfmt_autosave = 1
 
 " python
 let g:pymode_rope = 0
