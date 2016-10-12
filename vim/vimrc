@@ -286,6 +286,8 @@ let g:go_fmt_fail_silently = 1
 let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
+let g:go_snippet_case_type = "camelcase"
+
 nmap <F9> :TagbarToggle<CR>
 
 let g:tagbar_type_go = {
