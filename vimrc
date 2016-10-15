@@ -6,7 +6,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'majutsushi/tagbar'
 Plug 'scrooloose/syntastic'
 Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf.vim'
@@ -15,11 +14,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips'
 
-Plug 'fatih/vim-go'
-Plug 'klen/python-mode'
-Plug 'mitsuhiko/vim-jinja'
-Plug 'davidhalter/jedi-vim'
-Plug 'lervag/vimtex'
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'klen/python-mode', { 'for': 'py' }
+Plug 'davidhalter/jedi-vim', { 'for': 'py' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'tpope/vim-markdown', { 'for': 'md' }
 
 if has('nvim')
     Plug 'Shougo/deoplete.nvim'
@@ -55,7 +54,6 @@ if !has('nvim')
     set laststatus=2
     set encoding=utf-8
     set autoread
-    set autoindent
     set incsearch
     set hlsearch
     set backspace=indent,eol,start
@@ -67,6 +65,8 @@ endif
 
 set noerrorbells
 set novisualbell
+set tm=500
+set t_vb=
 
 set expandtab
 set wrap
@@ -77,7 +77,6 @@ set wildmenu
 set ignorecase
 set smartcase
 
-
 set nobackup
 set nowb
 set noswapfile
@@ -87,16 +86,19 @@ set showmatch
 set showcmd
 set lazyredraw
 
+set autoindent
+set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set cursorline
+
+set completeopt=menu,menuone,noinsert,noselect
+
 set scrolloff=4
 set backspace=2
 set gcr=a:blinkon0
-set tm=500
-set completeopt=menu,menuone
 set pumheight=15
+set colorcolumn=81
 
 if has("gui_running")
     set guifont=Consolas:h14
@@ -105,25 +107,38 @@ if has("gui_running")
     set go-=r
     set go-=m
     set go-=T
-    set vb t_vb
+    set vb t_vb=
 endif
 
+set cursorline
+set pastetoggle=<F2>
+set nopaste
+
 " mappings
+let mapleader = "\<Space>"
+
 nnoremap <leader><space> :nohlsearch<CR>
-
-noremap <F10> :set list!<CR>
+nnoremap <leader>f :Explore<CR>:Ntree<CR>
+nnoremap <leader>a :cclose<CR>
+nnoremap <F10> :set list!<CR>
 inoremap <F10> <Esc>:set list!<CR>a
+nnoremap Y y$
 
+" buffers switch
 map <leader>n :bn!<CR>
 map <leader>m :bp!<CR>
 
-map <leader>f :Explore<CR>:Ntree<CR>
-
+" quickfix jump
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
-nnoremap <leader>a :cclose<CR>
 
-nnoremap Y y$
+imap jj <Esc>
+
+" window navigation
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
 
 if has("nvim")
 else
@@ -132,26 +147,37 @@ endif
 
 let g:bufferline_echo = 0
 
-let g:netrw_altv          = 1
-let g:netrw_fastbrowse    = 2
-let g:netrw_keepdir       = 0
-let g:netrw_liststyle     = 0
-let g:netrw_retmap        = 1
-let g:netrw_silent        = 1
-let g:netrw_special_syntax= 1
+let g:netrw_altv = 1
+let g:netrw_fastbrowse = 2
+let g:netrw_keepdir = 0
+let g:netrw_liststyle = 0
+let g:netrw_retmap = 1
+let g:netrw_silent = 1
+let g:netrw_special_syntax = 1
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
+nnoremap <Leader>w :w<CR>
+
+" disable arrows
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 " Plugins config
 " NERDTree
-let NERDTreeDirArrows=1
-let NERDTreeMinimalUI=1
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$']
-let g:NERDTreeWinSize=40
+let NERDTreeDirArrows = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeShowHidden = 1
+let NERDTreeIgnore = ['\.DS_Store', '\.git$', '\.test$']
+let g:NERDTreeWinSize = 40
 
 map <F8> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -163,14 +189,13 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
-" neocomplete
+" completion
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#ignore_sources = {}
     let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
     let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
     let g:deoplete#sources#go#align_class = 1
-
 
     " Use partial fuzzy matches like YouCompleteMe
     call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
@@ -288,40 +313,10 @@ let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
 
-nmap <F9> :TagbarToggle<CR>
-
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-        \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-        \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-        \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
-"au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>r <Plug>(go-rename)
+au FileType go nmap <leader>e <Plug>(go-rename)
 au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
 
 au FileType go nmap <leader>d <Plug>(go-def)
@@ -330,9 +325,9 @@ au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 
 au FileType go nmap <leader>s <Plug>(go-implements)
-au FileType go nmap <leader>i <Plug>(go-imports)
+au FileType go nmap <leader>im <Plug>(go-imports)
 au FileType go nmap <leader>gd <Plug>(go-doc)
-au FileType go nmap <leader>e <Plug>(go-info)
+au FileType go nmap <leader>i <Plug>(go-info)
 
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
