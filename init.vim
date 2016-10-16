@@ -9,7 +9,6 @@ Plug 'scrooloose/syntastic'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips'
 
 Plug 'fatih/vim-go', { 'for': 'go' }
@@ -30,6 +29,15 @@ set clipboard^=unnamedplus
 syntax on
 colorscheme onedark
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
+
+if has("gui_running")
+    set guifont=Consolas:h14
+    set background=dark
+    set go-=L
+    set go-=r
+    set go-=m
+    set go-=T
+endif
 
 set autoread
 set incsearch
@@ -71,15 +79,6 @@ set backspace=2
 set gcr=a:blinkon0
 set pumheight=15
 set colorcolumn=81
-
-if has("gui_running")
-    set guifont=Consolas:h14
-    set background=dark
-    set go-=L
-    set go-=r
-    set go-=m
-    set go-=T
-endif
 
 set cursorline
 set pastetoggle=<F2>
