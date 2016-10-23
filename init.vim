@@ -10,19 +10,23 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'SirVer/ultisnips'
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'klen/python-mode', { 'for': 'py' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'tpope/vim-markdown', { 'for': 'md' }
 
-Plug 'Shougo/deoplete.nvim'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'zchee/deoplete-jedi'
+if has("nvim")
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-go', { 'do': 'make'}
+    Plug 'zchee/deoplete-jedi'
+else
+    Plug 'maralla/completor.vim'
+endif
 
 call plug#end()
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set clipboard^=unnamed
 set clipboard^=unnamedplus
 
@@ -39,10 +43,32 @@ if has("gui_running")
     set go-=T
 endif
 
-set autoread
-set incsearch
-set hlsearch
-set backspace=indent,eol,start
+if !has("nvim")
+    set nocompatible
+    filetype off
+    filetype plugin indent on
+
+    set ttyfast
+    set ttymouse=xterm2
+    set ttyscroll=3
+
+    set laststatus=2
+    set encoding=utf-8
+    set backspace=indent,eol,start
+    set mouse=a
+
+    set autoindent
+    set autoread
+    set incsearch
+    set hlsearch
+
+    if exists('$ITERM_PROFILE')
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    endif
+else
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+endif
 
 set noerrorbells
 set novisualbell
@@ -50,7 +76,6 @@ set tm=500
 set vb t_vb=
 
 set expandtab
-set wrap
 set number
 set autoread
 set wildmenu
@@ -73,7 +98,9 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-set mouse=a
+set nowrap
+set breakindent
+
 set scrolloff=4
 set backspace=2
 set gcr=a:blinkon0
@@ -89,11 +116,14 @@ set completeopt=menu,menuone,noinsert,noselect
 " mappings
 let mapleader = "\<Space>"
 
+if has("nvim")
+    nnoremap <C-p> :FZF<CR>
+endif
+
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
 nnoremap <F10> :set list!<CR>
-nnoremap <C-p> :FZF<CR>
 nnoremap Y y$
 inoremap <F10> <Esc>:set list!<CR>a
 
@@ -128,7 +158,6 @@ match ExtraWhitespace /\s\+$/
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 " Plugins
-
 " syntastic
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_enable_signs=1
@@ -136,17 +165,26 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
-" completion
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#ignore_sources = {}
-let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const']
-let g:deoplete#sources#go#align_class = 1
+" ultisnips
+let g:UltiSnipsExpandTrigger="<F3>"
 
-" Use partial fuzzy matches like YouCompleteMe
-call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
-call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
-call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+" completion
+if has("nvim")
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#ignore_sources = {}
+    let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
+    let g:deoplete#sources#go#sort_class = ['package', 'const', 'var', 'type', 'func']
+    let g:deoplete#sources#go#align_class = 1
+
+    "" Use partial fuzzy matches like YouCompleteMe
+    call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+    call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+    call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+else
+    let g:completor_go_omni_trigger = '(?:\b[^\W\d]\w*|[\]\)])\.(?:[^\W\d]\w*)?'
+endif
+
+inoremap <expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " fzf
 set rtp+=/usr/local/opt/fzf
