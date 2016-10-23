@@ -188,7 +188,6 @@ endif
 inoremap <expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " fzf
-set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'down': '~30%' }
 let g:fzf_colors = {
     \ 'fg':      ['fg', 'Normal'],
