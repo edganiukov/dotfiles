@@ -4,10 +4,11 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary' 
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'SirVer/ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
@@ -17,6 +18,7 @@ Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'klen/python-mode', { 'for': 'py' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'tpope/vim-markdown', { 'for': 'md' }
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 if has("nvim")
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -36,7 +38,7 @@ colorscheme onedark
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 if has("gui_running")
-    set guifont=Consolas:h14
+    set guifont=Source\ Code\ Pro:h14
     set background=dark
     set go-=L
     set go-=r
@@ -99,8 +101,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-set nowrap
-set breakindent
+set wrap
 
 set scrolloff=4
 set backspace=2
@@ -115,11 +116,9 @@ set nopaste
 set completeopt=menu,menuone,noinsert,noselect
 
 " mappings
-let mapleader = "\<Space>"
+" let mapleader = "\<Space>"
 
-if has("nvim")
-    nnoremap <C-p> :FZF<CR>
-endif
+nnoremap <C-p> :FZF<CR>
 
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
@@ -127,6 +126,9 @@ nnoremap <leader>a :cclose<CR>
 nnoremap <F10> :set list!<CR>
 nnoremap Y y$
 inoremap <F10> <Esc>:set list!<CR>a
+
+noremap j gj
+noremap k gk
 
 " buffers switch
 map <leader>n :bn!<CR>
@@ -167,7 +169,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
 " ultisnips
-let g:UltiSnipsExpandTrigger="<F3>"
+let g:UltiSnipsExpandTrigger="<Space><CR>"
 
 " completion
 if has("nvim")
@@ -208,10 +210,10 @@ let g:fzf_colors = {
 let g:bufferline_echo = 0
 let g:lightline = {
     \ 'active': {
-    \'left': [
+    \ 'left': [
         \ [ 'mode', 'paste'],
         \ [ 'fugitive', 'filename', 'modified' ],
-        \ [ 'go']
+        \ [ 'go' ]
         \ ],
     \ 'right': [
         \ [ 'lineinfo' ],
@@ -219,14 +221,17 @@ let g:lightline = {
         \ [ 'fileformat', 'fileencoding', 'filetype' ]
         \ ]
     \ },
-    \ 'inactive': {
-        \ 'left': [ [ 'go'] ],
+    \ 'component': {
+        \ 'go': '%#goStatuslineColor#%{LightLineGo()}',
+        \ },
+    \ 'component_visible_condition': {
+        \ 'go': '(exists("*go#statusline#Show") && ""!=go#statusline#Show())'
         \ },
     \ 'component_function': {
-        \ 'go': 'LightLineGo',
         \ 'fugitive': 'LightLineFugitive',
         \ },
-    \ 'subseparator': { 'left': '>', 'right': '<' }
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': ':', 'right': ':' },
     \ }
 
 function! LightLineFugitive()
@@ -234,12 +239,8 @@ function! LightLineFugitive()
 endfunction
 
 function! LightLineGo()
-    return exists('*go#jobcontrol#Statusline') ? go#jobcontrol#Statusline() : ''
+    return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
-
-" fugitive
-vnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gb :Gblame<CR>
 
 " vim-go config
 let g:go_disable_autoinstall = 0
@@ -298,3 +299,8 @@ let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" rust
+let g:completor_racer_binary = 'racer'
+let g:racer_experimental_completer = 1
+let g:rustfmt_autosave = 1
