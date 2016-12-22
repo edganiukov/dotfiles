@@ -1,7 +1,8 @@
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Plugins
 Plug 'joshdick/onedark.vim'
+Plug 'altercation/vim-colors-solarized'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary' 
@@ -25,7 +26,8 @@ if has("nvim")
     Plug 'zchee/deoplete-go', { 'do': 'make'}
     Plug 'zchee/deoplete-jedi'
 else
-    Plug 'maralla/completor.vim'
+    Plug 'Shougo/neocomplete.vim'
+    " Plug 'maralla/completor.vim'
 endif
 
 call plug#end()
@@ -34,12 +36,13 @@ set clipboard^=unnamed
 set clipboard^=unnamedplus
 
 syntax on
-colorscheme onedark
+set background=dark
+colorscheme solarized
+
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 if has("gui_running")
     set guifont=Source\ Code\ Pro:h14
-    set background=dark
     set go-=L
     set go-=r
     set go-=m
@@ -100,6 +103,7 @@ set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set noexpandtab
 
 set wrap
 
@@ -116,8 +120,6 @@ set nopaste
 set completeopt=menu,menuone,noinsert,noselect
 
 " mappings
-" let mapleader = "\<Space>"
-
 nnoremap <C-p> :FZF<CR>
 
 nnoremap <Leader>w :w<CR>
@@ -139,6 +141,9 @@ map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 
 imap hh <Esc>
+imap jj <Esc>
+imap kk <Esc>
+imap ll <Esc>
 
 " window navigation
 nmap <C-h> <C-w>h
@@ -184,10 +189,28 @@ if has("nvim")
     call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
     call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 else
-    let g:completor_go_omni_trigger = '(?:\b[^\W\d]\w*|[\]\)])\.(?:[^\W\d]\w*)?'
+	let g:acp_enableAtStartup = 0
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+    if !exists('g:neocomplete#sources')
+        let g:neocomplete#sources = {}
+    endif
+    let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
+    let g:neocomplete#sources.go = ['omni']
+
+    " disable sorting
+    call neocomplete#custom#source('_', 'sorters', [])
+
+	" let g:completor_gocode_binary = 'gocode'
+    " let g:completor_go_omni_trigger = "(?:\b[^\W\d]\w*|[\]\)])\.(?:[^\W\d]\w*)?"
+	" let g:completor_auto_trigger = 1
 endif
 
-inoremap <expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
 " fzf
 let g:fzf_layout = { 'down': '~30%' }
@@ -261,6 +284,8 @@ let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
 
+let g:go_gocode_unimported_packages = 1
+
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
@@ -279,6 +304,10 @@ au FileType go nmap <leader>i <Plug>(go-info)
 
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
+
+" yaml
+au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
+au FileType yml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 
 " python
 let g:pymode_rope = 0
