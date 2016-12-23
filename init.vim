@@ -5,7 +5,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
-Plug 'tpope/vim-commentary' 
+Plug 'tpope/vim-commentary'
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -142,8 +142,6 @@ map <C-m> :cp<CR>
 
 imap hh <Esc>
 imap jj <Esc>
-imap kk <Esc>
-imap ll <Esc>
 
 " window navigation
 nmap <C-h> <C-w>h
