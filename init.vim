@@ -23,11 +23,11 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 if has("nvim")
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
     Plug 'zchee/deoplete-go', { 'do': 'make'}
     Plug 'zchee/deoplete-jedi'
 else
     Plug 'Shougo/neocomplete.vim'
-    " Plug 'maralla/completor.vim'
 endif
 
 call plug#end()
@@ -120,8 +120,6 @@ set nopaste
 set completeopt=menu,menuone,noinsert,noselect
 
 " mappings
-nnoremap <C-p> :FZF<CR>
-
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
@@ -172,25 +170,25 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
 " ultisnips
-let g:UltiSnipsExpandTrigger="<Space><CR>"
+let g:UltiSnipsExpandTrigger="<Space><Tab>"
 
 " completion
 if has("nvim")
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#ignore_sources = {}
-    let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-    let g:deoplete#sources#go#sort_class = ['package', 'const', 'var', 'type', 'func']
-    let g:deoplete#sources#go#align_class = 1
 
-    "" Use partial fuzzy matches like YouCompleteMe
-    call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
-    call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
-    call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+	let g:deoplete#ignore_sources = {}
+	let g:deoplete#ignore_sources._ = ['tag', 'file', 'dictionary', 'around']
+
+    let g:deoplete#sources#go#align_class = 1
+    " let g:deoplete#sources#go#sort_class = ['package', 'const', 'var', 'type', 'func']
+
+	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
 else
 	let g:acp_enableAtStartup = 0
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#sources#syntax#min_keyword_length = 3
+	let g:neocomplete#enable_fuzzy_completion = 0
 
     if !exists('g:neocomplete#sources')
         let g:neocomplete#sources = {}
@@ -198,12 +196,7 @@ else
     let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
     let g:neocomplete#sources.go = ['omni']
 
-    " disable sorting
     call neocomplete#custom#source('_', 'sorters', [])
-
-	" let g:completor_gocode_binary = 'gocode'
-    " let g:completor_go_omni_trigger = "(?:\b[^\W\d]\w*|[\]\)])\.(?:[^\W\d]\w*)?"
-	" let g:completor_auto_trigger = 1
 endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -211,7 +204,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
 " fzf
-let g:fzf_layout = { 'down': '~30%' }
+let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_colors = {
     \ 'fg':      ['fg', 'Normal'],
     \ 'bg':      ['bg', 'Normal'],
@@ -226,6 +219,10 @@ let g:fzf_colors = {
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment']
     \ }
+
+command! -bang -nargs=* Pt call fzf#vim#grep('GOGC=off pt --smart-case --nogroup --column --color '.shellescape(<q-args>), 0, <bang>0)
+nnoremap <C-p> :FZF<CR>
+nnoremap <C-l> :Pt<CR>
 
 " lightline
 let g:bufferline_echo = 0
@@ -293,7 +290,6 @@ au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
 au FileType go nmap <leader>d <Plug>(go-def)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 
 au FileType go nmap <leader>s <Plug>(go-implements)
 au FileType go nmap <leader>im <Plug>(go-imports)
