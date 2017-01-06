@@ -18,13 +18,16 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'klen/python-mode', { 'for': 'py' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
-Plug 'tpope/vim-markdown', { 'for': 'md' }
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
+Plug 'rhysd/vim-llvm'
 
 if has("nvim")
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
     Plug 'zchee/deoplete-go', { 'do': 'make'}
+	Plug 'zchee/deoplete-clang'
     Plug 'zchee/deoplete-jedi'
 else
     Plug 'Shougo/neocomplete.vim'
@@ -36,18 +39,10 @@ set clipboard^=unnamed
 set clipboard^=unnamedplus
 
 syntax on
-set background=dark
-colorscheme solarized
-
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-if has("gui_running")
-    set guifont=Source\ Code\ Pro:h14
-    set go-=L
-    set go-=r
-    set go-=m
-    set go-=T
-endif
+colorscheme solarized
+set background=dark
 
 if !has("nvim")
     set nocompatible
@@ -174,14 +169,12 @@ let g:UltiSnipsExpandTrigger="<Space><Tab>"
 
 " completion
 if has("nvim")
-    let g:deoplete#enable_at_startup = 1
+	let g:deoplete#enable_at_startup = 1
 
 	let g:deoplete#ignore_sources = {}
 	let g:deoplete#ignore_sources._ = ['tag', 'file', 'dictionary', 'around']
 
-    let g:deoplete#sources#go#align_class = 1
-    " let g:deoplete#sources#go#sort_class = ['package', 'const', 'var', 'type', 'func']
-
+	let g:deoplete#sources#go#align_class = 1
 	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
 else
 	let g:acp_enableAtStartup = 0
@@ -220,9 +213,11 @@ let g:fzf_colors = {
     \ 'header':  ['fg', 'Comment']
     \ }
 
+" https://github.com/monochromegane/the_platinum_searcher
 command! -bang -nargs=* Pt call fzf#vim#grep('GOGC=off pt --smart-case --nogroup --column --color '.shellescape(<q-args>), 0, <bang>0)
+
+nnoremap <C-o> :Pt<CR>
 nnoremap <C-p> :FZF<CR>
-nnoremap <C-l> :Pt<CR>
 
 " lightline
 let g:bufferline_echo = 0
@@ -296,9 +291,6 @@ au FileType go nmap <leader>im <Plug>(go-imports)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>i <Plug>(go-info)
 
-nmap <C-g> :GoDeclsDir<cr>
-imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
-
 " yaml
 au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType yml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
@@ -324,6 +316,12 @@ let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " rust
+" https://github.com/phildawes/racer
 let g:completor_racer_binary = 'racer'
 let g:racer_experimental_completer = 1
 let g:rustfmt_autosave = 1
+
+" C
+let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/3.9.1/lib/libclang.dylib"
+let g:deoplete#sources#clang#clang_header = "/usr/local/Cellar/llvm/3.9.1/lib/clang"
+let g:deoplete#sources#clang#std = {'c': 'c11'}
