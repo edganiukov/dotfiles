@@ -16,19 +16,21 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'klen/python-mode', { 'for': 'py' }
+Plug 'python-mode/python-mode', { 'for': 'python' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
-Plug 'rhysd/vim-llvm'
+Plug 'rhysd/vim-llvm', { 'for': ['c', 'cpp'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'html', 'jsx', 'json'] }
+Plug 'maksimr/vim-jsbeautify', { 'for': ['javascript', 'html', 'jsx', 'json'] }
 
 if has("nvim")
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    Plug 'zchee/deoplete-go', { 'do': 'make'}
-	Plug 'zchee/deoplete-clang'
-    Plug 'zchee/deoplete-jedi'
+	Plug 'zchee/deoplete-go', { 'do': 'make'}
+	Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+	Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 else
     Plug 'Shougo/neocomplete.vim'
 endif
@@ -178,18 +180,18 @@ if has("nvim")
 	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
 else
 	let g:acp_enableAtStartup = 0
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
+	let g:neocomplete#enable_at_startup = 1
+	let g:neocomplete#enable_smart_case = 1
+	let g:neocomplete#sources#syntax#min_keyword_length = 3
 	let g:neocomplete#enable_fuzzy_completion = 0
 
-    if !exists('g:neocomplete#sources')
-        let g:neocomplete#sources = {}
-    endif
-    let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
-    let g:neocomplete#sources.go = ['omni']
+	if !exists('g:neocomplete#sources')
+		let g:neocomplete#sources = {}
+	endif
+	let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
+	let g:neocomplete#sources.go = ['omni']
 
-    call neocomplete#custom#source('_', 'sorters', [])
+	call neocomplete#custom#source('_', 'sorters', [])
 endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -273,8 +275,9 @@ let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
-
 let g:go_gocode_unimported_packages = 1
+
+nnoremap <C-g> :GoAlternate<CR>
 
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
@@ -296,19 +299,19 @@ au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType yml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 
 " python
-let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_goto_definition_bind = '<leader>d'
+let g:pymode_rope_rename_bind = '<leader>e'
 
 let g:pymode_lint = 0
-let g:pymode_lint_checker = "pyflakes,pep8"
+
+let g:pymode_lint_checkers = ['pyflakes', 'pep8']
 let g:pymode_lint_ignore="E501,W601,C0110"
 let g:pymode_lint_write = 1
 
 let g:pymode_virtualenv = 1
-
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_key = '<leader>b'
+let g:pymode_folding = 0
 
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
@@ -325,3 +328,10 @@ let g:rustfmt_autosave = 1
 let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/3.9.1/lib/libclang.dylib"
 let g:deoplete#sources#clang#clang_header = "/usr/local/Cellar/llvm/3.9.1/lib/clang"
 let g:deoplete#sources#clang#std = {'c': 'c11'}
+
+" javascript
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
