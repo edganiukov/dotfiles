@@ -12,7 +12,7 @@ neovim:
 
 tmux:
 	[ -f ~/.tmux.conf ] || ln -s $(PWD)/tmux.con ~/.tmux.con
-	[ -d ~/.tmux ] || mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	[ -d ~/.tmux/plugins ] || mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 clean:
 	[ -L ~/.vimrc ] && rm -f ~/.vimrc
