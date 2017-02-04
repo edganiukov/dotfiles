@@ -1,4 +1,4 @@
-all: neovim
+all: clean, neovim, tmux
 
 vim:
 	[ -f ~/.vimrc ] || mkdir -p ~/.vim && ln -s $(PWD)/init.vim ~/.vimrc
@@ -10,10 +10,14 @@ neovim:
 	[ -f ~/.config/nvim/autoload/plug.vim ] || curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+tmux:
+	[ -f ~/.tmux.conf ] || ln -s $(PWD)/tmux.con ~/.tmux.con
+	[ -d ~/.tmux/plugins ] || mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 clean:
 	[ -L ~/.vimrc ] && rm -f ~/.vimrc
 	[ -f ~/.vim/autoload/plug.vim ] &&  rm -f ~/.vim/autoload/plug.vim
 	[ -L ~/.config/nvim/init.vim ] && rm -f ~/.config/nvim/init.vim
 	[ -f ~/.config/nvim/autoload/plug.vim ] &&  rm -f ~/.config/nvim/autoload/plug.vim
 
-.PHONY: all, vim, neovim, clean
+.PHONY: all, vim, neovim, clean, tmux
