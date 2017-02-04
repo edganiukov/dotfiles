@@ -17,13 +17,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'python-mode/python-mode', { 'for': 'python' }
-Plug 'lervag/vimtex', { 'for': 'tex' }
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
 Plug 'rhysd/vim-llvm', { 'for': ['c', 'cpp'] }
+
 Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'html', 'jsx', 'json'] }
 Plug 'maksimr/vim-jsbeautify', { 'for': ['javascript', 'html', 'jsx', 'json'] }
+
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'cespare/vim-toml', { 'for': 'toml' }
 
 if has("nvim")
 	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
