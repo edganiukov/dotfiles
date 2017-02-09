@@ -148,15 +148,22 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
-" disable arrows
+" arrows for windows size change
+noremap <Up> <C-W>+
+noremap <Down> <C-W>-
+noremap <Left> <C-W><
+noremap <Right> <C-W>>
+
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+
+" indent
+nmap < <<
+nmap > >>
+xmap < <gV
+xmap > >gV
 
 highlight ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
@@ -219,10 +226,44 @@ let g:fzf_colors = {
     \ 'header':  ['fg', 'Comment']
     \ }
 
-" https://github.com/monochromegane/the_platinum_searcher
-command! -bang -nargs=* Pt call fzf#vim#grep('GOGC=off pt --smart-case --nogroup --column --color '.shellescape(<q-args>), 0, <bang>0)
+" https://github.com/ggreer/the_silver_searcher
+command! -nargs=* Ag call fzf#run({
+	\ 'source':  printf('ag --nogroup --column --color "%s"',
+	\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+	\ 'sink*':    function('<sid>ag_handler'),
+	\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+	\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+	\            '--color hl:68,hl+:110',
+	\ 'down':    '50%'
+	\ })
 
-nnoremap <C-o> :Pt<CR>
+function! s:ag_to_qf(line)
+  let parts = split(a:line, ':')
+  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+        \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ag_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let cmd = get({'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+  let first = list[0]
+  execute cmd escape(first.filename, ' %#\')
+  execute first.lnum
+  execute 'normal!' first.col.'|zz'
+
+  if len(list) > 1
+    call setqflist(list)
+    copen
+    wincmd p
+  endif
+endfunction
+
+nnoremap <C-o> :Ag<CR>
 nnoremap <C-p> :FZF<CR>
 
 " lightline
