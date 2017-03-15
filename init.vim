@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
 Plug 'joshdick/onedark.vim'
@@ -29,6 +29,9 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 
+Plug 'vim-scripts/vim-misc', { 'for': 'lua' }
+Plug 'vim-scripts/lua.vim', { 'for': 'lua' }
+
 if has("nvim")
 	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -41,13 +44,10 @@ endif
 
 call plug#end()
 
-set clipboard^=unnamed
-set clipboard^=unnamedplus
-
 syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-colorscheme solarized
+colorscheme onedark
 set background=dark
 
 if !has("nvim")
@@ -68,14 +68,11 @@ if !has("nvim")
     set autoread
     set incsearch
     set hlsearch
-
-    if exists('$ITERM_PROFILE')
-        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-    endif
 else
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
+
+set clipboard=unnamedplus
 
 set noerrorbells
 set novisualbell
@@ -149,10 +146,10 @@ nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
 " arrows for windows size change
-noremap <Up> <C-W>+
-noremap <Down> <C-W>-
-noremap <Left> <C-W><
-noremap <Right> <C-W>>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
@@ -316,6 +313,7 @@ let g:go_decls_included = "type,func"
 
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
+
 let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
@@ -370,8 +368,8 @@ let g:racer_experimental_completer = 1
 let g:rustfmt_autosave = 1
 
 " C
-let g:deoplete#sources#clang#libclang_path = "/usr/local/Cellar/llvm/3.9.1/lib/libclang.dylib"
-let g:deoplete#sources#clang#clang_header = "/usr/local/Cellar/llvm/3.9.1/lib/clang"
+let g:deoplete#sources#clang#libclang_path = "/usr/lib/libclang.so"
+let g:deoplete#sources#clang#clang_header = "/usr/lib/clang"
 let g:deoplete#sources#clang#std = {'c': 'c11'}
 
 " javascript
@@ -380,3 +378,6 @@ autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
 autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+" lua
+let g:lua_complete_omni = 1

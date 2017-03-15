@@ -1,23 +1,41 @@
-all: clean, neovim, tmux
+CWD=$(shell pwd)
 
-vim:
-	[ -f ~/.vimrc ] || mkdir -p ~/.vim && ln -s $(PWD)/init.vim ~/.vimrc
-	[ -f ~/.vim/autoload/plug.vim ] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+all: clean, vim, tmux, awesome, cli, vimperator
 
-neovim:
-	[ -f ~/.config/nvim/init.vim ] || mkdir -p ~/.config/nvim && ln -s $(PWD)/init.vim ~/.config/nvim/init.vim
-	[ -f ~/.config/nvim/autoload/plug.vim ] || curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+nvim:
+	mkdir -p ~/.config/nvim ln -s $(CWD)/init.vim $(HOME)/.config/nvim/init.vim
+	curl -fLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 tmux:
-	[ -f ~/.tmux.conf ] || ln -s $(PWD)/tmux.con ~/.tmux.con
-	[ -d ~/.tmux/plugins ] || mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
+	mkdir -p $(HOME)/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+
+awesome:
+	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+
+cli:
+	ln -s $(CWD)/Xresources $(HOME)/.Xresources
+	ln -s $(CWD)/Xdefaults $(HOME)/.Xdefaults
+	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
+	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
+	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
+	ln -s $(CWD)/zshrc $(HOME)/.zshrc
+
+vimperator:
+	ln -s $(CWD)/vimperatorrc $(HOME)/.vimperatorrc
 
 clean:
-	[ -L ~/.vimrc ] && rm -f ~/.vimrc
-	[ -f ~/.vim/autoload/plug.vim ] &&  rm -f ~/.vim/autoload/plug.vim
-	[ -L ~/.config/nvim/init.vim ] && rm -f ~/.config/nvim/init.vim
-	[ -f ~/.config/nvim/autoload/plug.vim ] &&  rm -f ~/.config/nvim/autoload/plug.vim
+	rm -rf $(HOME)/.config/nvim
+	rm -rf $(HOME)/.config/awesome
+	rm -rf $(HOME)/.tmux/plugins
+	rm -f $(HOME)/.tmux.conf
+	rm -f $(HOME)/.Xresources
+	rm -f $(HOME)/.Xdefaults
+	rm -f $(HOME)/.xinitrc
+	rm -f $(HOME)/.dir_colors
+	rm -f $(HOME)/.gitconfig
+	rm -f $(HOME)/.vimperatorrc
+	rm -f $(HOME)/.zshrc
 
-.PHONY: all, vim, neovim, clean, tmux
+.PHONY: all, nvim, clean, tmux, awesome, cli, vimperatorrc

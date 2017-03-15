@@ -1,0 +1,12 @@
+[core]
+	excludesfiles = /home/ed/.gitignore_global
+[user]
+	name = Ed Ganiukov
+	email = edganiukov@gmail.com
+	signingkey = 8D6ADA3B
+[commit]
+	gpgsign = true
+[push]
+	default = matching
+[http "https://gopkg.in"]
+	followRedirects = true
