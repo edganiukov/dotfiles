@@ -16,7 +16,6 @@ awesome:
 
 cli:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
-	ln -s $(CWD)/Xdefaults $(HOME)/.Xdefaults
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
 	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
 	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
@@ -31,7 +30,6 @@ clean:
 	rm -rf $(HOME)/.tmux/plugins
 	rm -f $(HOME)/.tmux.conf
 	rm -f $(HOME)/.Xresources
-	rm -f $(HOME)/.Xdefaults
 	rm -f $(HOME)/.xinitrc
 	rm -f $(HOME)/.dir_colors
 	rm -f $(HOME)/.gitconfig
