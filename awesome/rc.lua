@@ -361,16 +361,23 @@ awful.screen.connect_for_each_screen(function(s)
 	   layout = {layouts[1],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2]}
 	}
 
-	tags_n = {
+	tags_2 = {
 	   names  = {"1:web","2:im","3:work","4:dev"},
 	   layout = {layouts[1],layouts[2],layouts[2],layouts[2]}
+	}
+
+	tags_3 = {
+	   names  = {"1:mon","2:term"},
+	   layout = {layouts[2],layouts[2]}
 	}
 
     -- Each screen has its own tag table.
 	if s.index == 1 then
 		awful.tag(tags_1.names, s, tags_1.layout)
+	elseif s.index == 2 then
+		awful.tag(tags_2.names, s, tags_2.layout)
 	else
-		awful.tag(tags_n.names, s, tags_n.layout)
+		awful.tag(tags_3.names, s, tags_3.layout)
 	end
 
     -- Create a promptbox for each screen
@@ -477,10 +484,12 @@ globalkeys = awful.util.table.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
+
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
+
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "Tab",

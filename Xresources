@@ -1,7 +1,79 @@
-Xft.lcdfilter   : lcddefault
-Xft.hintstyle   : hintslight
-Xft.hinting     : 1
-Xft.autohint    : 1
-Xft.antialias   : 1
-Xft.dpi			: 100
-Xft.rgba		: rgb
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintslight
+Xft.hinting  : 1
+Xft.autohint : 1
+Xft.antialias: 1
+Xft.dpi: 100
+Xft.rgb: rgb
+
+! Powerarrow Dark
+*.background: #1A1A1A
+*.foreground: #DDDDFF
+
+!black
+*color0: #1A1A1A
+*color8: #6E6E6E
+
+!red
+*color1: #AF5360
+*color9: #EA6F81
+
+!green
+*color2: 447019
+*color10: #7BAB4E
+
+!yellow
+*color3: #D8D782
+*color11: #CFCD63
+
+!blue
+*color12: #92ADCB
+*color4: #648BB5
+
+!magenta
+*color5: #E5C8D6
+*color13: #CB92AD
+
+!cyan
+*color6: #406E6F
+*color14: #81DCDE
+
+!white
+*color7: #C6C6E5
+*color15: #DDDDFF
+
+URxvt.shading: 10
+URxvt*scrollBar: false
+URxvt*cursorBlink: false
+URxvt.internalBorder: 0
+URxvt.externalBorder: 0
+URxvt.font: xft:Source\ Code\ Pro Semibold:pixelsize=13:antialias=true
+URxvt.boldFont: xft:Source\ Code\ Pro:bold:pixelsize=13:antialias=true
+
+URxvt*cursorColor: #DCDCCC
+URxvt.perl-lib: /usr/lib/urxvt/perl
+
+URxvt*transparent: false
+URxvt*shading: 15
+URxvt*background: #111111
+URxvt*foreground: #C0C0C0
+
+URxvt*secondaryScroll: true
+URxvt*saveLines: 65535
+URxvt*urgentOnBell:	false
+
+URxvt*perl-ext-common: default,tabbed,clipboard
+URxvt.tabbed.new-button: yes
+URxvt.tabbed.tabbar-fg: 10
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg: 8
+URxvt.tabbed.tab-bg: 12
+
+URxvt.perl-ext:	default,url-select
+URxvt.keysym.C-i: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/firefox
+URxvt.url-select.underline: true
+
+URxvt*termName:	xterm-256color
+URxvt*eightBitInput: false
+URxvt*metaSendsEscape: true
