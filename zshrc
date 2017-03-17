@@ -10,11 +10,9 @@ export EDITOR=nvim
 
 export CDPATH=.:~:~/dev/go/src/github.com/edganiukov:~/work/go/src/github.com/lovoo
 
-#Set LS_COLORS
+ #Set LS_COLORS
 if [[ -f ~/.dir_colors ]]; then
 	eval `dircolors -b ~/.dir_colors`
-else
-	eval `dircolors -b /etc/DIR_COLORS`
 fi
 
 # History settings

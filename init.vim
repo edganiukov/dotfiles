@@ -79,7 +79,6 @@ set novisualbell
 set tm=500
 set vb t_vb=
 
-set expandtab
 set number
 set autoread
 set wildmenu
@@ -98,10 +97,10 @@ set lazyredraw
 
 set autoindent
 set smartindent
+set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
 
 set wrap
 
@@ -235,29 +234,29 @@ command! -nargs=* Ag call fzf#run({
 	\ })
 
 function! s:ag_to_qf(line)
-  let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+    let parts = split(a:line, ':')
+    return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
         \ 'text': join(parts[3:], ':')}
 endfunction
 
 function! s:ag_handler(lines)
-  if len(a:lines) < 2 | return | endif
+    if len(a:lines) < 2 | return | endif
 
-  let cmd = get({'ctrl-x': 'split',
+    let cmd = get({'ctrl-x': 'split',
                \ 'ctrl-v': 'vertical split',
                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+    let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
 
-  let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
-  execute first.lnum
-  execute 'normal!' first.col.'|zz'
+    let first = list[0]
+    execute cmd escape(first.filename, ' %#\')
+    execute first.lnum
+    execute 'normal!' first.col.'|zz'
 
-  if len(list) > 1
-    call setqflist(list)
-    copen
-    wincmd p
-  endif
+    if len(list) > 1
+        call setqflist(list)
+        copen
+        wincmd p
+    endif
 endfunction
 
 nnoremap <C-o> :Ag<CR>
