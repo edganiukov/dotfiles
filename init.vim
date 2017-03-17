@@ -47,7 +47,7 @@ call plug#end()
 syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-colorscheme onedark
+colorscheme solarized
 set background=dark
 
 if !has("nvim")

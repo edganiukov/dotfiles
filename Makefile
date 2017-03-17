@@ -9,6 +9,7 @@ nvim:
 
 tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
+	ln -s $(CWD)/urlview $(HOME)/.urlview
 	mkdir -p $(HOME)/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
 
 awesome:
