@@ -12,7 +12,7 @@ export CDPATH=.:~:~/dev/go/src/github.com/edganiukov:~/work/go/src/github.com/lo
 
  #Set LS_COLORS
 if [[ -f ~/.dir_colors ]]; then
-	eval `dircolors -b ~/.dir_colors`
+    eval `dircolors -b ~/.dir_colors`
 fi
 
 # History settings

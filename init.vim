@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 Plug 'joshdick/onedark.vim'
 Plug 'altercation/vim-colors-solarized'
+
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
@@ -33,11 +34,11 @@ Plug 'vim-scripts/vim-misc', { 'for': 'lua' }
 Plug 'vim-scripts/lua.vim', { 'for': 'lua' }
 
 if has("nvim")
-	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-	Plug 'zchee/deoplete-go', { 'do': 'make'}
-	Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-	Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+    Plug 'zchee/deoplete-go', { 'do': 'make'}
+    Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
+    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 else
     Plug 'Shougo/neocomplete.vim'
 endif
@@ -47,8 +48,8 @@ call plug#end()
 syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-colorscheme solarized
-set background=dark
+colorscheme onedark
+" set background=dark
 
 if !has("nvim")
     set nocompatible
@@ -109,6 +110,7 @@ set backspace=2
 set gcr=a:blinkon0
 set pumheight=15
 set colorcolumn=81
+set list!
 
 set cursorline
 set pastetoggle=<F2>
@@ -178,27 +180,27 @@ let g:UltiSnipsExpandTrigger="<Space><Tab>"
 
 " completion
 if has("nvim")
-	let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_at_startup = 1
 
-	let g:deoplete#ignore_sources = {}
-	let g:deoplete#ignore_sources._ = ['tag', 'file', 'dictionary', 'around']
+    let g:deoplete#ignore_sources = {}
+    let g:deoplete#ignore_sources._ = ['tag', 'file', 'dictionary', 'around']
 
-	let g:deoplete#sources#go#align_class = 1
-	call deoplete#custom#set('_', 'matchers', ['matcher_head'])
+    let g:deoplete#sources#go#align_class = 1
+    call deoplete#custom#set('_', 'matchers', ['matcher_head'])
 else
-	let g:acp_enableAtStartup = 0
-	let g:neocomplete#enable_at_startup = 1
-	let g:neocomplete#enable_smart_case = 1
-	let g:neocomplete#sources#syntax#min_keyword_length = 3
-	let g:neocomplete#enable_fuzzy_completion = 0
+    let g:acp_enableAtStartup = 0
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+    let g:neocomplete#enable_fuzzy_completion = 0
 
-	if !exists('g:neocomplete#sources')
-		let g:neocomplete#sources = {}
-	endif
-	let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
-	let g:neocomplete#sources.go = ['omni']
+    if !exists('g:neocomplete#sources')
+        let g:neocomplete#sources = {}
+    endif
+    let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
+    let g:neocomplete#sources.go = ['omni']
 
-	call neocomplete#custom#source('_', 'sorters', [])
+    call neocomplete#custom#source('_', 'sorters', [])
 endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -224,14 +226,14 @@ let g:fzf_colors = {
 
 " https://github.com/ggreer/the_silver_searcher
 command! -nargs=* Ag call fzf#run({
-	\ 'source':  printf('ag --nogroup --column --color "%s"',
-	\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-	\ 'sink*':    function('<sid>ag_handler'),
-	\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-	\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-	\            '--color hl:68,hl+:110',
-	\ 'down':    '50%'
-	\ })
+    \ 'source':  printf('ag --nogroup --column --color "%s"',
+    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+    \ 'sink*':    function('<sid>ag_handler'),
+    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+    \            '--color hl:68,hl+:110',
+    \ 'down':    '50%'
+    \ })
 
 function! s:ag_to_qf(line)
     let parts = split(a:line, ':')
