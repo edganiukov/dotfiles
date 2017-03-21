@@ -25,6 +25,11 @@ cli:
 vimperator:
 	ln -s $(CWD)/vimperatorrc $(HOME)/.vimperatorrc
 
+irssi:
+	mkdir -p $(HOME)/.irssi
+	ln -s $(CWD)/irssi/config $(HOME)/.irssi/config
+	ln -s $(CWD)/irssi/solarized-universal.theme $(HOME)/.irssi/solarized-universal.theme
+
 clean:
 	rm -rf $(HOME)/.config/nvim
 	rm -rf $(HOME)/.config/awesome
@@ -36,5 +41,6 @@ clean:
 	rm -f $(HOME)/.gitconfig
 	rm -f $(HOME)/.vimperatorrc
 	rm -f $(HOME)/.zshrc
+	rm -f $(HOME)/.irssi
 
-.PHONY: all, nvim, clean, tmux, awesome, cli, vimperatorrc
+.PHONY: all, nvim, clean, tmux, awesome, cli, vimperatorrc, irssi

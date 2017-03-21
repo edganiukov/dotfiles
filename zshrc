@@ -50,16 +50,10 @@ bindkey "^[[2~" yank
 bindkey "^[[3~" delete-char
 bindkey "^[[7~" beginning-of-line
 bindkey "^[[8~" end-of-line
-bindkey "^[[A"  up-line-or-history
-bindkey "^[[B"  down-line-or-history
-bindkey "^[[H"  beginning-of-line
-bindkey "^[[F"  end-of-line
+bindkey "^[[5"  up-line-or-history
+bindkey "^[[6"  down-line-or-history
 bindkey "^[e"   expand-cmd-path
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
 bindkey " "     magic-space
-bindkey "^[u"   undo
-bindkey "^[r"   redo
 bindkey "\e[A" history-search-backward
 bindkey "\e[B" history-search-forward
 

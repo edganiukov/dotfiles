@@ -81,7 +81,7 @@ URxvt*background: #121212
 URxvt*foreground: #C0C0C0
 
 URxvt*secondaryScroll: true
-URxvt*saveLines: 50
+URxvt*saveLines: 65536
 URxvt*urgentOnBell:	false
 
 URxvt.perl-lib: /usr/lib/urxvt/perl
