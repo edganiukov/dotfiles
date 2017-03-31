@@ -5,7 +5,6 @@ export GOOS=linux
 export PATH=$PATH:$HOME/go/bin
 
 export GPG_TTY=$(tty)
-export LPASS_CLIPBOARD_COMMAND="xclip -selection primary -in -l 1"
 export EDITOR=nvim
 
 export CDPATH=.:~:~/dev/go/src/github.com/edganiukov:~/work/go/src/github.com/lovoo

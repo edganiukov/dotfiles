@@ -386,7 +386,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 18})
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 20})
 
     -- Widgets that are aligned to the upper left
     local left_layout = wibox.layout.fixed.horizontal()
