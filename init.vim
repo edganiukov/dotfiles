@@ -33,15 +33,7 @@ Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'vim-scripts/vim-misc', { 'for': 'lua' }
 Plug 'vim-scripts/lua.vim', { 'for': 'lua' }
 
-if has("nvim")
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-    Plug 'zchee/deoplete-go', { 'do': 'make'}
-    Plug 'zchee/deoplete-clang', { 'for': ['c', 'cpp'] }
-    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-else
-    Plug 'Shougo/neocomplete.vim'
-endif
+Plug 'maralla/completor.vim'
 
 call plug#end()
 
@@ -177,31 +169,6 @@ let g:syntastic_go_checkers = ['golint', 'govet', "go"]
 
 " ultisnips
 let g:UltiSnipsExpandTrigger="<Space><Tab>"
-
-" completion
-if has("nvim")
-    let g:deoplete#enable_at_startup = 1
-
-    let g:deoplete#ignore_sources = {}
-    let g:deoplete#ignore_sources._ = ['tag', 'file', 'dictionary', 'around']
-
-    let g:deoplete#sources#go#align_class = 1
-    call deoplete#custom#set('_', 'matchers', ['matcher_head'])
-else
-    let g:acp_enableAtStartup = 0
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-    let g:neocomplete#enable_fuzzy_completion = 0
-
-    if !exists('g:neocomplete#sources')
-        let g:neocomplete#sources = {}
-    endif
-    let g:neocomplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary']
-    let g:neocomplete#sources.go = ['omni']
-
-    call neocomplete#custom#source('_', 'sorters', [])
-endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

@@ -85,18 +85,23 @@ URxvt*saveLines: 65536
 URxvt*urgentOnBell:	false
 
 URxvt.perl-lib: /usr/lib/urxvt/perl
-URxvt*perl-ext-common: default,tabbed,clipboard
+URxvt.perl-ext-common: default,tabbed,clipboard,url-select,matcher
 URxvt.tabbed.new-button: yes
 URxvt.tabbed.tabbar-fg: 10
 URxvt.tabbed.tabbar-bg: 0
 URxvt.tabbed.tab-fg: 8
 URxvt.tabbed.tab-bg: 12
 
-URxvt.perl-ext:	default,url-select
-URxvt.keysym.C-i: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/firefox
 URxvt.url-select.underline: true
 
-URxvt*termName:	xterm-256color
+URxvt.matcher.button: 1
+
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+
+
+URxvt*termName: xterm-256color
 URxvt*eightBitInput: false
 URxvt*metaSendsEscape: true

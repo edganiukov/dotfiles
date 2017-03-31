@@ -6,6 +6,7 @@
 
 # X settings
 xrdb -merge .Xresources &&
+xgamma -gamma 0.8
 
 # Start WM
 exec awesome

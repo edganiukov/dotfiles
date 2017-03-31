@@ -70,7 +70,6 @@ alias rmrf='rm -fR'
 
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
-alias vim="nvim"
 alias grep="grep --colour"
 alias k='kubectl'
 
@@ -88,5 +87,21 @@ setopt prompt_subst
 
 PROMPT='[%F{green}%n%f@%F{blue}%m%f] %F{yellow}%1~%f %F{blue}${vcs_info_msg_0_}%f %# '
 RPROMPT='[%F{yellow}%*%f]'
+
+# custom tools
+function prev() {
+  PREV=$(fc -lrn | head -n 1)
+  sh -c "pet new `printf %q "$PREV"`"
+}
+
+function pet-select() {
+  BUFFER=$(pet search --query "$LBUFFER")
+  CURSOR=$#BUFFER
+  zle redisplay
+}
+
+zle -N pet-select
+stty -ixon
+bindkey '^s' pet-select
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

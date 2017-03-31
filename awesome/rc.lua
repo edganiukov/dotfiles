@@ -59,6 +59,7 @@ run_once("xflux -l 53 -g 13.5")
 run_once("pcmanfm -d")
 run_once("nm-applet")
 run_once("blueman-applet")
+run_once("pasystray")
 run_once("dropbox")
 -- }}}
 
@@ -121,14 +122,11 @@ myawesomemenu = {
 mywebmenu = {
     { "firefox", "firefox" },
     { "chromium","chromium" },
+    { "dwb","dwb" },
     { "slack", "slack" },
     { "pidgin", "pidgin" },
     { "thunderbird", "thunderbird" },
     { "dropbox", "dropbox" }
-}
-
-mydevmenu = {
-    { "intellij idea", "idea" },
 }
 
 myartmenu = {
@@ -141,12 +139,10 @@ myartmenu = {
 mymediamenu = {
     { "smplayer", "smplayer" },
     { "deadbeef", "deadbeef" },
-    { "spotify", "spotify"},
-    { "gtkpod", "gtkpod" }
+    { "spotify", "spotify"}
 }
 myutilsmenu = {
-    { "pcmanfm", "pcmanfm" },
-    { "archive manager " , "file-roller" },
+    { "pcmanfm", "pcmanfm" }
 }
 
 mymainmenu = awful.menu({ items = {
@@ -160,15 +156,13 @@ mymainmenu = awful.menu({ items = {
     { " " },
     { "sound", "pavucontrol" },
     { "htop", terminal .. " -e htop" },
-    { "gvim", "gvim" },
     { "terminal", terminal },
     { "file manager", "pcmanfm"},
     { " " },
     { "suspend", "systemctl suspend" },
-    { "hibernate", "systemctl hibernate" },
     { "reboot", "systemctl reboot" },
     { "roweroff", "systemctl poweroff" }
-}, width = 150})
+}, width = 200})
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 -- }}}
@@ -252,19 +246,19 @@ batwidget = lain.widget.bat({
 
 -- ALSA volume
 volicon = wibox.widget.imagebox(beautiful.widget_vol)
-volumewidget = lain.widget.alsa({
+volumewidget = lain.widget.pulseaudio({
     settings = function()
-        if volume_now.status == "off" then
+        if volume_now.muted == "yes" then
             volicon:set_image(beautiful.widget_vol_mute)
-        elseif tonumber(volume_now.level) == 0 then
+        elseif tonumber(volume_now.left) == 0 then
             volicon:set_image(beautiful.widget_vol_no)
-        elseif tonumber(volume_now.level) <= 50 then
+        elseif tonumber(volume_now.left) <= 50 then
             volicon:set_image(beautiful.widget_vol_low)
         else
             volicon:set_image(beautiful.widget_vol)
         end
 
-        widget:set_text(" " .. volume_now.level .. "% ")
+        widget:set_text(" " .. volume_now.left .. "% ")
     end
 })
 
@@ -556,31 +550,31 @@ globalkeys = awful.util.table.join(
 
     -- ALSA volume control
     awful.key({ }, "XF86AudioRaiseVolume", function ()
-        os.execute(string.format("amixer set %s 1%%+", volumewidget.channel))
+        os.execute(string.format("pactl set-sink-volume %d +1%%", volumewidget.sink))
         volumewidget.update()
     end),
     awful.key({ }, "XF86AudioLowerVolume",  function ()
-        os.execute(string.format("amixer set %s 1%%-", volumewidget.channel))
+        os.execute(string.format("pactl set-sink-volume %d -1%%", volumewidget.sink))
         volumewidget.update()
     end),
     awful.key({ }, "XF86AudioMute", function ()
-        os.execute(string.format("amixer set %s toggle", volumewidget.togglechannel or volumewidget.channel))
+        os.execute(string.format("pactl set-sink-mute %d toggle", volumewidget.sink))
         volumewidget.update()
     end),
 
     -- via not multimedia keys
     awful.key({ altkey }, "Up", function ()
-        os.execute(string.format("amixer set %s 1%%+", volumewidget.channel))
+        os.execute(string.format("pactl set-sink-volume %d +1%%", volumewidget.sink))
         volumewidget.update()
     end),
 
     awful.key({ altkey }, "Down", function ()
-        os.execute(string.format("amixer set %s 1%%-", volumewidget.channel))
+        os.execute(string.format("pactl set-sink-volume %d -1%%", volumewidget.sink))
         volumewidget.update()
     end),
 
     awful.key({ altkey }, "m", function ()
-      os.execute(string.format("amixer set %s toggle", volumewidget.togglechannel or volumewidget.channel))
+        os.execute(string.format("pactl set-sink-mute %d toggle", volumewidget.sink))
       volumewidget.update()
     end),
 
