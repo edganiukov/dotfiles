@@ -1,5 +1,5 @@
 " default place for downloads:
-cd ~/download
+cd ~/Downloads
 
 colorscheme darkness
 

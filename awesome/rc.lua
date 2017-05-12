@@ -139,10 +139,11 @@ myartmenu = {
 mymediamenu = {
     { "smplayer", "smplayer" },
     { "deadbeef", "deadbeef" },
-    { "spotify", "spotify"}
+    { "spotify", "spotify" }
 }
 myutilsmenu = {
-    { "pcmanfm", "pcmanfm" }
+    { "pcmanfm", "pcmanfm" },
+    { "arandr", "arandr" }
 }
 
 mymainmenu = awful.menu({ items = {
@@ -358,7 +359,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     tags_3 = {
-        names  = {"1:mon","2:term"},
+        names  = {"1:work","2:term"},
         layout = {layouts[2],layouts[2]}
     }
 

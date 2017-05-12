@@ -2,38 +2,27 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
 Plug 'joshdick/onedark.vim'
-Plug 'altercation/vim-colors-solarized'
-
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-Plug 'SirVer/ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'maralla/completor.vim'
+Plug 'roxma/vim-tmux-clipboard'
 
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'python-mode/python-mode', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
-Plug 'rhysd/vim-llvm', { 'for': ['c', 'cpp'] }
 
-Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'html', 'jsx', 'json'] }
-Plug 'maksimr/vim-jsbeautify', { 'for': ['javascript', 'html', 'jsx', 'json'] }
-
+Plug 'pearofducks/ansible-vim'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
-
-Plug 'vim-scripts/vim-misc', { 'for': 'lua' }
-Plug 'vim-scripts/lua.vim', { 'for': 'lua' }
-
-Plug 'maralla/completor.vim'
 
 call plug#end()
 
@@ -41,7 +30,6 @@ syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 colorscheme onedark
-" set background=dark
 
 if !has("nvim")
     set nocompatible
@@ -65,7 +53,7 @@ else
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
-set clipboard=unnamedplus
+set clipboard=unnamed,unnamedplus
 
 set noerrorbells
 set novisualbell
@@ -138,6 +126,9 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
+" C-h fix
+nmap <BS> <C-W>h
+
 " arrows for windows size change
 noremap <Up> <NOP>
 noremap <Down> <NOP>
@@ -166,9 +157,6 @@ let g:syntastic_enable_signs=1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', "go"]
-
-" ultisnips
-let g:UltiSnipsExpandTrigger="<Space><Tab>"
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -267,6 +255,17 @@ function! LightLineGo()
     return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
 
+" NERDTree
+let NERDTreeDirArrows=1
+let NERDTreeMinimalUI=1
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$']
+let g:NERDTreeWinSize=40
+let NERDTreeMapActivateNode='<Space>'
+
+map <F3> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 " vim-go config
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
@@ -309,43 +308,13 @@ au FileType go nmap <leader>i <Plug>(go-info)
 au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType yml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 
-" python
-let g:pymode_rope_completion = 0
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_rope_goto_definition_bind = '<leader>d'
-let g:pymode_rope_rename_bind = '<leader>e'
-
-let g:pymode_lint = 0
-
-let g:pymode_lint_checkers = ['pyflakes', 'pep8']
-let g:pymode_lint_ignore="E501,W601,C0110"
-let g:pymode_lint_write = 1
-
-let g:pymode_virtualenv = 1
-let g:pymode_folding = 0
-
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
+" ansible
+let g:ansible_unindent_after_newline = 1
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_highlight = 1
 
 " rust
 " https://github.com/phildawes/racer
 let g:completor_racer_binary = 'racer'
 let g:racer_experimental_completer = 1
 let g:rustfmt_autosave = 1
-
-" C
-let g:deoplete#sources#clang#libclang_path = "/usr/lib/libclang.so"
-let g:deoplete#sources#clang#clang_header = "/usr/lib/clang"
-let g:deoplete#sources#clang#std = {'c': 'c11'}
-
-" javascript
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-
-" lua
-let g:lua_complete_omni = 1

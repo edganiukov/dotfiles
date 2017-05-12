@@ -9,7 +9,7 @@ theme                               = {}
 themes_dir                          = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow"
 theme.wallpaper                     = themes_dir .. "/wall.png"
 
-theme.font                          = "Source Code Pro 10"
+theme.font                          = "Source Code Pro 11"
 theme.fg_normal                     = "#AAAAAA"
 theme.fg_focus                      = "#F0DFAF"
 theme.fg_urgent                     = "#CC9393"
@@ -26,14 +26,14 @@ theme.taglist_bg_focus              = "#1A1A1A"
 theme.taglist_fg_focus              = "#3D8B37"
 theme.tasklist_bg_focus             = "#1A1A1A"
 theme.tasklist_fg_focus             = "#D8D782"
-theme.textbox_widget_margin_top     = 1
+theme.textbox_widget_margin_top     = 2
 theme.notify_fg                     = theme.fg_normal
 theme.notify_bg                     = theme.bg_normal
 theme.notify_border                 = theme.border_focus
 theme.awful_widget_height           = 14
 theme.awful_widget_margin_top       = 2
 theme.mouse_finder_color            = "#CC9393"
-theme.menu_height                   = "16"
+theme.menu_height                   = "20"
 theme.menu_width                    = "140"
 
 theme.submenu_icon                  = themes_dir .. "/icons/submenu.png"
