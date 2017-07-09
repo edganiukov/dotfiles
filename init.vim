@@ -1,11 +1,11 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
+" https://github.com/junegunn/vim-plug
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -13,19 +13,23 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'maralla/completor.vim'
-Plug 'roxma/vim-tmux-clipboard'
+Plug 'w0rp/ale'
+
+Plug 'vimwiki/vimwiki'
 
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
 
-Plug 'pearofducks/ansible-vim'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
-Plug 'cespare/vim-toml', { 'for': 'toml' }
+Plug 'pearofducks/ansible-vim'
 
 call plug#end()
 
+"----------------------------------------------
+" General settings
+"----------------------------------------------
 syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
@@ -49,6 +53,15 @@ if !has("nvim")
     set autoread
     set incsearch
     set hlsearch
+
+    " cursor fix
+    if exists('$TMUX')
+      let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+      let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    else
+      let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+      let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    endif
 else
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
@@ -91,6 +104,7 @@ set gcr=a:blinkon0
 set pumheight=15
 set colorcolumn=81
 set list!
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
 
 set cursorline
 set pastetoggle=<F2>
@@ -129,7 +143,6 @@ nmap <C-l> <C-w>l
 " C-h fix
 nmap <BS> <C-W>h
 
-" arrows for windows size change
 noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
@@ -150,19 +163,39 @@ highlight ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
-" Plugins
-" syntastic
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_enable_signs=1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_go_checkers = ['golint', 'govet', "go"]
+"----------------------------------------------
+" Plugin: w0rp/ale
+"----------------------------------------------
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
 
+let g:ale_linters = {
+    \   'go': ['golint', 'govet', 'go'],
+    \}
+
+"----------------------------------------------
+" Plugin: vimwiki/vimwiki
+"----------------------------------------------
+let g:vimwiki_list = [{
+        \ 'path': '~/dev/wiki',
+        \ 'syntax': 'markdown',
+        \ 'ext': '.vimwiki.markdown'}]
+
+au FileType vimwiki set expandtab
+au FileType vimwiki set shiftwidth=2
+au FileType vimwiki set softtabstop=2
+au FileType vimwiki set tabstop=2
+
+"----------------------------------------------
+" Plugin: maralla/completor
+"----------------------------------------------
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
-" fzf
+"----------------------------------------------
+" Plugin: junegunn/fzf
+"----------------------------------------------
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_colors = {
     \ 'fg':      ['fg', 'Normal'],
@@ -219,7 +252,9 @@ endfunction
 nnoremap <C-o> :Ag<CR>
 nnoremap <C-p> :FZF<CR>
 
-" lightline
+"----------------------------------------------
+" Plugin: lightline
+"----------------------------------------------
 let g:bufferline_echo = 0
 let g:lightline = {
     \ 'active': {
@@ -255,7 +290,9 @@ function! LightLineGo()
     return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
 
-" NERDTree
+"----------------------------------------------
+" Plugin: scrooloose/nerdtree
+"----------------------------------------------
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
@@ -266,7 +303,22 @@ let NERDTreeMapActivateNode='<Space>'
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" vim-go config
+
+"----------------------------------------------
+" Plugin: pearofducks/ansible-vim
+"----------------------------------------------
+let g:ansible_unindent_after_newline = 1
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_highlight = 1
+
+" "----------------------------------------------
+" Language: Golang
+"----------------------------------------------
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
@@ -285,6 +337,8 @@ let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
+let g:go_addtags_transform = "snakecase"
+let g:completor_gocode_binary = "gocode"
 let g:go_gocode_unimported_packages = 1
 
 nnoremap <C-g> :GoAlternate<CR>
@@ -304,17 +358,55 @@ au FileType go nmap <leader>im <Plug>(go-imports)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>i <Plug>(go-info)
 
-" yaml
-au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
-au FileType yml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
-
-" ansible
-let g:ansible_unindent_after_newline = 1
-let g:ansible_name_highlight = 'd'
-let g:ansible_extra_keywords_highlight = 1
-
-" rust
+"----------------------------------------------
+" Language: Rust
+"----------------------------------------------
 " https://github.com/phildawes/racer
 let g:completor_racer_binary = 'racer'
 let g:racer_experimental_completer = 1
 let g:rustfmt_autosave = 1
+
+"----------------------------------------------
+" Language: C
+"----------------------------------------------
+let g:completor_clang_binary = 'clang'
+
+"----------------------------------------------
+" Language: yaml
+"----------------------------------------------
+au FileType yaml set expandtab
+au FileType yaml set shiftwidth=2
+au FileType yaml set softtabstop=2
+au FileType yaml set tabstop=2
+
+"----------------------------------------------
+" Language: Markdown
+"----------------------------------------------
+au FileType markdown setlocal spell
+au FileType markdown set expandtab
+au FileType markdown set shiftwidth=4
+au FileType markdown set softtabstop=4
+au FileType markdown set tabstop=4
+au FileType markdown set syntax=markdown
+
+"----------------------------------------------
+" Language: Make
+"----------------------------------------------
+au FileType make set noexpandtab
+au FileType make set shiftwidth=2
+au FileType make set softtabstop=2
+au FileType make set tabstop=2
+
+"----------------------------------------------
+" Language: JSON
+"----------------------------------------------
+au FileType json set expandtab
+au FileType json set shiftwidth=2
+au FileType json set softtabstop=2
+au FileType json set tabstop=2
+
+"----------------------------------------------
+" Language: gitcommit
+"----------------------------------------------
+au FileType gitcommit setlocal spell
+au FileType gitcommit setlocal textwidth=80

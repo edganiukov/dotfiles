@@ -1,18 +1,20 @@
 # exports
 export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
-export GOARCH=amd64
-export GOOS=linux
-export PATH=$PATH:$HOME/go/bin
+# export GOARCH=amd64
+# export GOOS=linux
+
+export RUST_SRC_PATH=$HOME/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
+
+export PATH=$PATH:$HOME/go/bin:$HOME/dev/go/bin:$HOME/.cargo/bin
 
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 
-export CDPATH=.:~:~/dev/go/src/github.com/edganiukov:~/work/go/src/github.com/lovoo
+export CDPATH=.:~/dev/go/src/github.com/edganiukov
+export CLICOLOR=YES
 
- #Set LS_COLORS
-if [[ -f ~/.dir_colors ]]; then
-    eval `dircolors -b ~/.dir_colors`
-fi
+# Set LS_COLORS
+# [ -f ~/.dir_colors ] && eval `dircolors -b ~/.dir_colors`
 
 # History settings
 HISTFILE=~/.histfile
@@ -41,7 +43,7 @@ autoload -Uz compinit
 compinit
 
 zstyle ':completion:*' completer _expand _complete _ignored
-zstyle :compinstall filename '/home/ed/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # binds
@@ -57,20 +59,20 @@ bindkey "\e[A" history-search-backward
 bindkey "\e[B" history-search-forward
 
 # aliases
-alias ls='ls -h --color=auto --group-directories-first'
-alias df='df -m'
-alias lsl='ls -hl --color=auto --group-directories-first'
+alias ls='ls -h'
+alias df='df -h'
+alias lsl='ls -hl'
 
 alias mv='mv -i'
 alias cp='cp -Ri'
-alias rm='rm -rI'
 alias rmf='rm -f'
 alias rmrf='rm -fR'
 
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias grep="grep --colour"
-alias k='kubectl'
+
+alias k="kubectl"
 
 # prompt
 autoload -Uz vcs_info
@@ -84,7 +86,7 @@ precmd() {
 }
 setopt prompt_subst
 
-PROMPT='[%F{green}%n%f@%F{blue}%m%f] %F{yellow}%1~%f %F{blue}${vcs_info_msg_0_}%f %# '
+PROMPT='%F{green}#>%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f %# '
 RPROMPT='[%F{yellow}%*%f]'
 
 # custom tools
@@ -103,4 +105,11 @@ zle -N pet-select
 stty -ixon
 bindkey '^s' pet-select
 
+# calc
+calc() { echo "$@" | bc -l -q -i }
+alias calc='noglob calc'
+
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
