@@ -7,6 +7,11 @@ nvim:
 	curl -fLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+vim:
+	ln -s $(CWD)/init.vim $(HOME)/.vimrc
+	curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	ln -s $(CWD)/urlview $(HOME)/.urlview
@@ -25,13 +30,10 @@ cli:
 vimperator:
 	ln -s $(CWD)/vimperatorrc $(HOME)/.vimperatorrc
 
-irssi:
-	mkdir -p $(HOME)/.irssi
-	ln -s $(CWD)/irssi/config $(HOME)/.irssi/config
-	ln -s $(CWD)/irssi/solarized-universal.theme $(HOME)/.irssi/solarized-universal.theme
-
 clean:
 	rm -rf $(HOME)/.config/nvim
+	rm -rf $(HOME)/.vim
+	rm -rf $(HOME)/.vimrc
 	rm -rf $(HOME)/.config/awesome
 	rm -rf $(HOME)/.tmux/plugins
 	rm -f $(HOME)/.tmux.conf
@@ -43,4 +45,4 @@ clean:
 	rm -f $(HOME)/.zshrc
 	rm -f $(HOME)/.irssi
 
-.PHONY: all, nvim, clean, tmux, awesome, cli, vimperatorrc, irssi
+.PHONY: all, nvim, vim, clean, tmux, awesome, cli, vimperator

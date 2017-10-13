@@ -1,29 +1,34 @@
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'joshdick/onedark.vim'
+Plug 'chriskempson/vim-tomorrow-theme'
+
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+Plug 'jreybert/vimagit'
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'maralla/completor.vim'
 Plug 'w0rp/ale'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+Plug 'fatih/vim-go'
+Plug 'rust-lang/rust.vim'
+Plug 'vim-jp/vim-cpp'
+Plug 'elmcast/elm-vim'
 
 Plug 'vimwiki/vimwiki'
-
-Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
-
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'pearofducks/ansible-vim'
+
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
 
 call plug#end()
 
@@ -33,7 +38,7 @@ call plug#end()
 syntax on
 highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
-colorscheme onedark
+colorscheme Tomorrow-Night
 
 if !has("nvim")
     set nocompatible
@@ -55,18 +60,18 @@ if !has("nvim")
     set hlsearch
 
     " cursor fix
-    if exists('$TMUX')
-      let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-      let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    else
-      let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-      let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-    endif
+	if exists('$TMUX')
+		let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+		let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+	else
+    	let &t_SI = "\e[5 q"
+    	let &t_EI = "\e[2 q"
+	endif
 else
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 
-set clipboard=unnamed,unnamedplus
+" set clipboard=unnamed,unnamedplus
 
 set noerrorbells
 set novisualbell
@@ -103,7 +108,7 @@ set backspace=2
 set gcr=a:blinkon0
 set pumheight=15
 set colorcolumn=81
-set list!
+"set list!
 set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
 
 set cursorline
@@ -166,11 +171,16 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 "----------------------------------------------
 " Plugin: w0rp/ale
 "----------------------------------------------
-let g:ale_sign_error = '⤫'
+let g:ale_set_highlights = 0
+let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '⚠'
 
+" highlight clear ALEErrorSign
+" highlight clear ALEWarningSign
+
 let g:ale_linters = {
-    \   'go': ['golint', 'govet', 'go'],
+    \   'go': ['golint', 'govet', 'go build', 'staticcheck'],
+    \   'javascript': ['eslint'],
     \}
 
 "----------------------------------------------
@@ -311,6 +321,11 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
 let g:ansible_extra_keywords_highlight = 1
 
+"----------------------------------------------
+" Plugin: jreybert/vimagit
+"----------------------------------------------
+let g:magit_commit_title_limit=80
+
 " "----------------------------------------------
 " Language: Golang
 "----------------------------------------------
@@ -337,7 +352,7 @@ let g:go_def_mode = "guru"
 let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
-let g:go_addtags_transform = "snakecase"
+let g:go_addtags_transform = "camelcase"
 let g:completor_gocode_binary = "gocode"
 let g:go_gocode_unimported_packages = 1
 
@@ -372,15 +387,13 @@ let g:rustfmt_autosave = 1
 let g:completor_clang_binary = 'clang'
 
 "----------------------------------------------
-" Language: yaml
+" Language: javascript
 "----------------------------------------------
-au FileType yaml set expandtab
-au FileType yaml set shiftwidth=2
-au FileType yaml set softtabstop=2
-au FileType yaml set tabstop=2
+let g:jsx_ext_required = 0
+let g:completor_node_binary = 'node'
 
 "----------------------------------------------
-" Language: Markdown
+" Language: markdown
 "----------------------------------------------
 au FileType markdown setlocal spell
 au FileType markdown set expandtab
@@ -390,20 +403,44 @@ au FileType markdown set tabstop=4
 au FileType markdown set syntax=markdown
 
 "----------------------------------------------
-" Language: Make
+" Language: make
 "----------------------------------------------
 au FileType make set noexpandtab
-au FileType make set shiftwidth=2
-au FileType make set softtabstop=2
-au FileType make set tabstop=2
+au FileType make set shiftwidth=4
+au FileType make set softtabstop=4
+au FileType make set tabstop=4
 
 "----------------------------------------------
-" Language: JSON
+" Language: json
 "----------------------------------------------
 au FileType json set expandtab
 au FileType json set shiftwidth=2
 au FileType json set softtabstop=2
 au FileType json set tabstop=2
+
+"----------------------------------------------
+" Language: yaml
+"----------------------------------------------
+au FileType yaml set expandtab
+au FileType yaml set shiftwidth=2
+au FileType yaml set softtabstop=2
+au FileType yaml set tabstop=2
+
+"----------------------------------------------
+" Language: toml
+"----------------------------------------------
+au FileType toml set expandtab
+au FileType toml set shiftwidth=2
+au FileType toml set softtabstop=2
+au FileType toml set tabstop=2
+
+"----------------------------------------------
+" Language: jasc
+"----------------------------------------------
+au FileType jasc set expandtab
+au FileType jasc set shiftwidth=4
+au FileType jasc set softtabstop=4
+au FileType jasc set tabstop=4
 
 "----------------------------------------------
 " Language: gitcommit

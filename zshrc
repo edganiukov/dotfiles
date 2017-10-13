@@ -1,14 +1,12 @@
 # exports
 export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
-# export GOARCH=amd64
-# export GOOS=linux
 
 export RUST_SRC_PATH=$HOME/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
 
-export PATH=$PATH:$HOME/go/bin:$HOME/dev/go/bin:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/go/bin:$HOME/dev/go/bin:$HOME/.cargo/bin:/usr/local/bin
 
 export GPG_TTY=$(tty)
-export EDITOR=nvim
+export EDITOR=vim
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
