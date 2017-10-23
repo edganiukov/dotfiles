@@ -45,16 +45,31 @@ zstyle :compinstall filename '~/.zshrc'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # binds
-bindkey "^[[2~" yank
+
+# Delete
 bindkey "^[[3~" delete-char
-bindkey "^[[7~" beginning-of-line
-bindkey "^[[8~" end-of-line
-bindkey "^[[5"  up-line-or-history
-bindkey "^[[6"  down-line-or-history
+
 bindkey "^[e"   expand-cmd-path
 bindkey " "     magic-space
+
+# Home/End
+bindkey "^[[7~" beginning-of-line
+bindkey "^[[8~" end-of-line
+
+# PgUp/PgDn
+bindkey "^[[5"  up-line-or-history
+bindkey "^[[6"  down-line-or-history
+
+# Up/Down
 bindkey "\e[A" history-search-backward
 bindkey "\e[B" history-search-forward
+
+# Ctrl + Left/Right
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
+# Ctrl+k remove to eol
+bindkey "\C-k" vi-kill-eol
 
 # aliases
 alias ls='ls -h'

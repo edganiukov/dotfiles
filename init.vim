@@ -21,14 +21,14 @@ Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
 Plug 'vim-jp/vim-cpp'
 Plug 'elmcast/elm-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+Plug 'pearofducks/ansible-vim'
 
 Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
-Plug 'pearofducks/ansible-vim'
 
-Plug 'pangloss/vim-javascript'
-Plug 'posva/vim-vue'
 
 call plug#end()
 
@@ -61,8 +61,8 @@ if !has("nvim")
 
     " cursor fix
 	if exists('$TMUX')
-		let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
-		let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+        let &t_SI = "\<Esc>[5 q"
+        let &t_EI = "\<Esc>[2 q""]]"
 	else
     	let &t_SI = "\e[5 q"
     	let &t_EI = "\e[2 q"
@@ -70,8 +70,6 @@ if !has("nvim")
 else
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
-
-" set clipboard=unnamed,unnamedplus
 
 set noerrorbells
 set novisualbell
