@@ -1,5 +1,5 @@
 [core]
-    excludesfiles = /home/ed/.gitignore_global
+    excludesfiles = ~/.gitignore_global
 [user]
     name = Ed Ganiukov
     email = edganiukov@gmail.com
@@ -12,3 +12,8 @@
     followRedirects = true
 [url "git@github.com:"]
     insteadOf = https://github.com/
+[alias]
+    co = checkout
+    br = branch
+    cm = commit
+    st = status

@@ -122,7 +122,6 @@ bindkey '^s' pet-select
 calc() { echo "$@" | bc -l -q -i }
 alias calc='noglob calc'
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
