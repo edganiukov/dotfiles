@@ -19,16 +19,15 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 Plug 'vim-jp/vim-cpp'
 Plug 'python-mode/python-mode'
-Plug 'elmcast/elm-vim'
 Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
 Plug 'posva/vim-vue'
 Plug 'pearofducks/ansible-vim'
 
 Plug 'vimwiki/vimwiki'
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
 call plug#end()
@@ -36,7 +35,7 @@ call plug#end()
 " General settings
 " ---
 syntax on
-highlight LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
+hi LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 colorscheme Tomorrow-Night
 set background=dark
@@ -94,6 +93,7 @@ set lazyredraw
 
 set autoindent
 set smartindent
+
 set expandtab
 set tabstop=4
 set softtabstop=4
@@ -163,7 +163,7 @@ nmap > >>
 xmap < <gV
 xmap > >gV
 
-highlight ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
+hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
@@ -173,14 +173,28 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 let g:ale_set_highlights = 0
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '⚠'
+let g:ale_sign_column_always = 1
 
 " highlight clear ALEErrorSign
 " highlight clear ALEWarningSign
 
 let g:ale_linters = {
-    \   'go': ['golint', 'govet', 'go build', 'staticcheck'],
-    \   'javascript': ['eslint'],
+    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
+    \ 'javascript': ['eslint'],
+    \ 'ansible': ['ansible-lint'],
     \}
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+
+" Plugin: plasticboy/vim-markdown
+" ---
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_fenced_languages = ['go=go', 'bash=sh']
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_new_list_item_indent = 2
+let g:vim_markdown_no_extensions_in_markdown = 1"
 
 " Plugin: vimwiki/vimwiki
 " ---
@@ -365,8 +379,13 @@ au FileType go nmap <leader>i <Plug>(go-info)
 
 " Language: Rust
 " https://github.com/phildawes/racer
-let g:completor_racer_binary = 'racer'
+let g:racer_cmd = 'racer'
 let g:racer_experimental_completer = 1
+au FileType rust nmap <leader>d <Plug>(rust-def)
+au FileType rust nmap <leader>gs <Plug>(rust-def-split)
+au FileType rust nmap <leader>dv <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
 let g:rustfmt_autosave = 1
 
 " Language: C
@@ -382,9 +401,9 @@ let g:completor_node_binary = 'node'
 " ---
 au FileType markdown setlocal spell
 au FileType markdown set expandtab
-au FileType markdown set shiftwidth=4
-au FileType markdown set softtabstop=4
-au FileType markdown set tabstop=4
+au FileType markdown set shiftwidth=2
+au FileType markdown set softtabstop=2
+au FileType markdown set tabstop=2
 au FileType markdown set syntax=markdown
 
 " Language: make
@@ -414,6 +433,13 @@ au FileType toml set expandtab
 au FileType toml set shiftwidth=2
 au FileType toml set softtabstop=2
 au FileType toml set tabstop=2
+
+" Language: conf
+" ---
+au FileType conf set expandtab
+au FileType conf set shiftwidth=2
+au FileType conf set softtabstop=2
+au FileType conf set tabstop=2
 
 " Language: gitcommit
 " ---
