@@ -12,23 +12,29 @@ Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
 Plug 'jiangmiao/auto-pairs'
-Plug 'maralla/completor.vim'
 Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
+Plug 'jceb/vim-orgmode', { 'for': 'org' }
+Plug 'vim-scripts/utl.vim', { 'for': 'org' }
+Plug 'vim-scripts/speeddating.vim', { 'for': 'org' }
+Plug 'mattn/calendar-vim'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
+
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
-Plug 'vim-jp/vim-cpp'
-Plug 'python-mode/python-mode'
-Plug 'pangloss/vim-javascript'
-Plug 'posva/vim-vue'
 Plug 'pearofducks/ansible-vim'
 
-Plug 'vimwiki/vimwiki'
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'lervag/vimtex', { 'for': 'tex' }
+" completion
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-gocode.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'keremc/asyncomplete-racer.vim'
 
 call plug#end()
 
@@ -152,10 +158,10 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
+" inoremap <Up> <NOP>
+" inoremap <Down> <NOP>
+" inoremap <Left> <NOP>
+" inoremap <Right> <NOP>
 
 " indent
 nmap < <<
@@ -165,7 +171,7 @@ xmap > >gV
 
 hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
-nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+" nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 
 " Plugin: w0rp/ale
@@ -182,6 +188,7 @@ let g:ale_linters = {
     \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
     \ 'javascript': ['eslint'],
     \ 'ansible': ['ansible-lint'],
+    \ 'python': ['pylint', 'autopep8']
     \}
 
 hi clear SpellBad
@@ -195,24 +202,6 @@ let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_extensions_in_markdown = 1"
-
-" Plugin: vimwiki/vimwiki
-" ---
-let g:vimwiki_list = [{
-        \ 'path': '~/dev/wiki',
-        \ 'syntax': 'markdown',
-        \ 'ext': '.vimwiki.markdown'}]
-
-au FileType vimwiki set expandtab
-au FileType vimwiki set shiftwidth=2
-au FileType vimwiki set softtabstop=2
-au FileType vimwiki set tabstop=2
-
-" Plugin: maralla/completor
-" ---
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
 " Plugin: junegunn/fzf
 " ---
@@ -331,13 +320,47 @@ let g:ansible_extra_keywords_highlight = 1
 " ---
 let g:magit_commit_title_limit=80
 
+" Plugin: jceb/vim-orgmode
+" ---
+let g:org_agenda_files = [
+            \'~/work/notes/ops/todo.org',
+            \'~/work/notes/sm/todo.org',
+            \'~/dev/notes/todo.org',
+            \]
+
+" Plugin: prabirshrestha/asyncomplete.vim
+" ---
+let g:asyncomplete_remove_duplicates = 1
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+imap <C-Space> <Plug>(asyncomplete_force_refresh)
+
+" Go completion
+call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+    \ 'name': 'gocode',
+    \ 'whitelist': ['go'],
+    \ 'completor': function('asyncomplete#sources#gocode#completor'),
+    \ }))
+
+" Rust completetion
+autocmd User asyncomplete_setup call asyncomplete#register_source(
+    \ asyncomplete#sources#racer#get_source_options())
+
+" Python
+if executable('pyls')
+    " pip install python-language-server
+    " pip install pycodestyle
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
 " Language: Golang
 " ---
-au FileType go set noexpandtab
-au FileType go set shiftwidth=4
-au FileType go set softtabstop=4
-au FileType go set tabstop=4
-
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
@@ -357,11 +380,9 @@ let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
 let g:go_addtags_transform = "camelcase"
-let g:completor_gocode_binary = "gocode"
 let g:go_gocode_unimported_packages = 1
 
 nnoremap <C-g> :GoAlternate<CR>
-
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
@@ -377,25 +398,23 @@ au FileType go nmap <leader>im <Plug>(go-imports)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>i <Plug>(go-info)
 
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
 " Language: Rust
+" ---
+let g:rustfmt_autosave = 1
+
 " https://github.com/phildawes/racer
-let g:racer_cmd = 'racer'
-let g:racer_experimental_completer = 1
 au FileType rust nmap <leader>d <Plug>(rust-def)
 au FileType rust nmap <leader>gs <Plug>(rust-def-split)
 au FileType rust nmap <leader>dv <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
-let g:rustfmt_autosave = 1
-
-" Language: C
+" Language: python
 " ---
-let g:completor_clang_binary = 'clang'
-
-" Language: javascript
-" ---
-let g:jsx_ext_required = 0
-let g:completor_node_binary = 'node'
 
 " Language: markdown
 " ---
@@ -445,3 +464,12 @@ au FileType conf set tabstop=2
 " ---
 au FileType gitcommit setlocal spell
 au FileType gitcommit setlocal textwidth=80
+
+" Language: org
+" ---
+au FileType org setlocal spell
+au FileType org setlocal textwidth=160
+au FileType org set expandtab
+au FileType org set shiftwidth=2
+au FileType org set softtabstop=2
+au FileType org set tabstop=2
