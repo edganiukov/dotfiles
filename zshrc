@@ -1,6 +1,14 @@
 # exports
 export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
-export PATH=$PATH:$HOME/go/bin:$HOME/dev/go/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/bin
+# local bin
+export PATH=/usr/local/bin:$PATH
+# Go bin
+export PATH=$HOME/go/bin:$HOME/dev/go/bin:$PATH
+# Rust bin
+export PATH=$HOME/.cargo/bin:$PATH
+# llvm bin
+export PATH=/usr/local/opt/llvm/bin:$PATH
+
 export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
 
 export GPG_TTY=$(tty)
@@ -16,16 +24,18 @@ export CLICOLOR=YES
 HISTFILE=~/.histfile
 HISTSIZE=3000
 SAVEHIST=3000
-setopt APPEND_HISTORY
-setopt INC_APPEND_HISTORY
-setopt NO_HIST_BEEP
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_SAVE_NO_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt SHARE_HISTORY
-setopt HIST_VERIFY
+
+setopt append_history
+setopt inc_append_history
+setopt no_hist_beep
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_expire_dups_first
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+setopt hist_reduce_blanks
+setopt share_history
+setopt hist_verify
 
 setopt extended_glob
 setopt noequals
@@ -82,6 +92,7 @@ alias rmrf='rm -fR'
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias grep="grep --colour"
+alias curl="curl -s"
 
 alias k="kubectl"
 

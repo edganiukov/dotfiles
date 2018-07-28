@@ -16,11 +16,11 @@ Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-Plug 'jceb/vim-orgmode', { 'for': 'org' }
-Plug 'vim-scripts/utl.vim', { 'for': 'org' }
-Plug 'vim-scripts/speeddating.vim', { 'for': 'org' }
+Plug 'jceb/vim-orgmode'
+Plug 'vim-scripts/utl.vim'
+Plug 'vim-scripts/speeddating.vim'
 Plug 'mattn/calendar-vim'
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
 Plug 'fatih/vim-go'
@@ -29,12 +29,12 @@ Plug 'racer-rust/vim-racer'
 Plug 'pearofducks/ansible-vim'
 
 " completion
+Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-gocode.vim'
-Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'keremc/asyncomplete-racer.vim'
+Plug 'keremc/asyncomplete-clang.vim'
 
 call plug#end()
 
@@ -42,6 +42,14 @@ call plug#end()
 " ---
 syntax on
 hi LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
+hi clear SpellBad
+hi SpellBad cterm=underline
+hi clear SpellRare
+hi SpellRare cterm=underline
+hi clear SpellCap
+hi SpellCap cterm=underline
+hi clear SpellLocal
+hi SpellLocal cterm=underline
 
 colorscheme Tomorrow-Night
 set background=dark
@@ -74,7 +82,6 @@ else
     let &t_SI = "\e[5 q"
     let &t_EI = "\e[2 q"
 endif
-
 
 set noerrorbells
 set novisualbell
@@ -121,17 +128,29 @@ set nopaste
 
 set completeopt=menu,menuone,noinsert,noselect
 
+" abbreviations
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
+
 " mappings
-nmap q: <silent>
+nnoremap Y y$
+noremap j gj
+noremap k gk
+
+nnoremap <F10> :set list!<CR>
+inoremap <F10> <Esc>:set list!<CR>a
+
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
-nnoremap <F10> :set list!<CR>
-nnoremap Y y$
-inoremap <F10> <Esc>:set list!<CR>a
-
-noremap j gj
-noremap k gk
 
 " buffers switch
 map <leader>n :bn!<CR>
@@ -158,16 +177,21 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
-" inoremap <Up> <NOP>
-" inoremap <Down> <NOP>
-" inoremap <Left> <NOP>
-" inoremap <Right> <NOP>
+inoremap <A-h> <C-o>h
+inoremap <A-j> <C-o>j
+inoremap <A-k> <C-o>k
+inoremap <A-l> <C-o>l
+
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
 
 " indent
 nmap < <<
 nmap > >>
-xmap < <gV
-xmap > >gV
+vnoremap < <gv
+vnoremap > >gv
 
 hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
@@ -320,14 +344,6 @@ let g:ansible_extra_keywords_highlight = 1
 " ---
 let g:magit_commit_title_limit=80
 
-" Plugin: jceb/vim-orgmode
-" ---
-let g:org_agenda_files = [
-            \'~/work/notes/ops/todo.org',
-            \'~/work/notes/sm/todo.org',
-            \'~/dev/notes/todo.org',
-            \]
-
 " Plugin: prabirshrestha/asyncomplete.vim
 " ---
 let g:asyncomplete_remove_duplicates = 1
@@ -337,16 +353,12 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 imap <C-Space> <Plug>(asyncomplete_force_refresh)
 
-" Go completion
+" Go
 call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
     \ 'name': 'gocode',
     \ 'whitelist': ['go'],
     \ 'completor': function('asyncomplete#sources#gocode#completor'),
     \ }))
-
-" Rust completetion
-autocmd User asyncomplete_setup call asyncomplete#register_source(
-    \ asyncomplete#sources#racer#get_source_options())
 
 " Python
 if executable('pyls')
@@ -416,6 +428,20 @@ au FileType rust nmap <leader>gd <Plug>(rust-doc)
 " Language: python
 " ---
 
+
+" Language: C
+" ---
+autocmd User asyncomplete_setup call asyncomplete#register_source(
+    \ asyncomplete#sources#clang#get_source_options({
+    \     'config': {
+    \         'clang_path': '/usr/local/opt/llvm/bin/clang',
+    \         'clang_args': {
+    \             'default': ['-I/usr/local/opt/llvm/include'],
+    \             'cpp': ['-std=c++11', '-I/usr/local/opt/llvm/include']
+    \         }
+    \     }
+    \ }))
+
 " Language: markdown
 " ---
 au FileType markdown setlocal spell
@@ -468,7 +494,8 @@ au FileType gitcommit setlocal textwidth=80
 " Language: org
 " ---
 au FileType org setlocal spell
-au FileType org setlocal textwidth=160
+au FileType org setlocal textwidth=120
+au FileType org setlocal colorcolumn=120
 au FileType org set expandtab
 au FileType org set shiftwidth=2
 au FileType org set softtabstop=2
