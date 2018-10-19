@@ -4,12 +4,12 @@ all: clean, vim, tmux, awesome, cli, vimperator
 
 nvim:
 	mkdir -p ~/.config/nvim && ln -s $(CWD)/init.vim $(HOME)/.config/nvim/init.vim
-	curl -fLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
+	curl -sfLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 vim:
 	ln -s $(CWD)/init.vim $(HOME)/.vimrc
-	curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+	curl -sfLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 tmux:

@@ -1,21 +1,24 @@
 # exports
-export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
-# local bin
+
+# General vars
 export PATH=/usr/local/bin:$PATH
-# Go bin
-export PATH=$HOME/go/bin:$HOME/dev/go/bin:$PATH
-# Rust bin
-export PATH=$HOME/.cargo/bin:$PATH
-# llvm bin
-export PATH=/usr/local/opt/llvm/bin:$PATH
-
-export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
-
 export GPG_TTY=$(tty)
 export EDITOR=vim
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
+
+# Go vars
+export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
+export PATH=$HOME/go/bin:$HOME/dev/go/bin:$PATH
+export GO111MODULE=auto
+
+# Rust vars
+export PATH=$HOME/.cargo/bin:$PATH
+export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
+
+# LLVM vars
+export PATH=/usr/local/opt/llvm/bin:$PATH
 
 # Set LS_COLORS
 # [ -f ~/.dir_colors ] && eval `dircolors -b ~/.dir_colors`
@@ -111,7 +114,8 @@ setopt prompt_subst
 PROMPT='%F{green}#>%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f %# '
 RPROMPT='[%F{yellow}%*%f]'
 
-# custom tools
+##### custom tools
+# pet
 function prev() {
   PREV=$(fc -lrn | head -n 1)
   sh -c "pet new `printf %q "$PREV"`"
@@ -155,8 +159,8 @@ fs() {
   tmux switch-client -t "$session"
 }
 
-# ftpane - switch pane (@george-b)
-ftpane() {
+# fp - switch pane (@george-b)
+fp() {
   local panes current_window current_pane target target_window target_pane
   panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
   current_pane=$(tmux display-message -p '#I:#P')

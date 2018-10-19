@@ -4,6 +4,7 @@ call plug#begin('~/.vim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'romainl/Apprentice'
 
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -29,7 +30,7 @@ Plug 'racer-rust/vim-racer'
 Plug 'pearofducks/ansible-vim'
 
 " completion
-Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-gocode.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -51,8 +52,9 @@ hi SpellCap cterm=underline
 hi clear SpellLocal
 hi SpellLocal cterm=underline
 
-colorscheme Tomorrow-Night
 set background=dark
+" colorscheme Tomorrow-Night
+colorscheme Apprentice
 
 set nocompatible
 filetype off
@@ -160,7 +162,7 @@ map <leader>m :bp!<CR>
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 
-imap hh <Esc>
+" imap hh <Esc>
 imap jj <Esc>
 
 " window navigation
@@ -192,6 +194,14 @@ nmap < <<
 nmap > >>
 vnoremap < <gv
 vnoremap > >gv
+
+" delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" replace currently selected text with default register
+" without yanking it
+vnoremap <leader>p "_dP"
 
 hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
@@ -321,6 +331,34 @@ function! LightLineGo()
     return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
 
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \},
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \},
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\}
+
 " Plugin: scrooloose/nerdtree
 " ---
 let NERDTreeDirArrows=1
@@ -358,6 +396,9 @@ call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options
     \ 'name': 'gocode',
     \ 'whitelist': ['go'],
     \ 'completor': function('asyncomplete#sources#gocode#completor'),
+    \ 'config': {
+    \     'gocode_path': expand('~/go/bin/gocode')
+    \  },
     \ }))
 
 " Python
@@ -388,6 +429,7 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 
 let g:go_def_mode = "guru"
+let g:go_info_mode = "guru"
 let g:go_list_type = "quickfix"
 
 let g:go_snippet_case_type = "camelcase"
