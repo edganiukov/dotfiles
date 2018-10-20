@@ -27,13 +27,10 @@ cli:
 	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
 	ln -s $(CWD)/zshrc $(HOME)/.zshrc
 
-vimperator:
-	ln -s $(CWD)/vimperatorrc $(HOME)/.vimperatorrc
-
 clean:
 	rm -rf $(HOME)/.config/nvim
 	rm -rf $(HOME)/.vim
-	rm -rf $(HOME)/.vimrc
+	rm -f $(HOME)/.vimrc
 	rm -rf $(HOME)/.config/awesome
 	rm -rf $(HOME)/.tmux/plugins
 	rm -f $(HOME)/.tmux.conf
@@ -41,8 +38,7 @@ clean:
 	rm -f $(HOME)/.xinitrc
 	rm -f $(HOME)/.dir_colors
 	rm -f $(HOME)/.gitconfig
-	rm -f $(HOME)/.vimperatorrc
 	rm -f $(HOME)/.zshrc
 	rm -f $(HOME)/.irssi
 
-.PHONY: all, nvim, vim, clean, tmux, awesome, cli, vimperator
+.PHONY: all, nvim, vim, clean, tmux, awesome, cli

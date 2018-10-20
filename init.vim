@@ -1,10 +1,8 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
 " https://github.com/junegunn/vim-plug
-Plug 'joshdick/onedark.vim'
-Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'romainl/Apprentice'
+Plug 'ajmwagar/vim-deus'
 
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -25,17 +23,15 @@ Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
 Plug 'fatih/vim-go'
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
 Plug 'pearofducks/ansible-vim'
 
+
 " completion
-" Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-gocode.vim'
+Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'keremc/asyncomplete-clang.vim'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-go'
 
 call plug#end()
 
@@ -53,37 +49,7 @@ hi clear SpellLocal
 hi SpellLocal cterm=underline
 
 set background=dark
-" colorscheme Tomorrow-Night
-colorscheme Apprentice
-
-set nocompatible
-filetype off
-filetype plugin indent on
-
-set ttyfast
-set ttymouse=xterm2
-set ttyscroll=3
-
-set laststatus=2
-set encoding=utf-8
-set backspace=indent,eol,start
-set mouse=a
-
-set autoindent
-set autoread
-
-set incsearch
-set hlsearch
-set matchtime=2
-
-" cursor fix
-if exists('$TMUX')
-    let &t_SI = "\<Esc>[5 q"
-    let &t_EI = "\<Esc>[2 q""]]"
-else
-    let &t_SI = "\e[5 q"
-    let &t_EI = "\e[2 q"
-endif
+colorscheme deus
 
 set noerrorbells
 set novisualbell
@@ -113,7 +79,6 @@ set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-
 set wrap
 
 set scrolloff=4
@@ -127,7 +92,6 @@ set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· " Unicode
 set cursorline
 set pastetoggle=<F2>
 set nopaste
-
 set completeopt=menu,menuone,noinsert,noselect
 
 " abbreviations
@@ -382,25 +346,21 @@ let g:ansible_extra_keywords_highlight = 1
 " ---
 let g:magit_commit_title_limit=80
 
-" Plugin: prabirshrestha/asyncomplete.vim
+" Plugin: ncm2/ncm2
 " ---
-let g:asyncomplete_remove_duplicates = 1
-
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set shortmess+=c
+" When the <Enter> key is pressed while the popup menu is visible, it only
+" hides the menu. Use this mapping to close the menu and also start a new
+" line.
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-imap <C-Space> <Plug>(asyncomplete_force_refresh)
 
-" Go
-call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-    \ 'name': 'gocode',
-    \ 'whitelist': ['go'],
-    \ 'completor': function('asyncomplete#sources#gocode#completor'),
-    \ 'config': {
-    \     'gocode_path': expand('~/go/bin/gocode')
-    \  },
-    \ }))
-
+" Plugin: prabirshrestha/vim-lsp
+" ---
 " Python
 if executable('pyls')
     " pip install python-language-server
@@ -411,6 +371,7 @@ if executable('pyls')
         \ 'whitelist': ['python'],
         \ })
 endif
+
 
 " Language: Golang
 " ---
@@ -457,32 +418,22 @@ au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
 au FileType go set tabstop=4
 
-" Language: Rust
-" ---
-let g:rustfmt_autosave = 1
-
-" https://github.com/phildawes/racer
-au FileType rust nmap <leader>d <Plug>(rust-def)
-au FileType rust nmap <leader>gs <Plug>(rust-def-split)
-au FileType rust nmap <leader>dv <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
 " Language: python
 " ---
 
 
 " Language: C
 " ---
-autocmd User asyncomplete_setup call asyncomplete#register_source(
-    \ asyncomplete#sources#clang#get_source_options({
-    \     'config': {
-    \         'clang_path': '/usr/local/opt/llvm/bin/clang',
-    \         'clang_args': {
-    \             'default': ['-I/usr/local/opt/llvm/include'],
-    \             'cpp': ['-std=c++11', '-I/usr/local/opt/llvm/include']
-    \         }
-    \     }
-    \ }))
+" autocmd User asyncomplete_setup call asyncomplete#register_source(
+"     \ asyncomplete#sources#clang#get_source_options({
+"     \     'config': {
+"     \         'clang_path': '/usr/local/opt/llvm/bin/clang',
+"     \         'clang_args': {
+"     \             'default': ['-I/usr/local/opt/llvm/include'],
+"     \             'cpp': ['-std=c++11', '-I/usr/local/opt/llvm/include']
+"     \         }
+"     \     }
+"     \ }))
 
 " Language: markdown
 " ---
