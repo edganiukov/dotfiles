@@ -117,9 +117,9 @@ then
     source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey "\e[A" history-substring-search-up
     bindkey "\e[B" history-substring-search-down
-
     # bindkey '^[[A' history-substring-search-up
     # bindkey '^[[B' history-substring-search-down
+
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 fi
