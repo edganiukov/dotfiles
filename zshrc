@@ -112,16 +112,22 @@ RPROMPT='[%F{yellow}%*%f]'
 
 ### plugins
 # https://github.com/zsh-users/zsh-history-substring-search
-if [ -f ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]
+if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]
 then
-    source ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+    source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey "\e[A" history-substring-search-up
     bindkey "\e[B" history-substring-search-down
 
     # bindkey '^[[A' history-substring-search-up
     # bindkey '^[[B' history-substring-search-down
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=gray,fg=white,bold'
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=gray,fg=red,bold'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
+fi
+
+# https://github.com/zsh-users/zsh-autosuggestions
+if [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]
+then
+    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 ### custom functions
