@@ -94,13 +94,11 @@ URxvt.tabbed.tab-bg: 12
 
 URxvt.url-select.launcher: /usr/bin/firefox
 URxvt.url-select.underline: true
-
 URxvt.matcher.button: 1
 
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
-
 
 URxvt*termName: xterm-256color
 URxvt*eightBitInput: false

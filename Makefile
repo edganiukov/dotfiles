@@ -25,6 +25,9 @@ zsh:
 	ln -s $(CWD)/zshrc $(HOME)/.zshrc
 	ln -s $(CWD)/zsh-plugins $(HOME)/.zsh-plugins
 
+terminal:
+	ln -s $(CWD)/alacritty.yml $(HOME)/.alacritty.yml
+
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
 
@@ -41,6 +44,7 @@ clean:
 	rm -f $(HOME)/.gitconfig
 	rm -rf $(HOME)/.zsh-pugins
 	rm -f $(HOME)/.zshrc
+	rm -f $(HOME)/.alacritty.yml
 	rm -rf $(HOME)/.config/awesome
 	rm -f $(HOME)/.Xresources
 	rm -f $(HOME)/.xinitrc

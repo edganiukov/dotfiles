@@ -25,7 +25,6 @@ Plug 'lervag/vimtex', { 'for': 'tex' }
 Plug 'fatih/vim-go'
 Plug 'pearofducks/ansible-vim'
 
-
 " completion
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'

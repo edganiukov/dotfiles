@@ -3,7 +3,7 @@
 # General vars
 export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
-export GPG_TTY=$(tty)
+# export GPG_TTY=$(tty)
 export EDITOR=nvim
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
@@ -23,8 +23,8 @@ export PATH=/usr/local/opt/llvm/bin:$PATH
 
 ### settings
 HISTFILE=~/.histfile
-HISTSIZE=5000
-SAVEHIST=5000
+HISTSIZE=10000
+SAVEHIST=10000
 
 setopt append_history
 setopt inc_append_history
