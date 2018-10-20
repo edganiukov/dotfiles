@@ -1,4 +1,4 @@
-# exports
+# Vars
 
 # General vars
 export PATH=/usr/local/bin:$PATH
@@ -20,13 +20,10 @@ export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
 # LLVM vars
 export PATH=/usr/local/opt/llvm/bin:$PATH
 
-# Set LS_COLORS
-# [ -f ~/.dir_colors ] && eval `dircolors -b ~/.dir_colors`
-
 # History settings
 HISTFILE=~/.histfile
-HISTSIZE=3000
-SAVEHIST=3000
+HISTSIZE=5000
+SAVEHIST=5000
 
 setopt append_history
 setopt inc_append_history
@@ -56,7 +53,6 @@ zstyle :compinstall filename '~/.zshrc'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # binds
-
 # Delete
 bindkey "^[[3~" delete-char
 
@@ -89,8 +85,6 @@ alias lsl='ls -hl'
 
 alias mv='mv -i'
 alias cp='cp -Ri'
-alias rmf='rm -f'
-alias rmrf='rm -fR'
 
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
@@ -149,35 +143,5 @@ tm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# fs [FUZZY PATTERN] - Select selected tmux session
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-fs() {
-  local session
-  session=$(tmux list-sessions -F "#{session_name}" | \
-    fzf --query="$1" --select-1 --exit-0) &&
-  tmux switch-client -t "$session"
-}
-
-# fp - switch pane (@george-b)
-fp() {
-  local panes current_window current_pane target target_window target_pane
-  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
-  current_pane=$(tmux display-message -p '#I:#P')
-  current_window=$(tmux display-message -p '#I')
-
-  target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse) || return
-
-  target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
-  target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
-
-  if [[ $current_window -eq $target_window ]]; then
-    tmux select-pane -t ${target_window}.${target_pane}
-  else
-    tmux select-pane -t ${target_window}.${target_pane} &&
-    tmux select-window -t $target_window
-  fi
-}
-
-# custom
+# custom zsh config
 [ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
