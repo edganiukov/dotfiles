@@ -53,14 +53,15 @@ end
 
 run_once("urxvtd")
 run_once("unclutter")
-run_once("thunderbird")
+-- run_once("thunderbird")
 run_once("kbdd")
+-- Dresden coordinates #TODO
 run_once("xflux -l 53 -g 13.5")
 run_once("pcmanfm -d")
 run_once("nm-applet")
 run_once("blueman-applet")
 run_once("pasystray")
-run_once("dropbox")
+-- run_once("dropbox")
 -- }}}
 
 -- {{{ Variable definitions
@@ -78,7 +79,7 @@ editor     = os.getenv("EDITOR") or "vim" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
-browser    = "firefox"
+browser    = "qutebrowser"
 gui_editor = "gvim"
 fm         = "pcmanfm"
 mail       = "thunderbird"
@@ -121,44 +122,39 @@ myawesomemenu = {
 
 mywebmenu = {
     { "firefox", "firefox" },
-    { "chromium","chromium" },
-    { "dwb","dwb" },
+    { "qutebrowser", "qutebrowser" },
     { "slack", "slack" },
-    { "pidgin", "pidgin" },
     { "thunderbird", "thunderbird" },
     { "dropbox", "dropbox" }
 }
 
-myartmenu = {
+mydevmenu = {}
+
+mymediamenu = {
+    { "vlc", "vlc" },
+    { "spotify", "spotify" },
     { "gpicview", "gpicview" },
     { "gimp", "gimp" },
     { "evince" , "evince" },
-    { "golden dict", "goldendict" }
-}
-
-mymediamenu = {
-    { "smplayer", "smplayer" },
-    { "deadbeef", "deadbeef" },
-    { "spotify", "spotify" }
 }
 myutilsmenu = {
     { "pcmanfm", "pcmanfm" },
-    { "arandr", "arandr" }
+    { "arandr", "arandr" },
+    { "golden dict", "goldendict" }
 }
 
 mymainmenu = awful.menu({ items = {
     { "@wesome", myawesomemenu, beautiful.awesome_icon},
     { " " },
     { "web" , mywebmenu },
-    { "develop" , mydevmenu },
+    { "dev" , mydevmenu },
     { "media" , mymediamenu },
-    { "graphics " , myartmenu },
     { "utils" , myutilsmenu },
     { " " },
     { "sound", "pavucontrol" },
     { "htop", terminal .. " -e htop" },
     { "terminal", terminal },
-    { "file manager", "pcmanfm"},
+    { "fm", "pcmanfm"},
     { " " },
     { "suspend", "systemctl suspend" },
     { "reboot", "systemctl reboot" },
@@ -176,7 +172,7 @@ separators = lain.util.separators
 clockicon = wibox.widget.imagebox(beautiful.widget_clock)
 mytextclock = wibox.widget.textclock(" %a %d %b  %H:%M")
 
--- calendar
+-- Calendar
 lain.widget.calendar({
     notification_preset = {
         font = "Source Code Pro 10",
@@ -290,7 +286,7 @@ dbus.connect_signal("ru.gentoo.kbdd", function(...)
 )
 
 -- Weather
--- Dresden: 2935022
+-- Dresden: 2935022 #TODO
 -- weathericon = wibox.widget.textbox("❆ ")
 weathericon = wibox.widget.imagebox(beautiful.widget_weather)
 weatherwidget =  lain.widget.weather({
@@ -349,18 +345,18 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     tags_1 = {
-        names  = {"1:web","2:im","3:fm","4:media","5:dev","6:term"},
-        layout = {layouts[1],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2]}
+        names  = { "1:web", "2:im", "3:fm", "4:term" ,"5:dev" },
+        layout = { layouts[1], layouts[2], layouts[2], layouts[2], layouts[2] }
     }
 
     tags_2 = {
-        names  = {"1:web","2:im","3:work","4:dev"},
-        layout = {layouts[1],layouts[2],layouts[2],layouts[2]}
+        names  = { "1:web", "2:work", "3:term" },
+        layout = { layouts[1], layouts[2], layouts[2] }
     }
 
     tags_3 = {
-        names  = {"1:work","2:term"},
-        layout = {layouts[2],layouts[2]}
+        names  = { "1:work", "2:term" },
+        layout = { layouts[2], layouts[2] }
     }
 
     -- Each screen has its own tag table.
@@ -751,8 +747,8 @@ awful.rules.rules = {
   { rule = { instance = "plugin-container" },
     properties = { screen = 1, tag = "1:web" }},
 
-  { rule = { class = "smplayer" },
-    properties = { screen = 1, tag = "4:media" }}
+  { rule = { class = "VLC" },
+    properties = { screen = 1, tag = "3:fm" }}
 }
 -- }}}
 

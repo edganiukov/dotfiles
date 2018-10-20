@@ -32,6 +32,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-go'
+Plug 'ncm2/ncm2-jedi'
 
 call plug#end()
 
@@ -295,34 +296,6 @@ function! LightLineGo()
     return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
 
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \},
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \},
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\}
-
 " Plugin: scrooloose/nerdtree
 " ---
 let NERDTreeDirArrows=1
@@ -342,9 +315,11 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
 let g:ansible_extra_keywords_highlight = 1
 
+
 " Plugin: jreybert/vimagit
 " ---
 let g:magit_commit_title_limit=80
+
 
 " Plugin: ncm2/ncm2
 " ---
@@ -358,19 +333,6 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Plugin: prabirshrestha/vim-lsp
-" ---
-" Python
-if executable('pyls')
-    " pip install python-language-server
-    " pip install pycodestyle
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
 
 
 " Language: Golang
@@ -420,7 +382,15 @@ au FileType go set tabstop=4
 
 " Language: python
 " ---
-
+" if executable('pyls')
+"     " pip install python-language-server
+"     " pip install pycodestyle
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'pyls',
+"         \ 'cmd': {server_info->['pyls']},
+"         \ 'whitelist': ['python'],
+"         \ })
+" endif
 
 " Language: C
 " ---
@@ -434,6 +404,7 @@ au FileType go set tabstop=4
 "     \         }
 "     \     }
 "     \ }))
+
 
 " Language: markdown
 " ---
