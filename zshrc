@@ -1,4 +1,4 @@
-# Vars
+### env vars
 
 # General vars
 export PATH=/usr/local/bin:$PATH
@@ -20,7 +20,7 @@ export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
 # LLVM vars
 export PATH=/usr/local/opt/llvm/bin:$PATH
 
-# History settings
+### settings
 HISTFILE=~/.histfile
 HISTSIZE=5000
 SAVEHIST=5000
@@ -44,7 +44,7 @@ setopt autocd
 setopt nohup
 setopt HASH_CMDS
 
-# compinstall
+### completion
 autoload -Uz compinit
 compinit
 
@@ -52,8 +52,8 @@ zstyle ':completion:*' completer _expand _complete _ignored
 zstyle :compinstall filename '~/.zshrc'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-# binds
-# Delete
+### binds
+# delete
 bindkey "^[[3~" delete-char
 
 bindkey "^[e"   expand-cmd-path
@@ -68,8 +68,9 @@ bindkey "^[[5"  up-line-or-history
 bindkey "^[[6"  down-line-or-history
 
 # Up/Down
-bindkey "\e[A" history-search-backward
-bindkey "\e[B" history-search-forward
+# disabled in favor of zsh-history-substring-search plugin
+# bindkey "\e[A" history-search-backward
+# bindkey "\e[B" history-search-forward
 
 # Ctrl + Left/Right
 bindkey '^[[1;5D' backward-word
@@ -78,7 +79,7 @@ bindkey '^[[1;5C' forward-word
 # Ctrl+k remove to eol
 bindkey "\C-k" vi-kill-eol
 
-# aliases
+### aliases
 alias ls='ls -h'
 alias df='df -h'
 alias lsl='ls -hl'
@@ -93,7 +94,7 @@ alias curl="curl -s"
 
 alias k="kubectl"
 
-# prompt
+### prompt
 autoload -Uz vcs_info
 autoload -U promptinit
 promptinit
@@ -108,7 +109,17 @@ setopt prompt_subst
 PROMPT='%F{green}#>%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f %# '
 RPROMPT='[%F{yellow}%*%f]'
 
-##### custom tools
+### plugins
+if [ -f ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]
+then
+    source ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+    bindkey "\e[A" history-substring-search-up
+    bindkey "\e[B" history-substring-search-down
+    # bindkey '^[[A' history-substring-search-up
+    # bindkey '^[[B' history-substring-search-down
+fi
+
+### custom functions
 # pet
 function prev() {
   PREV=$(fc -lrn | head -n 1)
@@ -132,9 +143,7 @@ alias calc='noglob calc'
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
-# `tm` will allow you to select your tmux session via fzf.
-# `tm irc` will attach to the irc session (if it exists), else it will create it.
+# tm - creates new tmux session, or switch to existing one.
 tm() {
   [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
   if [ $1 ]; then

@@ -1,9 +1,10 @@
 CWD=$(shell pwd)
 
-all: clean, vim, tmux, awesome, cli, vimperator
+all: clean, nvim, tmux, git, zsh
 
 nvim:
-	mkdir -p ~/.config/nvim && ln -s $(CWD)/init.vim $(HOME)/.config/nvim/init.vim
+	mkdir -p ~/.config/nvim && \
+		ln -s $(CWD)/init.vim $(HOME)/.config/nvim/init.vim
 	curl -sfLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
@@ -14,31 +15,34 @@ vim:
 
 tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
-	ln -s $(CWD)/urlview $(HOME)/.urlview
-	mkdir -p $(HOME)/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+	mkdir -p $(HOME)/.tmux/plugins && \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+
+git:
+	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
+
+zsh:
+	ln -s $(CWD)/zshrc $(HOME)/.zshrc
+	ln -s $(CWD)/zsh-plugins $(HOME)/.zsh-plugins
 
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
 
-cli:
+x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
-	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
-	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
-	ln -s $(CWD)/zshrc $(HOME)/.zshrc
 
 clean:
 	rm -rf $(HOME)/.config/nvim
 	rm -rf $(HOME)/.vim
 	rm -f $(HOME)/.vimrc
-	rm -rf $(HOME)/.config/awesome
 	rm -rf $(HOME)/.tmux/plugins
 	rm -f $(HOME)/.tmux.conf
+	rm -f $(HOME)/.gitconfig
+	rm -rf $(HOME)/.zsh-pugins
+	rm -f $(HOME)/.zshrc
+	rm -rf $(HOME)/.config/awesome
 	rm -f $(HOME)/.Xresources
 	rm -f $(HOME)/.xinitrc
-	rm -f $(HOME)/.dir_colors
-	rm -f $(HOME)/.gitconfig
-	rm -f $(HOME)/.zshrc
-	rm -f $(HOME)/.irssi
 
-.PHONY: all, nvim, vim, clean, tmux, awesome, cli
+.PHONY: all, nvim, vim, tmux, git, zsh, awesome, x, clean
