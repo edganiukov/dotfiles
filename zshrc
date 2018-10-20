@@ -88,11 +88,11 @@ alias lsl='ls -hl'
 alias mv='mv -i'
 alias cp='cp -Ri'
 
+alias vim="nvim"
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias grep="grep --colour"
 alias curl="curl -s"
-
 alias k="kubectl"
 
 ### prompt
@@ -112,8 +112,7 @@ RPROMPT='[%F{yellow}%*%f]'
 
 ### plugins
 # https://github.com/zsh-users/zsh-history-substring-search
-if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]
-then
+if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]; then
     source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey "\e[A" history-substring-search-up
     bindkey "\e[B" history-substring-search-down
@@ -125,9 +124,13 @@ then
 fi
 
 # https://github.com/zsh-users/zsh-autosuggestions
-if [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]
-then
+if [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# https://github.com/zsh-users/zsh-completions
+if [ -d ~/.zsh/zsh-completions/src ]; then
+    fpath=(~/.zsh/zsh-completions/src $fpath)
 fi
 
 ### custom functions

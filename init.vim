@@ -167,6 +167,9 @@ vnoremap <leader>d "_d
 " without yanking it
 vnoremap <leader>p "_dP"
 
+" close quickfix window with `qf`
+:autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
+
 hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
 match ExtraWhitespace /\s\+$/
 " nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
@@ -344,7 +347,7 @@ let g:go_highlight_operators = 0
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_interfaces = 0
 
-let g:go_auto_sameids = 1
+let g:go_auto_sameids = 0
 let g:go_decls_included = "type,func"
 
 let g:go_fmt_command = "goimports"
