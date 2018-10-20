@@ -110,13 +110,17 @@ PROMPT='%F{green}#>%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f %# '
 RPROMPT='[%F{yellow}%*%f]'
 
 ### plugins
+# https://github.com/zsh-users/zsh-history-substring-search
 if [ -f ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]
 then
     source ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey "\e[A" history-substring-search-up
     bindkey "\e[B" history-substring-search-down
+
     # bindkey '^[[A' history-substring-search-up
     # bindkey '^[[B' history-substring-search-down
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=gray,fg=white,bold'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=gray,fg=red,bold'
 fi
 
 ### custom functions
