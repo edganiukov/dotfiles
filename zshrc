@@ -3,7 +3,7 @@
 # General vars
 export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
-export EDITOR=vim
+export EDITOR=nvim
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
