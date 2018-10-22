@@ -94,6 +94,9 @@ set pastetoggle=<F2>
 set nopaste
 set completeopt=menu,menuone,noinsert,noselect
 
+" copy to the system clipboard
+set clipboard+=unnamedplus
+
 " abbreviations
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
