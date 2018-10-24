@@ -269,6 +269,7 @@ nnoremap <C-p> :FZF<CR>
 " ---
 let g:bufferline_echo = 0
 let g:lightline = {
+    \ 'colorscheme': 'deus',
     \ 'active': {
     \ 'left': [
         \ [ 'mode', 'paste'],
