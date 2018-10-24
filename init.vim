@@ -15,10 +15,8 @@ Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-Plug 'jceb/vim-orgmode'
-Plug 'vim-scripts/utl.vim'
-Plug 'vim-scripts/speeddating.vim'
 Plug 'mattn/calendar-vim'
+Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
@@ -75,6 +73,9 @@ set lazyredraw
 set autoindent
 set smartindent
 
+set foldenable
+set conceallevel=2
+
 set expandtab
 set tabstop=4
 set softtabstop=4
@@ -95,7 +96,7 @@ set nopaste
 set completeopt=menu,menuone,noinsert,noselect
 
 " copy to the system clipboard
-set clipboard+=unnamedplus
+set clipboard=unnamedplus
 
 " abbreviations
 cnoreabbrev W! w!
@@ -200,12 +201,10 @@ hi SpellBad cterm=underline
 
 " Plugin: plasticboy/vim-markdown
 " ---
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_fenced_languages = ['go=go', 'bash=sh']
-let g:vim_markdown_toml_frontmatter = 1
-let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_fenced_languages = [ 'vim=vim', 'sh=sh', 'go=go', 'py=python']
 let g:vim_markdown_new_list_item_indent = 2
-let g:vim_markdown_no_extensions_in_markdown = 1"
+let g:vim_markdown_no_extensions_in_markdown = 1
 
 " Plugin: junegunn/fzf
 " ---
@@ -386,32 +385,6 @@ au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
 au FileType go set tabstop=4
 
-" Language: python
-" ---
-" if executable('pyls')
-"     " pip install python-language-server
-"     " pip install pycodestyle
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'pyls',
-"         \ 'cmd': {server_info->['pyls']},
-"         \ 'whitelist': ['python'],
-"         \ })
-" endif
-
-" Language: C
-" ---
-" autocmd User asyncomplete_setup call asyncomplete#register_source(
-"     \ asyncomplete#sources#clang#get_source_options({
-"     \     'config': {
-"     \         'clang_path': '/usr/local/opt/llvm/bin/clang',
-"     \         'clang_args': {
-"     \             'default': ['-I/usr/local/opt/llvm/include'],
-"     \             'cpp': ['-std=c++11', '-I/usr/local/opt/llvm/include']
-"     \         }
-"     \     }
-"     \ }))
-
-
 " Language: markdown
 " ---
 au FileType markdown setlocal spell
@@ -444,6 +417,7 @@ au FileType yaml set tabstop=2
 
 " Language: toml
 " ---
+au! BufRead,BufNewFile *.toml set filetype=conf
 au FileType toml set expandtab
 au FileType toml set shiftwidth=2
 au FileType toml set softtabstop=2
@@ -460,13 +434,3 @@ au FileType conf set tabstop=2
 " ---
 au FileType gitcommit setlocal spell
 au FileType gitcommit setlocal textwidth=80
-
-" Language: org
-" ---
-au FileType org setlocal spell
-au FileType org setlocal textwidth=120
-au FileType org setlocal colorcolumn=120
-au FileType org set expandtab
-au FileType org set shiftwidth=2
-au FileType org set softtabstop=2
-au FileType org set tabstop=2
