@@ -73,6 +73,7 @@ set lazyredraw
 set autoindent
 set smartindent
 
+" vim-markdown plugin
 set foldenable
 set conceallevel=2
 

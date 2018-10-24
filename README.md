@@ -1,4 +1,5 @@
 # dotfiles
-#### Getting Started:
-1. `git clone https://github.com/edganiukov/dotfiles.git`
-2. `make all`
+## Getting Started:
+  * `git clone https://github.com/edganiukov/dotfiles.git`
+  * `git submodule init`
+  * `make all`
