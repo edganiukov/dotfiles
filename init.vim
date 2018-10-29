@@ -2,7 +2,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
 " https://github.com/junegunn/vim-plug
-Plug 'ajmwagar/vim-deus'
+Plug 'morhetz/gruvbox'
 
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -14,6 +14,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/goyo.vim'
 
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
@@ -36,18 +37,10 @@ call plug#end()
 " General settings
 " ---
 syntax on
-hi LineNr term=bold cterm=bold ctermfg=DarkGrey ctermbg=NONE
-hi clear SpellBad
-hi SpellBad cterm=underline
-hi clear SpellRare
-hi SpellRare cterm=underline
-hi clear SpellCap
-hi SpellCap cterm=underline
-hi clear SpellLocal
-hi SpellLocal cterm=underline
 
-set background=dark
-colorscheme deus
+" set termguicolors
+colorscheme gruvbox
+set bg=dark
 
 set noerrorbells
 set novisualbell
@@ -175,10 +168,19 @@ vnoremap <leader>p "_dP"
 " close quickfix window with `qf`
 :autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
 
-hi ExtraWhitespace ctermbg=DarkGrey guibg=DarkGrey
+hi ExtraWhitespace ctermbg=DarkGrey
 match ExtraWhitespace /\s\+$/
 " nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
+
+" Plugin: 'airblade/vim-gitgutter'
+" ---
+
+hi clear SignColumn
+hi GitGutterAdd ctermfg=green
+hi GitGutterChange ctermfg=yellow
+hi GitGutterDelete ctermfg=red
+hi GitGutterChangeDelete ctermfg=yellow
 
 " Plugin: w0rp/ale
 " ---
@@ -206,6 +208,9 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_fenced_languages = [ 'vim=vim', 'sh=sh', 'go=go', 'py=python']
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_extensions_in_markdown = 1
+
+let g:tex_conceal = ""
+let g:vim_markdown_math = 1
 
 " Plugin: junegunn/fzf
 " ---
@@ -269,7 +274,7 @@ nnoremap <C-p> :FZF<CR>
 " ---
 let g:bufferline_echo = 0
 let g:lightline = {
-    \ 'colorscheme': 'deus',
+    \ 'colorscheme': 'gruvbox',
     \ 'active': {
     \ 'left': [
         \ [ 'mode', 'paste'],
@@ -314,13 +319,8 @@ let NERDTreeMapActivateNode='<Space>'
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-
-" Plugin: pearofducks/ansible-vim
+" Plugin: 'junegunn/goyo.vim'
 " ---
-let g:ansible_unindent_after_newline = 1
-let g:ansible_name_highlight = 'd'
-let g:ansible_extra_keywords_highlight = 1
-
 
 " Plugin: jreybert/vimagit
 " ---
@@ -339,6 +339,13 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+
+" Plugin: pearofducks/ansible-vim
+" ---
+let g:ansible_unindent_after_newline = 1
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_highlight = 1
 
 
 " Language: Golang
