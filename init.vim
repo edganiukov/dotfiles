@@ -26,12 +26,12 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 
 " completion
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-go'
-Plug 'ncm2/ncm2-vim-lsp'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-racer'
+Plug 'ncm2/ncm2-bufword'
 
 call plug#end()
 
@@ -201,8 +201,8 @@ hi ALEWarningSign ctermfg=yellow
 let g:ale_linters = {
     \ 'ansible': ['ansible-lint'],
     \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
-    \ 'python': ['pyls', 'pylint', 'autopep8'],
-    \ 'rust': ['rls', 'rustc', 'rustfmt']
+    \ 'python': ['pylint', 'autopep8'],
+    \ 'rust': ['rustc', 'rustfmt']
     \ }
 
 let g:ale_linters_explicit = 1
@@ -355,30 +355,12 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Plugin: prabirshrestha/vim-lsp
-" ---
-let g:lsp_diagnostics_echo_cursor = 1
-
-nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gr :LspRename<CR>
-nnoremap <silent> gh :LspHover<CR>
-
 
 " Plugin: rust-lang/rust.vim
 " ---
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
-
 let g:rustfmt_autosave = 1
 
 au FileType rust nmap gt :RustTest<CR>
-au FileType rust nmap gi :LspImplementation<CR>
 
 au FileType rust set expandtab
 au FileType rust set shiftwidth=4
@@ -387,14 +369,6 @@ au FileType rust set tabstop=4
 
 " Python
 " ---
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
 au FileType python set expandtab
 au FileType python set shiftwidth=4
 au FileType python set softtabstop=4
@@ -409,13 +383,6 @@ let g:ansible_extra_keywords_highlight = 0
 
 " Language: Golang
 " ---
-if executable('go-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
 
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
@@ -444,9 +411,11 @@ au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
 
+au FileType go nmap gd <Plug>(go-def)
 au FileType go nmap gds <Plug>(go-def-split)
 au FileType go nmap gdv <Plug>(go-def-vertical)
 
+au FileType go nmap gr <Plug>(go-rename)
 au FileType go nmap gi <Plug>(go-implements)
 au FileType go nmap gf <Plug>(go-imports)
 au FileType go nmap gh <Plug>(go-doc)
