@@ -15,8 +15,7 @@ export PATH=$HOME/go/bin:$HOME/dev/go/bin:$PATH
 export GO111MODULE=auto
 
 # Rust vars
-export PATH=$HOME/.cargo/bin:$PATH
-export RUST_SRC_PATH=$HOME/.cargo/src/rust/src
+[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
 
 # LLVM vars
 export PATH=/usr/local/opt/llvm/bin:$PATH

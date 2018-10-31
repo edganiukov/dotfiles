@@ -18,11 +18,12 @@ Plug 'junegunn/goyo.vim'
 
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 
-Plug 'fatih/vim-go'
-Plug 'pearofducks/ansible-vim'
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 
 " completion
 Plug 'prabirshrestha/async.vim'
@@ -30,7 +31,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-go'
-Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-vim-lsp'
 
 call plug#end()
 
@@ -44,12 +45,13 @@ set bg=dark
 
 set noerrorbells
 set novisualbell
+set t_vb=
 set tm=500
-set vb t_vb=
 
 set number
 set autoread
 set wildmenu
+set completeopt=menu,menuone,noinsert,noselect
 
 set ignorecase
 set smartcase
@@ -66,7 +68,6 @@ set lazyredraw
 set autoindent
 set smartindent
 
-" vim-markdown plugin
 set foldenable
 set conceallevel=2
 
@@ -78,18 +79,20 @@ set wrap
 
 set scrolloff=4
 set backspace=2
-set gcr=a:blinkon0
+
 set pumheight=15
 set colorcolumn=81
+set cursorline
+
+set gcr=a:blinkon0
 set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· " Unicode
 
-set cursorline
 set pastetoggle=<F2>
 set nopaste
-set completeopt=menu,menuone,noinsert,noselect
 
 " copy to the system clipboard
+" set clipboard=unnamed
 set clipboard=unnamedplus
 
 " abbreviations
@@ -98,7 +101,6 @@ cnoreabbrev Q! q!
 cnoreabbrev Qall! qall!
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
-cnoreabbrev wQ wq
 cnoreabbrev WQ wq
 cnoreabbrev W w
 cnoreabbrev Q q
@@ -109,12 +111,14 @@ nnoremap Y y$
 noremap j gj
 noremap k gk
 
+
 nnoremap <F10> :set list!<CR>
 inoremap <F10> <Esc>:set list!<CR>a
 
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
+nnoremap qq :q<CR>
 
 " buffers switch
 map <leader>n :bn!<CR>
@@ -185,19 +189,23 @@ hi GitGutterChangeDelete ctermfg=yellow
 " Plugin: w0rp/ale
 " ---
 let g:ale_set_highlights = 0
-let g:ale_sign_error = '>>'
+let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
 let g:ale_sign_column_always = 1
 
-" highlight clear ALEErrorSign
-" highlight clear ALEWarningSign
+hi clear ALEErrorSign
+hi clear ALEWarningSign
+hi ALEErrorSign ctermfg=red
+hi ALEWarningSign ctermfg=yellow
 
 let g:ale_linters = {
-    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
-    \ 'javascript': ['eslint'],
     \ 'ansible': ['ansible-lint'],
-    \ 'python': ['pylint', 'autopep8']
-    \}
+    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
+    \ 'python': ['pyls', 'pylint', 'autopep8'],
+    \ 'rust': ['rls', 'rustc', 'rustfmt']
+    \ }
+
+let g:ale_linters_explicit = 1
 
 hi clear SpellBad
 hi SpellBad cterm=underline
@@ -205,7 +213,14 @@ hi SpellBad cterm=underline
 " Plugin: plasticboy/vim-markdown
 " ---
 let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_fenced_languages = [ 'vim=vim', 'sh=sh', 'go=go', 'py=python']
+let g:vim_markdown_fenced_languages = [
+    \ 'vim=vim',
+    \ 'sh=sh',
+    \ 'go=go',
+    \ 'py=python',
+    \ 'rs=rust'
+    \ ]
+
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_extensions_in_markdown = 1
 
@@ -340,16 +355,68 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" Plugin: prabirshrestha/vim-lsp
+" ---
+let g:lsp_diagnostics_echo_cursor = 1
+
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gr :LspRename<CR>
+nnoremap <silent> gh :LspHover<CR>
+
+
+" Plugin: rust-lang/rust.vim
+" ---
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+
+let g:rustfmt_autosave = 1
+
+au FileType rust nmap gt :RustTest<CR>
+au FileType rust nmap gi :LspImplementation<CR>
+
+au FileType rust set expandtab
+au FileType rust set shiftwidth=4
+au FileType rust set softtabstop=4
+au FileType rust set tabstop=4
+
+" Python
+" ---
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+au FileType python set expandtab
+au FileType python set shiftwidth=4
+au FileType python set softtabstop=4
+au FileType python set tabstop=4
 
 " Plugin: pearofducks/ansible-vim
 " ---
 let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
-let g:ansible_extra_keywords_highlight = 1
+let g:ansible_extra_keywords_highlight = 0
 
 
 " Language: Golang
 " ---
+if executable('go-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
@@ -373,20 +440,17 @@ let g:go_addtags_transform = "camelcase"
 let g:go_gocode_unimported_packages = 1
 
 nnoremap <C-g> :GoAlternate<CR>
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>e <Plug>(go-rename)
-au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+au FileType go nmap gb <Plug>(go-build)
+au FileType go nmap gt <Plug>(go-test)
+au FileType go nmap gc <Plug>(go-coverage-toggle)
 
-au FileType go nmap <leader>d <Plug>(go-def)
-au FileType go nmap <Leader>ds <Plug>(go-def-split)
-au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap gds <Plug>(go-def-split)
+au FileType go nmap gdv <Plug>(go-def-vertical)
 
-au FileType go nmap <leader>s <Plug>(go-implements)
-au FileType go nmap <leader>im <Plug>(go-imports)
-au FileType go nmap <leader>gd <Plug>(go-doc)
-au FileType go nmap <leader>i <Plug>(go-info)
+au FileType go nmap gi <Plug>(go-implements)
+au FileType go nmap gf <Plug>(go-imports)
+au FileType go nmap gh <Plug>(go-doc)
+au FileType go nmap gs <Plug>(go-info)
 
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
