@@ -13,25 +13,27 @@ Plug 'jreybert/vimagit'
 Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/goyo.vim'
 
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'lervag/vimtex', {'for': 'tex'}
 
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 
 " completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-go'
-Plug 'ncm2/ncm2-jedi'
-Plug 'ncm2/ncm2-racer'
 Plug 'ncm2/ncm2-bufword'
+
+Plug 'ncm2/ncm2-go', {'for': 'go'}
+Plug 'ncm2/ncm2-jedi', {'for': 'python'}
+Plug 'ncm2/ncm2-racer', {'for': 'rust'}
 
 call plug#end()
 
@@ -111,7 +113,6 @@ nnoremap Y y$
 noremap j gj
 noremap k gk
 
-
 nnoremap <F10> :set list!<CR>
 inoremap <F10> <Esc>:set list!<CR>a
 
@@ -119,6 +120,7 @@ nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
 nnoremap qq :q<CR>
+imap jj <Esc>
 
 " buffers switch
 map <leader>n :bn!<CR>
@@ -127,9 +129,6 @@ map <leader>m :bp!<CR>
 " quickfix jump
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
-
-" imap hh <Esc>
-imap jj <Esc>
 
 " window navigation
 nmap <C-h> <C-w>h
@@ -165,29 +164,23 @@ vnoremap > >gv
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 
-" replace currently selected text with default register
-" without yanking it
+" replace currently selected text with default register without yanking it
 vnoremap <leader>p "_dP"
-
-" close quickfix window with `qf`
-:autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
 
 hi ExtraWhitespace ctermbg=DarkGrey
 match ExtraWhitespace /\s\+$/
-" nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 
 
-" Plugin: 'airblade/vim-gitgutter'
-" ---
-
+" Plug 'airblade/vim-gitgutter'
+"
 hi clear SignColumn
 hi GitGutterAdd ctermfg=green
 hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=red
 hi GitGutterChangeDelete ctermfg=yellow
 
-" Plugin: w0rp/ale
-" ---
+" Plug 'w0rp/ale'
+"
 let g:ale_set_highlights = 0
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
@@ -210,8 +203,8 @@ let g:ale_linters_explicit = 1
 hi clear SpellBad
 hi SpellBad cterm=underline
 
-" Plugin: plasticboy/vim-markdown
-" ---
+" Plug 'plasticboy/vim-markdown'
+"
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_fenced_languages = [
     \ 'vim=vim',
@@ -227,8 +220,9 @@ let g:vim_markdown_no_extensions_in_markdown = 1
 let g:tex_conceal = ""
 let g:vim_markdown_math = 1
 
-" Plugin: junegunn/fzf
-" ---
+" Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+"
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_colors = {
     \ 'fg':      ['fg', 'Normal'],
@@ -285,8 +279,8 @@ endfunction
 nnoremap <C-o> :Ag<CR>
 nnoremap <C-p> :FZF<CR>
 
-" Plugin: lightline
-" ---
+" Plug 'itchyny/lightline'
+"
 let g:bufferline_echo = 0
 let g:lightline = {
     \ 'colorscheme': 'gruvbox',
@@ -322,8 +316,8 @@ function! LightLineGo()
     return exists('*go#statusline#Show') ? go#statusline#Show() : ''
 endfunction
 
-" Plugin: scrooloose/nerdtree
-" ---
+" Plug 'scrooloose/nerdtree'
+"
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
@@ -334,16 +328,16 @@ let NERDTreeMapActivateNode='<Space>'
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Plugin: 'junegunn/goyo.vim'
-" ---
 
-" Plugin: jreybert/vimagit
-" ---
+" Plug 'jreybert/vimagit'
+"
 let g:magit_commit_title_limit=80
 
 
-" Plugin: ncm2/ncm2
-" ---
+" Plug 'ncm2/ncm2'
+" Plug 'roxma/nvim-yarp'
+" Plug 'ncm2/ncm2-bufword'
+"
 " enable ncm2 for all buffers
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set shortmess+=c
@@ -356,41 +350,49 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 
-" Plugin: rust-lang/rust.vim
-" ---
+" Plug 'rust-lang/rust.vim'
+" Plug 'racer-rust/vim-racer'
+" Plug 'ncm2/ncm2-racer'
+"
 let g:rustfmt_autosave = 1
+let g:racer_experimental_completer = 1
 
 au FileType rust nmap gt :RustTest<CR>
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gds <Plug>(rust-def-split)
+au FileType rust nmap gdv <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 au FileType rust set expandtab
 au FileType rust set shiftwidth=4
 au FileType rust set softtabstop=4
 au FileType rust set tabstop=4
 
-" Python
-" ---
+" Plug 'ncm2/ncm2-jedi'
+"
 au FileType python set expandtab
 au FileType python set shiftwidth=4
 au FileType python set softtabstop=4
 au FileType python set tabstop=4
 
-" Plugin: pearofducks/ansible-vim
-" ---
+" Plug 'pearofducks/ansible-vim'
+"
 let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
 let g:ansible_extra_keywords_highlight = 0
 
 
-" Language: Golang
-" ---
-
+" Plug 'fatih/vim-go'
+" Plug 'ncm2/ncm2-go'
+"
 let g:go_disable_autoinstall = 0
+
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
 let g:go_highlight_structs = 0
 let g:go_highlight_operators = 0
-let g:go_highlight_build_constraints = 1
 let g:go_highlight_interfaces = 0
+let g:go_highlight_build_constraints = 1
 
 let g:go_auto_sameids = 0
 let g:go_decls_included = "type,func"
@@ -418,15 +420,15 @@ au FileType go nmap gdv <Plug>(go-def-vertical)
 au FileType go nmap gr <Plug>(go-rename)
 au FileType go nmap gi <Plug>(go-implements)
 au FileType go nmap gf <Plug>(go-imports)
-au FileType go nmap gh <Plug>(go-doc)
 au FileType go nmap gs <Plug>(go-info)
+au FileType go nmap <leader>gd <Plug>(go-doc)
 
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
 au FileType go set tabstop=4
 
-" Language: markdown
+" Lang: markdown
 " ---
 au FileType markdown setlocal spell
 au FileType markdown set expandtab
@@ -435,28 +437,28 @@ au FileType markdown set softtabstop=2
 au FileType markdown set tabstop=2
 au FileType markdown set syntax=markdown
 
-" Language: make
+" Lang: make
 " ---
 au FileType make set noexpandtab
 au FileType make set shiftwidth=4
 au FileType make set softtabstop=4
 au FileType make set tabstop=4
 
-" Language: json
+" Lang: json
 " ---
 au FileType json set expandtab
 au FileType json set shiftwidth=2
 au FileType json set softtabstop=2
 au FileType json set tabstop=2
 
-" Language: yaml
+" Lang: yaml
 " ---
 au FileType yaml set expandtab
 au FileType yaml set shiftwidth=2
 au FileType yaml set softtabstop=2
 au FileType yaml set tabstop=2
 
-" Language: toml
+" Lang: toml
 " ---
 au! BufRead,BufNewFile *.toml set filetype=conf
 au FileType toml set expandtab
@@ -464,14 +466,14 @@ au FileType toml set shiftwidth=2
 au FileType toml set softtabstop=2
 au FileType toml set tabstop=2
 
-" Language: conf
+" Lang: conf
 " ---
 au FileType conf set expandtab
 au FileType conf set shiftwidth=2
 au FileType conf set softtabstop=2
 au FileType conf set tabstop=2
 
-" Language: gitcommit
+" Lang: gitcommit
 " ---
 au FileType gitcommit setlocal spell
 au FileType gitcommit setlocal textwidth=80

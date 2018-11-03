@@ -3,7 +3,7 @@
 # General vars
 export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
-# export GPG_TTY=$(tty)
+export GPG_TTY=$(tty)
 export EDITOR=nvim
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
