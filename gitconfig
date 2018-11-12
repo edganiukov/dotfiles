@@ -1,9 +1,9 @@
 [core]
     excludesfiles = ~/.gitignore_global
 [user]
-    name = Ed Ganiukov
-    email = edganiukov@gmail.com
-    signingkey = 8D6ADA3B
+    name = <Name>
+    email = <Email>
+    signingkey = <Key ID>
 [commit]
     gpgsign = true
 [push]

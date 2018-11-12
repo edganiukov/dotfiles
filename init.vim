@@ -120,34 +120,28 @@ nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
 nnoremap qq :q<CR>
-imap jj <Esc>
+inoremap jj <Esc>
 
 " buffers switch
-map <leader>n :bn!<CR>
-map <leader>m :bp!<CR>
-
-" quickfix jump
-map <C-n> :cn<CR>
-map <C-m> :cp<CR>
+map <C-n> :bn!<CR>
+map <C-m> :bp!<CR>
 
 " window navigation
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
-
-" C-h fix
-nmap <BS> <C-W>h
-
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 inoremap <A-h> <C-o>h
 inoremap <A-j> <C-o>j
 inoremap <A-k> <C-o>k
 inoremap <A-l> <C-o>l
+
+" disable arrows
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
