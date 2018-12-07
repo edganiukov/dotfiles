@@ -4,24 +4,28 @@ call plug#begin('~/.config/nvim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
 
+" basic
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
-Plug 'airblade/vim-gitgutter'
-Plug 'jreybert/vimagit'
 Plug 'jiangmiao/auto-pairs'
-Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+Plug 'w0rp/ale'
+
+" git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+Plug 'jreybert/vimagit'
 
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-
+" lang
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 
@@ -302,8 +306,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "
 let g:magit_commit_title_limit=80
 
-
-" Plug 'w0rp/ale' 
+" Plug 'w0rp/ale'
+"
 let g:ale_set_highlights = 0
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '➤'
@@ -476,7 +480,7 @@ au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
-" lsp
+" replaced with LSP
 " au FileType go nmap gr <Plug>(go-rename)
 " au FileType go nmap gd <Plug>(go-def)
 " au FileType go nmap gds <Plug>(go-def-split)
