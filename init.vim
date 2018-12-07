@@ -40,7 +40,7 @@ call plug#end()
 " ---
 syntax on
 
-" set termguicolors
+set termguicolors
 colorscheme gruvbox
 set bg=dark
 
@@ -171,7 +171,6 @@ vnoremap <leader>p "_dP"
 hi ExtraWhitespace ctermbg=DarkGrey
 match ExtraWhitespace /\s\+$/
 
-
 " Plug 'airblade/vim-gitgutter'
 "
 hi clear SignColumn
@@ -180,31 +179,6 @@ hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=red
 hi GitGutterChangeDelete ctermfg=yellow
 
-" Plug 'w0rp/ale'
-"
-let g:ale_set_highlights = 0
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠'
-let g:ale_sign_column_always = 1
-
-hi clear ALEErrorSign
-hi clear ALEWarningSign
-hi ALEErrorSign ctermfg=red
-hi ALEWarningSign ctermfg=yellow
-
-let g:ale_linters = {
-    \ 'ansible': ['ansible-lint'],
-    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
-    \ 'python': ['pylint', 'autopep8'],
-    \ 'rust': ['rustc', 'rustfmt'],
-    \ 'c': ['clang-format', 'cquery'],
-    \ 'cpp': ['clang-format', 'cquery']
-    \ }
-
-let g:ale_linters_explicit = 1
-
-hi clear SpellBad
-hi SpellBad cterm=underline
 
 " Plug 'plasticboy/vim-markdown'
 "
@@ -288,36 +262,23 @@ let g:bufferline_echo = 0
 let g:lightline = {
     \ 'colorscheme': 'gruvbox',
     \ 'active': {
-    \ 'left': [
-        \ [ 'mode', 'paste'],
-        \ [ 'fugitive', 'filename', 'modified' ]
+        \ 'left': [
+            \ ['mode', 'paste'],
+            \ ['fugitive', 'readonly', 'filename', 'modified']
         \ ],
-    \ 'right': [
-        \ [ 'lineinfo' ],
-        \ [ 'percent' ],
-        \ [ 'fileformat', 'fileencoding', 'filetype' ]
+        \ 'right': [
+            \ ['lineinfo'],
+            \ ['percent'],
+            \ ['fileformat', 'fileencoding', 'filetype']
         \ ]
     \ },
-    \ 'component': {
-        \ 'go': '%#goStatuslineColor#%{LightLineGo()}',
-        \ },
-    \ 'component_visible_condition': {
-        \ 'go': '(exists("*go#statusline#Show") && ""!=go#statusline#Show())'
-        \ },
     \ 'component_function': {
-        \ 'fugitive': 'LightLineFugitive',
+        \ 'fugitive': 'fugitive#head',
         \ },
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': ':', 'right': ':' },
     \ }
 
-function! LightLineFugitive()
-    return exists('*fugitive#head') ? fugitive#head() : ''
-endfunction
-
-function! LightLineGo()
-    return exists('*go#statusline#Show') ? go#statusline#Show() : ''
-endfunction
 
 " Plug 'scrooloose/nerdtree'
 "
@@ -337,23 +298,52 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:magit_commit_title_limit=80
 
 
+" Plug 'w0rp/ale'
+"
+let g:ale_set_highlights = 0
+let g:ale_sign_column_always = 1
+let g:ale_linters_explicit = 1
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+
+let g:ale_linters = {
+    \ 'ansible': ['ansible-lint'],
+    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
+    \ 'python': ['pyls', 'pylint', 'autopep8'],
+    \ 'rust': ['rls'],
+    \ 'c': ['clang-format', 'cquery'],
+    \ 'cpp': ['clang-format', 'cquery']
+    \ }
+
+hi clear ALEErrorSign
+hi clear ALEWarningSign
+hi ALEErrorSign ctermfg=red
+hi ALEWarningSign ctermfg=yellow
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+
+
 " Plug 'Shougo/deoplete.nvim'
 "
 let g:deoplete#enable_at_startup = 1
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
+call deoplete#custom#source('LanguageClient',
+    \ 'min_pattern_length',
+    \ 2)
+
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " C/C++: https://github.com/cquery-project/cquery
-" Go: https://github.com/saibing/bingo
+" Go: https://github.com/sourcegraph/go-langserver
+" https://github.com/saibing/bingo:
+" \ 'go': ['bingo', '--mode', 'stdio', '-use-global-cache', '--logfile', '/tmp/bingo.log'],
 " Rust: https://github.com/rust-lang/rls
 " Python: https://github.com/palantir/python-language-server
 let g:LanguageClient_serverCommands = {
-    \ 'go': ['bingo', '--mode', 'stdio', '-use-global-cache', '--logfile', '/tmp/bingo.log'],
+    \ 'go': ['go-langserver', '-gocodecompletion'],
     \ 'c': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
     \ 'cpp': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
@@ -370,7 +360,7 @@ function SetLSPShortcuts()
     nnoremap gd :call LanguageClient#textDocument_definition()<CR>
     nnoremap gtd :call LanguageClient#textDocument_typeDefinition()<CR>
     nnoremap gr :call LanguageClient#textDocument_rename()<CR>
-    nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
+    " nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
     nnoremap ga :call LanguageClient_workspace_applyEdit()<CR>
     nnoremap gc :call LanguageClient#textDocument_completion()<CR>
     nnoremap gx :call LanguageClient#textDocument_references()<CR>
@@ -393,8 +383,7 @@ let g:echodoc#type = 'signature'
 "
 let g:rustfmt_autosave = 1
 
-au FileType rust nmap gt :RustTest<CR>
-
+au FileType rust nnoremap gt :RustTest<CR>
 au FileType rust set expandtab
 au FileType rust set shiftwidth=4
 au FileType rust set softtabstop=4
@@ -420,7 +409,6 @@ au FileType c,cpp set tabstop=4
 "
 let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
-
 let g:ansible_extra_keywords_highlight = 0
 
 au FileType yaml set expandtab
@@ -430,7 +418,6 @@ au FileType yaml set tabstop=2
 
 " Plug 'fatih/vim-go'
 "
-let g:go_disable_autoinstall = 0
 
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
@@ -439,34 +426,32 @@ let g:go_highlight_operators = 0
 let g:go_highlight_interfaces = 0
 let g:go_highlight_build_constraints = 1
 
+let g:go_disable_autoinstall = 0
+let g:go_fmt_fail_silently = 1
 let g:go_auto_sameids = 0
 let g:go_decls_included = "type,func"
-
 let g:go_fmt_command = "goimports"
-let g:go_fmt_fail_silently = 1
-
 let g:go_def_mode = "guru"
 let g:go_info_mode = "guru"
 let g:go_list_type = "fzf"
-
 let g:go_snippet_case_type = "camelcase"
 let g:go_addtags_transform = "camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
+
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gct <Plug>(go-coverage-toggle)
-
-" lsp
-" au FileType go nmap gr <Plug>(go-rename)
-" au FileType go nmap gd <Plug>(go-def)
-
 au FileType go nmap gds <Plug>(go-def-split)
 au FileType go nmap gdv <Plug>(go-def-vertical)
 au FileType go nmap gim <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
+" lsp
+" au FileType go nmap gr <Plug>(go-rename)
+" au FileType go nmap gd <Plug>(go-def)
+"
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
