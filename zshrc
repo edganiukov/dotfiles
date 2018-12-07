@@ -132,6 +132,10 @@ if [ -d ~/.zsh/zsh-completions/src ]; then
 fi
 
 ### custom functions
+
+# https://github.com/direnv/direnv
+eval "$(direnv hook zsh)"
+
 # pet
 function prev() {
   PREV=$(fc -lrn | head -n 1)

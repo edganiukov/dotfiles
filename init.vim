@@ -25,15 +25,14 @@ Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
+Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 
 " completion
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+Plug 'Shougo/echodoc.vim'
 
-Plug 'ncm2/ncm2-go', {'for': 'go'}
-Plug 'ncm2/ncm2-jedi', {'for': 'python'}
-Plug 'ncm2/ncm2-racer', {'for': 'rust'}
+"lsp
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
 
 call plug#end()
 
@@ -45,6 +44,7 @@ syntax on
 colorscheme gruvbox
 set bg=dark
 
+set hidden
 set noerrorbells
 set novisualbell
 set t_vb=
@@ -86,6 +86,9 @@ set pumheight=15
 set colorcolumn=81
 set cursorline
 
+" Always draw the signcolumn.
+set signcolumn=yes
+
 set gcr=a:blinkon0
 set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· " Unicode
@@ -125,6 +128,10 @@ inoremap jj <Esc>
 " buffers switch
 map <C-n> :bn!<CR>
 map <C-m> :bp!<CR>
+
+" quickfix switch
+map <C-.> :cn!<CR>
+map <C-,> :cp!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
@@ -189,7 +196,9 @@ let g:ale_linters = {
     \ 'ansible': ['ansible-lint'],
     \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
     \ 'python': ['pylint', 'autopep8'],
-    \ 'rust': ['rustc', 'rustfmt']
+    \ 'rust': ['rustc', 'rustfmt'],
+    \ 'c': ['clang-format', 'cquery'],
+    \ 'cpp': ['clang-format', 'cquery']
     \ }
 
 let g:ale_linters_explicit = 1
@@ -328,13 +337,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:magit_commit_title_limit=80
 
 
-" Plug 'ncm2/ncm2'
-" Plug 'roxma/nvim-yarp'
-" Plug 'ncm2/ncm2-bufword'
+" Plug 'Shougo/deoplete.nvim'
 "
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set shortmess+=c
+let g:deoplete#enable_at_startup = 1
 " When the <Enter> key is pressed while the popup menu is visible, it only
 " hides the menu. Use this mapping to close the menu and also start a new
 " line.
@@ -343,41 +348,87 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" C/C++: https://github.com/cquery-project/cquery
+" Go: https://github.com/saibing/bingo
+" Rust: https://github.com/rust-lang/rls
+" Python: https://github.com/palantir/python-language-server
+let g:LanguageClient_serverCommands = {
+    \ 'go': ['bingo', '--mode', 'stdio', '-use-global-cache', '--logfile', '/tmp/bingo.log'],
+    \ 'c': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
+    \ 'cpp': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'python': ['pyls'],
+    \ }
+
+let g:LanguageClient_rootMarkers = {
+	\ 'go': ['go.mod', 'Gopkg.toml'],
+	\ 'c': ['.cquery'],
+	\ 'cpp': ['.cquery'],
+    \ }
+
+function SetLSPShortcuts()
+    nnoremap gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap gtd :call LanguageClient#textDocument_typeDefinition()<CR>
+    nnoremap gr :call LanguageClient#textDocument_rename()<CR>
+    nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
+    nnoremap ga :call LanguageClient_workspace_applyEdit()<CR>
+    nnoremap gc :call LanguageClient#textDocument_completion()<CR>
+    nnoremap gx :call LanguageClient#textDocument_references()<CR>
+    nnoremap gh :call LanguageClient#textDocument_hover()<CR>
+    nnoremap gs :call LanguageClient_textDocument_documentSymbol()<CR>
+    nnoremap gm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+    autocmd!
+    autocmd FileType go,c,cpp,rust,python call SetLSPShortcuts()
+augroup END
+
+" Plug 'Shougo/echodoc.vim'
+"
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 
 " Plug 'rust-lang/rust.vim'
-" Plug 'racer-rust/vim-racer'
-" Plug 'ncm2/ncm2-racer'
 "
 let g:rustfmt_autosave = 1
-let g:racer_experimental_completer = 1
 
 au FileType rust nmap gt :RustTest<CR>
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gds <Plug>(rust-def-split)
-au FileType rust nmap gdv <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 au FileType rust set expandtab
 au FileType rust set shiftwidth=4
 au FileType rust set softtabstop=4
 au FileType rust set tabstop=4
 
-" Plug 'ncm2/ncm2-jedi'
-"
 au FileType python set expandtab
 au FileType python set shiftwidth=4
 au FileType python set softtabstop=4
 au FileType python set tabstop=4
 
+" Plug 'rhysd/vim-clang-format'
+"
+let g:clang_format#code_style = 'llvm'
+let g:clang_format#auto_format = 1
+
+au FileType c,cpp set expandtab
+au FileType c,cpp set shiftwidth=4
+au FileType c,cpp set softtabstop=4
+au FileType c,cpp set tabstop=4
+
+
 " Plug 'pearofducks/ansible-vim'
 "
 let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'd'
+
 let g:ansible_extra_keywords_highlight = 0
 
+au FileType yaml set expandtab
+au FileType yaml set shiftwidth=2
+au FileType yaml set softtabstop=2
+au FileType yaml set tabstop=2
 
 " Plug 'fatih/vim-go'
-" Plug 'ncm2/ncm2-go'
 "
 let g:go_disable_autoinstall = 0
 
@@ -396,25 +447,24 @@ let g:go_fmt_fail_silently = 1
 
 let g:go_def_mode = "guru"
 let g:go_info_mode = "guru"
-let g:go_list_type = "quickfix"
+let g:go_list_type = "fzf"
 
 let g:go_snippet_case_type = "camelcase"
 let g:go_addtags_transform = "camelcase"
-let g:go_gocode_unimported_packages = 1
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
-au FileType go nmap gc <Plug>(go-coverage-toggle)
+au FileType go nmap gct <Plug>(go-coverage-toggle)
 
-au FileType go nmap gd <Plug>(go-def)
+" lsp
+" au FileType go nmap gr <Plug>(go-rename)
+" au FileType go nmap gd <Plug>(go-def)
+
 au FileType go nmap gds <Plug>(go-def-split)
 au FileType go nmap gdv <Plug>(go-def-vertical)
-
-au FileType go nmap gr <Plug>(go-rename)
-au FileType go nmap gi <Plug>(go-implements)
-au FileType go nmap gf <Plug>(go-imports)
-au FileType go nmap gs <Plug>(go-info)
+au FileType go nmap gim <Plug>(go-implements)
+au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
 au FileType go set noexpandtab
@@ -444,13 +494,6 @@ au FileType json set expandtab
 au FileType json set shiftwidth=2
 au FileType json set softtabstop=2
 au FileType json set tabstop=2
-
-" Lang: yaml
-" ---
-au FileType yaml set expandtab
-au FileType yaml set shiftwidth=2
-au FileType yaml set softtabstop=2
-au FileType yaml set tabstop=2
 
 " Lang: toml
 " ---
