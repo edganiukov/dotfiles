@@ -19,7 +19,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'lervag/vimtex', {'for': 'tex'}
 
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
@@ -27,12 +26,15 @@ Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 
-" completion
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'Shougo/echodoc.vim'
+" LSP
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 
-"lsp
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+" completion
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-vim-lsp'
+Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
@@ -40,7 +42,7 @@ call plug#end()
 " ---
 syntax on
 
-set termguicolors
+" set termguicolors
 colorscheme gruvbox
 set bg=dark
 
@@ -91,7 +93,7 @@ set signcolumn=yes
 
 set gcr=a:blinkon0
 set list
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· " Unicode
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
 set pastetoggle=<F2>
 set nopaste
@@ -170,6 +172,10 @@ vnoremap <leader>p "_dP"
 
 hi ExtraWhitespace ctermbg=DarkGrey
 match ExtraWhitespace /\s\+$/
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+
 
 " Plug 'airblade/vim-gitgutter'
 "
@@ -301,72 +307,103 @@ let g:magit_commit_title_limit=80
 " Plug 'w0rp/ale'
 "
 let g:ale_set_highlights = 0
-let g:ale_sign_column_always = 1
-let g:ale_linters_explicit = 1
 let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠'
-
-let g:ale_linters = {
-    \ 'ansible': ['ansible-lint'],
-    \ 'go': ['golint', 'govet', 'go build', 'staticcheck'],
-    \ 'python': ['pyls', 'pylint', 'autopep8'],
-    \ 'rust': ['rls'],
-    \ 'c': ['clang-format', 'cquery'],
-    \ 'cpp': ['clang-format', 'cquery']
-    \ }
+let g:ale_sign_warning = '➤'
+let g:ale_sign_column_always = 1
 
 hi clear ALEErrorSign
 hi clear ALEWarningSign
 hi ALEErrorSign ctermfg=red
 hi ALEWarningSign ctermfg=yellow
 
-hi clear SpellBad
-hi SpellBad cterm=underline
+let g:ale_linters = {
+    \ 'ansible': ['ansible-lint'],
+    \ 'go': ['go build', 'golint', 'govet', 'staticcheck'],
+    \ 'python': ['pyls', 'pylint', 'autopep8'],
+    \ 'rust': ['rls'],
+    \ 'c': ['cquery'],
+    \ 'cpp': ['cquery'],
+    \ }
+
+let g:ale_linters_explicit = 1
 
 
-" Plug 'Shougo/deoplete.nvim'
+" Plug 'ncm2/ncm2'
 "
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#source('LanguageClient',
-    \ 'min_pattern_length',
-    \ 2)
+autocmd BufEnter * call ncm2#enable_for_buffer()
 
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" C/C++: https://github.com/cquery-project/cquery
-" Go: https://github.com/sourcegraph/go-langserver
-" https://github.com/saibing/bingo:
-" \ 'go': ['bingo', '--mode', 'stdio', '-use-global-cache', '--logfile', '/tmp/bingo.log'],
-" Rust: https://github.com/rust-lang/rls
-" Python: https://github.com/palantir/python-language-server
-let g:LanguageClient_serverCommands = {
-    \ 'go': ['go-langserver', '-gocodecompletion'],
-    \ 'c': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
-    \ 'cpp': ['cquery', '--log-file=/tmp/cq.log', '--init={"cacheDirectory":"/tmp/cquery"}'],
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['pyls'],
-    \ }
+" Plug 'Shougo/echodoc.vim'
+"
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 
-let g:LanguageClient_rootMarkers = {
-	\ 'go': ['go.mod', 'Gopkg.toml'],
-	\ 'c': ['.cquery'],
-	\ 'cpp': ['.cquery'],
-    \ }
+" Plug prabirshrestha/vim-lsp''
+"
+if executable('cquery')
+    " https://github.com/cquery-project/cquery
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'cquery',
+        \ 'cmd': {server_info->['cquery']},
+        \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
+        \ 'whitelist': ['c', 'cpp'],
+        \ })
+endif
+
+if executable('pyls')
+    " pip install python-language-server
+    "https://github.com/palantir/python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+" \ 'cmd': {server_info->['bingo', '--mode'. 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+if executable('go-langserver')
+    " https://github.com/sourcegraph/go-langserver
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
+if executable('rls')
+    " https://github.com/rust-lang/rls
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+
+let g:lsp_signs_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 0
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '➤' }
+
+hi clear LspErrorText
+hi clear LspWarningLine
+
+hi LspErrorText ctermfg=red
+hi LspWarningLine ctermfg=yellow
 
 function SetLSPShortcuts()
-    nnoremap gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap gtd :call LanguageClient#textDocument_typeDefinition()<CR>
-    nnoremap gr :call LanguageClient#textDocument_rename()<CR>
-    " nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
-    nnoremap ga :call LanguageClient_workspace_applyEdit()<CR>
-    nnoremap gc :call LanguageClient#textDocument_completion()<CR>
-    nnoremap gx :call LanguageClient#textDocument_references()<CR>
-    nnoremap gh :call LanguageClient#textDocument_hover()<CR>
-    nnoremap gs :call LanguageClient_textDocument_documentSymbol()<CR>
-    nnoremap gm :call LanguageClient_contextMenu()<CR>
+    nnoremap gd :LspDefinition<CR>
+    nnoremap gtd :LspTypeDefinition<CR>
+    nnoremap gr :LspRename<CR>
+    nnoremap gf :LspDocumentFormat<CR>
+    nnoremap ga :LspCodeAction<CR>
+    nnoremap gx :LspReferences<CR>
+    nnoremap gh :LspHover<CR>
+    nnoremap gs :LspDocumentSymbol<CR>
 endfunction()
 
 augroup LSP
@@ -374,10 +411,6 @@ augroup LSP
     autocmd FileType go,c,cpp,rust,python call SetLSPShortcuts()
 augroup END
 
-" Plug 'Shougo/echodoc.vim'
-"
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
 
 " Plug 'rust-lang/rust.vim'
 "
@@ -428,6 +461,7 @@ let g:go_highlight_build_constraints = 1
 
 let g:go_disable_autoinstall = 0
 let g:go_fmt_fail_silently = 1
+
 let g:go_auto_sameids = 0
 let g:go_decls_included = "type,func"
 let g:go_fmt_command = "goimports"
