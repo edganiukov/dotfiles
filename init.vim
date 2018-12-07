@@ -14,7 +14,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
-Plug 'junegunn/goyo.vim'
 
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
@@ -304,8 +303,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:magit_commit_title_limit=80
 
 
-" Plug 'w0rp/ale'
-"
+" Plug 'w0rp/ale' 
 let g:ale_set_highlights = 0
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '➤'
@@ -384,16 +382,16 @@ if executable('rls')
         \ })
 endif
 
-let g:lsp_signs_enabled = 0
-let g:lsp_diagnostics_echo_cursor = 0
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '➤' }
+" let g:lsp_signs_enabled = 0
+" let g:lsp_diagnostics_echo_cursor = 0
+" let g:lsp_signs_error = {'text': '✗'}
+" let g:lsp_signs_warning = {'text': '➤' }
 
-hi clear LspErrorText
-hi clear LspWarningLine
+" hi clear LspErrorText
+" hi clear LspWarningLine
 
-hi LspErrorText ctermfg=red
-hi LspWarningLine ctermfg=yellow
+" hi LspErrorText ctermfg=red
+" hi LspWarningLine ctermfg=yellow
 
 function SetLSPShortcuts()
     nnoremap gd :LspDefinition<CR>
@@ -451,23 +449,21 @@ au FileType yaml set tabstop=2
 
 " Plug 'fatih/vim-go'
 "
-
 let g:go_highlight_functions = 0
 let g:go_highlight_methods = 0
 let g:go_highlight_structs = 0
 let g:go_highlight_operators = 0
 let g:go_highlight_interfaces = 0
-let g:go_highlight_build_constraints = 1
+let g:go_highlight_build_constraints = 0
 
 let g:go_disable_autoinstall = 0
 let g:go_fmt_fail_silently = 1
-
 let g:go_auto_sameids = 0
+
 let g:go_decls_included = "type,func"
 let g:go_fmt_command = "goimports"
 let g:go_def_mode = "guru"
 let g:go_info_mode = "guru"
-let g:go_list_type = "fzf"
 let g:go_snippet_case_type = "camelcase"
 let g:go_addtags_transform = "camelcase"
 
@@ -476,16 +472,16 @@ nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gct <Plug>(go-coverage-toggle)
-au FileType go nmap gds <Plug>(go-def-split)
-au FileType go nmap gdv <Plug>(go-def-vertical)
-au FileType go nmap gim <Plug>(go-implements)
+au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
 " lsp
 " au FileType go nmap gr <Plug>(go-rename)
 " au FileType go nmap gd <Plug>(go-def)
-"
+" au FileType go nmap gds <Plug>(go-def-split)
+" au FileType go nmap gdv <Plug>(go-def-vertical)
+
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
