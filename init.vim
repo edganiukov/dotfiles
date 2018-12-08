@@ -48,6 +48,7 @@ syntax on
 " set termguicolors
 colorscheme gruvbox
 set bg=dark
+let g:gruvbox_termcolors=256
 
 set hidden
 set noerrorbells
@@ -131,12 +132,12 @@ nnoremap qq :q<CR>
 inoremap jj <Esc>
 
 " buffers switch
-map <C-n> :bn!<CR>
-map <C-m> :bp!<CR>
+nnoremap bn :bn!<CR>
+nnoremap bm :bp!<CR>
 
 " quickfix switch
-map <C-.> :cn!<CR>
-map <C-,> :cp!<CR>
+map <C-n> :cp!<CR>
+map <C-m> :cm!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
