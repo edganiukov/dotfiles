@@ -14,7 +14,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'mattn/calendar-vim'
 " Git
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
@@ -70,7 +70,7 @@ set autoindent
 set smartindent
 
 set foldenable
-set conceallevel=3
+set conceallevel=2
 
 set expandtab
 set tabstop=4
@@ -171,34 +171,47 @@ match ExtraWhitespace /\s\+$/
 hi clear SpellBad
 hi SpellBad cterm=underline
 
-
-" Plug 'airblade/vim-gitgutter'
+" Plug 'mhinz/vim-signify'
 "
-hi clear SignColumn
-hi GitGutterAdd ctermfg=green
-hi GitGutterChange ctermfg=yellow
-hi GitGutterDelete ctermfg=red
-hi GitGutterChangeDelete ctermfg=yellow
+let g:signify_vcs_list=['git']
+let g:signify_realtime=1
+let g:signify_cursorhold_insert=1
+let g:signify_cursorhold_normal=1
+let g:signify_update_on_bufenter=0
+let g:signify_update_on_focusgained=1
+let g:signify_sign_show_count=0
+
+let g:signify_sign_add='+'
+let g:signify_sign_delete='_'
+let g:signify_sign_delete_first_line='‾'
+let g:signify_sign_change='~'
+let g:signify_sign_changedelete=g:signify_sign_change
+
 
 " Plug 'mattn/calendar-vim'
 "
 nnoremap <leader>c :CalendarH<CR>
 
-" Plug 'plasticboy/vim-markdown'
+" Plug 'tpope/vim-markdown'
 "
-let g:vim_markdown_folding_style_pythonic=1
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
 let g:vim_markdown_fenced_languages=[
-    \ 'vim=vim',
-    \ 'sh=sh',
-    \ 'go=go',
+    \ 'vim',
+    \ 'bash=sh',
+    \ 'go',
     \ 'py=python',
-    \ 'rs=rust'
+    \ 'rs=rust',
+    \ 'c',
+    \ 'cpp',
+    \ 'yaml',
     \ ]
 
-let g:vim_markdown_new_list_item_indent=2
-
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_folding_style_pythonic=1
 let g:tex_conceal=""
 let g:vim_markdown_math=1
+let g:vim_markdown_new_list_item_indent=2
 
 " Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
@@ -306,11 +319,6 @@ let g:ale_set_highlights=0
 let g:ale_sign_error='✗'
 let g:ale_sign_warning='➤'
 
-hi clear ALEErrorSign
-hi clear ALEWarningSign
-hi ALEErrorSign ctermfg=red
-hi ALEWarningSign ctermfg=yellow
-
 let g:ale_linters={
     \ 'ansible': ['ansible-lint'],
     \ 'go': ['go build', 'golint', 'govet', 'staticcheck'],
@@ -385,12 +393,6 @@ let g:lsp_preview_keep_focus=0
 " let g:lsp_diagnostics_echo_cursor=1
 " let g:lsp_signs_error={'text': '✗'}
 " let g:lsp_signs_warning={'text': '➤' }
-
-" hi clear LspErrorText
-" hi clear LspWarningLine
-
-" hi LspErrorText ctermfg=red
-" hi LspWarningLine ctermfg=yellow
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
