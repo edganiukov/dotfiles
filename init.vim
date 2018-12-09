@@ -10,8 +10,8 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'mattn/calendar-vim'
 " Git
 Plug 'mhinz/vim-signify'
@@ -216,6 +216,8 @@ let g:vim_markdown_new_list_item_indent=2
 " Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 "
+set rtp+=/usr/local/opt/fzf
+
 let g:fzf_layout={ 'down': '~40%' }
 let g:fzf_colors={
     \ 'fg':      ['fg', 'Normal'],

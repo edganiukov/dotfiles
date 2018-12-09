@@ -19,6 +19,8 @@ export GO111MODULE=auto
 
 # LLVM vars
 export PATH=/usr/local/opt/llvm/bin:$PATH
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 ### settings
 HISTFILE=~/.histfile
@@ -156,8 +158,14 @@ bindkey '^s' pet-select
 calc() { echo "$@" | bc -l -q -i }
 alias calc='noglob calc'
 
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Setup fzf
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
