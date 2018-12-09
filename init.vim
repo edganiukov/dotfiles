@@ -3,8 +3,8 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
-
-" basic
+Plug 'danilo-augusto/vim-afterglow'
+" Basic
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
@@ -12,28 +12,21 @@ Plug 'scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
-Plug 'w0rp/ale'
-
-" git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-Plug 'jreybert/vimagit'
-
 Plug 'mattn/calendar-vim'
-Plug 'godlygeek/tabular'
+" Git
+Plug 'airblade/vim-gitgutter'
+Plug 'jreybert/vimagit'
+" Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-" lang
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
-
 " LSP
+Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-
-" completion
+" Completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-vim-lsp'
@@ -45,10 +38,10 @@ call plug#end()
 " ---
 syntax on
 
-" set termguicolors
-colorscheme gruvbox
+set t_Co=256
+set termguicolors
 set bg=dark
-let g:gruvbox_termcolors=256
+colorscheme gruvbox
 
 set hidden
 set noerrorbells
@@ -77,7 +70,7 @@ set autoindent
 set smartindent
 
 set foldenable
-set conceallevel=2
+set conceallevel=3
 
 set expandtab
 set tabstop=4
@@ -128,8 +121,11 @@ inoremap <F10> <Esc>:set list!<CR>a
 nnoremap <Leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
-nnoremap qq :q<CR>
+nnoremap <silent> qq :q<CR>
 inoremap jj <Esc>
+
+" close preview-window
+nnoremap <silent> qp <C-w><C-z>
 
 " buffers switch
 nnoremap bn :bn!<CR>
@@ -144,11 +140,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
-inoremap <A-h> <C-o>h
-inoremap <A-j> <C-o>j
-inoremap <A-k> <C-o>k
-inoremap <A-l> <C-o>l
 
 " disable arrows
 noremap <Up> <NOP>
@@ -189,11 +180,14 @@ hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=red
 hi GitGutterChangeDelete ctermfg=yellow
 
+" Plug 'mattn/calendar-vim'
+"
+nnoremap <leader>c :CalendarH<CR>
 
 " Plug 'plasticboy/vim-markdown'
 "
-let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_fenced_languages = [
+let g:vim_markdown_folding_style_pythonic=1
+let g:vim_markdown_fenced_languages=[
     \ 'vim=vim',
     \ 'sh=sh',
     \ 'go=go',
@@ -201,17 +195,16 @@ let g:vim_markdown_fenced_languages = [
     \ 'rs=rust'
     \ ]
 
-let g:vim_markdown_new_list_item_indent = 2
-let g:vim_markdown_no_extensions_in_markdown = 1
+let g:vim_markdown_new_list_item_indent=2
 
-let g:tex_conceal = ""
-let g:vim_markdown_math = 1
+let g:tex_conceal=""
+let g:vim_markdown_math=1
 
 " Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 "
-let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_colors = {
+let g:fzf_layout={ 'down': '~40%' }
+let g:fzf_colors={
     \ 'fg':      ['fg', 'Normal'],
     \ 'bg':      ['bg', 'Normal'],
     \ 'hl':      ['fg', 'Comment'],
@@ -238,7 +231,7 @@ command! -nargs=* Ag call fzf#run({
     \ })
 
 function! s:ag_to_qf(line)
-    let parts = split(a:line, ':')
+    let parts=split(a:line, ':')
     return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
         \ 'text': join(parts[3:], ':')}
 endfunction
@@ -246,12 +239,12 @@ endfunction
 function! s:ag_handler(lines)
     if len(a:lines) < 2 | return | endif
 
-    let cmd = get({'ctrl-x': 'split',
+    let cmd=get({'ctrl-x': 'split',
                \ 'ctrl-v': 'vertical split',
                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-    let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+    let list=map(a:lines[1:], 's:ag_to_qf(v:val)')
 
-    let first = list[0]
+    let first=list[0]
     execute cmd escape(first.filename, ' %#\')
     execute first.lnum
     execute 'normal!' first.col.'|zz'
@@ -268,8 +261,8 @@ nnoremap <C-p> :FZF<CR>
 
 " Plug 'itchyny/lightline'
 "
-let g:bufferline_echo = 0
-let g:lightline = {
+let g:bufferline_echo=0
+let g:lightline={
     \ 'colorscheme': 'gruvbox',
     \ 'active': {
         \ 'left': [
@@ -296,8 +289,8 @@ let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$']
-let g:NERDTreeWinSize=40
 let NERDTreeMapActivateNode='<Space>'
+let g:NERDTreeWinSize=40
 
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -309,26 +302,25 @@ let g:magit_commit_title_limit=80
 
 " Plug 'w0rp/ale'
 "
-let g:ale_set_highlights = 0
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '➤'
-let g:ale_sign_column_always = 1
+let g:ale_set_highlights=0
+let g:ale_sign_error='✗'
+let g:ale_sign_warning='➤'
 
 hi clear ALEErrorSign
 hi clear ALEWarningSign
 hi ALEErrorSign ctermfg=red
 hi ALEWarningSign ctermfg=yellow
 
-let g:ale_linters = {
+let g:ale_linters={
     \ 'ansible': ['ansible-lint'],
     \ 'go': ['go build', 'golint', 'govet', 'staticcheck'],
     \ 'python': ['pyls', 'pylint', 'autopep8'],
     \ 'rust': ['rls'],
-    \ 'c': ['cquery'],
-    \ 'cpp': ['cquery'],
+    \ 'c': ['clang', 'cquery'],
+    \ 'cpp': ['clang', 'cquery'],
     \ }
 
-let g:ale_linters_explicit = 1
+let g:ale_linters_explicit=1
 
 
 " Plug 'ncm2/ncm2'
@@ -342,8 +334,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Plug 'Shougo/echodoc.vim'
 "
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
+let g:echodoc#enable_at_startup=1
+let g:echodoc#type='signature'
 
 " Plug prabirshrestha/vim-lsp''
 "
@@ -367,7 +359,8 @@ if executable('pyls')
         \ })
 endif
 
-" \ 'cmd': {server_info->['bingo', '--mode'. 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+" bingo: \ 'cmd': {server_info->['bingo', '--mode'. 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+" go-langserver: \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
 if executable('go-langserver')
     " https://github.com/sourcegraph/go-langserver
     au User lsp_setup call lsp#register_server({
@@ -387,10 +380,11 @@ if executable('rls')
         \ })
 endif
 
-" let g:lsp_signs_enabled = 0
-" let g:lsp_diagnostics_echo_cursor = 0
-" let g:lsp_signs_error = {'text': '✗'}
-" let g:lsp_signs_warning = {'text': '➤' }
+let g:lsp_preview_keep_focus=0
+" let g:lsp_signs_enabled=1
+" let g:lsp_diagnostics_echo_cursor=1
+" let g:lsp_signs_error={'text': '✗'}
+" let g:lsp_signs_warning={'text': '➤' }
 
 " hi clear LspErrorText
 " hi clear LspWarningLine
@@ -398,26 +392,19 @@ endif
 " hi LspErrorText ctermfg=red
 " hi LspWarningLine ctermfg=yellow
 
-function SetLSPShortcuts()
-    nnoremap gd :LspDefinition<CR>
-    nnoremap gtd :LspTypeDefinition<CR>
-    nnoremap gr :LspRename<CR>
-    nnoremap gf :LspDocumentFormat<CR>
-    nnoremap ga :LspCodeAction<CR>
-    nnoremap gx :LspReferences<CR>
-    nnoremap gh :LspHover<CR>
-    nnoremap gs :LspDocumentSymbol<CR>
-endfunction()
-
-augroup LSP
-    autocmd!
-    autocmd FileType go,c,cpp,rust,python call SetLSPShortcuts()
-augroup END
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gtd :LspTypeDefinition<CR>
+nnoremap <silent> gr :LspRename<CR>
+nnoremap <silent> gf :LspDocumentFormat<CR>
+nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gx :LspReferences<CR>
+nnoremap <silent> gh :LspHover<CR>
+nnoremap <silent> gs :LspDocumentSymbol<CR>
 
 
 " Plug 'rust-lang/rust.vim'
 "
-let g:rustfmt_autosave = 1
+let g:rustfmt_autosave=1
 
 au FileType rust nnoremap gt :RustTest<CR>
 au FileType rust set expandtab
@@ -432,8 +419,8 @@ au FileType python set tabstop=4
 
 " Plug 'rhysd/vim-clang-format'
 "
-let g:clang_format#code_style = 'llvm'
-let g:clang_format#auto_format = 1
+let g:clang_format#code_style='llvm'
+let g:clang_format#auto_format=1
 
 au FileType c,cpp set expandtab
 au FileType c,cpp set shiftwidth=4
@@ -443,9 +430,9 @@ au FileType c,cpp set tabstop=4
 
 " Plug 'pearofducks/ansible-vim'
 "
-let g:ansible_unindent_after_newline = 1
-let g:ansible_name_highlight = 'd'
-let g:ansible_extra_keywords_highlight = 0
+let g:ansible_unindent_after_newline=1
+let g:ansible_name_highlight='d'
+let g:ansible_extra_keywords_highlight=0
 
 au FileType yaml set expandtab
 au FileType yaml set shiftwidth=2
@@ -454,23 +441,23 @@ au FileType yaml set tabstop=2
 
 " Plug 'fatih/vim-go'
 "
-let g:go_highlight_functions = 0
-let g:go_highlight_methods = 0
-let g:go_highlight_structs = 0
-let g:go_highlight_operators = 0
-let g:go_highlight_interfaces = 0
-let g:go_highlight_build_constraints = 0
+let g:go_highlight_functions=0
+let g:go_highlight_methods=0
+let g:go_highlight_structs=0
+let g:go_highlight_operators=0
+let g:go_highlight_interfaces=0
+let g:go_highlight_build_constraints=0
 
-let g:go_disable_autoinstall = 0
-let g:go_fmt_fail_silently = 1
-let g:go_auto_sameids = 0
+let g:go_disable_autoinstall=0
+let g:go_fmt_fail_silently=1
+let g:go_auto_sameids=0
 
-let g:go_decls_included = "type,func"
-let g:go_fmt_command = "goimports"
-let g:go_def_mode = "guru"
-let g:go_info_mode = "guru"
-let g:go_snippet_case_type = "camelcase"
-let g:go_addtags_transform = "camelcase"
+let g:go_decls_included="type,func"
+let g:go_fmt_command="goimports"
+let g:go_def_mode="guru"
+let g:go_info_mode="guru"
+let g:go_snippet_case_type="camelcase"
+let g:go_addtags_transform="camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
 
