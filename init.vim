@@ -302,7 +302,7 @@ let g:lightline={
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$']
+let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$', '.workspace']
 let NERDTreeMapActivateNode='<Space>'
 let g:NERDTreeWinSize=40
 
@@ -377,7 +377,7 @@ if executable('rls')
         \ })
 endif
 
-" brew install https://github.com/nossralf/homebrew-jdt-language-server/blob/master/jdt-language-server.rb 
+" brew install https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
 if executable('jdt-ls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'jdt-ls',
