@@ -23,7 +23,6 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
-Plug 'w0rp/ale'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 " Completion
@@ -315,29 +314,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "
 let g:magit_commit_title_limit=80
 
-" Plug 'w0rp/ale'
-"
-let g:ale_set_highlights=0
-let g:ale_sign_error='✗'
-let g:ale_sign_warning='➤'
-
-let g:ale_linters={
-    \ 'ansible': ['ansible-lint'],
-    \ 'go': ['go build', 'golint', 'govet', 'staticcheck'],
-    \ 'python': ['pyls', 'pylint', 'autopep8'],
-    \ 'rust': ['rls'],
-    \ 'c': ['clang', 'cquery'],
-    \ 'cpp': ['clang', 'cquery'],
-    \ }
-
-let g:ale_linters_explicit=1
-
 
 " Plug 'ncm2/ncm2'
 "
 autocmd BufEnter * call ncm2#enable_for_buffer()
 
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+imap <C-x><C-o> <Plug>(ncm2_manual_trigger)
+
+inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -354,6 +338,7 @@ if executable('cquery')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'cquery',
         \ 'cmd': {server_info->['cquery']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
         \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
         \ 'whitelist': ['c', 'cpp'],
         \ })
@@ -369,13 +354,15 @@ if executable('pyls')
         \ })
 endif
 
-" bingo: \ 'cmd': {server_info->['bingo', '--mode'. 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+" bingo: 
 " go-langserver: \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
 if executable('go-langserver')
     " https://github.com/sourcegraph/go-langserver
+    " https://github.com/saibing/bingo
     au User lsp_setup call lsp#register_server({
         \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+        \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'go.mod'))},
         \ 'whitelist': ['go'],
         \ })
 endif
@@ -390,11 +377,25 @@ if executable('rls')
         \ })
 endif
 
+" brew install https://github.com/nossralf/homebrew-jdt-language-server/blob/master/jdt-language-server.rb 
+if executable('jdt-ls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'jdt-ls',
+        \ 'cmd': {server_info->['jdt-ls', '-data', '.workspace']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
+        \ 'whitelist': ['java'],
+        \ })
+endif
+
 let g:lsp_preview_keep_focus=0
-" let g:lsp_signs_enabled=1
-" let g:lsp_diagnostics_echo_cursor=1
-" let g:lsp_signs_error={'text': '✗'}
-" let g:lsp_signs_warning={'text': '➤' }
+let g:lsp_signs_enabled=1
+let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_signs_error={'text': '✗'}
+let g:lsp_signs_warning={'text': '➤' }
+
+" Requires https://github.com/morhetz/gruvbox
+highlight link LspErrorText GruvboxRedSign
+highlight link LspWarningText GruvboxYellowSign
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
@@ -404,7 +405,9 @@ nnoremap <silent> ga :LspCodeAction<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspDocumentSymbol<CR>
-
+" Debug
+" let g:lsp_log_verbose=1
+" let g:lsp_log_file=expand('/tmp/vim-lsp.log')
 
 " Plug 'rust-lang/rust.vim'
 "
@@ -455,6 +458,7 @@ let g:go_highlight_build_constraints=0
 let g:go_disable_autoinstall=0
 let g:go_fmt_fail_silently=1
 let g:go_auto_sameids=0
+let g:go_auto_type_info = 0
 
 let g:go_decls_included="type,func"
 let g:go_fmt_command="goimports"
