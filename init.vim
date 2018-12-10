@@ -354,11 +354,11 @@ if executable('pyls')
         \ })
 endif
 
-" bingo: 
+" https://github.com/saibing/bingo
+" bingo: \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+" https://github.com/sourcegraph/go-langserver
 " go-langserver: \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
-if executable('go-langserver')
-    " https://github.com/sourcegraph/go-langserver
-    " https://github.com/saibing/bingo
+if executable('bingo')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'go-langserver',
         \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
@@ -406,8 +406,8 @@ nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspDocumentSymbol<CR>
 " Debug
-" let g:lsp_log_verbose=1
-" let g:lsp_log_file=expand('/tmp/vim-lsp.log')
+let g:lsp_log_verbose=1
+let g:lsp_log_file=expand('/tmp/vim-lsp.log')
 
 " Plug 'rust-lang/rust.vim'
 "
