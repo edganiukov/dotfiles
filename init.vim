@@ -394,7 +394,9 @@ if executable('jdt-ls')
         \ 'name': 'jdt-ls',
         \ 'cmd': {server_info->['jdt-ls',
             \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')).'/.workspace',
-            \ '--add-modules=ALL-SYSTEM ', '--add-opens', 'java.base/java.util=ALL-UNNAMED', '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
+            \ '--add-modules=ALL-SYSTEM ', 
+            \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
+            \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
         \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
         \ 'whitelist': ['java'],
         \ })
@@ -404,11 +406,15 @@ let g:lsp_preview_keep_focus=0
 let g:lsp_signs_enabled=1
 let g:lsp_diagnostics_echo_cursor=1
 let g:lsp_signs_error={'text': '✗'}
-let g:lsp_signs_warning={'text': '➤' }
+let g:lsp_signs_warning={'text': '✗' }
+let g:lsp_signs_information={'text': '➤' }
+let g:lsp_signs_hint={'text': '➤'}
 
 " Requires https://github.com/morhetz/gruvbox
 highlight link LspErrorText GruvboxRedSign
 highlight link LspWarningText GruvboxYellowSign
+highlight link LspInformationText GruvboxYellowSign
+highlight link LspHintText GruvboxGreenSign
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
@@ -464,7 +470,6 @@ let g:go_snippet_case_type="camelcase"
 let g:go_addtags_transform="camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
-
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gct <Plug>(go-coverage-toggle)

@@ -1,5 +1,5 @@
 [core]
-    excludesfiles = ~/.gitignore_global
+    excludesfile = ~/.gitignore
 [user]
     name = <Name>
     email = <Email>
