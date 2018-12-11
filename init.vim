@@ -33,10 +33,9 @@ Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
-" General settings
-" ---
+" Standard VIM TUI Settings
+"
 syntax on
-
 set t_Co=256
 set termguicolors
 set bg=dark
@@ -47,10 +46,9 @@ set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
+set gcr=a:blinkon0
 
-set number
 set autoread
-set wildmenu
 set completeopt=menu,menuone,noinsert,noselect
 
 set ignorecase
@@ -68,35 +66,40 @@ set lazyredraw
 set autoindent
 set smartindent
 
+set scrolljump=1
+set scrolloff=4
+set backspace=2
 set foldenable
 set conceallevel=2
 
-set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set wrap
-
-set scrolloff=4
-set backspace=2
-
+set number
+set signcolumn=yes
 set pumheight=15
 set colorcolumn=81
 set cursorline
 
-" Always draw the signcolumn.
-set signcolumn=yes
-
-set gcr=a:blinkon0
+set pastetoggle=<F2>
+set nopaste
+" copy to the system clipboard
+set clipboard=unnamedplus 
+" set clipboard=unnamed
+"
 set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
-set pastetoggle=<F2>
-set nopaste
-
-" copy to the system clipboard
-" set clipboard=unnamed
-set clipboard=unnamedplus
+" Vim formatting options                            "
+set wrap
+set formatoptions=qrn1
+set autoindent
+set shiftwidth=4
+set shiftround
+set expandtab
+set tabstop=4
+set softtabstop=4
+set nojoinspaces
+set splitright
+set splitbelow
+set encoding=utf-8
 
 " abbreviations
 cnoreabbrev W! w!
@@ -194,6 +197,7 @@ nnoremap <leader>c :CalendarH<CR>
 " Plug 'tpope/vim-markdown'
 "
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+au FileType markdown setlocal spell sw=2 sts=2 st=2 syntax=markdown
 
 let g:vim_markdown_fenced_languages=[
     \ 'vim',
@@ -423,25 +427,11 @@ let g:lsp_log_file=expand('/tmp/vim-lsp.log')
 let g:rustfmt_autosave=1
 
 au FileType rust nnoremap gt :RustTest<CR>
-au FileType rust set expandtab
-au FileType rust set shiftwidth=4
-au FileType rust set softtabstop=4
-au FileType rust set tabstop=4
-
-au FileType python set expandtab
-au FileType python set shiftwidth=4
-au FileType python set softtabstop=4
-au FileType python set tabstop=4
 
 " Plug 'rhysd/vim-clang-format'
 "
 let g:clang_format#code_style='llvm'
 let g:clang_format#auto_format=1
-
-au FileType c,cpp set expandtab
-au FileType c,cpp set shiftwidth=4
-au FileType c,cpp set softtabstop=4
-au FileType c,cpp set tabstop=4
 
 
 " Plug 'pearofducks/ansible-vim'
@@ -450,10 +440,7 @@ let g:ansible_unindent_after_newline=1
 let g:ansible_name_highlight='d'
 let g:ansible_extra_keywords_highlight=0
 
-au FileType yaml set expandtab
-au FileType yaml set shiftwidth=2
-au FileType yaml set softtabstop=2
-au FileType yaml set tabstop=2
+au FileType yaml setlocal sw=2 sts=2 ts=2
 
 " Plug 'fatih/vim-go'
 "
@@ -492,49 +479,9 @@ au FileType go nmap <leader>gd <Plug>(go-doc)
 " au FileType go nmap gdv <Plug>(go-def-vertical)
 
 au FileType go set noexpandtab
-au FileType go set shiftwidth=4
-au FileType go set softtabstop=4
-au FileType go set tabstop=4
 
-" Lang: markdown
-" ---
-au FileType markdown setlocal spell
-au FileType markdown set expandtab
-au FileType markdown set shiftwidth=2
-au FileType markdown set softtabstop=2
-au FileType markdown set tabstop=2
-au FileType markdown set syntax=markdown
-
-" Lang: make
-" ---
-au FileType make set noexpandtab
-au FileType make set shiftwidth=4
-au FileType make set softtabstop=4
-au FileType make set tabstop=4
-
-" Lang: json
-" ---
-au FileType json set expandtab
-au FileType json set shiftwidth=2
-au FileType json set softtabstop=2
-au FileType json set tabstop=2
-
-" Lang: toml
-" ---
-au! BufRead,BufNewFile *.toml set filetype=conf
-au FileType toml set expandtab
-au FileType toml set shiftwidth=2
-au FileType toml set softtabstop=2
-au FileType toml set tabstop=2
-
-" Lang: conf
-" ---
-au FileType conf set expandtab
-au FileType conf set shiftwidth=2
-au FileType conf set softtabstop=2
-au FileType conf set tabstop=2
-
-" Lang: gitcommit
-" ---
-au FileType gitcommit setlocal spell
-au FileType gitcommit setlocal textwidth=80
+au! BufRead,BufNewFile *.toml setlocal filetype=conf
+au FileType make setlocal noexpandtab
+au FileType json setlocal sw=2 sts=2 ts=2
+au FileType conf setlocal sw=2 sts=2 ts=2 fileformat=unix
+au FileType gitcommit setlocal spell tw=80
