@@ -302,7 +302,14 @@ let g:lightline={
 let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.DS_Store', '\.git$', '\.test$', '.workspace']
+let NERDTreeIgnore=[
+    \ '\.DS_Store', 
+    \ '\.git$', 
+    \ '\.test$', 
+    \ '.workspace',
+    \ '.settings',
+    \ '.project'
+    \]
 let NERDTreeMapActivateNode='<Space>'
 let g:NERDTreeWinSize=40
 
@@ -381,7 +388,9 @@ endif
 if executable('jdt-ls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'jdt-ls',
-        \ 'cmd': {server_info->['jdt-ls', '-data', '.workspace']},
+        \ 'cmd': {server_info->['jdt-ls',
+            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')).'/.workspace',
+            \ '--add-modules=ALL-SYSTEM ', '--add-opens', 'java.base/java.util=ALL-UNNAMED', '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
         \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
         \ 'whitelist': ['java'],
         \ })
