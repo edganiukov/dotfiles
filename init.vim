@@ -370,10 +370,10 @@ endif
 "
 " https://github.com/golang/tools/tree/master/cmd/golsp
 " \ 'cmd': {server_info->['golsp']},
-if executable('bingo')
+if executable('go-langserver')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion', '-diagnostics', '-lint-tool', 'golint']},
+        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion', '-diagnostics']},
         \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
         \ 'whitelist': ['go'],
         \ })
