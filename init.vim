@@ -310,8 +310,8 @@ let NERDTreeIgnore=[
     \ '\.DS_Store', 
     \ '\.git$', 
     \ '\.test$', 
-    \ '.workspace',
     \ '.settings',
+    \ '.metadata',
     \ '.project'
     \]
 let NERDTreeMapActivateNode='<Space>'
@@ -389,15 +389,15 @@ if executable('rls')
 endif
 
 " brew install https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
+" \ 'root_uri': {server_info->},
 if executable('jdt-ls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'jdt-ls',
         \ 'cmd': {server_info->['jdt-ls',
-            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')).'/.workspace',
+            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
             \ '--add-modules=ALL-SYSTEM ', 
             \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
             \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
         \ 'whitelist': ['java'],
         \ })
 endif
