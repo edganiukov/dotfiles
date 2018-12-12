@@ -197,7 +197,7 @@ nnoremap <leader>c :CalendarH<CR>
 " Plug 'tpope/vim-markdown'
 "
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-au FileType markdown setlocal spell sw=2 sts=2 st=2 syntax=markdown
+au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown
 
 let g:vim_markdown_fenced_languages=[
     \ 'vim',
@@ -307,12 +307,9 @@ let NERDTreeDirArrows=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowHidden=1
 let NERDTreeIgnore=[
-    \ '\.DS_Store', 
-    \ '\.git$', 
-    \ '\.test$', 
-    \ '.settings',
-    \ '.metadata',
-    \ '.project'
+    \ '\.DS_Store',
+    \ '\.git$',
+    \ '\.test$'
     \]
 let NERDTreeMapActivateNode='<Space>'
 let g:NERDTreeWinSize=40
@@ -366,14 +363,18 @@ if executable('pyls')
 endif
 
 " https://github.com/saibing/bingo
-" bingo: \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+" \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
+"
 " https://github.com/sourcegraph/go-langserver
-" go-langserver: \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+" \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+"
+" https://github.com/golang/tools/tree/master/cmd/golsp
+" \ 'cmd': {server_info->['golsp']},
 if executable('bingo')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'go.mod'))},
+        \ 'cmd': {server_info->['go-langserver', '-gocodecompletion', '-diagnostics', '-lint-tool', 'golint']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
         \ 'whitelist': ['go'],
         \ })
 endif
@@ -389,7 +390,6 @@ if executable('rls')
 endif
 
 " brew install https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-" \ 'root_uri': {server_info->},
 if executable('jdt-ls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'jdt-ls',
@@ -398,6 +398,7 @@ if executable('jdt-ls')
             \ '--add-modules=ALL-SYSTEM ', 
             \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
             \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
         \ 'whitelist': ['java'],
         \ })
 endif
