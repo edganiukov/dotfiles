@@ -341,20 +341,19 @@ let g:echodoc#type='signature'
 
 " Plug prabirshrestha/vim-lsp''
 "
+" https://github.com/cquery-project/cquery
 if executable('cquery')
-    " https://github.com/cquery-project/cquery
     au User lsp_setup call lsp#register_server({
         \ 'name': 'cquery',
-        \ 'cmd': {server_info->['cquery']},
+        \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
         \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
         \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
         \ 'whitelist': ['c', 'cpp'],
         \ })
 endif
 
+" https://github.com/palantir/python-language-server
 if executable('pyls')
-    " pip install python-language-server
-    "https://github.com/palantir/python-language-server
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
         \ 'cmd': {server_info->['pyls']},
@@ -362,19 +361,15 @@ if executable('pyls')
         \ })
 endif
 
-" https://github.com/saibing/bingo
-" \ 'cmd': {server_info->['bingo', '--mode', 'stdio', '--logfile', '/tmp/bingo.log', '--use-global-cache']},
-"
 " https://github.com/sourcegraph/go-langserver
-" \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
-"
-" https://github.com/golang/tools/tree/master/cmd/golsp
-" \ 'cmd': {server_info->['golsp']},
-" \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'go.mod'))},
 if executable('go-langserver')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-mode', 'stdio', '-gocodecompletion', '-diagnostics']},
+        \ 'cmd': {server_info->['go-langserver',
+            \ '--mode=stdio',
+            \ '--logfile=/tmp/go-langserver.log',
+            \ '--gocodecompletion=true', '--diagnostics=true']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
         \ 'whitelist': ['go'],
         \ })
 endif
@@ -389,7 +384,7 @@ if executable('rls')
         \ })
 endif
 
-" brew install https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
+" https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
 if executable('jdt-ls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'jdt-ls',
