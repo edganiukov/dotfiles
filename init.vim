@@ -10,7 +10,6 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 " Git
@@ -23,12 +22,10 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
 " Completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-vim-lsp'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
@@ -87,7 +84,7 @@ set clipboard=unnamedplus
 set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
-" Vim formatting options                            "
+" Vim formatting options
 set wrap
 set formatoptions=qrn1
 set autoindent
@@ -120,7 +117,7 @@ noremap k gk
 nnoremap <F10> :set list!<CR>
 inoremap <F10> <Esc>:set list!<CR>a
 
-nnoremap <Leader>w :w<CR>
+nnoremap <leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>a :cclose<CR>
 nnoremap <silent> qq :q<CR>
@@ -322,15 +319,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "
 let g:magit_commit_title_limit=80
 
-
 " Plug 'ncm2/ncm2'
 "
 autocmd BufEnter * call ncm2#enable_for_buffer()
 
 imap <C-x><C-o> <Plug>(ncm2_manual_trigger)
-
 inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
-" Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
@@ -339,90 +333,70 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:echodoc#enable_at_startup=1
 let g:echodoc#type='signature'
 
-" Plug prabirshrestha/vim-lsp''
+" Plug 'autozimu/LanguageClient-neovim'
 "
-" https://github.com/cquery-project/cquery
-if executable('cquery')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'cquery',
-        \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
-        \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
-        \ 'whitelist': ['c', 'cpp'],
-        \ })
-endif
-
-" https://github.com/palantir/python-language-server
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
 " https://github.com/sourcegraph/go-langserver
-if executable('go-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver',
-            \ '--mode=stdio',
-            \ '--logfile=/tmp/go-langserver.log',
-            \ '--gocodecompletion=true', '--diagnostics=true']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
-        \ 'whitelist': ['go'],
-        \ })
-endif
-
-if executable('rls')
-    " https://github.com/rust-lang/rls
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
-
+" https://github.com/cquery-project/cquery
+" https://github.com/rust-lang/rls
+" https://github.com/palantir/python-language-server
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-if executable('jdt-ls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'jdt-ls',
-        \ 'cmd': {server_info->['jdt-ls',
-            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
-            \ '--add-modules=ALL-SYSTEM ', 
-            \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
-            \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
-        \ 'whitelist': ['java'],
-        \ })
-endif
+let g:LanguageClient_serverCommands = {
+    \ 'go': ['go-langserver', '-gocodecompletion', '-diagnostics'],
+    \ 'c': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
+    \ 'cpp': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'python': ['pyls'],
+    \ 'java': ['/usr/local/bin/jdtls',
+        \ '--add-modules=ALL-SYSTEM',
+        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+        \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+        \ ],
+    \ }
+let g:LanguageClient_rootMarkers = {
+    \ 'go': ['Gopkg.toml', 'go.mod'],
+    \ 'cpp': ['.cquery'],
+    \ 'c': ['.cquery'],
+    \ 'rust': ['Cargo.toml'],
+    \ 'java': ['pom.xml', 'build.gradle'],
+    \ }
 
-let g:lsp_preview_keep_focus=0
-let g:lsp_signs_enabled=1
-let g:lsp_diagnostics_echo_cursor=1
-let g:lsp_signs_error={'text': '✗'}
-let g:lsp_signs_warning={'text': '✗' }
-let g:lsp_signs_information={'text': '➤' }
-let g:lsp_signs_hint={'text': '➤'}
+let g:LanguageClient_selectionUI="fzf"
+let g:LanguageClient_diagnosticsDisplay={
+    \ 1: {
+        \ "name": "Error",
+        \ "texthl": "ALEError",
+        \ "signText": "✗",
+        \ "signTexthl": "ALEErrorSign",
+        \},
+    \ 2: { 
+        \ "name": "Warning",
+        \ "texthl": "ALEWarning",
+        \ "signText": "✗",
+        \ "signTexthl": "ALEWarningSign",
+        \ },
+    \ 3: {
+        \ "name": "Information",
+        \ "texthl": "ALEInfo",
+        \ "signText": "➤",
+        \ "signTexthl": "ALEInfoSign",
+        \},
+    \ 4: {
+        \ "name": "Hint",
+        \ "texthl": "ALEInfo",
+        \ "signText": "➤",
+        \ "signTexthl": "ALEInfoSign",
+        \},
+    \ }
 
-" Requires https://github.com/morhetz/gruvbox
-highlight link LspErrorText GruvboxRedSign
-highlight link LspWarningText GruvboxYellowSign
-highlight link LspInformationText GruvboxYellowSign
-highlight link LspHintText GruvboxGreenSign
-
-nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gtd :LspTypeDefinition<CR>
-nnoremap <silent> gr :LspRename<CR>
-nnoremap <silent> gf :LspDocumentFormat<CR>
-nnoremap <silent> ga :LspCodeAction<CR>
-nnoremap <silent> gx :LspReferences<CR>
-nnoremap <silent> gh :LspHover<CR>
-nnoremap <silent> gs :LspDocumentSymbol<CR>
-" Debug
-let g:lsp_log_verbose=1
-let g:lsp_log_file=expand('/tmp/vim-lsp.log')
+nnoremap gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap gr :call LanguageClient#textDocument_rename()<CR>
+nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
+nnoremap gtd :call LanguageClient#textDocument_typeDefinition()<CR>
+nnoremap gx :call LanguageClient#textDocument_references()<CR>
+nnoremap ga :call LanguageClient_workspace_applyEdit()<CR>
+nnoremap gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap gs :call LanguageClient_textDocument_documentSymbol()<CR>
+nnoremap gm :call LanguageClient_contextMenu()<CR>
 
 " Plug 'rust-lang/rust.vim'
 "
@@ -460,18 +434,18 @@ let g:go_auto_type_info = 0
 
 let g:go_decls_included="type,func"
 let g:go_fmt_command="goimports"
-let g:go_def_mode="guru"
-let g:go_info_mode="guru"
+let g:go_def_mode="godef"
+let g:go_info_mode="gocode"
 let g:go_snippet_case_type="camelcase"
 let g:go_addtags_transform="camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
-au FileType go nmap gct <Plug>(go-coverage-toggle)
+au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
-au FileType go nmap <leader>gd <Plug>(go-doc)
+au FileType go nmap <silent>gd <Plug>(go-doc)
 
 " replaced with LSP
 " au FileType go nmap gr <Plug>(go-rename)
