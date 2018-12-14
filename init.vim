@@ -164,7 +164,7 @@ vnoremap <leader>d "_d
 " replace currently selected text with default register without yanking it
 vnoremap <leader>p "_dP"
 
-hi ExtraWhitespace ctermbg=DarkGrey
+hi ExtraWhitespace ctermbg=LightGrey
 match ExtraWhitespace /\s\+$/
 
 hi clear SpellBad
@@ -340,24 +340,27 @@ let g:echodoc#type='signature'
 " https://github.com/rust-lang/rls
 " https://github.com/palantir/python-language-server
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-let g:LanguageClient_serverCommands = {
+let g:LanguageClient_serverCommands={
     \ 'go': ['go-langserver', '-gocodecompletion', '-diagnostics'],
     \ 'c': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
     \ 'cpp': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
     \ 'python': ['pyls'],
-    \ 'java': ['/usr/local/bin/jdtls',
+    \ 'java': ['/usr/local/bin/jdt-ls',
         \ '--add-modules=ALL-SYSTEM',
         \ '--add-opens', 'java.base/java.util=ALL-UNNAMED',
         \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
         \ ],
     \ }
-let g:LanguageClient_rootMarkers = {
+
+" Java: custom `.workspace` file that indicates parent directory
+" of the Eclipse workspace directory.
+let g:LanguageClient_rootMarkers={
     \ 'go': ['Gopkg.toml', 'go.mod'],
     \ 'cpp': ['.cquery'],
     \ 'c': ['.cquery'],
     \ 'rust': ['Cargo.toml'],
-    \ 'java': ['pom.xml', 'build.gradle'],
+    \ 'java': ['.workspace'],
     \ }
 
 let g:LanguageClient_selectionUI="fzf"
@@ -388,15 +391,18 @@ let g:LanguageClient_diagnosticsDisplay={
         \},
     \ }
 
-nnoremap gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap gr :call LanguageClient#textDocument_rename()<CR>
-nnoremap gf :call LanguageClient#textDocument_formatting()<CR>
-nnoremap gtd :call LanguageClient#textDocument_typeDefinition()<CR>
-nnoremap gx :call LanguageClient#textDocument_references()<CR>
-nnoremap ga :call LanguageClient_workspace_applyEdit()<CR>
-nnoremap gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap gs :call LanguageClient_textDocument_documentSymbol()<CR>
-nnoremap gm :call LanguageClient_contextMenu()<CR>
+let g:LanguageClient_loggingLevel='INFO'
+let g:LanguageClient_loggingFile='/tmp/lsp.log'
+
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
+nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
+nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
+nnoremap <silent> ga :call LanguageClient_workspace_applyEdit()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
+nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
 
 " Plug 'rust-lang/rust.vim'
 "
@@ -446,12 +452,12 @@ au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <silent>gd <Plug>(go-doc)
+au FileType go nmap gds <Plug>(go-def-split)
+au FileType go nmap gdv <Plug>(go-def-vertical)
 
 " replaced with LSP
 " au FileType go nmap gr <Plug>(go-rename)
 " au FileType go nmap gd <Plug>(go-def)
-" au FileType go nmap gds <Plug>(go-def-split)
-" au FileType go nmap gdv <Plug>(go-def-vertical)
 
 au FileType go set noexpandtab
 
