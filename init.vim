@@ -353,14 +353,12 @@ let g:LanguageClient_serverCommands={
         \ ],
     \ }
 
-" Java: custom `.workspace` file that indicates parent directory
-" of the Eclipse workspace directory.
 let g:LanguageClient_rootMarkers={
     \ 'go': ['Gopkg.toml', 'go.mod'],
-    \ 'cpp': ['.cquery'],
-    \ 'c': ['.cquery'],
+    \ 'cpp': ['.cquery', '.ccls'],
+    \ 'c': ['.cquery', '.ccls'],
     \ 'rust': ['Cargo.toml'],
-    \ 'java': ['.workspace'],
+    \ 'java': ['pom.xml', 'build.gradle'],
     \ }
 
 let g:LanguageClient_selectionUI="fzf"
