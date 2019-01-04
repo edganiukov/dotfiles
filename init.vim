@@ -82,7 +82,7 @@ set nopaste
 set clipboard=unnamedplus
 " set clipboard=unnamed
 
-set list
+" set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
 " Vim formatting options
@@ -327,11 +327,13 @@ let g:magit_commit_title_limit=80
 " Plug 'ncm2/ncm2'
 "
 autocmd BufEnter * call ncm2#enable_for_buffer()
+imap <leader>f <Plug>(ncm2_manual_trigger)
 
-imap <C-x><C-o> <Plug>(ncm2_manual_trigger)
-inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 " Plug 'Shougo/echodoc.vim'
@@ -463,10 +465,12 @@ let g:go_auto_type_info = 0
 
 let g:go_decls_included="type,func"
 let g:go_fmt_command="goimports"
-let g:go_def_mode="godef"
-let g:go_info_mode="gocode"
 let g:go_snippet_case_type="camelcase"
 let g:go_addtags_transform="camelcase"
+
+let go_def_mapping_enabled=0
+let g:go_def_mode="godef"
+let g:go_info_mode="gocode"
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
@@ -474,7 +478,8 @@ au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
-au FileType go nmap <silent>gd <Plug>(go-doc)
+
+au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap gds <Plug>(go-def-split)
 au FileType go nmap gdv <Plug>(go-def-vertical)
 
