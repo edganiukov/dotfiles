@@ -6,6 +6,8 @@ export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 
+export PATH="/usr/local/opt/qt/bin:$PATH"
+
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
 

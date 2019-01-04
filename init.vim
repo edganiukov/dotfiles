@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
-Plug 'danilo-augusto/vim-afterglow'
 " Basic
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -336,12 +335,15 @@ let g:echodoc#type='signature'
 " Plug 'autozimu/LanguageClient-neovim'
 "
 " https://github.com/sourcegraph/go-langserver
+" \ 'go': ['go-langserver', '--gocodecompletion', '--diagnostics'],
+" https://github.com/saibing/bing://github.com/saibing/bingo
+ " \ 'go': ['bingo', '--mode', 'stdio'],
 " https://github.com/cquery-project/cquery
 " https://github.com/rust-lang/rls
 " https://github.com/palantir/python-language-server
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
 let g:LanguageClient_serverCommands={
-    \ 'go': ['go-langserver', '-gocodecompletion', '-diagnostics'],
+    \ 'go': ['bingo', '--mode', 'stdio'],
     \ 'c': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
     \ 'cpp': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
