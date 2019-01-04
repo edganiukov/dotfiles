@@ -21,10 +21,12 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 " Completion
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-vim-lsp'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
@@ -77,9 +79,9 @@ set cursorline
 set pastetoggle=<F2>
 set nopaste
 " copy to the system clipboard
-set clipboard=unnamedplus 
+set clipboard=unnamedplus
 " set clipboard=unnamed
-"
+
 set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
@@ -108,22 +110,34 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-" mappings
+" yank to EOL
 nnoremap Y y$
+" delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+" replace currently selected text with default register without yanking it
+vnoremap <leader>p "_dP"
+
 noremap j gj
 noremap k gk
+
+" indent
+nmap < <<
+nmap > >>
+vnoremap < <gv
+vnoremap > >gv
 
 nnoremap <F10> :set list!<CR>
 inoremap <F10> <Esc>:set list!<CR>a
 
 nnoremap <leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
-nnoremap <leader>a :cclose<CR>
-nnoremap <silent> qq :q<CR>
 inoremap jj <Esc>
 
-" close preview-window
-nnoremap <silent> qp <C-w><C-z>
+" close quickfix window
+nnoremap <silent>qc :cclose<CR>
+" close preview window
+nnoremap <silent>qp <C-w><C-z>
 
 " buffers switch
 nnoremap bn :bn!<CR>
@@ -131,7 +145,7 @@ nnoremap bm :bp!<CR>
 
 " quickfix switch
 map <C-n> :cp!<CR>
-map <C-m> :cm!<CR>
+map <C-m> :cn!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
@@ -150,24 +164,12 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
-" indent
-nmap < <<
-nmap > >>
-vnoremap < <gv
-vnoremap > >gv
-
-" delete without yanking
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
-
-" replace currently selected text with default register without yanking it
-vnoremap <leader>p "_dP"
-
 hi ExtraWhitespace ctermbg=LightGrey
 match ExtraWhitespace /\s\+$/
 
 hi clear SpellBad
 hi SpellBad cterm=underline
+
 
 " Plug 'mhinz/vim-signify'
 "
@@ -190,6 +192,7 @@ let g:signify_sign_changedelete=g:signify_sign_change
 "
 nnoremap <leader>c :CalendarH<CR>
 
+
 " Plug 'tpope/vim-markdown'
 "
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -211,6 +214,7 @@ let g:vim_markdown_folding_style_pythonic=1
 let g:tex_conceal=""
 let g:vim_markdown_math=1
 let g:vim_markdown_new_list_item_indent=2
+
 
 " Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
@@ -273,6 +277,7 @@ endfunction
 nnoremap <C-o> :Ag<CR>
 nnoremap <C-p> :FZF<CR>
 
+
 " Plug 'itchyny/lightline'
 "
 let g:bufferline_echo=0
@@ -318,6 +323,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "
 let g:magit_commit_title_limit=80
 
+
 " Plug 'ncm2/ncm2'
 "
 autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -327,88 +333,105 @@ inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+
 " Plug 'Shougo/echodoc.vim'
 "
 let g:echodoc#enable_at_startup=1
 let g:echodoc#type='signature'
 
-" Plug 'autozimu/LanguageClient-neovim'
+" Plug 'prabirshrestha/vim-lsp'
 "
 " https://github.com/sourcegraph/go-langserver
 " \ 'go': ['go-langserver', '--gocodecompletion', '--diagnostics'],
 " https://github.com/saibing/bing://github.com/saibing/bingo
  " \ 'go': ['bingo', '--mode', 'stdio'],
-" https://github.com/cquery-project/cquery
-" https://github.com/rust-lang/rls
+if executable('bingo')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->['bingo', '--mode=stdio']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
 " https://github.com/palantir/python-language-server
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+" https://github.com/rust-lang/rls
+if executable('rls')
+    " https://github.com/rust-lang/rls
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+
+" https://github.com/cquery-project/cquery
+if executable('cquery')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'cquery',
+        \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
+        \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
+        \ 'whitelist': ['c', 'cpp'],
+        \ })
+endif
+
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-let g:LanguageClient_serverCommands={
-    \ 'go': ['bingo', '--mode', 'stdio'],
-    \ 'c': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
-    \ 'cpp': ['cquery', '--init={"cacheDirectory": "/tmp/cquery"}'],
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['pyls'],
-    \ 'java': ['/usr/local/bin/jdt-ls',
-        \ '--add-modules=ALL-SYSTEM',
-        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-        \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-        \ ],
-    \ }
+if executable('jdt-ls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'jdt-ls',
+        \ 'cmd': {server_info->['jdt-ls',
+            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
+            \ '--add-modules=ALL-SYSTEM ', 
+            \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
+            \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
+        \ 'whitelist': ['java'],
+        \ })
+endif
 
-let g:LanguageClient_rootMarkers={
-    \ 'go': ['Gopkg.toml', 'go.mod'],
-    \ 'cpp': ['.cquery', '.ccls'],
-    \ 'c': ['.cquery', '.ccls'],
-    \ 'rust': ['Cargo.toml'],
-    \ 'java': ['pom.xml', 'build.gradle'],
-    \ }
+let g:lsp_preview_keep_focus=0
+let g:lsp_signs_enabled=1
+let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_signs_error={'text': '✗'}
+let g:lsp_signs_warning={'text': '✗' }
+let g:lsp_signs_information={'text': '➤' }
+let g:lsp_signs_hint={'text': '➤'}
 
-let g:LanguageClient_selectionUI="fzf"
-let g:LanguageClient_diagnosticsDisplay={
-    \ 1: {
-        \ "name": "Error",
-        \ "texthl": "ALEError",
-        \ "signText": "✗",
-        \ "signTexthl": "ALEErrorSign",
-        \},
-    \ 2: { 
-        \ "name": "Warning",
-        \ "texthl": "ALEWarning",
-        \ "signText": "✗",
-        \ "signTexthl": "ALEWarningSign",
-        \ },
-    \ 3: {
-        \ "name": "Information",
-        \ "texthl": "ALEInfo",
-        \ "signText": "➤",
-        \ "signTexthl": "ALEInfoSign",
-        \},
-    \ 4: {
-        \ "name": "Hint",
-        \ "texthl": "ALEInfo",
-        \ "signText": "➤",
-        \ "signTexthl": "ALEInfoSign",
-        \},
-    \ }
+" requires https://github.com/morhetz/gruvbox
+highlight link LspErrorText GruvboxRedSign
+highlight link LspWarningText GruvboxYellowSign
+highlight link LspInformationText GruvboxYellowSign
+highlight link LspHintText GruvboxGreenSign
 
-let g:LanguageClient_loggingLevel='INFO'
-let g:LanguageClient_loggingFile='/tmp/lsp.log'
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gtd :LspTypeDefinition<CR>
+nnoremap <silent> gr :LspRename<CR>
+nnoremap <silent> gf :LspDocumentFormat<CR>
+nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gx :LspReferences<CR>
+nnoremap <silent> gh :LspHover<CR>
+nnoremap <silent> gs :LspDocumentSymbol<CR>
 
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
-nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
-nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
-nnoremap <silent> ga :call LanguageClient_workspace_applyEdit()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
-nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
+" debug
+let g:lsp_log_verbose=0
+let g:lsp_log_file=expand('/tmp/lsp.log')
+
 
 " Plug 'rust-lang/rust.vim'
 "
 let g:rustfmt_autosave=1
-
 au FileType rust nnoremap gt :RustTest<CR>
+
 
 " Plug 'rhysd/vim-clang-format'
 "
@@ -421,8 +444,8 @@ let g:clang_format#auto_format=1
 let g:ansible_unindent_after_newline=1
 let g:ansible_name_highlight='d'
 let g:ansible_extra_keywords_highlight=0
-
 au FileType yaml setlocal sw=2 sts=2 ts=2
+
 
 " Plug 'fatih/vim-go'
 "
@@ -460,9 +483,8 @@ au FileType go nmap gdv <Plug>(go-def-vertical)
 " au FileType go nmap gd <Plug>(go-def)
 
 au FileType go set noexpandtab
-
-au! BufRead,BufNewFile *.toml setlocal filetype=conf
 au FileType make setlocal noexpandtab
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2 fileformat=unix
 au FileType gitcommit setlocal spell tw=80
+au! BufRead,BufNewFile *.toml setlocal filetype=conf
