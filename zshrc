@@ -5,6 +5,7 @@ export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export EDITOR=nvim
+export WINIT_HIDPI_FACTOR=1
 
 export PATH="/usr/local/opt/qt/bin:$PATH"
 

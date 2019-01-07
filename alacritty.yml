@@ -102,10 +102,6 @@ font:
     x: 0
     y: 0
 
-  # Scale the font size based on the monitor's DPI. This will lead to bigger
-  # text on HiDPI screens and make reading text a little easier.
-  scale_with_dpi: true
-
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
@@ -113,10 +109,6 @@ font:
 
 # Should display the render timer
 render_timer: false
-
-# Use custom cursor colors. If true, display the cursor in the cursor.foreground
-# and cursor.background colors, otherwise invert the colors of the cursor.
-custom_cursor_colors: false
 
 # Colors (Tomorrow Night Bright)
 colors:
@@ -240,28 +232,29 @@ mouse:
     # on them. The available modifiers are documented in the key binding section.
     modifiers: Control
 
+  hide_cursor_when_typing: false
+
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
-  save_to_clipboard: true
+  save_to_clipboard: false
 
 # titlebar is disabled
 # dynamic_title: true
 
-hide_cursor_when_typing: false
+cursor:
+  # If this is `true`, the cursor will be rendered as a hollow box when the
+  # window is not focused.
+  unfocused_hollow_cursor: true
 
-# Cursor style
-#
-# Values for 'cursor_style':
-# - Block
-# - Underline
-# - Beam
-cursor_style: Block
-
-# If this is `true`, the cursor will be rendered as a hollow box when the
-# window is not focused.
-unfocused_hollow_cursor: true
+  # Cursor style
+  #
+  # Values for 'cursor_style':
+  # - Block
+  # - Underline
+  # - Beam
+  style: Block
 
 # Live config reload (changes require restart)
 live_config_reload: true

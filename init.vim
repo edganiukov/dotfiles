@@ -82,8 +82,8 @@ set nopaste
 set clipboard=unnamedplus
 " set clipboard=unnamed
 
-" set list
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+" set list
 
 " Vim formatting options
 set wrap
@@ -110,13 +110,20 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-" yank to EOL
+" yank to the EOL
 nnoremap Y y$
 " delete without yanking
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 " replace currently selected text with default register without yanking it
 vnoremap <leader>p "_dP"
+
+" quotes
+vnoremap <Leader>q" di""<Esc>P
+vnoremap <Leader>q' di''<Esc>P
+vnoremap <Leader>q( di()<Esc>P
+vnoremap <Leader>q[ di[]<Esc>P
+vnoremap <Leader>q{ di{}<Esc>P
 
 noremap j gj
 noremap k gk
@@ -164,12 +171,8 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
-hi ExtraWhitespace ctermbg=LightGrey
-match ExtraWhitespace /\s\+$/
-
 hi clear SpellBad
 hi SpellBad cterm=underline
-
 
 " Plug 'mhinz/vim-signify'
 "
@@ -329,6 +332,11 @@ let g:magit_commit_title_limit=80
 autocmd BufEnter * call ncm2#enable_for_buffer()
 imap <leader>f <Plug>(ncm2_manual_trigger)
 
+call ncm2#override_source('bingo', {'filter': {'name':'substitute',
+    \ 'pattern': '\(.*\)$',
+    \ 'replace': '',
+    \ 'key': 'word'}})
+
 inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
@@ -349,9 +357,8 @@ let g:echodoc#type='signature'
  " \ 'go': ['bingo', '--mode', 'stdio'],
 if executable('bingo')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
+        \ 'name': 'bingo',
         \ 'cmd': {server_info->['bingo', '--mode=stdio']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Gopkg.toml'))},
         \ 'whitelist': ['go'],
         \ })
 endif
