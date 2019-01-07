@@ -330,18 +330,21 @@ let g:magit_commit_title_limit=80
 " Plug 'ncm2/ncm2'
 "
 autocmd BufEnter * call ncm2#enable_for_buffer()
-imap <leader>f <Plug>(ncm2_manual_trigger)
+let g:ncm2#sorter='none'
 
+" For bingo language server insert only method/variable name. 
 call ncm2#override_source('bingo', {'filter': {'name':'substitute',
-    \ 'pattern': '\(.*\)$',
-    \ 'replace': '',
+    \ 'pattern': '^([a-zA-Z0-9_]+).*',
+    \ 'replace': '\1',
     \ 'key': 'word'}})
 
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+imap <leader>f <Plug>(ncm2_manual_trigger)
 inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 " Plug 'Shougo/echodoc.vim'
