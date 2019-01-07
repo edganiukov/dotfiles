@@ -480,7 +480,7 @@ let g:go_addtags_transform="camelcase"
 
 let go_def_mapping_enabled=0
 let g:go_def_mode="godef"
-let g:go_info_mode="gocode"
+let g:go_info_mode="guru"
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
