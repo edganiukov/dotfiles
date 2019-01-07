@@ -124,6 +124,11 @@ vnoremap <Leader>q' di''<Esc>P
 vnoremap <Leader>q( di()<Esc>P
 vnoremap <Leader>q[ di[]<Esc>P
 vnoremap <Leader>q{ di{}<Esc>P
+vnoremap <Leader>q< di<><Esc>P
+
+" semicolon in the EOL
+nnoremap ;; A;<Esc>
+inoremap ;; <C-o>A;
 
 noremap j gj
 noremap k gk
@@ -355,13 +360,13 @@ let g:echodoc#type='signature'
 " Plug 'prabirshrestha/vim-lsp'
 "
 " https://github.com/sourcegraph/go-langserver
-" \ 'go': ['go-langserver', '--gocodecompletion', '--diagnostics'],
-" https://github.com/saibing/bing://github.com/saibing/bingo
- " \ 'go': ['bingo', '--mode', 'stdio'],
-if executable('bingo')
+" \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
+" https://github.com/saibing/bingo
+" \ 'cmd': {server_info->['bingo', '--mode=stdio']},
+if executable('go-langserver')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'bingo',
-        \ 'cmd': {server_info->['bingo', '--mode=stdio']},
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
         \ 'whitelist': ['go'],
         \ })
 endif
