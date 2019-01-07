@@ -426,6 +426,8 @@ highlight link LspInformationText GruvboxYellowSign
 highlight link LspHintText GruvboxGreenSign
 
 nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
+nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
@@ -490,12 +492,12 @@ au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 
 au FileType go nmap <leader>gd <Plug>(go-doc)
-au FileType go nmap gds <Plug>(go-def-split)
-au FileType go nmap gdv <Plug>(go-def-vertical)
 
-" replaced with LSP
+" replaced with vim-lsp
 " au FileType go nmap gr <Plug>(go-rename)
 " au FileType go nmap gd <Plug>(go-def)
+" au FileType go nmap gds <Plug>(go-def-split)
+" au FileType go nmap gdv <Plug>(go-def-vertical)
 
 au FileType go set noexpandtab
 au FileType make setlocal noexpandtab
