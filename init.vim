@@ -302,9 +302,6 @@ let g:lightline={
             \ ['fileformat', 'fileencoding', 'filetype']
         \ ]
     \ },
-    \ 'component_function': {
-        \ 'fugitive': 'fugitive#head',
-        \ },
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': ':', 'right': ':' },
     \ }
@@ -351,7 +348,6 @@ inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 
-
 " Plug 'Shougo/echodoc.vim'
 "
 let g:echodoc#enable_at_startup=1
@@ -361,68 +357,55 @@ let g:echodoc#type='signature'
 "
 " https://github.com/sourcegraph/go-langserver
 " \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
-" https://github.com/saibing/bingo
-" \ 'cmd': {server_info->['bingo', '--mode=stdio']},
-if executable('go-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'gols',
+    \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
+    \ 'whitelist': ['go'],
+    \ })
 
 " https://github.com/palantir/python-language-server
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls',
+    \ 'cmd': {server_info->['pyls']},
+    \ 'whitelist': ['python'],
+    \ })
 
 " https://github.com/rust-lang/rls
-if executable('rls')
-    " https://github.com/rust-lang/rls
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'rls',
+    \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
+    \ 'whitelist': ['rust'],
+    \ })
 
 " https://github.com/cquery-project/cquery
-if executable('cquery')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'cquery',
-        \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
-        \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
-        \ 'whitelist': ['c', 'cpp'],
-        \ })
-endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'cls',
+    \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
+    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
+    \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
+    \ 'whitelist': ['c', 'cpp'],
+    \ })
 
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-if executable('jdt-ls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'jdt-ls',
-        \ 'cmd': {server_info->['jdt-ls',
-            \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
-            \ '--add-modules=ALL-SYSTEM ', 
-            \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
-            \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
-        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
-        \ 'whitelist': ['java'],
-        \ })
-endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'jdtls',
+    \ 'cmd': {server_info->['jdt-ls',
+        \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
+        \ '--add-modules=ALL-SYSTEM ', 
+        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
+        \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
+    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
+    \ 'whitelist': ['java'],
+    \ })
 
 let g:lsp_preview_keep_focus=0
 let g:lsp_signs_enabled=1
 let g:lsp_diagnostics_echo_cursor=1
-let g:lsp_signs_error={'text': '✗'}
-let g:lsp_signs_warning={'text': '✗' }
-let g:lsp_signs_information={'text': '➤' }
-let g:lsp_signs_hint={'text': '➤'}
+let g:lsp_signs_error={ 'text': '✗' }
+let g:lsp_signs_warning={ 'text': '✗' }
+let g:lsp_signs_information={ 'text': '➤' }
+let g:lsp_signs_hint={ 'text': '➤' }
 
 " requires https://github.com/morhetz/gruvbox
 highlight link LspErrorText GruvboxRedSign
@@ -478,7 +461,7 @@ let g:go_highlight_build_constraints=0
 let g:go_disable_autoinstall=0
 let g:go_fmt_fail_silently=1
 let g:go_auto_sameids=0
-let g:go_auto_type_info = 0
+let g:go_auto_type_info=0
 
 let g:go_decls_included="type,func"
 let g:go_fmt_command="goimports"
@@ -495,14 +478,14 @@ au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
-
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
+
 " replaced with vim-lsp
-" au FileType go nmap gr <Plug>(go-rename)
 " au FileType go nmap gd <Plug>(go-def)
 " au FileType go nmap gds <Plug>(go-def-split)
 " au FileType go nmap gdv <Plug>(go-def-vertical)
+" au FileType go nmap gr <Plug>(go-rename)
 
 au FileType go set noexpandtab
 au FileType make setlocal noexpandtab
