@@ -14,6 +14,7 @@ Plug 'mattn/calendar-vim'
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
+Plug 'tpope/vim-fugitive'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'fatih/vim-go', {'for': 'go'}
@@ -301,7 +302,7 @@ let g:lightline={
     \ 'active': {
         \ 'left': [
             \ ['mode', 'paste'],
-            \ ['readonly', 'absolutepath', 'modified']
+            \ ['readonly', 'filename', 'modified']
         \ ],
         \ 'right': [
             \ ['lineinfo'],
@@ -309,9 +310,21 @@ let g:lightline={
             \ ['fileformat', 'fileencoding', 'filetype']
         \ ]
     \ },
+    \ 'component_function': {
+        \   'filename': 'LightlineFilename',
+        \ },
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': ':', 'right': ':' },
     \ }
+
+function! LightlineFilename()
+    let root = fnamemodify(get(b:, 'git_dir'), ':h')
+    let path = expand('%:p')
+    if path[:len(root)-1] ==# root
+        return path[len(root)+1:]
+    endif
+    return expand('%')
+endfunction
 
 
 " Plug 'scrooloose/nerdtree'
