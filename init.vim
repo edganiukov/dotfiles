@@ -82,8 +82,8 @@ set nopaste
 set clipboard=unnamedplus
 " set clipboard=unnamed
 
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
-" set list
+set listchars=tab:→\ ,nbsp:·,trail:·
+set nolist
 
 " Vim formatting options
 set wrap
@@ -176,8 +176,15 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
+" insert current date
+:nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
+:inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
+
 hi clear SpellBad
 hi SpellBad cterm=underline
+
+" trailing whitespaces
+match ErrorMsg '\s\+$'
 
 " Plug 'mhinz/vim-signify'
 "
@@ -217,7 +224,7 @@ let g:vim_markdown_fenced_languages=[
     \ 'yaml',
     \ ]
 
-let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_folding_disabled=0
 let g:vim_markdown_folding_style_pythonic=1
 let g:tex_conceal=""
 let g:vim_markdown_math=1
@@ -294,7 +301,7 @@ let g:lightline={
     \ 'active': {
         \ 'left': [
             \ ['mode', 'paste'],
-            \ ['fugitive', 'readonly', 'filename', 'modified']
+            \ ['readonly', 'absolutepath', 'modified']
         \ ],
         \ 'right': [
             \ ['lineinfo'],
@@ -335,7 +342,7 @@ autocmd BufEnter * call ncm2#enable_for_buffer()
 let g:ncm2#sorter='none'
 
 " For bingo language server insert only method/variable name. 
-call ncm2#override_source('bingo', {'filter': {'name':'substitute',
+call ncm2#override_source('golsp', {'filter': {'name':'substitute',
     \ 'pattern': '^([a-zA-Z0-9_]+).*',
     \ 'replace': '\1',
     \ 'key': 'word'}})
@@ -355,11 +362,13 @@ let g:echodoc#type='signature'
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-" https://github.com/sourcegraph/go-langserver
-" \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
+" https://github.com/sourcegraph/go-langserver: 
+"   ['go-langserver', '--gocodecompletion', '--diagnostics']
+" https://github.com/saibing/bingo:
+"   ['bingo', '--mode', 'stdio']
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'gols',
-    \ 'cmd': {server_info->['go-langserver', '--gocodecompletion', '--diagnostics']},
+    \ 'name': 'golsp',
+    \ 'cmd': {server_info->['bingo', '--mode', 'stdio']},
     \ 'whitelist': ['go'],
     \ })
 
