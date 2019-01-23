@@ -8,7 +8,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
-Plug 'jiangmiao/auto-pairs'
+Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 " Git
@@ -311,7 +311,7 @@ let g:lightline={
         \ ]
     \ },
     \ 'component_function': {
-        \   'filename': 'LightlineFilename',
+        \ 'filename': 'LightlineFilename',
         \ },
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': ':', 'right': ':' },
@@ -343,6 +343,10 @@ let g:NERDTreeWinSize=40
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Plug 'tmsvg/pear-tree'
+"
+" Pair expansion is dot-repeatable by default:
+let g:pear_tree_repeatable_expand=0
 
 " Plug 'jreybert/vimagit'
 "
@@ -355,7 +359,7 @@ autocmd BufEnter * call ncm2#enable_for_buffer()
 let g:ncm2#sorter='none'
 
 " For bingo language server insert only method/variable name. 
-call ncm2#override_source('golsp', {'filter': {'name':'substitute',
+call ncm2#override_source('go', {'filter': {'name':'substitute',
     \ 'pattern': '^([a-zA-Z0-9_]+).*',
     \ 'replace': '\1',
     \ 'key': 'word'}})
@@ -375,26 +379,26 @@ let g:echodoc#type='signature'
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-" https://github.com/sourcegraph/go-langserver: 
+" https://github.com/sourcegraph/go-langserver:
 "   ['go-langserver', '--gocodecompletion', '--diagnostics']
 " https://github.com/saibing/bingo:
 "   ['bingo', '--mode', 'stdio']
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'golsp',
+    \ 'name': 'go',
     \ 'cmd': {server_info->['bingo', '--mode', 'stdio']},
     \ 'whitelist': ['go'],
     \ })
 
 " https://github.com/palantir/python-language-server
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls',
+    \ 'name': 'python',
     \ 'cmd': {server_info->['pyls']},
     \ 'whitelist': ['python'],
     \ })
 
 " https://github.com/rust-lang/rls
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'rls',
+    \ 'name': 'rust',
     \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
     \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
     \ 'whitelist': ['rust'],
@@ -402,7 +406,7 @@ au User lsp_setup call lsp#register_server({
 
 " https://github.com/cquery-project/cquery
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'cls',
+    \ 'name': 'cpp',
     \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
     \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
@@ -411,13 +415,12 @@ au User lsp_setup call lsp#register_server({
 
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'jdtls',
+    \ 'name': 'java',
     \ 'cmd': {server_info->['jdt-ls',
-        \ '-data', lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml')),
-        \ '--add-modules=ALL-SYSTEM ', 
-        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED', 
+        \ '-data', '/tmp/jdtls-workspace',
+        \ '--add-modules=ALL-SYSTEM ',
+        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED',
         \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
-    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pom.xml'))},
     \ 'whitelist': ['java'],
     \ })
 
