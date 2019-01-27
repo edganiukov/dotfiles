@@ -345,7 +345,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Plug 'tmsvg/pear-tree'
 "
-" Pair expansion is dot-repeatable by default:
 let g:pear_tree_repeatable_expand=0
 
 " Plug 'jreybert/vimagit'
@@ -407,20 +406,19 @@ au User lsp_setup call lsp#register_server({
 " https://github.com/cquery-project/cquery
 au User lsp_setup call lsp#register_server({
     \ 'name': 'cpp',
-    \ 'cmd': {server_info->['cquery', '--log-file=/tmp/cq.log']},
+    \ 'cmd': {server_info->['cquery']},
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
-    \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
+    \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
     \ 'whitelist': ['c', 'cpp'],
     \ })
 
 " https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
+" \ '-data', expand('~/.cache/jdtls-workspace'),
 au User lsp_setup call lsp#register_server({
     \ 'name': 'java',
     \ 'cmd': {server_info->['jdt-ls',
-        \ '-data', '/tmp/jdtls-workspace',
-        \ '--add-modules=ALL-SYSTEM ',
-        \ '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-        \ '--add-opens', 'java.base/java.lang=ALL-UNNAMED']},
+        \ '-data', expand('~/work/javaspace'),
+        \ ]},
     \ 'whitelist': ['java'],
     \ })
 
@@ -450,7 +448,7 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspDocumentSymbol<CR>
 
 " debug
-let g:lsp_log_verbose=0
+let g:lsp_log_verbose=1
 let g:lsp_log_file=expand('/tmp/lsp.log')
 
 
