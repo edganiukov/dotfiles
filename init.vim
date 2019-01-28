@@ -25,9 +25,8 @@ Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 " Completion
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
@@ -99,6 +98,9 @@ set nojoinspaces
 set splitright
 set splitbelow
 set encoding=utf-8
+
+" suppress the annoying 'match x of y', 'The only match', etc.
+set shortmess+=c
 
 " abbreviations
 cnoreabbrev W! w!
@@ -352,53 +354,53 @@ let g:pear_tree_repeatable_expand=0
 let g:magit_commit_title_limit=80
 
 
-" Plug 'ncm2/ncm2'
+" Plug 'prabirshrestha/asyncomplete.vim'
 "
-autocmd BufEnter * call ncm2#enable_for_buffer()
-let g:ncm2#sorter='none'
+let g:asyncomplete_auto_popup=1
+let g:asyncomplete_remove_duplicates=1
 
-" For bingo language server insert only method/variable name. 
-call ncm2#override_source('go', {'filter': {'name':'substitute',
-    \ 'pattern': '^([a-zA-Z0-9_]+).*',
-    \ 'replace': '\1',
-    \ 'key': 'word'}})
+imap <leader>f <Plug>(asyncomplete_force_refresh)
+
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-imap <leader>f <Plug>(ncm2_manual_trigger)
-inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-
-
 " Plug 'Shougo/echodoc.vim'
 "
-let g:echodoc#enable_at_startup=1
-let g:echodoc#type='signature'
+let g:echodoc_enable_at_startup=1
+let g:echodoc#type='virtual'
 
 " Plug 'prabirshrestha/vim-lsp'
 "
 " https://github.com/sourcegraph/go-langserver:
-"   ['go-langserver', '--gocodecompletion', '--diagnostics']
+" \ 'go-langserver', '--gocodecompletion', '--diagnostics'
 " https://github.com/saibing/bingo:
-"   ['bingo', '--mode', 'stdio']
+" \ 'bingo', '--mode', 'stdio'
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
-    \ 'cmd': {server_info->['bingo', '--mode', 'stdio']},
+    \ 'cmd': {server_info->[
+        \ 'go-langserver', '--gocodecompletion', '--diagnostics'
+    \ ]},
     \ 'whitelist': ['go'],
     \ })
 
 " https://github.com/palantir/python-language-server
 au User lsp_setup call lsp#register_server({
     \ 'name': 'python',
-    \ 'cmd': {server_info->['pyls']},
+    \ 'cmd': {server_info->[
+        \'pyls'
+        \]},
     \ 'whitelist': ['python'],
     \ })
 
 " https://github.com/rust-lang/rls
 au User lsp_setup call lsp#register_server({
     \ 'name': 'rust',
-    \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+    \ 'cmd': {server_info->[
+        \ 'rustup', 'run', 'stable', 'rls'
+        \ ]},
     \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
     \ 'whitelist': ['rust'],
     \ })
@@ -406,7 +408,9 @@ au User lsp_setup call lsp#register_server({
 " https://github.com/cquery-project/cquery
 au User lsp_setup call lsp#register_server({
     \ 'name': 'cpp',
-    \ 'cmd': {server_info->['cquery']},
+    \ 'cmd': {server_info->[
+        \ 'cquery'
+        \ ]},
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
     \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
     \ 'whitelist': ['c', 'cpp'],
@@ -416,8 +420,8 @@ au User lsp_setup call lsp#register_server({
 " \ '-data', expand('~/.cache/jdtls-workspace'),
 au User lsp_setup call lsp#register_server({
     \ 'name': 'java',
-    \ 'cmd': {server_info->['jdt-ls',
-        \ '-data', expand('~/work/javaspace'),
+    \ 'cmd': {server_info->[
+        \ 'jdt-ls', '-data', expand('~/work/javaspace'),
         \ ]},
     \ 'whitelist': ['java'],
     \ })
@@ -491,9 +495,11 @@ let g:go_fmt_command="goimports"
 let g:go_snippet_case_type="camelcase"
 let g:go_addtags_transform="camelcase"
 
-let go_def_mapping_enabled=0
+let g:go_def_mapping_enabled=0
 let g:go_def_mode="godef"
 let g:go_info_mode="guru"
+" replaced with 'Shougo/echodoc.vim'
+let g:go_echo_go_info=0
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
