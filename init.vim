@@ -14,16 +14,15 @@ Plug 'mattn/calendar-vim'
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
-Plug 'tpope/vim-fugitive'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'pearofducks/ansible-vim', {'for': 'ansible'}
+Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025adb9'}
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -47,7 +46,7 @@ set tm=500
 set gcr=a:blinkon0
 
 set autoread
-set completeopt=menu,menuone,noinsert,noselect
+set completeopt=longest,menu,menuone,noinsert,noselect
 
 set ignorecase
 set smartcase
@@ -87,7 +86,7 @@ set nolist
 
 " Vim formatting options
 set wrap
-set formatoptions=qrn1
+set formatoptions=qrn1j
 set autoindent
 set shiftwidth=4
 set shiftround
@@ -238,62 +237,16 @@ let g:vim_markdown_new_list_item_indent=2
 " Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 "
 set rtp+=/usr/local/opt/fzf
-
 let g:fzf_layout={ 'down': '~40%' }
-let g:fzf_colors={
-    \ 'fg':      ['fg', 'Normal'],
-    \ 'bg':      ['bg', 'Normal'],
-    \ 'hl':      ['fg', 'Comment'],
-    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment']
-    \ }
 
-" https://github.com/ggreer/the_silver_searcher
-command! -nargs=* Ag call fzf#run({
-    \ 'source':  printf('ag --nogroup --column --color "%s"',
-    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-    \ 'sink*':    function('<sid>ag_handler'),
-    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-    \            '--color hl:68,hl+:110',
-    \ 'down':    '50%'
-    \ })
-
-function! s:ag_to_qf(line)
-    let parts=split(a:line, ':')
-    return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:ag_handler(lines)
-    if len(a:lines) < 2 | return | endif
-
-    let cmd=get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-    let list=map(a:lines[1:], 's:ag_to_qf(v:val)')
-
-    let first=list[0]
-    execute cmd escape(first.filename, ' %#\')
-    execute first.lnum
-    execute 'normal!' first.col.'|zz'
-
-    if len(list) > 1
-        call setqflist(list)
-        copen
-        wincmd p
-    endif
-endfunction
-
-nnoremap <C-o> :Ag<CR>
+" https://github.com/BurntSushi/ripgrep
+nnoremap s :Rg<CR>
+nnoremap <C-o> :Rg<CR>
 nnoremap <C-p> :FZF<CR>
+nnoremap ; :Buffers<CR>
+nnoremap f :Files<CR>
+nnoremap T :Tags<CR>
+nnoremap t :BTags<CR>
 
 
 " Plug 'itchyny/lightline'
@@ -369,8 +322,8 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plug 'Shougo/echodoc.vim'
 "
-let g:echodoc_enable_at_startup=1
-let g:echodoc#type='virtual'
+let g:echodoc#enable_at_startup=1
+let g:echodoc#type='echo'
 
 " Plug 'prabirshrestha/vim-lsp'
 "
@@ -378,10 +331,11 @@ let g:echodoc#type='virtual'
 " \ 'go-langserver', '--gocodecompletion', '--diagnostics'
 " https://github.com/saibing/bingo:
 " \ 'bingo', '--mode', 'stdio'
+" \ 'gopls', 'serve'
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->[
-        \ 'go-langserver', '--gocodecompletion', '--diagnostics'
+        \ 'bingo', '--mode', 'stdio'
     \ ]},
     \ 'whitelist': ['go'],
     \ })
@@ -416,19 +370,13 @@ au User lsp_setup call lsp#register_server({
     \ 'whitelist': ['c', 'cpp'],
     \ })
 
-" https://raw.githubusercontent.com/edganiukov/homebrew-jdt-ls/master/jdt-ls.rb
-" \ '-data', expand('~/.cache/jdtls-workspace'),
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'java',
-    \ 'cmd': {server_info->[
-        \ 'jdt-ls', '-data', expand('~/work/javaspace'),
-        \ ]},
-    \ 'whitelist': ['java'],
-    \ })
-
+let g:lsp_auto_enable=1
 let g:lsp_preview_keep_focus=0
+let g:lsp_diagnostics_enabled=1
 let g:lsp_signs_enabled=1
 let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_virtual_text_enabled=0
+
 let g:lsp_signs_error={ 'text': '✗' }
 let g:lsp_signs_warning={ 'text': '✗' }
 let g:lsp_signs_information={ 'text': '➤' }
@@ -499,7 +447,7 @@ let g:go_def_mapping_enabled=0
 let g:go_def_mode="godef"
 let g:go_info_mode="guru"
 " replaced with 'Shougo/echodoc.vim'
-let g:go_echo_go_info=0
+let g:go_echo_go_info=1
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
@@ -516,9 +464,11 @@ au FileType go nmap <leader>gd <Plug>(go-doc)
 " au FileType go nmap gdv <Plug>(go-def-vertical)
 " au FileType go nmap gr <Plug>(go-rename)
 
-au FileType go set noexpandtab
+au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2 fileformat=unix
 au FileType gitcommit setlocal spell tw=80
-au! BufRead,BufNewFile *.toml setlocal filetype=conf
+
+au BufRead,BufNewFile *.toml setlocal filetype=conf
+au BufRead,BufNewFile *.yml.j2 setlocal filetype=yaml

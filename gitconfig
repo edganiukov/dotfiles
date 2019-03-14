@@ -7,7 +7,7 @@
 [commit]
     gpgsign = true
 [push]
-    default = matching
+    default = simple
 [http "https://gopkg.in"]
     followRedirects = true
 [url "git@github.com:"]
