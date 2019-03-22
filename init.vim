@@ -16,11 +16,9 @@ Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'zchee/vim-go-slide'
 Plug 'edganiukov/vim-go-lite', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
-Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025adb9'}
@@ -332,7 +330,7 @@ let g:echodoc#type='echo'
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->[
-        \ 'gopls', 'serve'
+        \ 'bingo', '--mode', 'stdio'
     \ ]},
     \ 'whitelist': ['go'],
     \ })
@@ -391,6 +389,7 @@ nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
+nnoremap <silent> grf :LspDocumentRangeFormat<CR>
 nnoremap <silent> ga :LspCodeAction<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
@@ -423,12 +422,6 @@ au FileType yaml setlocal sw=2 sts=2 ts=2
 
 " Plug 'fatih/vim-go'
 "
-let g:go_highlight_functions=1
-let g:go_highlight_methods=1
-let g:go_highlight_structs=1
-let g:go_highlight_operators=1
-let g:go_highlight_interfaces=1
-let g:go_highlight_build_constraints=1
 let g:go_disable_autoinstall=0
 let g:go_fmt_fail_silently=1
 let g:go_fmt_command="goimports"
