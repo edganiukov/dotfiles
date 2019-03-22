@@ -16,7 +16,8 @@ Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'zchee/vim-go-slide'
+Plug 'edganiukov/vim-go-lite', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
@@ -26,7 +27,6 @@ Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025a
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
@@ -123,6 +123,7 @@ vnoremap <leader>p "_dP"
 " quotes
 vnoremap <Leader>q" di""<Esc>P
 vnoremap <Leader>q' di''<Esc>P
+vnoremap <Leader>q` di``<Esc>P
 vnoremap <Leader>q( di()<Esc>P
 vnoremap <Leader>q[ di[]<Esc>P
 vnoremap <Leader>q{ di{}<Esc>P
@@ -240,13 +241,9 @@ set rtp+=/usr/local/opt/fzf
 let g:fzf_layout={ 'down': '~40%' }
 
 " https://github.com/BurntSushi/ripgrep
-nnoremap s :Rg<CR>
-nnoremap <C-o> :Rg<CR>
-nnoremap <C-p> :FZF<CR>
-nnoremap ; :Buffers<CR>
-nnoremap f :Files<CR>
-nnoremap T :Tags<CR>
-nnoremap t :BTags<CR>
+nnoremap <leader>s :Rg<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>f :Files<CR>
 
 
 " Plug 'itchyny/lightline'
@@ -335,7 +332,7 @@ let g:echodoc#type='echo'
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->[
-        \ 'bingo', '--mode', 'stdio'
+        \ 'gopls', 'serve'
     \ ]},
     \ 'whitelist': ['go'],
     \ })
@@ -426,43 +423,25 @@ au FileType yaml setlocal sw=2 sts=2 ts=2
 
 " Plug 'fatih/vim-go'
 "
-let g:go_highlight_functions=0
-let g:go_highlight_methods=0
-let g:go_highlight_structs=0
-let g:go_highlight_operators=0
-let g:go_highlight_interfaces=0
-let g:go_highlight_build_constraints=0
-
+let g:go_highlight_functions=1
+let g:go_highlight_methods=1
+let g:go_highlight_structs=1
+let g:go_highlight_operators=1
+let g:go_highlight_interfaces=1
+let g:go_highlight_build_constraints=1
 let g:go_disable_autoinstall=0
 let g:go_fmt_fail_silently=1
-let g:go_auto_sameids=0
-let g:go_auto_type_info=0
-
-let g:go_decls_included="type,func"
 let g:go_fmt_command="goimports"
-let g:go_snippet_case_type="camelcase"
+let g:go_fmt_autosave=1
 let g:go_addtags_transform="camelcase"
-
-let g:go_def_mapping_enabled=0
-let g:go_def_mode="godef"
-let g:go_info_mode="guru"
-" replaced with 'Shougo/echodoc.vim'
-let g:go_echo_go_info=1
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
-au FileType go nmap gI <Plug>(go-implements)
 au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
-
-" replaced with vim-lsp
-" au FileType go nmap gd <Plug>(go-def)
-" au FileType go nmap gds <Plug>(go-def-split)
-" au FileType go nmap gdv <Plug>(go-def-vertical)
-" au FileType go nmap gr <Plug>(go-rename)
 
 au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
@@ -470,5 +449,6 @@ au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2 fileformat=unix
 au FileType gitcommit setlocal spell tw=80
 
-au BufRead,BufNewFile *.toml setlocal filetype=conf
-au BufRead,BufNewFile *.yml.j2 setlocal filetype=yaml
+au BufRead,BufNewFile *.toml setlocal ft=conf
+au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
+au BufRead,BufNewFile *.slide setlocal ft=slide
