@@ -19,6 +19,7 @@ Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'edganiukov/vim-go-lite', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
+Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025adb9'}
@@ -422,7 +423,7 @@ au FileType yaml setlocal sw=2 sts=2 ts=2
 
 " Plug 'fatih/vim-go'
 "
-let g:go_disable_autoinstall=0
+let g:go_disable_autoinstall=1
 let g:go_fmt_fail_silently=1
 let g:go_fmt_command="goimports"
 let g:go_fmt_autosave=1
@@ -432,7 +433,6 @@ nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
 au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
-au FileType go nmap gi <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
 
