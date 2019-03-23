@@ -326,12 +326,12 @@ let g:echodoc#type='echo'
 " https://github.com/sourcegraph/go-langserver:
 " \ 'go-langserver', '--gocodecompletion', '--diagnostics'
 " https://github.com/saibing/bingo:
-" \ 'bingo', '--mode', 'stdio'
+" \ 'bingo', '--mode=stdio', '--format-style=goimports', '--disable-func-snippet'
 " \ 'gopls', 'serve'
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->[
-        \ 'bingo', '--mode', 'stdio'
+        \ 'bingo', '--mode=stdio', '--format-style=goimports', '--disable-func-snippet'
     \ ]},
     \ 'whitelist': ['go'],
     \ })
