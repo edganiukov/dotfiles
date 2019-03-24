@@ -16,13 +16,15 @@ Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'edganiukov/vim-go-lite', {'for': 'go'}
+Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
+Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025adb9'}
+" Plug 'prabirshrestha/vim-lsp'
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -187,6 +189,10 @@ hi SpellBad cterm=underline
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
+
+" Quickly open/reload vim
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Plug 'mhinz/vim-signify'
 "
@@ -372,6 +378,7 @@ let g:lsp_diagnostics_enabled=1
 let g:lsp_signs_enabled=1
 let g:lsp_diagnostics_echo_cursor=1
 let g:lsp_virtual_text_enabled=0
+let g:lsp_highlights_enabled=1
 
 let g:lsp_signs_error={ 'text': '✗' }
 let g:lsp_signs_warning={ 'text': '✗' }
@@ -383,6 +390,11 @@ highlight link LspErrorText GruvboxRedSign
 highlight link LspWarningText GruvboxYellowSign
 highlight link LspInformationText GruvboxYellowSign
 highlight link LspHintText GruvboxGreenSign
+
+highlight link LspErrorHighlight GruvboxRedSign
+highlight link LspWarningHighlight GruvboxYellowSign
+highlight link LspInformationHighlight GruvboxGreenSign
+highlight link LspHintHighlight GruvboxGreenSign
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
@@ -418,7 +430,6 @@ let g:clang_format#auto_format=1
 let g:ansible_unindent_after_newline=1
 let g:ansible_name_highlight='d'
 let g:ansible_extra_keywords_highlight=0
-au FileType yaml setlocal sw=2 sts=2 ts=2
 
 
 " Plug 'fatih/vim-go'
@@ -436,6 +447,18 @@ au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
 
+" Plug 'sebdahvim-delve'
+let g:delve_breakpoint_sign_highlight='GruvboxGreenSign'
+let g:delve_tracepoint_sign_highlight='GruvboxRedSign'
+let g:delve_breakpoint_sign='◆'
+let g:delve_tracepoint_sign='◆'
+
+nnoremap <silent> dt :DlvTest<CR>
+nnoremap <silent> db :DlvDebug<CR>
+nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
+nnoremap <silent> dtt :DlvToggleTracepoint<CR>
+
+au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
 au FileType json setlocal sw=2 sts=2 ts=2
@@ -444,4 +467,3 @@ au FileType gitcommit setlocal spell tw=80
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
-au BufRead,BufNewFile *.slide setlocal ft=slide

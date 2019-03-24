@@ -16,6 +16,6 @@ gopass
 neovim
 tig
 midnight-commander
+vifm
 tmux
 htop
-direnv
