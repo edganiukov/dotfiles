@@ -3,6 +3,8 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
+Plug 'ajh17/Spacegray.vim'
+
 " Basic
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -38,6 +40,8 @@ set t_Co=256
 set termguicolors
 set bg=dark
 colorscheme gruvbox
+" colorscheme spacegray
+set encoding=UTF-8
 
 set hidden
 set noerrorbells
@@ -292,7 +296,8 @@ let NERDTreeShowHidden=1
 let NERDTreeIgnore=[
     \ '\.DS_Store',
     \ '\.git$',
-    \ '\.test$'
+    \ '\.test$',
+    \ '\.pyc$'
     \]
 let NERDTreeMapActivateNode='<Space>'
 let g:NERDTreeWinSize=40
@@ -385,17 +390,6 @@ let g:lsp_signs_warning={ 'text': '✗' }
 let g:lsp_signs_information={ 'text': '➤' }
 let g:lsp_signs_hint={ 'text': '➤' }
 
-" requires https://github.com/morhetz/gruvbox
-highlight link LspErrorText GruvboxRedSign
-highlight link LspWarningText GruvboxYellowSign
-highlight link LspInformationText GruvboxYellowSign
-highlight link LspHintText GruvboxGreenSign
-
-highlight link LspErrorHighlight GruvboxRedSign
-highlight link LspWarningHighlight GruvboxYellowSign
-highlight link LspInformationHighlight GruvboxGreenSign
-highlight link LspHintHighlight GruvboxGreenSign
-
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
 nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
@@ -448,13 +442,14 @@ au FileType go nmap <leader>gd <Plug>(go-doc)
 
 
 " Plug 'sebdahvim-delve'
-let g:delve_breakpoint_sign_highlight='GruvboxGreenSign'
-let g:delve_tracepoint_sign_highlight='GruvboxRedSign'
-let g:delve_breakpoint_sign='◆'
-let g:delve_tracepoint_sign='◆'
+hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
+let g:delve_breakpoint_sign_highlight='DlvPoint'
+let g:delve_tracepoint_sign_highlight='DlvPoint'
+let g:delve_breakpoint_sign='>>'
+let g:delve_tracepoint_sign='||'
 
-nnoremap <silent> dt :DlvTest<CR>
-nnoremap <silent> db :DlvDebug<CR>
+nnoremap <silent> drt :DlvTest<CR>
+nnoremap <silent> drd :DlvDebug<CR>
 nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
