@@ -16,6 +16,8 @@ Plug 'mattn/calendar-vim'
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 " Lang
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
