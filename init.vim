@@ -40,7 +40,6 @@ set t_Co=256
 set termguicolors
 set bg=dark
 colorscheme gruvbox
-" colorscheme spacegray
 set encoding=UTF-8
 
 set hidden
@@ -188,8 +187,12 @@ inoremap <Right> <NOP>
 :nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 :inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
+" Highlights
 hi clear SpellBad
-hi SpellBad cterm=underline
+hi SpellBad     cterm=undercurl
+hi DiffAdd      ctermbg=none ctermfg=green guibg=none guifg=green
+hi DiffChange   ctermbg=none ctermfg=yellow guibg=none guifg=yellow
+hi DiffDelete   ctermbg=none ctermfg=red guibg=none guifg=red
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
@@ -256,7 +259,6 @@ nnoremap <leader>f :Files<CR>
 
 
 " Plug 'itchyny/lightline'
-"
 let g:bufferline_echo=0
 let g:lightline={
     \ 'colorscheme': 'gruvbox',
@@ -457,7 +459,7 @@ au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
 au FileType json setlocal sw=2 sts=2 ts=2
-au FileType conf setlocal sw=2 sts=2 ts=2 fileformat=unix
+au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
