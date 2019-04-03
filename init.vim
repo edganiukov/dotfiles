@@ -27,8 +27,7 @@ Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp', {'commit': 'bc7485361a9d632772514bc4a89455ef8025adb9'}
-" Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/vim-lsp'
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -38,11 +37,12 @@ call plug#end()
 " Standard VIM TUI Settings
 "
 syntax on
+set encoding=UTF-8
 set t_Co=256
 set termguicolors
 set bg=dark
-colorscheme gruvbox
-set encoding=UTF-8
+" colorscheme gruvbox
+colorscheme spacegray
 
 set hidden
 set noerrorbells
@@ -78,7 +78,7 @@ set conceallevel=2
 set number
 set signcolumn=yes
 set pumheight=15
-set colorcolumn=81
+set colorcolumn=121
 set cursorline
 
 set pastetoggle=<F2>
@@ -186,15 +186,18 @@ inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
 " insert current date
-:nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
-:inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
+nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
+inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
 " Highlights
-hi clear SpellBad
-hi SpellBad     cterm=undercurl
+hi SpellBad     ctermbg=none guibg=none
+
 hi DiffAdd      ctermbg=none ctermfg=green guibg=none guifg=green
 hi DiffChange   ctermbg=none ctermfg=yellow guibg=none guifg=yellow
 hi DiffDelete   ctermbg=none ctermfg=red guibg=none guifg=red
+
+hi Todo         ctermbg=none guibg=none cterm=none gui=none
+hi Error        ctermbg=none guibg=none cterm=none gui=none
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
@@ -254,6 +257,7 @@ let g:vim_markdown_new_list_item_indent=2
 set rtp+=/usr/local/opt/fzf
 let g:fzf_layout={ 'down': '~40%' }
 
+
 " https://github.com/BurntSushi/ripgrep
 nnoremap <leader>s :Rg<CR>
 nnoremap <leader>b :Buffers<CR>
@@ -261,9 +265,10 @@ nnoremap <leader>f :Files<CR>
 
 
 " Plug 'itchyny/lightline'
+" 
+" \ 'colorscheme': 'gruvbox',
 let g:bufferline_echo=0
 let g:lightline={
-    \ 'colorscheme': 'gruvbox',
     \ 'active': {
         \ 'left': [
             \ ['mode', 'paste'],
@@ -309,6 +314,7 @@ let g:NERDTreeWinSize=40
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+
 " Plug 'tmsvg/pear-tree'
 "
 let g:pear_tree_repeatable_expand=0
@@ -331,22 +337,14 @@ inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" Plug 'Shougo/echodoc.vim'
-"
-let g:echodoc#enable_at_startup=1
-let g:echodoc#type='echo'
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-" https://github.com/sourcegraph/go-langserver:
-" \ 'go-langserver', '--gocodecompletion', '--diagnostics'
-" https://github.com/saibing/bingo:
-" \ 'bingo', '--mode=stdio', '--format-style=goimports', '--disable-func-snippet'
-" \ 'gopls', 'serve'
+" golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->[
-        \ 'bingo', '--mode=stdio', '--format-style=goimports', '--disable-func-snippet'
+        \ 'gopls', 'serve'
     \ ]},
     \ 'whitelist': ['go'],
     \ })
@@ -462,7 +460,9 @@ au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
-au FileType gitcommit setlocal spell tw=80
+au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
+au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
+au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
