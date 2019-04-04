@@ -41,7 +41,6 @@ set encoding=UTF-8
 set t_Co=256
 set termguicolors
 set bg=dark
-" colorscheme gruvbox
 colorscheme spacegray
 
 set hidden
@@ -190,7 +189,7 @@ nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
 " Highlights
-hi SpellBad     ctermbg=none guibg=none
+hi SpellBad     cterm=undercurl ctermbg=none guibg=none
 
 hi DiffAdd      ctermbg=none ctermfg=green guibg=none guifg=green
 hi DiffChange   ctermbg=none ctermfg=yellow guibg=none guifg=yellow
@@ -266,7 +265,6 @@ nnoremap <leader>f :Files<CR>
 
 " Plug 'itchyny/lightline'
 " 
-" \ 'colorscheme': 'gruvbox',
 let g:bufferline_echo=0
 let g:lightline={
     \ 'active': {
@@ -323,6 +321,9 @@ let g:pear_tree_repeatable_expand=0
 "
 let g:magit_commit_title_limit=80
 
+" Plug 'junegunn/gv.vim'
+"
+nnoremap <silent> gv :GV<CR>
 
 " Plug 'prabirshrestha/asyncomplete.vim'
 "
