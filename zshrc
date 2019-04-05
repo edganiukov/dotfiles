@@ -24,6 +24,9 @@ export PATH=/usr/local/opt/llvm/bin:$PATH
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
+# java
+export JAVA_HOME=$(/usr/libexec/java_home)
+
 ### settings
 HISTFILE=~/.histfile
 HISTSIZE=10000

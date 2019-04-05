@@ -195,8 +195,8 @@ hi DiffAdd      ctermbg=none ctermfg=green guibg=none guifg=green
 hi DiffChange   ctermbg=none ctermfg=yellow guibg=none guifg=yellow
 hi DiffDelete   ctermbg=none ctermfg=red guibg=none guifg=red
 
-hi Todo         ctermbg=none guibg=none cterm=none gui=none
-hi Error        ctermbg=none guibg=none cterm=none gui=none
+hi Todo         ctermbg=none guibg=none cterm=undercurl gui=undercurl
+hi Error        ctermbg=none guibg=none cterm=undercurl gui=undercurl
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
@@ -267,6 +267,7 @@ nnoremap <leader>f :Files<CR>
 " 
 let g:bufferline_echo=0
 let g:lightline={
+    \ "colorscheme": "jellybeans",
     \ 'active': {
         \ 'left': [
             \ ['mode', 'paste'],
@@ -378,6 +379,15 @@ au User lsp_setup call lsp#register_server({
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.cquery'))},
     \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
     \ 'whitelist': ['c', 'cpp'],
+    \ })
+
+" https://github.com/georgewfraser/java-language-server
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'java',
+    \ 'cmd': {server_info->[
+        \ expand('~/dev/apps/java-language-server/dist/mac/bin/launcher'), '--quite'
+        \ ]},
+    \ 'whitelist': ['java'],
     \ })
 
 let g:lsp_auto_enable=1
