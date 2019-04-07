@@ -87,7 +87,7 @@ set clipboard=unnamedplus
 " set clipboard=unnamed
 
 set listchars=tab:→\ ,nbsp:·,trail:·
-set nolist
+set list
 
 " Vim formatting options
 set wrap
@@ -346,7 +346,7 @@ let g:magit_commit_title_limit=80
 
 " Plug 'junegunn/gv.vim'
 "
-nnoremap <silent> gv :GV<CR>
+nnoremap <leader>gv :GV<CR>
 
 " Plug 'prabirshrestha/asyncomplete.vim'
 "
@@ -433,6 +433,8 @@ nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
 nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gn :LspNextError<CR>
+nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspDocumentSymbol<CR>
