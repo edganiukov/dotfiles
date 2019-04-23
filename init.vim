@@ -40,7 +40,7 @@ syntax on
 set encoding=UTF-8
 set t_Co=256
 set termguicolors
-set bg=dark
+" set bg=dark
 colorscheme spacegray
 
 set hidden
@@ -459,8 +459,13 @@ let g:clang_format#auto_format=1
 " Plug 'pearofducks/ansible-vim'
 "
 let g:ansible_unindent_after_newline=1
-let g:ansible_name_highlight='d'
+let g:ansible_name_highlight='b'
 let g:ansible_extra_keywords_highlight=0
+
+au BufRead,BufNewFile */playbooks/*/*.yml set filetype=yaml.ansible
+au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
+au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
+au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
 
 
 " Plug 'fatih/vim-go'
@@ -498,6 +503,5 @@ au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
-au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
-au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
-au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
+au BufRead,BufNewFile *.slide setlocal ft=markdown
+au BufNewFile,BufRead Jenkinsfile set filetype=groovy
