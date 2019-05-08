@@ -4,13 +4,14 @@ call plug#begin('~/.config/nvim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
 Plug 'ajh17/Spacegray.vim'
+Plug 'fxn/vim-monochrome'
 
 " Basic
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
-Plug 'tmsvg/pear-tree'
+" Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 " Git
@@ -29,20 +30,25 @@ Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 " Completion
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-vim-lsp'
 
 call plug#end()
 
 " Standard VIM TUI Settings
 "
 syntax on
-set encoding=UTF-8
 set t_Co=256
 set termguicolors
-" set bg=dark
-colorscheme spacegray
+set bg=dark
 
+let g:gruvbox_contrast_dark='hard'
+colorscheme gruvbox
+
+set encoding=UTF-8
 set hidden
 set noerrorbells
 set novisualbell
@@ -158,6 +164,8 @@ inoremap jj <Esc>
 nnoremap <silent>qc :cclose<CR>
 " close preview window
 nnoremap <silent>qp <C-w><C-z>
+" close a window with qq<CR>
+nnoremap <silent>qq :q
 
 " buffers switch
 nnoremap bn :bn!<CR>
@@ -189,11 +197,8 @@ nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
 " Highlights
+hi SignColumn   ctermbg=none guibg=none
 hi SpellBad     cterm=undercurl ctermbg=none guibg=none
-
-hi DiffAdd      ctermbg=none ctermfg=green guibg=none guifg=green
-hi DiffChange   ctermbg=none ctermfg=yellow guibg=none guifg=yellow
-hi DiffDelete   ctermbg=none ctermfg=red guibg=none guifg=red
 
 hi Todo         ctermbg=none guibg=none cterm=undercurl gui=undercurl
 hi Error        ctermbg=none guibg=none cterm=undercurl gui=undercurl
@@ -220,6 +225,11 @@ let g:signify_sign_delete='_'
 let g:signify_sign_delete_first_line='‾'
 let g:signify_sign_change='~'
 let g:signify_sign_changedelete=g:signify_sign_change
+
+hi SignifySignAdd       ctermbg=none guibg=none ctermfg=green guifg=green
+hi SignifySignDelete    ctermbg=none guibg=none ctermfg=yellow guifg=yellow
+hi SignifySignChange    ctermbg=none guibg=none ctermfg=red guifg=red
+
 
 
 " Plug 'mattn/calendar-vim'
@@ -260,7 +270,7 @@ let g:fzf_layout={ 'down': '~40%' }
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
+  \ 'hl':      ['fg', 'PreProc'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
   \ 'hl+':     ['fg', 'Statement'],
@@ -279,7 +289,7 @@ nnoremap <leader>s :Rg<CR>
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-  \ 1, { 'options': '--color hl:59,hl+:13' }, 0)
+  \ 1, { 'options': '--color hl:72,hl+:167' }, 0)
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :Files<CR>
@@ -289,7 +299,7 @@ nnoremap <leader>f :Files<CR>
 " 
 let g:bufferline_echo=0
 let g:lightline={
-    \ "colorscheme": "jellybeans",
+    \ "colorscheme": "nord",
     \ 'active': {
         \ 'left': [
             \ ['mode', 'paste'],
@@ -335,25 +345,40 @@ let g:NERDTreeWinSize=40
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-
 " Plug 'tmsvg/pear-tree'
 "
 let g:pear_tree_repeatable_expand=0
+
 
 " Plug 'jreybert/vimagit'
 "
 let g:magit_commit_title_limit=80
 
+
 " Plug 'junegunn/gv.vim'
 "
 nnoremap <leader>gv :GV<CR>
 
+
+" TODO: remove plugin after https://github.com/prabirshrestha/asyncomplete.vim/issues/136 is fixed
+" Plug 'ncm2/ncm2'
+"
+autocmd BufEnter * call ncm2#enable_for_buffer()
+imap <leader>f <Plug>(ncm2_manual_trigger)
+let g:ncm2#sorter='none'
+
+" For gopls language server insert only method/variable name.
+call ncm2#override_source('go', {'filter': {'name':'substitute',
+    \ 'pattern': '^([a-zA-Z0-9_]+).*',
+    \ 'replace': '\1',
+    \ 'key': 'word'}})
+
 " Plug 'prabirshrestha/asyncomplete.vim'
 "
-let g:asyncomplete_auto_popup=1
-let g:asyncomplete_remove_duplicates=1
-
-imap <leader>f <Plug>(asyncomplete_force_refresh)
+" TODO: uncomment after https://github.com/prabirshrestha/asyncomplete.vim/issues/136 is fixed
+" let g:asyncomplete_auto_popup=1
+" let g:asyncomplete_remove_duplicates=1
+" imap <leader>f <Plug>(asyncomplete_force_refresh)
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -370,6 +395,7 @@ au User lsp_setup call lsp#register_server({
     \ 'cmd': {server_info->[
         \ 'gopls', 'serve'
     \ ]},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'go.mod'))},
     \ 'whitelist': ['go'],
     \ })
 
@@ -407,10 +433,20 @@ au User lsp_setup call lsp#register_server({
 au User lsp_setup call lsp#register_server({
     \ 'name': 'java',
     \ 'cmd': {server_info->[
-        \ expand('~/dev/apps/java-language-server/dist/mac/bin/launcher'), '--quite'
+        \ expand('~/dev/misc/apps/java-language-server/dist/mac/bin/launcher'), '--quite'
         \ ]},
     \ 'whitelist': ['java'],
     \ })
+
+" https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'java',
+"     \ 'cmd': {server_info->[
+"         \'jdt-ls',
+"         \ '-data', getcwd(),
+"         \ ]},
+"     \ 'whitelist': ['java'],
+"     \ })
 
 let g:lsp_auto_enable=1
 let g:lsp_preview_keep_focus=0
@@ -419,6 +455,7 @@ let g:lsp_signs_enabled=1
 let g:lsp_diagnostics_echo_cursor=1
 let g:lsp_virtual_text_enabled=0
 let g:lsp_highlights_enabled=1
+let g:asyncomplete_force_refresh_on_context_changed=0
 
 let g:lsp_signs_error={ 'text': '✗' }
 let g:lsp_signs_warning={ 'text': '✗' }
@@ -443,6 +480,19 @@ nnoremap <silent> gs :LspDocumentSymbol<CR>
 let g:lsp_log_verbose=1
 let g:lsp_log_file=expand('/tmp/lsp.log')
 
+" let g:lsc_server_commands = {
+"     \ 'go': 'gopls serve',
+"     \ 'java': expand('~/dev/misc/apps/java-language-server/dist/mac/bin/launcher').' --quite',
+" \}
+
+" nnoremap <silent> gd :LSClientGoToDefinition<CR>
+" nnoremap <silent> gds :LSClientGoToDefinitionSplit<cr>
+" nnoremap <silent> gr :LSClientRename<CR>
+" nnoremap <silent> ga :LSClientFindCodeActions<CR>
+" nnoremap <silent> gx :LSClientFindReferences<CR>
+" nnoremap <silent> gi :LSClientFindImplementations<CR>
+" nnoremap <silent> gh :LSClientShowHover<CR>
+" nnoremap <silent> gs :LSClientDocumentSymbol<CR>
 
 " Plug 'rust-lang/rust.vim'
 "
