@@ -12,8 +12,8 @@ export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
 
 # Go vars
-export GOPATH=$HOME/go:$HOME/dev/go:$HOME/work/go
-export PATH=$HOME/go/bin:$HOME/dev/go/bin:/usr/local/opt/go/libexec/bin:$PATH
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:/usr/local/opt/go/libexec/bin:$PATH
 export GO111MODULE=auto
 
 # Rust vars
