@@ -94,7 +94,6 @@ alias lsl='ls -hl'
 alias mv='mv -i'
 alias cp='cp -Ri'
 
-alias vim="nvim"
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias grep="grep --colour"

@@ -4,7 +4,7 @@ call plug#begin('~/.config/nvim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
 Plug 'ajh17/Spacegray.vim'
-Plug 'fxn/vim-monochrome'
+Plug 'tomasiser/vim-code-dark'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -27,11 +27,18 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+
 " Completion
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'Shougo/echodoc.vim'
+Plug 'lifepillar/vim-mucomplete'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
 
@@ -39,12 +46,13 @@ call plug#end()
 "
 syntax on
 set t_Co=256
+set t_ut=
 set termguicolors
 set bg=dark
 
-let g:gruvbox_contrast_dark='hard'
 colorscheme spacegray
 
+set nospell
 set encoding=UTF-8
 set hidden
 set noerrorbells
@@ -197,8 +205,8 @@ inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 hi SignColumn   ctermbg=none guibg=none
 hi SpellBad     cterm=undercurl ctermbg=none guibg=none
 
-hi Todo         ctermbg=none guibg=none cterm=undercurl gui=undercurl
-hi Error        ctermbg=none guibg=none cterm=undercurl gui=undercurl
+hi Todo         ctermbg=none guibg=none cterm=none gui=none
+hi Error        ctermbg=none guibg=none cterm=none gui=none
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
@@ -365,122 +373,172 @@ nnoremap <leader>gv :GV<CR>
 
 " Plug 'prabirshrestha/asyncomplete.vim'
 "
-let g:asyncomplete_auto_popup=1
-let g:asyncomplete_remove_duplicates=1
-let g:lsp_insert_text_enabled=0
-let g:asyncomplete_log_file='/tmp/asynccomplete.log'
-imap <leader>f <Plug>(asyncomplete_force_refresh)
+" let g:asyncomplete_auto_popup=1
+" let g:asyncomplete_remove_duplicates=1
+" let g:asyncomplete_force_refresh_on_context_changed=1
 
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+" imap <leader>f <Plug>(asyncomplete_force_refresh)
 
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
+" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+
+"Plug 'Shougo/echodoc.vim'
+"
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
+
+" Plug 'lifepillar/vim-mucomplete'
+"
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#chains = {}
+let g:mucomplete#chains.default = ['omni']
+let g:mucomplete#can_complete = {
+    \ 'default': {
+        \ 'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\)$' }
+        \ }
+    \ }
+
+
+" Plug 'autozimu/LanguageClient-neovim'
+"
+
+let g:LanguageClient_serverCommands={
+    \ 'go': ['gopls', 'serve'],
+    \ }
+
+let g:LanguageClient_rootMarkers = {
+    \ 'go': ['go.mod'],
+    \ }
+
+let g:LanguageClient_diagnosticsDisplay={
+    \ 1: {
+        \ "name": "Error",
+        \ "texthl": "Error",
+        \ "signText": "✗",
+        \ "signTexthl": "Error",
+        \ },
+    \ 2: {
+        \ "name": "Warning",
+        \ "texthl": "Todo",
+        \ "signText": "➤",
+        \ "signTexthl": "Todo",
+        \ },
+    \ }
+
+let g:LanguageClient_hasSnippetSupport=0
+let g:LanguageClient_useVirtualText=0
+
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
+nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
+nnoremap <silent> grf :call LanguageClient#textDocument_rangeFormatting()<CR>
+nnoremap <silent> ga :call LanguageClient#textDocument_codeAction()<CR>
+nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gs :call LanguageClient#workspace_symbol()<CR>
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-" golang.org/x/tools/cmd/gopls
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'go',
-    \ 'cmd': {server_info->[
-        \ 'gopls', 'serve'
-    \ ]},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(
-            \ lsp#utils#get_buffer_path(),
-            \ ['go.mod', '.git']
-        \ ))},
-    \ 'whitelist': ['go'],
-    \ })
+" " golang.org/x/tools/cmd/gopls
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'go',
+"     \ 'cmd': {server_info->['gopls-cgo']},
+"     \ 'whitelist': ['go'],
+"     \ })
 
-" https://github.com/palantir/python-language-server
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'python',
-    \ 'cmd': {server_info->[
-        \'pyls'
-        \]},
-    \ 'whitelist': ['python'],
-    \ })
+" " https://github.com/palantir/python-language-server
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'python',
+"     \ 'cmd': {server_info->['pyls']},
+"     \ 'whitelist': ['python'],
+"     \ })
 
-" https://github.com/rust-lang/rls
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'rust',
-    \ 'cmd': {server_info->[
-        \ 'rustup', 'run', 'stable', 'rls'
-        \ ]},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(
-            \ lsp#utils#get_buffer_path(),
-            \ ['Cargo.toml'. '.git']
-        \ ))},
-    \ 'whitelist': ['rust'],
-    \ })
+" " https://github.com/rust-lang/rls
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'rust',
+"     \ 'cmd': {server_info->[
+"         \ 'rustup', 'run', 'stable', 'rls'
+"         \ ]},
+"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"         \ lsp#utils#find_nearest_parent_file_directory(
+"             \ lsp#utils#get_buffer_path(),
+"             \ ['Cargo.toml'. '.git']
+"         \ ))},
+"     \ 'whitelist': ['rust'],
+"     \ })
 
-" https://github.com/cquery-project/cquery
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'cpp',
-    \ 'cmd': {server_info->[
-        \ 'cquery'
-        \ ]},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(
-            \ lsp#utils#get_buffer_path(),
-            \ ['.cquery', '.git']
-        \ ))},
-    \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
-    \ 'whitelist': ['c', 'cpp'],
-    \ })
+" " https://github.com/cquery-project/cquery
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'cpp',
+"     \ 'cmd': {server_info->['cquery']},
+"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"         \ lsp#utils#find_nearest_parent_file_directory(
+"             \ lsp#utils#get_buffer_path(),
+"             \ ['.cquery', '.git']
+"         \ ))},
+"     \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
+"     \ 'whitelist': ['c', 'cpp'],
+"     \ })
 
-" https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'java',
-    \ 'cmd': {server_info->[
-        \'jdt-ls',
-        \'-data', expand('~/.cache/jdt-ls')
-        \ ]},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(
-            \lsp#utils#get_buffer_path(),
-            \ ['pom.xml']
-        \ ))},
-    \ 'whitelist': ['java'],
-    \ })
+" " https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'java',
+"     \ 'cmd': {server_info->[
+"         \'jdt-ls',
+"         \'-data', expand('~/.cache/jdt-ls')
+"         \ ]},
+"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"         \ lsp#utils#find_nearest_parent_file_directory(
+"             \lsp#utils#get_buffer_path(),
+"             \ ['pom.xml', '.git']
+"         \ ))},
+"     \ 'whitelist': ['java'],
+"     \ })
 
-let g:lsp_auto_enable=1
-let g:lsp_preview_keep_focus=0
-let g:lsp_diagnostics_enabled=1
-let g:lsp_signs_enabled=1
-let g:lsp_diagnostics_echo_cursor=1
-let g:lsp_virtual_text_enabled=0
-let g:lsp_highlights_enabled=1
-let g:asyncomplete_force_refresh_on_context_changed=1
+" let g:lsp_auto_enable=1
+" let g:lsp_preview_keep_focus=0
 
-let g:lsp_signs_error={ 'text': '✗' }
-let g:lsp_signs_warning={ 'text': '✗' }
-let g:lsp_signs_information={ 'text': '➤' }
-let g:lsp_signs_hint={ 'text': '➤' }
+" let g:lsp_diagnostics_enabled=1
+" let g:lsp_diagnostics_echo_cursor=1
+" let g:lsp_signs_enabled=1
 
-nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
-nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
-nnoremap <silent> gtd :LspTypeDefinition<CR>
-nnoremap <silent> gr :LspRename<CR>
-nnoremap <silent> gf :LspDocumentFormat<CR>
-nnoremap <silent> grf :LspDocumentRangeFormat<CR>
-nnoremap <silent> ga :LspCodeAction<CR>
-nnoremap <silent> gn :LspNextError<CR>
-nnoremap <silent> gp :LspPreviousError<CR>
-nnoremap <silent> gx :LspReferences<CR>
-nnoremap <silent> gh :LspHover<CR>
-nnoremap <silent> gs :LspDocumentSymbol<CR>
+" let g:lsp_virtual_text_enabled=0
+" let g:lsp_highlights_enabled=0
+" let g:lsp_highlight_references_enabled=0
 
-" debug
-let g:lsp_log_verbose=1
-let g:lsp_log_file=expand('/tmp/lsp.log')
+" let g:lsp_text_edit_enabled=1
+" let g:lsp_insert_text_enabled=0
+
+" let g:lsp_signs_error={ 'text': '✗' }
+" let g:lsp_signs_warning={ 'text': '✗' }
+" let g:lsp_signs_information={ 'text': '➤' }
+" let g:lsp_signs_hint={ 'text': '➤' }
+
+" nnoremap <silent> gd :LspDefinition<CR>
+" nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
+" nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
+" nnoremap <silent> gtd :LspTypeDefinition<CR>
+" nnoremap <silent> gr :LspRename<CR>
+" nnoremap <silent> gf :LspDocumentFormat<CR>
+" nnoremap <silent> grf :LspDocumentRangeFormat<CR>
+" nnoremap <silent> ga :LspCodeAction<CR>
+" nnoremap <silent> gn :LspNextError<CR>
+" nnoremap <silent> gp :LspPreviousError<CR>
+" nnoremap <silent> gx :LspReferences<CR>
+" nnoremap <silent> gh :LspHover<CR>
+" nnoremap <silent> gs :LspWorkspaceSymbol<CR>
+
+" " debug
+" let g:lsp_log_verbose=1
+" let g:lsp_log_file=expand('/tmp/lsp.log')
 
 " let g:lsc_server_commands = {
-"     \ 'go': 'gopls serve',
+"     \ 'go': 'gopls-cgo',
 " \}
 
 " nnoremap <silent> gd :LSClientGoToDefinition<CR>

@@ -1,19 +1,39 @@
 [core]
     excludesfile = ~/.gitignore
+
 [user]
     name = <Name>
     email = <Email>
     signingkey = <Key ID>
+
 [commit]
     gpgsign = true
+
 [push]
     default = simple
-[http "https://gopkg.in"]
-    followRedirects = true
-[url "git@github.com:"]
-    insteadOf = https://github.com/
+
+[pull]
+    default = simple
+
+[color "branch"]
+    current = green
+    remote = yellow
+
 [alias]
+    hist = log --pretty=format:"%C(yellow)%h%C(reset) %C(green)%ad%C(reset) %C(red)|%C(reset) %s %C(bold blue)[%an]%C(reset)%C(yellow)%d%C(reset)" --graph --date=short
+    lg = log --pretty=oneline --abbrev-commit
+
+    fap = fetch --all --prune
+    ps = push
+    pl = pull
     co = checkout
-    br = branch
+    cb = checkout -b
     cm = commit
     st = status
+
+[http "https://gopkg.in"]
+    followRedirects = true
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+
