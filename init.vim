@@ -27,18 +27,11 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 " LSP
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 " Completion
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/vim-mucomplete'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
 
@@ -217,19 +210,19 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Plug 'mhinz/vim-signify'
 "
-let g:signify_vcs_list=['git']
-let g:signify_realtime=1
-let g:signify_cursorhold_insert=1
-let g:signify_cursorhold_normal=1
-let g:signify_update_on_bufenter=0
-let g:signify_update_on_focusgained=1
-let g:signify_sign_show_count=0
+let g:signify_vcs_list = ['git']
+let g:signify_realtime = 1
+let g:signify_cursorhold_insert = 1
+let g:signify_cursorhold_normal = 1
+let g:signify_update_on_bufenter = 0
+let g:signify_update_on_focusgained = 1
+let g:signify_sign_show_count = 0
 
-let g:signify_sign_add='+'
-let g:signify_sign_delete='_'
-let g:signify_sign_delete_first_line='‾'
-let g:signify_sign_change='~'
-let g:signify_sign_changedelete=g:signify_sign_change
+let g:signify_sign_add = '+'
+let g:signify_sign_delete = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change = '~'
+let g:signify_sign_changedelete = g:signify_sign_change
 
 hi SignifySignAdd       ctermbg=none guibg=none ctermfg=green guifg=green
 hi SignifySignChange    ctermbg=none guibg=none ctermfg=yellow guifg=yellow
@@ -246,7 +239,7 @@ nnoremap <leader>c :CalendarH<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown
 
-let g:vim_markdown_fenced_languages=[
+let g:vim_markdown_fenced_languages = [
     \ 'vim',
     \ 'bash=sh',
     \ 'go',
@@ -257,33 +250,34 @@ let g:vim_markdown_fenced_languages=[
     \ 'yaml',
     \ ]
 
-let g:vim_markdown_folding_disabled=0
-let g:vim_markdown_folding_style_pythonic=1
-let g:tex_conceal=""
-let g:vim_markdown_math=1
-let g:vim_markdown_new_list_item_indent=2
+let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_style_pythonic = 1
+let g:tex_conceal = ""
+let g:vim_markdown_math = 1
+let g:vim_markdown_new_list_item_indent = 2
 
 
 " Plug 'junegunn/fzf.vim'
 "
 set rtp+=/usr/local/opt/fzf
-let g:fzf_layout={ 'down': '~40%' }
+let g:fzf_layout = { 'down': '~40%' }
 
 " match vim colorscheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'PreProc'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors = {
+    \ 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'PreProc'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment']
+    \ }
 
 
 " https://github.com/BurntSushi/ripgrep
@@ -300,8 +294,8 @@ nnoremap <leader>f :Files<CR>
 
 " Plug 'itchyny/lightline'
 "
-let g:bufferline_echo=0
-let g:lightline={
+let g:bufferline_echo = 0
+let g:lightline = {
     \ "colorscheme": "jellybeans",
     \ 'active': {
         \ 'left': [
@@ -333,17 +327,17 @@ endfunction
 
 " Plug 'scrooloose/nerdtree'
 "
-let NERDTreeDirArrows=1
-let NERDTreeMinimalUI=1
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=[
+let NERDTreeDirArrows = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeShowHidden = 1
+let NERDTreeIgnore = [
     \ '\.DS_Store',
     \ '\.git$',
     \ '\.test$',
     \ '\.pyc$'
     \]
-let NERDTreeMapActivateNode='<Space>'
-let g:NERDTreeWinSize=40
+let NERDTreeMapActivateNode = '<Space>'
+let g:NERDTreeWinSize = 40
 
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -358,32 +352,17 @@ let g:pear_tree_pairs = {
     \ '"': {'closer': '"'},
     \ '`': {'closer': '`'}
     \ }
-let g:pear_tree_repeatable_expand=0
+let g:pear_tree_repeatable_expand = 0
 
 
 " Plug 'jreybert/vimagit'
 "
-let g:magit_commit_title_limit=80
+let g:magit_commit_title_limit = 80
 
 
 " Plug 'junegunn/gv.vim'
 "
 nnoremap <leader>gv :GV<CR>
-
-
-" Plug 'prabirshrestha/asyncomplete.vim'
-"
-" let g:asyncomplete_auto_popup=1
-" let g:asyncomplete_remove_duplicates=1
-" let g:asyncomplete_force_refresh_on_context_changed=1
-
-" imap <leader>f <Plug>(asyncomplete_force_refresh)
-
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-" inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-
-" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
 "Plug 'Shougo/echodoc.vim'
@@ -394,149 +373,112 @@ let g:echodoc#type = 'signature'
 " Plug 'lifepillar/vim-mucomplete'
 "
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay= 2
+let g:mucomplete#reopen_immediately = 0
+
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['omni']
 let g:mucomplete#can_complete = {
     \ 'default': {
-        \ 'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\)$' }
+        \ 'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$' }
         \ }
     \ }
 
-
-" Plug 'autozimu/LanguageClient-neovim'
-"
-
-let g:LanguageClient_serverCommands={
-    \ 'go': ['gopls', 'serve'],
-    \ }
-
-let g:LanguageClient_rootMarkers = {
-    \ 'go': ['go.mod'],
-    \ }
-
-let g:LanguageClient_diagnosticsDisplay={
-    \ 1: {
-        \ "name": "Error",
-        \ "texthl": "Error",
-        \ "signText": "✗",
-        \ "signTexthl": "Error",
-        \ },
-    \ 2: {
-        \ "name": "Warning",
-        \ "texthl": "Todo",
-        \ "signText": "➤",
-        \ "signTexthl": "Todo",
-        \ },
-    \ }
-
-let g:LanguageClient_hasSnippetSupport=0
-let g:LanguageClient_useVirtualText=0
-
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
-nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
-nnoremap <silent> grf :call LanguageClient#textDocument_rangeFormatting()<CR>
-nnoremap <silent> ga :call LanguageClient#textDocument_codeAction()<CR>
-nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gs :call LanguageClient#workspace_symbol()<CR>
+" mucomplete + vim-lsp
+autocmd FileType go,rust,python,c,cpp,java setlocal omnifunc=lsp#complete
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-" " golang.org/x/tools/cmd/gopls
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'go',
-"     \ 'cmd': {server_info->['gopls-cgo']},
-"     \ 'whitelist': ['go'],
-"     \ })
+" golang.org/x/tools/cmd/gopls
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'go',
+    \ 'cmd': {server_info->['gopls', 'serve']},
+    \ 'whitelist': ['go'],
+    \ })
 
-" " https://github.com/palantir/python-language-server
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'python',
-"     \ 'cmd': {server_info->['pyls']},
-"     \ 'whitelist': ['python'],
-"     \ })
+" https://github.com/palantir/python-language-server
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'python',
+    \ 'cmd': {server_info->['pyls']},
+    \ 'whitelist': ['python'],
+    \ })
 
-" " https://github.com/rust-lang/rls
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'rust',
-"     \ 'cmd': {server_info->[
-"         \ 'rustup', 'run', 'stable', 'rls'
-"         \ ]},
-"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"         \ lsp#utils#find_nearest_parent_file_directory(
-"             \ lsp#utils#get_buffer_path(),
-"             \ ['Cargo.toml'. '.git']
-"         \ ))},
-"     \ 'whitelist': ['rust'],
-"     \ })
+" https://github.com/rust-lang/rls
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'rust',
+    \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
+        \ )},
+    \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+    \ 'whitelist': ['rust'],
+    \ })
 
-" " https://github.com/cquery-project/cquery
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'cpp',
-"     \ 'cmd': {server_info->['cquery']},
-"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"         \ lsp#utils#find_nearest_parent_file_directory(
-"             \ lsp#utils#get_buffer_path(),
-"             \ ['.cquery', '.git']
-"         \ ))},
-"     \ 'initialization_options': { 'cacheDirectory': expand('~/.cache/cquery') },
-"     \ 'whitelist': ['c', 'cpp'],
-"     \ })
+" https://github.com/cquery-project/cquery
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'cpp',
+    \ 'cmd': {server_info->['cquery']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
+        \ )},
+    \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
+    \ 'whitelist': ['c', 'cpp'],
+    \ })
 
-" " https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'java',
-"     \ 'cmd': {server_info->[
-"         \'jdt-ls',
-"         \'-data', expand('~/.cache/jdt-ls')
-"         \ ]},
-"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"         \ lsp#utils#find_nearest_parent_file_directory(
-"             \lsp#utils#get_buffer_path(),
-"             \ ['pom.xml', '.git']
-"         \ ))},
-"     \ 'whitelist': ['java'],
-"     \ })
+" https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'java',
+    \ 'cmd': {server_info->[
+        \'jdt-ls',
+        \'-data', expand('~/.cache/jdt-ls')
+        \ ]},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['pom.xml', '.git'])
+        \ )},
+    \ 'whitelist': ['java'],
+    \ })
 
-" let g:lsp_auto_enable=1
-" let g:lsp_preview_keep_focus=0
+let g:lsp_auto_enable = 1
+let g:lsp_preview_keep_focus = 0
 
-" let g:lsp_diagnostics_enabled=1
-" let g:lsp_diagnostics_echo_cursor=1
-" let g:lsp_signs_enabled=1
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_signs_enabled = 1
+let g:lsp_highlights_enabled = 1
+let g:lsp_virtual_text_enabled = 0
 
-" let g:lsp_virtual_text_enabled=0
-" let g:lsp_highlights_enabled=0
-" let g:lsp_highlight_references_enabled=0
+let g:lsp_highlight_references_enabled = 0
 
-" let g:lsp_text_edit_enabled=1
-" let g:lsp_insert_text_enabled=0
+let g:lsp_text_edit_enabled = 1
+let g:lsp_insert_text_enabled = 0
 
-" let g:lsp_signs_error={ 'text': '✗' }
-" let g:lsp_signs_warning={ 'text': '✗' }
-" let g:lsp_signs_information={ 'text': '➤' }
-" let g:lsp_signs_hint={ 'text': '➤' }
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '✗'}
+let g:lsp_signs_information = {'text': '➤'}
+let g:lsp_signs_hint = {'text': '➤'}
 
-" nnoremap <silent> gd :LspDefinition<CR>
-" nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
-" nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
-" nnoremap <silent> gtd :LspTypeDefinition<CR>
-" nnoremap <silent> gr :LspRename<CR>
-" nnoremap <silent> gf :LspDocumentFormat<CR>
-" nnoremap <silent> grf :LspDocumentRangeFormat<CR>
-" nnoremap <silent> ga :LspCodeAction<CR>
-" nnoremap <silent> gn :LspNextError<CR>
-" nnoremap <silent> gp :LspPreviousError<CR>
-" nnoremap <silent> gx :LspReferences<CR>
-" nnoremap <silent> gh :LspHover<CR>
-" nnoremap <silent> gs :LspWorkspaceSymbol<CR>
+let g:lsp_log_verbose = 0
+let g:lsp_log_file = expand('/tmp/lsp.log')
 
-" " debug
-" let g:lsp_log_verbose=1
-" let g:lsp_log_file=expand('/tmp/lsp.log')
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
+nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
+nnoremap <silent> gtd :LspTypeDefinition<CR>
+nnoremap <silent> gr :LspRename<CR>
+nnoremap <silent> gf :LspDocumentFormat<CR>
+nnoremap <silent> grf :LspDocumentRangeFormat<CR>
+nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gn :LspNextError<CR>
+nnoremap <silent> gp :LspPreviousError<CR>
+nnoremap <silent> gx :LspReferences<CR>
+nnoremap <silent> gh :LspHover<CR>
+nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 
+
+" TODO: alternative language servers.
+"
+" Plug 'natebosch/vim-lsc'
+"
 " let g:lsc_server_commands = {
 "     \ 'go': 'gopls-cgo',
 " \}
@@ -550,23 +492,66 @@ nnoremap <silent> gs :call LanguageClient#workspace_symbol()<CR>
 " nnoremap <silent> gh :LSClientShowHover<CR>
 " nnoremap <silent> gs :LSClientDocumentSymbol<CR>
 
+
+" Plug 'autozimu/LanguageClient-neovim'
+"
+" let g:LanguageClient_serverCommands = {
+"     \ 'go': ['gopls', 'serve'],
+"     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+"     \ }
+
+" let g:LanguageClient_rootMarkers = {
+"     \ 'go': ['go.mod'],
+"     \ 'rust': ['Cargo.toml'],
+"     \ }
+
+" let g:LanguageClient_diagnosticsDisplay = {
+"     \ 1: {
+"         \ "name": "Error",
+"         \ "texthl": "Error",
+"         \ "signText": "✗",
+"         \ "signTexthl": "Error",
+"         \ },
+"     \ 2: {
+"         \ "name": "Warning",
+"         \ "texthl": "Todo",
+"         \ "signText": "➤",
+"         \ "signTexthl": "Todo",
+"         \ },
+"     \ }
+
+" let g:LanguageClient_hasSnippetSupport = 0
+" let g:LanguageClient_useVirtualText = 0
+
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> gds :call LanguageClient#textDocument_definition({'gotoCmd': 'split'})<CR>
+" nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
+" nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
+" nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
+" nnoremap <silent> grf :call LanguageClient#textDocument_rangeFormatting()<CR>
+" nnoremap <silent> ga :call LanguageClient#textDocument_codeAction()<CR>
+" nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
+" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gs :call LanguageClient#workspace_symbol()<CR>
+
+
 " Plug 'rust-lang/rust.vim'
 "
-let g:rustfmt_autosave=1
+let g:rustfmt_autosave = 1
 au FileType rust nnoremap gt :RustTest<CR>
 
 
 " Plug 'rhysd/vim-clang-format'
 "
-let g:clang_format#code_style='llvm'
-let g:clang_format#auto_format=1
+let g:clang_format#code_style = 'llvm'
+let g:clang_format#auto_format = 1
 
 
 " Plug 'pearofducks/ansible-vim'
 "
-let g:ansible_unindent_after_newline=1
-let g:ansible_name_highlight='b'
-let g:ansible_extra_keywords_highlight=0
+let g:ansible_unindent_after_newline = 1
+let g:ansible_name_highlight = 'b'
+let g:ansible_extra_keywords_highlight = 0
 
 au BufRead,BufNewFile */playbooks/*/*.yml set filetype=yaml.ansible
 au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
@@ -576,11 +561,11 @@ au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
 
 " Plug 'fatih/vim-go'
 "
-let g:go_disable_autoinstall=1
-let g:go_fmt_fail_silently=1
-let g:go_fmt_command="goimports"
-let g:go_fmt_autosave=1
-let g:go_addtags_transform="camelcase"
+let g:go_disable_autoinstall = 1
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_command = "goimports"
+let g:go_fmt_autosave = 1
+let g:go_addtags_transform = "camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
 au FileType go nmap gb <Plug>(go-build)
@@ -591,10 +576,10 @@ au FileType go nmap <leader>gd <Plug>(go-doc)
 
 " Plug 'sebdahvim-delve'
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
-let g:delve_breakpoint_sign_highlight='DlvPoint'
-let g:delve_tracepoint_sign_highlight='DlvPoint'
-let g:delve_breakpoint_sign='>>'
-let g:delve_tracepoint_sign='||'
+let g:delve_breakpoint_sign_highlight = 'DlvPoint'
+let g:delve_tracepoint_sign_highlight = 'DlvPoint'
+let g:delve_breakpoint_sign = '>>'
+let g:delve_tracepoint_sign = '||'
 
 nnoremap <silent> drt :DlvTest<CR>
 nnoremap <silent> drd :DlvDebug<CR>
