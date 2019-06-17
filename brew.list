@@ -1,7 +1,6 @@
 zsh
 go
 rustup-init
-dep
 cquery
 jq
 fzf

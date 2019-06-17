@@ -4,7 +4,6 @@ call plug#begin('~/.config/nvim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
 Plug 'ajh17/Spacegray.vim'
-Plug 'tomasiser/vim-code-dark'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -14,6 +13,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
+Plug 'majutsushi/tagbar'
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
@@ -37,24 +37,25 @@ call plug#end()
 
 " Standard VIM TUI Settings
 "
+set nocompatible
+filetype off
+filetype plugin indent on
+
 syntax on
 set t_Co=256
 set t_ut=
 set termguicolors
 set bg=dark
-
 colorscheme spacegray
 
 set nospell
-set encoding=UTF-8
 set hidden
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
 set gcr=a:blinkon0
-
-set autoread
+set mouse=a
 set completeopt=longest,menu,menuone,noinsert,noselect
 
 set ignorecase
@@ -66,8 +67,10 @@ set noswapfile
 
 set noshowmode
 set showmatch
+set matchtime=2
 set showcmd
 set lazyredraw
+set autoread
 
 set autoindent
 set smartindent
@@ -195,11 +198,14 @@ nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
 " Highlights
-hi SignColumn   ctermbg=none guibg=none
-hi SpellBad     cterm=undercurl ctermbg=none guibg=none
+hi SignColumn ctermbg=NONE guibg=NONE
+hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 
-hi Todo         ctermbg=none guibg=none cterm=none gui=none
-hi Error        ctermbg=none guibg=none cterm=none gui=none
+hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
+hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
+
+" Highlights for floating windows
+hi link NormalFloat Pmenu
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
@@ -224,14 +230,18 @@ let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change = '~'
 let g:signify_sign_changedelete = g:signify_sign_change
 
-hi SignifySignAdd       ctermbg=none guibg=none ctermfg=green guifg=green
-hi SignifySignChange    ctermbg=none guibg=none ctermfg=yellow guifg=yellow
-hi SignifySignDelete    ctermbg=none guibg=none ctermfg=red guifg=red
+hi SignifySignAdd ctermbg=NONE guibg=NONE ctermfg=green guifg=green
+hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
+hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 
 " Plug 'mattn/calendar-vim'
 "
 nnoremap <leader>c :CalendarH<CR>
+
+" Plug 'majutsushi/tagbar'
+"
+nmap <F4> :TagbarToggle<CR>
 
 
 " Plug 'tpope/vim-markdown'
@@ -334,7 +344,8 @@ let NERDTreeIgnore = [
     \ '\.DS_Store',
     \ '\.git$',
     \ '\.test$',
-    \ '\.pyc$'
+    \ '\.pyc$',
+    \ '\.idea'
     \]
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
@@ -368,10 +379,12 @@ nnoremap <leader>gv :GV<CR>
 "Plug 'Shougo/echodoc.vim'
 "
 let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
+let g:echodoc#type = 'floating'
+hi link EchoDocFloat Pmenu
 
 " Plug 'lifepillar/vim-mucomplete'
 "
+
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#completion_delay= 2
 let g:mucomplete#reopen_immediately = 0
@@ -387,12 +400,17 @@ let g:mucomplete#can_complete = {
 " mucomplete + vim-lsp
 autocmd FileType go,rust,python,c,cpp,java setlocal omnifunc=lsp#complete
 
+inoremap <leader>f <C-x><C-o>
+
 " Plug 'prabirshrestha/vim-lsp'
 "
 " golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
     \ 'name': 'go',
     \ 'cmd': {server_info->['gopls', 'serve']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
+        \ )},
     \ 'whitelist': ['go'],
     \ })
 
@@ -445,6 +463,7 @@ let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_signs_enabled = 1
 let g:lsp_highlights_enabled = 1
+let g:lsp_textprop_enabled = 0
 let g:lsp_virtual_text_enabled = 0
 
 let g:lsp_highlight_references_enabled = 0
@@ -453,11 +472,11 @@ let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
 
 let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '✗'}
-let g:lsp_signs_information = {'text': '➤'}
-let g:lsp_signs_hint = {'text': '➤'}
+let g:lsp_signs_warning = {'text': '➤'}
+let g:lsp_signs_information = {'text': 'i'}
+let g:lsp_signs_hint = {'text': 'h'}
 
-let g:lsp_log_verbose = 0
+let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
@@ -480,7 +499,7 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 " Plug 'natebosch/vim-lsc'
 "
 " let g:lsc_server_commands = {
-"     \ 'go': 'gopls-cgo',
+"     \ 'go': 'gopls',
 " \}
 
 " nnoremap <silent> gd :LSClientGoToDefinition<CR>
@@ -501,8 +520,8 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 "     \ }
 
 " let g:LanguageClient_rootMarkers = {
-"     \ 'go': ['go.mod'],
-"     \ 'rust': ['Cargo.toml'],
+"     \ 'go': ['go.mod', '.git'],
+"     \ 'rust': ['Cargo.toml', '.git'],
 "     \ }
 
 " let g:LanguageClient_diagnosticsDisplay = {
@@ -586,6 +605,8 @@ nnoremap <silent> drd :DlvDebug<CR>
 nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
+" filetype config
+"
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType go setlocal noexpandtab
 au FileType make setlocal noexpandtab
