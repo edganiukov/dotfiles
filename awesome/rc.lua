@@ -72,7 +72,7 @@ local altkey       = "Mod1"
 local terminal     = "alacritty"
 local editor       = os.getenv("EDITOR") or "vi"
 local browser      = "firefox"
-local scrlocker    = "slock"
+local scrlocker    = "i3lock -d -c 000020"
 
 awful.util.terminal = terminal
 awful.util.tagnames = {"1:web", "2:im", "3:fm", "4:media" ,"5:dev"}

@@ -24,7 +24,7 @@ theme.fg_urgent                                 = "#CC9393"
 theme.bg_normal                                 = "#1A1A1A"
 theme.bg_focus                                  = "#313131"
 theme.bg_urgent                                 = "#1A1A1A"
-theme.border_width                              = dpi(1)
+theme.border_width                              = dpi(2)
 theme.border_normal                             = "#3F3F3F"
 theme.border_focus                              = "#7F7F7F"
 theme.border_marked                             = "#CC9393"
@@ -32,7 +32,7 @@ theme.tasklist_bg_focus                         = "#1A1A1A"
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
-theme.menu_height                               = dpi(16)
+theme.menu_height                               = dpi(18)
 theme.menu_width                                = dpi(140)
 theme.menu_awesome_icon                         = theme.dir .. "/icons/awesome.png"
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
@@ -141,7 +141,7 @@ local fsicon = wibox.widget.imagebox(theme.widget_hdd)
 theme.fs = lain.widget.fs({
     notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "xos4 Terminus 10" },
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
+        widget:set_markup(markup.font(theme.font, " /home: " .. fs_now["/home"].percentage .. "% "))
     end
 })
 
