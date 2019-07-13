@@ -24,9 +24,6 @@ export PATH=/usr/local/opt/llvm/bin:$PATH
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
-# java
-export JAVA_HOME=$(/usr/libexec/java_home)
-
 ### settings
 HISTFILE=~/.histfile
 HISTSIZE=10000
@@ -140,7 +137,7 @@ fi
 ### custom functions
 
 # https://github.com/direnv/direnv
-eval "$(direnv hook zsh)"
+# eval "$(direnv hook zsh)"
 
 # pet
 function prev() {
@@ -159,17 +156,17 @@ stty -ixon
 bindkey '^s' pet-select
 
 # calc
-calc() { echo "$@" | bc -l -q -i }
-alias calc='noglob calc'
+# calc() { echo "$@" | bc -l -q -i }
+# alias calc='noglob calc'
 
 # Setup fzf
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+# [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+# source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {

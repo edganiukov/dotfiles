@@ -26,7 +26,7 @@ zsh:
 	ln -s $(CWD)/zsh-plugins $(HOME)/.zsh-plugins
 
 terminal:
-	ln -s $(CWD)/alacritty.yml $(HOME)/.alacritty.yml
+	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
