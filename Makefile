@@ -23,7 +23,7 @@ git:
 
 zsh:
 	ln -s $(CWD)/zshrc $(HOME)/.zshrc
-	ln -s $(CWD)/zsh-plugins $(HOME)/.zsh-plugins
+	ln -s $(CWD)/zsh $(HOME)/.zsh
 
 terminal:
 	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml

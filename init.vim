@@ -46,7 +46,7 @@ set t_Co=256
 set t_ut=
 set termguicolors
 set bg=dark
-colorscheme spacegray
+colorscheme gruvbox
 
 set nospell
 set hidden
@@ -349,6 +349,10 @@ let NERDTreeIgnore = [
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
 
+let g:NERDTreeDirArrowExpandable = '~'
+let g:NERDTreeDirArrowCollapsible = '~'
+
+
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -533,7 +537,7 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 "     \ 2: {
 "         \ "name": "Warning",
 "         \ "texthl": "Todo",
-"         \ "signText": "➤",
+"         \ "signText": ">",
 "         \ "signTexthl": "Todo",
 "         \ },
 "     \ }
