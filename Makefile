@@ -1,6 +1,6 @@
-CWD=$(shell pwd)
+.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3
 
-all: clean, nvim, tmux, git, zsh
+CWD=$(shell pwd)
 
 nvim:
 	mkdir -p ~/.config/nvim && \
@@ -19,7 +19,7 @@ tmux:
 		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
 
 git:
-	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
+	cp $(CWD)/gitconfig $(HOME)/.gitconfig
 
 zsh:
 	ln -s $(CWD)/zshrc $(HOME)/.zshrc
@@ -27,26 +27,27 @@ zsh:
 
 terminal:
 	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
-
-awesome:
-	ln -s $(CWD)/awesome $(HOME)/.config/awesome
-
 x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
+
+i3:
+	ln -s $(CWD)/i3 $(HOME)/.config/i3
+	ln -s $(CWD)/rofi $(HOME)/.config/rofi
+
 
 clean:
 	rm -rf $(HOME)/.config/nvim
 	rm -rf $(HOME)/.vim
 	rm -f $(HOME)/.vimrc
-	rm -rf $(HOME)/.tmux/plugins
+	rm -rf $(HOME)/.tmux
 	rm -f $(HOME)/.tmux.conf
 	rm -f $(HOME)/.gitconfig
-	rm -rf $(HOME)/.zsh-pugins
+	rm -rf $(HOME)/.zsh
 	rm -f $(HOME)/.zshrc
 	rm -f $(HOME)/.alacritty.yml
-	rm -rf $(HOME)/.config/awesome
 	rm -f $(HOME)/.Xresources
 	rm -f $(HOME)/.xinitrc
+	rm -rf $(HOME)/.config/i3
+	rm -rf $(HOME)/.config/rofi
 
-.PHONY: all, nvim, vim, tmux, git, zsh, awesome, x, clean
