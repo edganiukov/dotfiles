@@ -181,11 +181,12 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 
+for_window [class=".*"] title_format %class
+
 # workspace assignment
 assign [class="Firefox"] $ws1
-assign [class="Vlc"] $ws4
 
-# popups
+for_window [class="vlc"] florating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
@@ -194,7 +195,8 @@ for_window [window_role="task_dialog"] floating enable
 bar {
     position top
     tray_output primary
-    status_command ~/.config/i3/i3status-xkb-layout.sh
+    # status_command ~/.config/i3/i3status-xkb-layout.sh
+    status_command i3status -c ~/.config/i3/i3status.conf
     colors {
         separator #928374
         background #282828
@@ -207,10 +209,8 @@ bar {
 }
 
 # startup
-# exec --no-startup-id xkb-switch -W  > ~/.layout &
-
 exec --no-startup-id nm-applet
-exec --no-startup-id xflux -k 2600 -l 46.57 -g 7.27
+exec --no-startup-id xflux -k 2700 -l 46.57 -g 7.27
 exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
-exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle'
-
+exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy -d -n'
+exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent

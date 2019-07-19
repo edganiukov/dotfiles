@@ -537,7 +537,7 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 "     \ 2: {
 "         \ "name": "Warning",
 "         \ "texthl": "Todo",
-"         \ "signText": ">",
+"         \ "signText": "➤",
 "         \ "signTexthl": "Todo",
 "         \ },
 "     \ }

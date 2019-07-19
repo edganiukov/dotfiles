@@ -1,4 +1,4 @@
-.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome
+.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome, redshift
 
 CWD=$(shell pwd)
 
@@ -38,6 +38,9 @@ i3:
 
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+
+redshift:
+	ln -s $(CWD)/redshift $(HOME)/.config/redshift
 
 clean:
 	rm -rf $(HOME)/.config/nvim
