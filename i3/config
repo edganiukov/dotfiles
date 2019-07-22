@@ -138,9 +138,19 @@ mode "resize" {
 
 bindsym $mod+d mode "resize"
 
-# brightness
-bindsym XF86MonBrightnessUp exec xbacklight +1
-bindsym XF86MonBrightnessDown exec xbacklight -1
+# brightness: acpilight
+bindsym XF86MonBrightnessDown exec xbacklight -ctrl intel_backlight -dec 2
+bindsym XF86MonBrightnessUp exec xbacklight -ctrl intel_backlight -inc 2
+
+# XF86LaunchA
+# XF86LaunchB
+
+bindsym XF86KbdBrightnessDown exec xbacklight -ctrl smc::kbd_backlight -dec 2
+bindsym XF86KbdBrightnessUp exec xbacklight -ctrl smc::kbd_backlight -inc 2
+
+# XF86AudioPlay
+# XF86AudioNext
+# XF86AudioPrev
 
 # volume
 bindsym XF86AudioRaiseVolume exec amixer -q sset Master 1%+
@@ -210,7 +220,5 @@ bar {
 
 # startup
 exec --no-startup-id nm-applet
-exec --no-startup-id xflux -k 2700 -l 46.57 -g 7.27
 exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
 exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy -d -n'
-exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent

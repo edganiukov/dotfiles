@@ -1,4 +1,4 @@
-.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome, redshift
+.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome, redshift, etc
 
 CWD=$(shell pwd)
 
@@ -41,6 +41,11 @@ awesome:
 
 redshift:
 	ln -s $(CWD)/redshift $(HOME)/.config/redshift
+
+etc:
+	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
+	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
+	sudo cp $(CWD)/etc/xfluxd.conf /etc/xfluxd.conf
 
 clean:
 	rm -rf $(HOME)/.config/nvim

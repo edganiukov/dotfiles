@@ -12,7 +12,7 @@ xgamma -gamma 0.8
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 
 # key repeat
-xset r rate 150 20
+xset r rate 175 20
 
 # Start WM
 # exec awesome
