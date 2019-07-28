@@ -53,9 +53,10 @@ bindsym $mod+q kill
 
 # start rofi (a program launcher)
 bindsym $mod+r exec --no-startup-id "rofi -combi-modi drun,run -show combi"
-bindsym $mod1+r exec --no-startup-id rofi -show window
+bindsym $mod1+r exec --no-startup-id "rofi -show window"
+bindsym $mod1+p exec --no-startup-id "gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c"
 
-bindsym $mod1+l exec i3lock-fancy -d -n
+bindsym $mod1+l exec i3lock -n -c 708090
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -221,4 +222,4 @@ bar {
 # startup
 exec --no-startup-id nm-applet
 exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
-exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy -d -n'
+exec --no-startup-id xautolock -time 10 -locker 'i3lock -n -c 708090'
