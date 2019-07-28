@@ -53,8 +53,8 @@ bindsym $mod+q kill
 
 # start rofi (a program launcher)
 bindsym $mod+r exec --no-startup-id "rofi -combi-modi drun,run -show combi"
-bindsym $mod1+r exec --no-startup-id "rofi -show window"
-bindsym $mod1+p exec --no-startup-id "gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c"
+bindsym $mod+t exec --no-startup-id "rofi -show window"
+bindsym $mod+p exec --no-startup-id "gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c"
 
 bindsym $mod1+l exec i3lock -n -c 708090
 
@@ -154,9 +154,9 @@ bindsym XF86KbdBrightnessUp exec xbacklight -ctrl smc::kbd_backlight -inc 2
 # XF86AudioPrev
 
 # volume
-bindsym XF86AudioRaiseVolume exec amixer -q sset Master 1%+
-bindsym XF86AudioLowerVolume exec amixer -q sset Master 1%-
-bindsym XF86AudioMute exec amixer set Master toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -195,7 +195,7 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 for_window [class=".*"] title_format %class
 
 # workspace assignment
-assign [class="Firefox"] $ws1
+assign [class="firefox"] $ws1
 
 for_window [class="vlc"] florating enable
 for_window [window_role="pop-up"] floating enable
