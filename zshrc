@@ -29,7 +29,7 @@ export CPPFLAGS="-I/usr/local/opt/llvm/include"
 export PATH=$HOME/.krew/bin:$PATH
 
 # java
-export JAVA_HOME=$(/usr/libexec/java_home)
+[ -f /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
 ### settings
 HISTFILE=~/.histfile
