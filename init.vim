@@ -13,6 +13,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
+Plug 'vimwiki/vimwiki'
 Plug 'majutsushi/tagbar'
 " Git
 Plug 'mhinz/vim-signify'
@@ -26,6 +27,7 @@ Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
+Plug 'hashivim/vim-terraform'
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -48,6 +50,8 @@ set termguicolors
 set bg=dark
 colorscheme gruvbox
 " colorscheme spacegray
+
+set wildoptions-=pum
 
 set nospell
 set hidden
@@ -102,7 +106,7 @@ set formatoptions=qrn1j
 set autoindent
 set shiftwidth=4
 set shiftround
-set expandtab
+set noexpandtab
 set tabstop=4
 set softtabstop=4
 set nojoinspaces
@@ -260,7 +264,7 @@ let g:vim_markdown_fenced_languages = [
     \ 'yaml',
     \ ]
 
-let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_style_pythonic = 1
 let g:tex_conceal = ""
 let g:vim_markdown_math = 1
@@ -359,14 +363,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Plug 'tmsvg/pear-tree'
 "
-let g:pear_tree_pairs = {
+" let g:pear_tree_pairs = {
     \ '(': {'closer': ')'},
     \ '[': {'closer': ']'},
     \ '{': {'closer': '}'},
     \ "'": {'closer': "'"},
     \ '"': {'closer': '"'},
     \ '`': {'closer': '`'}
-    \ }
+"     \ }
 let g:pear_tree_repeatable_expand = 0
 
 
@@ -402,7 +406,7 @@ let g:mucomplete#can_complete = {
     \ }
 
 " mucomplete + vim-lsp
-autocmd FileType go,rust,python,c,cpp,java setlocal omnifunc=lsp#complete
+autocmd FileType go,rust,python,c,cpp,java,yaml,ansible,yaml.ansible setlocal omnifunc=lsp#complete
 
 inoremap <leader>f <C-x><C-o>
 
@@ -460,8 +464,15 @@ au User lsp_setup call lsp#register_server({
     \ 'whitelist': ['java'],
     \ })
 
+" " https://github.com/redhat-developer/yaml-language-server
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'yaml',
+"     \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+"     \ 'whitelist': ['yaml.ansible', 'yaml', 'ansible'],
+"     \ })
+
 let g:lsp_auto_enable = 1
-let g:lsp_preview_keep_focus = 0
+let g:lsp_preview_keep_focus = 1
 
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
@@ -483,10 +494,19 @@ let g:lsp_signs_hint = {'text': 'h'}
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
+" highlight PopupWindow guibg=#fdf6e3
+
+" augroup lsp_float_colours
+"     autocmd!
+"     autocmd User lsp_float_opened
+"                 \ call nvim_win_set_option(lsp#ui#vim#output#getpreviewwinid(),'winhighlight', 'Normal:PopupWindow')
+" augroup end
+
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
 nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
+nnoremap <silent> gdc :LspDeclaration<cr>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
@@ -611,11 +631,12 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 " filetype config
 "
-au FileType yaml setlocal sw=2 sts=2 ts=2
-au FileType go setlocal noexpandtab
-au FileType make setlocal noexpandtab
-au FileType json setlocal sw=2 sts=2 ts=2
-au FileType conf setlocal sw=2 sts=2 ts=2
+au FileType yaml setlocal expandtab sw=2 sts=2 ts=2
+au FileType python setlocal expandtab sw=4 sts=4 ts=4
+
+au FileType json setlocal expandtab sw=2 sts=2 ts=2
+au FileType conf setlocal expandtab sw=2 sts=2 ts=2
+au FileType terraform setlocal expandtab sw=4 sts=4 ts=4
 au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
