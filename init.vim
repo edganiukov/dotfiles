@@ -387,7 +387,7 @@ nnoremap <leader>gv :GV<CR>
 "Plug 'Shougo/echodoc.vim'
 "
 let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'floating'
+let g:echodoc#type = 'echo'
 hi link EchoDocFloat Pmenu
 
 " Plug 'lifepillar/vim-mucomplete'
@@ -406,7 +406,7 @@ let g:mucomplete#can_complete = {
     \ }
 
 " mucomplete + vim-lsp
-autocmd FileType go,rust,python,c,cpp,java,yaml,ansible,yaml.ansible setlocal omnifunc=lsp#complete
+autocmd FileType go,rust,python,c,cpp,java setlocal omnifunc=lsp#complete
 
 inoremap <leader>f <C-x><C-o>
 
@@ -463,13 +463,6 @@ au User lsp_setup call lsp#register_server({
         \ )},
     \ 'whitelist': ['java'],
     \ })
-
-" " https://github.com/redhat-developer/yaml-language-server
-" au User lsp_setup call lsp#register_server({
-"     \ 'name': 'yaml',
-"     \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
-"     \ 'whitelist': ['yaml.ansible', 'yaml', 'ansible'],
-"     \ })
 
 let g:lsp_auto_enable = 1
 let g:lsp_preview_keep_focus = 1
