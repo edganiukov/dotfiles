@@ -48,7 +48,7 @@ set t_Co=256
 set t_ut=
 set termguicolors
 set bg=dark
-colorscheme spacegray
+colorscheme gruvbox
 
 set wildoptions-=pum
 
@@ -94,8 +94,7 @@ set cursorline
 set pastetoggle=<F2>
 set nopaste
 " copy to the system clipboard
-set clipboard=unnamedplus
-" set clipboard=unnamed
+set clipboard=unnamedplus,unnamed
 
 set listchars=tab:→\ ,nbsp:·,trail:·
 set list
@@ -353,6 +352,10 @@ let NERDTreeIgnore = [
     \]
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
+
+let g:NERDTreeDirArrowExpandable = '~'
+let g:NERDTreeDirArrowCollapsible = '~'
+
 
 map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

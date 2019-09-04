@@ -1,6 +1,6 @@
-CWD=$(shell pwd)
+.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome, redshift, etc
 
-all: clean, nvim, tmux, git, zsh
+CWD=$(shell pwd)
 
 nvim:
 	mkdir -p ~/.config/nvim && \
@@ -19,34 +19,47 @@ tmux:
 		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
 
 git:
-	ln -s $(CWD)/gitconfig $(HOME)/.gitconfig
+	cp $(CWD)/gitconfig $(HOME)/.gitconfig
 
 zsh:
 	ln -s $(CWD)/zshrc $(HOME)/.zshrc
-	ln -s $(CWD)/zsh-plugins $(HOME)/.zsh-plugins
+	ln -s $(CWD)/zsh $(HOME)/.zsh
 
 terminal:
-	ln -s $(CWD)/alacritty.yml $(HOME)/.alacritty.yml
-
-awesome:
-	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
 
+i3:
+	ln -s $(CWD)/i3 $(HOME)/.config/i3
+	ln -s $(CWD)/rofi $(HOME)/.config/rofi
+
+awesome:
+	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+
+redshift:
+	ln -s $(CWD)/redshift $(HOME)/.config/redshift
+
+etc:
+	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
+	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
+	sudo cp $(CWD)/etc/xfluxd.conf /etc/xfluxd.conf
+
 clean:
 	rm -rf $(HOME)/.config/nvim
 	rm -rf $(HOME)/.vim
 	rm -f $(HOME)/.vimrc
-	rm -rf $(HOME)/.tmux/plugins
+	rm -rf $(HOME)/.tmux
 	rm -f $(HOME)/.tmux.conf
 	rm -f $(HOME)/.gitconfig
-	rm -rf $(HOME)/.zsh-pugins
+	rm -rf $(HOME)/.zsh
 	rm -f $(HOME)/.zshrc
 	rm -f $(HOME)/.alacritty.yml
-	rm -rf $(HOME)/.config/awesome
 	rm -f $(HOME)/.Xresources
 	rm -f $(HOME)/.xinitrc
+	rm -rf $(HOME)/.config/i3
+	rm -rf $(HOME)/.config/rofi
+	rm -rf $(HOME)/.config/awesome
 
-.PHONY: all, nvim, vim, tmux, git, zsh, awesome, x, clean
