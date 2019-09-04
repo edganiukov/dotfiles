@@ -47,6 +47,7 @@ set t_ut=
 set termguicolors
 set bg=dark
 colorscheme gruvbox
+" colorscheme spacegray
 
 set nospell
 set hidden
@@ -618,5 +619,6 @@ au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
+au BufRead,BufNewFile *.conf setlocal ft=conf
 au BufRead,BufNewFile *.slide setlocal ft=markdown
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy

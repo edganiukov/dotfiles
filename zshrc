@@ -96,6 +96,7 @@ alias wget="wget --continue --content-disposition"
 alias grep="grep --colour"
 alias curl="curl -s"
 alias k="kubectl"
+alias pass="gopass"
 
 ### prompt
 autoload -Uz vcs_info
@@ -156,8 +157,9 @@ stty -ixon
 bindkey '^s' pet-select
 
 # calc
-# calc() { echo "$@" | bc -l -q -i }
-# alias calc='noglob calc'
+calc() {
+    echo "$@" | bc -l -q -i
+}
 
 # Setup fzf
 # Auto-completion

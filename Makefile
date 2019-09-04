@@ -1,4 +1,4 @@
-.PHONY: nvim, vim, tmux, git, zsh, x, clean, i3, awesome, redshift, etc
+.PHONY: nvim vim tmux git zsh x clean i3 awesome redshift etc
 
 CWD=$(shell pwd)
 

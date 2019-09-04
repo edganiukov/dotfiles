@@ -8,11 +8,15 @@
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
+systemctl --user set-environment DISPLAY=:0
+
 # keyboard layout
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 
 # key repeat
 xset r rate 200 20
+
+dbus-launch thunar --daemon &
 
 # Let QT and GTK autodetect retina screen and autoadjust
 # export QT_AUTO_SCREEN_SCALE_FACTOR=1
