@@ -6,7 +6,8 @@ export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 
-export PATH="/usr/local/opt/qt/bin:$PATH"
+# qt
+export PATH=/usr/local/opt/qt/bin:$PATH
 
 export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
@@ -23,6 +24,9 @@ export GO111MODULE=auto
 export PATH=/usr/local/opt/llvm/bin:$PATH
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
+
+# krew (kubectl plugin manager)
+export PATH=$HOME/.krew/bin:$PATH
 
 # java
 export JAVA_HOME=$(/usr/libexec/java_home)
@@ -111,7 +115,7 @@ precmd() {
     vcs_info
 }
 setopt prompt_subst
-PROMPT='%F{green}#>%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f %# '
+PROMPT='%F{green}#%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f $ '
 RPROMPT='[%F{yellow}%*%f]'
 
 ### plugins
@@ -141,6 +145,9 @@ fi
 
 # https://github.com/direnv/direnv
 eval "$(direnv hook zsh)"
+
+# kubectl
+# eval "$(kubectl completion zsh)"
 
 # pet
 function prev() {
