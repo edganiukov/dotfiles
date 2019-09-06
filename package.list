@@ -1,0 +1,38 @@
+# dev
+go
+delve
+# gopls
+gotags
+rustup
+gdb
+lldb
+cquery
+ctags
+tig
+git
+
+# tools
+zsh
+tmux
+jq
+fzf
+bat
+ripgrep
+fd
+tree
+unrar
+direnv
+wget
+nmap
+gopass
+
+# tui
+neovim
+mc
+htop
+
+# gui
+i3
+rofi
+dunst
+alacritty
