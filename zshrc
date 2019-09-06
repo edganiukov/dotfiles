@@ -5,11 +5,6 @@ export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export EDITOR=nvim
-
-# qt
-export PATH=/usr/local/opt/qt/bin:$PATH
-
-export CDPATH=.:~/dev/go/src/github.com/edganiukov
 export CLICOLOR=YES
 
 # Go vars
@@ -19,17 +14,6 @@ export GO111MODULE=auto
 
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
-
-# LLVM vars
-export PATH=/usr/local/opt/llvm/bin:$PATH
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
-
-# krew (kubectl plugin manager)
-export PATH=$HOME/.krew/bin:$PATH
-
-# java
-[ -f /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
 ### settings
 HISTFILE=~/.histfile
@@ -142,13 +126,16 @@ if [ -d ~/.zsh/zsh-completions/src ]; then
     fpath=(~/.zsh/zsh-completions/src $fpath)
 fi
 
-### custom functions
+### Custom functions
 
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
 
 # kubectl
 # eval "$(kubectl completion zsh)"
+#
+# krew (kubectl plugin manager)
+# export PATH=$HOME/.krew/bin:$PATH
 
 # pet
 function prev() {
@@ -166,20 +153,6 @@ zle -N pet-select
 stty -ixon
 bindkey '^s' pet-select
 
-# calc
-calc() {
-    echo "$@" | bc -l -q -i
-}
-
-# Setup fzf
-# Auto-completion
-# ---------------
-[[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
-
-# Key bindings
-# ------------
-source "/usr/share/fzf/key-bindings.zsh"
-
 # tm - creates new tmux session, or switch to existing one.
 tm() {
   [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
@@ -190,4 +163,4 @@ tm() {
 }
 
 # custom zsh config
-[ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
