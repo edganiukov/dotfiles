@@ -39,7 +39,6 @@ call plug#end()
 
 " Standard VIM TUI Settings
 "
-set nocompatible
 filetype off
 filetype plugin indent on
 
@@ -106,7 +105,7 @@ set formatoptions=qrn1j
 set autoindent
 set shiftwidth=4
 set shiftround
-set noexpandtab
+set expandtab
 set tabstop=4
 set softtabstop=4
 set nojoinspaces
@@ -116,6 +115,8 @@ set encoding=utf-8
 
 " suppress the annoying 'match x of y', 'The only match', etc.
 set shortmess+=c
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
 " abbreviations
 cnoreabbrev W! w!
@@ -489,12 +490,6 @@ let g:lsp_log_file = expand('/tmp/lsp.log')
 
 " highlight PopupWindow guibg=#fdf6e3
 
-" augroup lsp_float_colours
-"     autocmd!
-"     autocmd User lsp_float_opened
-"                 \ call nvim_win_set_option(lsp#ui#vim#output#getpreviewwinid(),'winhighlight', 'Normal:PopupWindow')
-" augroup end
-
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
 nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
@@ -589,7 +584,7 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_name_highlight = 'b'
 let g:ansible_extra_keywords_highlight = 0
 
-au BufRead,BufNewFile */playbooks/*/*.yml set filetype=yaml.ansible
+au BufRead,BufNewFile */playbooks/*/*.yml setlocal filetype=yaml.ansible
 au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
 au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
 au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
@@ -609,6 +604,8 @@ au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
+au FileType go setlocal noexpandtab
+
 
 " Plug 'sebdahvim-delve'
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
@@ -624,12 +621,10 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 " filetype config
 "
-au FileType yaml setlocal expandtab sw=2 sts=2 ts=2
-au FileType python setlocal expandtab sw=4 sts=4 ts=4
+au FileType yaml setlocal sw=2 sts=2 ts=2
+au FileType json setlocal sw=2 sts=2 ts=2
+au FileType conf setlocal sw=2 sts=2 ts=2
 
-au FileType json setlocal expandtab sw=2 sts=2 ts=2
-au FileType conf setlocal expandtab sw=2 sts=2 ts=2
-au FileType terraform setlocal expandtab sw=4 sts=4 ts=4
 au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
