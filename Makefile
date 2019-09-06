@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x clean i3 awesome redshift etc
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi
 
 CWD=$(shell pwd)
 
@@ -34,6 +34,8 @@ x:
 
 i3:
 	ln -s $(CWD)/i3 $(HOME)/.config/i3
+
+rofi:
 	ln -s $(CWD)/rofi $(HOME)/.config/rofi
 
 awesome:
@@ -42,24 +44,10 @@ awesome:
 redshift:
 	ln -s $(CWD)/redshift $(HOME)/.config/redshift
 
+dunst:
+	ln -s $(CWD)/dunst $(HOME)/.config/dunst
+
 etc:
 	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
 	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
 	sudo cp $(CWD)/etc/xfluxd.conf /etc/xfluxd.conf
-
-clean:
-	rm -rf $(HOME)/.config/nvim
-	rm -rf $(HOME)/.vim
-	rm -f $(HOME)/.vimrc
-	rm -rf $(HOME)/.tmux
-	rm -f $(HOME)/.tmux.conf
-	rm -f $(HOME)/.gitconfig
-	rm -rf $(HOME)/.zsh
-	rm -f $(HOME)/.zshrc
-	rm -f $(HOME)/.alacritty.yml
-	rm -f $(HOME)/.Xresources
-	rm -f $(HOME)/.xinitrc
-	rm -rf $(HOME)/.config/i3
-	rm -rf $(HOME)/.config/rofi
-	rm -rf $(HOME)/.config/awesome
-

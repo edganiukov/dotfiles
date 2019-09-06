@@ -1,0 +1,167 @@
+[global]
+    ### Display ###
+
+    # Which monitor should the notifications be displayed on.
+    monitor = 0
+
+    # Display notification on focused monitor.  Possible modes are:
+    #   mouse: follow mouse pointer
+    #   keyboard: follow window with keyboard focus
+    #   none: don't follow anything
+    #
+    # "keyboard" needs a window manager that exports the
+    # _NET_ACTIVE_WINDOW property.
+    # This should be the case for almost all modern window managers.
+    #
+    # If this option is set to mouse or keyboard, the monitor option
+    # will be ignored.
+    follow = mouse
+
+	# The geometry of the window:
+    #   [{width}]x{height}[+/-{x}+/-{y}]
+    # The geometry of the message window.
+    # The height is measured in number of notifications everything else
+    # in pixels.  If the width is omitted but the height is given
+    # ("-geometry x2"), the message window expands over the whole screen
+    # (dmenu-like).  If width is 0, the window expands to the longest
+    # message displayed.  A positive x is measured from the left, a
+    # negative from the right side of the screen.  Y is measured from
+    # the top and down respectively.
+    # The width can be negative.  In this case the actual width is the
+    # screen width minus the width defined in within the geometry option.
+    geometry = "700x100-5+45"
+
+    # Show how many messages are currently hidden (because of geometry).
+    indicate_hidden = yes
+
+    # Shrink window if it's smaller than the width.  Will be ignored if
+    # width is 0.
+    shrink = yes
+
+    ### Text ###
+
+    font = "Source Code Pro 9"
+
+    # The spacing between lines.  If the height is smaller than the
+    # font height, it will get raised to the font height.
+    line_height = 0
+
+    # Possible values are:
+    # full: Allow a small subset of html markup in notifications:
+    #        <b>bold</b>
+    #        <i>italic</i>
+    #        <s>strikethrough</s>
+    #        <u>underline</u>
+    #
+    #        For a complete reference see
+    #        <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
+    #
+    # strip: This setting is provided for compatibility with some broken
+    #        clients that send markup even though it's not enabled on the
+    #        server. Dunst will try to strip the markup but the parsing is
+    #        simplistic so using this option outside of matching rules for
+    #        specific applications *IS GREATLY DISCOURAGED*.
+    #
+    # no:    Disable markup parsing, incoming notifications will be treated as
+    #        plain text. Dunst will not advertise that it has the body-markup
+    #        capability if this is set as a global setting.
+    #
+    # It's important to note that markup inside the format option will be parsed
+    # regardless of what this is set to.
+    markup = full
+
+    # The format of the message.  Possible variables are:
+    #   %a  appname
+    #   %s  summary
+    #   %b  body
+    #   %i  iconname (including its path)
+    #   %I  iconname (without its path)
+    #   %p  progress value if set ([  0%] to [100%]) or nothing
+    #   %n  progress value if set without any extra characters
+    #   %%  Literal %
+    # Markup is allowed
+    format = "<b>%s</b>\n%b"
+
+   	# Alignment of message text.
+    # Possible values are "left", "center" and "right".
+    alignment = left
+
+    sort = yes
+
+    bounce_freq = 0
+    show_age_threshold = 60
+    word_wrap = yes
+    ignore_newline = no
+    transparency = 0
+    idle_threshold = 120
+    sticky_history = yes
+
+    separator_height = 2
+
+    padding = 8
+    horizontal_padding = 8
+    separator_color = "#585858"
+    startup_notification = false
+
+    # https://github.com/knopwob/dunst/issues/26#issuecomment-36159395
+    # Align icons left/right/off
+    icon_position = left
+
+    # Scale larger icons down to this size, set to 0 to disable
+    max_icon_size = 16
+
+    # Paths to default icons.
+    icon_path = /usr/share/icons/Numix/16/actions;/usr/share/icons/Numix/16/status:/usr/share/icons/Numix/16/devices
+
+    ### mouse
+
+    # Defines action of mouse event
+    # Possible values are:
+    # * none: Don't do anything.
+    # * do_action: If the notification has exactly one action, or one is marked as default,
+    #              invoke it. If there are multiple and no default, open the context menu.
+    # * close_current: Close current notification.
+    # * close_all: Close all notifications.
+    mouse_left_click = close_current
+    mouse_middle_click = do_action
+    mouse_right_click = close_all
+
+[frame]
+    width = 1
+    color = "#83a598"
+
+[shortcuts]
+    # Shortcuts are specified as [modifier+][modifier+]...key
+    # Available modifiers are "ctrl", "mod1" (the alt-key), "mod2",
+    # "mod3" and "mod4" (windows-key).
+    # Xev might be helpful to find names for keys.
+
+    # Close notification.
+    close = ctrl+space
+
+    # Close all notifications.
+    close_all = ctrl+shift+space
+
+    # Redisplay last message(s).
+    # On the US keyboard layout "grave" is normally above TAB and left
+    # of "1". Make sure this key actually exists on your keyboard layout,
+    # e.g. check output of 'xmodmap -pke'
+    history = ctrl+grave
+
+    # Context menu.
+    context = ctrl+shift+period
+
+[urgency_low]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    timeout = 1
+
+[urgency_normal]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    timeout = 2
+
+[urgency_critical]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    timeout = 4

@@ -1,2 +1,2 @@
-*.custom
+*.local*
 .DS_Store
