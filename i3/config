@@ -12,7 +12,7 @@
 ## Apperance
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango: Source Code Pro 9
+font pango:Source Code Pro, Inconsolata 9
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -161,15 +161,19 @@ bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 " 1 "
-set $ws2 " 2 "
-set $ws3 " 3 "
-set $ws4 " 4 "
-set $ws5 " 5 "
-set $ws6 " 6 "
-set $ws7 " 7 "
-set $ws8 " 8 "
-set $ws9 " 9 "
+# १ २ ३ ४ ५ ६ ७ ८ ९
+# ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
+#
+set $ws1 " ١ "
+set $ws2 " ٢ "
+set $ws3 " ٣ "
+set $ws4 " ٤ "
+set $ws5 " ٥ "
+set $ws6 " ٦ "
+set $ws7 " ٧ "
+set $ws8 " ٨ "
+set $ws9 " ٩ "
+
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
