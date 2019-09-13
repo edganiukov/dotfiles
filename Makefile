@@ -33,22 +33,24 @@ x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
 
+awesome:
+	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+
 i3:
 	ln -s $(CWD)/i3 $(HOME)/.config/i3
 
 rofi:
-	ln -s $(CWD)/rofi $(HOME)/.config/rofi
-
-awesome:
-	ln -s $(CWD)/awesome $(HOME)/.config/awesome
+	mkdir -p $(HOME)/.config/rofi
+	ln -s $(CWD)/rofi.conf $(HOME)/.config/rofi/config
 
 redshift:
-	ln -s $(CWD)/redshift $(HOME)/.config/redshift
+	mkdir -p $(HOME)/.config/redshift
+	ln -s $(CWD)/redshift.conf $(HOME)/.config/redshift/redshift.conf
 
 dunst:
-	ln -s $(CWD)/dunst $(HOME)/.config/dunst
+	mkdir -p $(HOME)/.config/dunst
+	ln -s $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
 etc:
 	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
 	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
-	sudo cp $(CWD)/etc/xfluxd.conf /etc/xfluxd.conf

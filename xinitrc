@@ -4,11 +4,11 @@
 #
 # Executed by startx (run your window manager from here)
 
+systemctl --user import-environment DISPLAY
+
 # X settings
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
-
-systemctl --user set-environment DISPLAY=:0
 
 # keyboard layout
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
