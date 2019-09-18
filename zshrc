@@ -4,7 +4,7 @@
 export LANG=en_US.UTF-8
 export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
-export EDITOR=nvim
+export EDITOR=vim
 export CLICOLOR=YES
 
 # Go vars
