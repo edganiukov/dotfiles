@@ -46,11 +46,14 @@ syntax on
 set t_Co=256
 set t_ut=
 set termguicolors
+
 set bg=dark
 colorscheme gruvbox
 " colorscheme spacegray
 
+" cmd autocomplete
 set wildoptions-=pum
+set completeopt=longest,menu,menuone,noinsert,noselect
 
 set nospell
 set hidden
@@ -58,9 +61,7 @@ set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
-set gcr=a:blinkon0
 set mouse=a
-set completeopt=longest,menu,menuone,noinsert,noselect
 
 set ignorecase
 set smartcase
@@ -113,15 +114,23 @@ set splitright
 set splitbelow
 set encoding=utf-8
 
+set laststatus=2
+
 " suppress the annoying 'match x of y', 'The only match', etc.
 set shortmess+=c
 
+" dont blink the cursor
+set gcr+=i:blinkwait0
+
+" fix cursor shape in INSERT mode
 if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
 else
-    let &t_SI = "\e[5 q"
-    let &t_EI = "\e[2 q"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
 endif
 
 " abbreviations
