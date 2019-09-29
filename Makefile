@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser
 
 CWD=$(shell pwd)
 
@@ -55,3 +55,6 @@ dunst:
 etc:
 	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
 	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
+
+qutebrowser:
+	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py

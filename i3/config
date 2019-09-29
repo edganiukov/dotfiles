@@ -164,15 +164,15 @@ bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 # १ २ ३ ४ ५ ६ ७ ८ ९
 # ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
 #
-set $ws1 " ١ "
-set $ws2 " ٢ "
-set $ws3 " ٣ "
-set $ws4 " ٤ "
-set $ws5 " ٥ "
-set $ws6 " ٦ "
-set $ws7 " ٧ "
-set $ws8 " ٨ "
-set $ws9 " ٩ "
+set $ws1 "1: ١ "
+set $ws2 "2: ٢ "
+set $ws3 "3: ٣ "
+set $ws4 "4: ٤ "
+set $ws5 "5: ٥ "
+set $ws6 "6: ٦ "
+set $ws7 "7: ٧ "
+set $ws8 "8: ٨ "
+set $ws9 "9: ٩ "
 
 
 # switch to workspace
@@ -210,6 +210,7 @@ for_window [window_role="task_dialog"] floating enable
 # finds out, if available)
 bar {
     position top
+    strip_workspace_numbers yes
     tray_output primary
     # status_command ~/.config/i3/i3status-xkb-layout.sh
     status_command i3status -c ~/.config/i3/i3status.conf

@@ -3,7 +3,11 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
-# c.qt.args=["ppapi-widevine-path=/Users/taagaed2/dev/apps/widevine/widevinecdmadapter.plugin"]
+# Turn on Qt HighDPI scaling.
+c.qt.highdpi = True
+
+# Default zoom level.
+c.zoom.default = "100%"
 
 # Uncomment this to still load settings configured via autoconfig.yml
 # config.load_autoconfig()
@@ -39,7 +43,7 @@ c.content.plugins = True
 c.content.proxy = 'system'
 
 # Disable cache
-c.content.cache.size = 0
+# c.content.cache.size = 0
 
 # Which cookies to accept.
 c.content.cookies.accept = 'all'
@@ -84,16 +88,21 @@ c.tabs.last_close = 'blank'
 c.tabs.background = True
 
 # Format to use for the tab title.
-c.tabs.title.format = '{audio}{index}: {title}'
+c.tabs.title.format = '{audio}{index}: {current_title}'
+
+# Maximum width (in pixels) of tabs (-1 for no maximum).
+c.tabs.max_width = 300
 
 # Page to open if :open -t/-b/-w is used without URL. Use `about:blank`
 # for a blank page.
 # Type: FuzzyUrl
-c.url.default_page = 'https://ddg.gg'
+# c.url.default_page = 'https://ddg.gg'
+c.url.default_page = 'about:blank'
 
 # Page(s) to open at the start.
 # Type: List of FuzzyUrl, or FuzzyUrl
-c.url.start_pages = 'https://start.duckduckgo.com/'
+# c.url.start_pages = 'https://start.duckduckgo.com/'
+c.url.start_pages = 'about:blank'
 
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.
@@ -204,10 +213,86 @@ c.colors.tabs.selected.even.fg = '#d5c4a1'
 # Type: QtColor
 c.colors.tabs.selected.even.bg = '#202020'
 
+# Default monospace fonts.
+# Whenever "monospace" is used in a font setting, it's replaced with the fonts listed here.
+c.fonts.monospace = '"Source Code Pro"'
+
+# Font used in the completion categories.
+# Type: QtFont
+c.fonts.completion.category = 'bold 6pt monospace'
+
+# Font used in the completion widget.
+# Type: QtFont
+c.fonts.completion.entry = '6pt monospace'
+
+# Font used for the debugging console.
+# Type: QtFont
+c.fonts.debug_console = '5.5pt monospace'
+
+# Font used for the downloadbar.
+# Type: QtFont
+c.fonts.downloads = '5.5pt monospace'
+
+# Font used for the hints.
+# Type: QtFont
+c.fonts.hints = 'bold 5.5pt monospace'
+
+# Font used in the keyhint widget.
+# Type: QtFont
+c.fonts.keyhint = '5.5pt monospace'
+
+# Font used for error messages.
+# Type: QtFont
+c.fonts.messages.error = '5.5pt monospace'
+
+# Font used for info messages.
+# Type: QtFont
+c.fonts.messages.info = '5.5pt monospace'
+
+# Font used for warning messages.
+# Type: QtFont
+c.fonts.messages.warning = '5.5pt monospace'
+
+# Font used for prompts.
+# Type: QtFont
+c.fonts.prompts = '6pt monospace'
+
+# Font used in the statusbar.
+c.fonts.statusbar = '6pt monospace'
+
 # Font used in the tab bar.
 # Type: QtFont
-# c.fonts.tabs = '10pt fantasque sans mono'
-c.fonts.tabs = '10pt fantasque sans mono'
+c.fonts.tabs = '5.5pt monospace'
+
+
+## Web font
+
+# Font family for standard fonts.
+c.fonts.web.family.standard = 'Droid Sans'
+
+# Font family for fixed fonts.
+c.fonts.web.family.fixed = 'Droid Sans Mono'
+
+# Font family for serif fonts
+c.fonts.web.family.serif = 'Droid Serif'
+
+# Font family for sans-serif fonts.
+c. fonts.web.family.sans_serif = 'Droid Sans Serif'
+
+# Font family for cursive fonts.
+c.fonts.web.family.cursive = 'Droid Sans'
+
+# Default font size (in pixels) for regular text.
+c.fonts.web.size.default = 18
+
+# Default font size (in pixels) for fixed-pitch text.
+c.fonts.web.size.default_fixed = 18
+
+# Hard minimum font size (in pixels).
+c.fonts.web.size.minimum = 18
+
+# Minimum logical font size (in pixels) that is applied when zooming out.
+c.fonts.web.size.minimum_logical = 6
 
 # Bindings for normal mode
 config.bind(';M', 'hint --rapid links spawn umpv {hint-url}')
