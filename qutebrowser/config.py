@@ -219,50 +219,50 @@ c.fonts.monospace = '"Source Code Pro"'
 
 # Font used in the completion categories.
 # Type: QtFont
-c.fonts.completion.category = 'bold 6pt monospace'
+c.fonts.completion.category = 'bold 9pt monospace'
 
 # Font used in the completion widget.
 # Type: QtFont
-c.fonts.completion.entry = '6pt monospace'
+c.fonts.completion.entry = '9pt monospace'
 
 # Font used for the debugging console.
 # Type: QtFont
-c.fonts.debug_console = '5.5pt monospace'
+c.fonts.debug_console = '9pt monospace'
 
 # Font used for the downloadbar.
 # Type: QtFont
-c.fonts.downloads = '5.5pt monospace'
+c.fonts.downloads = '9pt monospace'
 
 # Font used for the hints.
 # Type: QtFont
-c.fonts.hints = 'bold 5.5pt monospace'
+c.fonts.hints = 'bold 9pt monospace'
 
 # Font used in the keyhint widget.
 # Type: QtFont
-c.fonts.keyhint = '5.5pt monospace'
+c.fonts.keyhint = '9pt monospace'
 
 # Font used for error messages.
 # Type: QtFont
-c.fonts.messages.error = '5.5pt monospace'
+c.fonts.messages.error = '9pt monospace'
 
 # Font used for info messages.
 # Type: QtFont
-c.fonts.messages.info = '5.5pt monospace'
+c.fonts.messages.info = '9pt monospace'
 
 # Font used for warning messages.
 # Type: QtFont
-c.fonts.messages.warning = '5.5pt monospace'
+c.fonts.messages.warning = '9pt monospace'
 
 # Font used for prompts.
 # Type: QtFont
-c.fonts.prompts = '6pt monospace'
+c.fonts.prompts = '9pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '6pt monospace'
+c.fonts.statusbar = '9pt monospace'
 
 # Font used in the tab bar.
 # Type: QtFont
-c.fonts.tabs = '5.5pt monospace'
+c.fonts.tabs = '9pt monospace'
 
 
 ## Web font
