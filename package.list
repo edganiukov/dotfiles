@@ -25,6 +25,8 @@ direnv
 wget
 nmap
 gopass
+urlview
+light
 
 # tui
 neovim

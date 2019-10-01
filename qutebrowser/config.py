@@ -97,12 +97,12 @@ c.tabs.max_width = 300
 # for a blank page.
 # Type: FuzzyUrl
 # c.url.default_page = 'https://ddg.gg'
-c.url.default_page = 'about:blank'
+c.url.default_page = 'qute:bookmarks'
 
 # Page(s) to open at the start.
 # Type: List of FuzzyUrl, or FuzzyUrl
 # c.url.start_pages = 'https://start.duckduckgo.com/'
-c.url.start_pages = 'about:blank'
+c.url.start_pages = 'qute:bookmarks'
 
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.
@@ -179,7 +179,7 @@ c.colors.statusbar.url.warn.fg = '#cd950c'
 
 # Background color of the tab bar.
 # Type: QtColor
-c.colors.tabs.bar.bg = '#202020'
+c.colors.tabs.bar.bg = '#323232'
 
 # Foreground color of unselected odd tabs.
 # Type: QtColor
@@ -187,7 +187,7 @@ c.colors.tabs.odd.fg = '#707070'
 
 # Background color of unselected odd tabs.
 # Type: QtColor
-c.colors.tabs.odd.bg = '#202020'
+c.colors.tabs.odd.bg = '#323232'
 
 # Foreground color of unselected even tabs.
 # Type: QtColor
@@ -195,7 +195,7 @@ c.colors.tabs.even.fg = '#707070'
 
 # Background color of unselected even tabs.
 # Type: QtColor
-c.colors.tabs.even.bg = '#202020'
+c.colors.tabs.even.bg = '#323232'
 
 # Foreground color of selected odd tabs.
 # Type: QtColor
@@ -213,6 +213,8 @@ c.colors.tabs.selected.even.fg = '#d5c4a1'
 # Type: QtColor
 c.colors.tabs.selected.even.bg = '#202020'
 
+
+# Fonts
 # Default monospace fonts.
 # Whenever "monospace" is used in a font setting, it's replaced with the fonts listed here.
 c.fonts.monospace = '"Source Code Pro"'
@@ -265,8 +267,7 @@ c.fonts.statusbar = '9pt monospace'
 c.fonts.tabs = '9pt monospace'
 
 
-## Web font
-
+# Web font
 # Font family for standard fonts.
 c.fonts.web.family.standard = 'Droid Sans'
 
@@ -293,8 +294,3 @@ c.fonts.web.size.minimum = 18
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
 c.fonts.web.size.minimum_logical = 6
-
-# Bindings for normal mode
-config.bind(';M', 'hint --rapid links spawn umpv {hint-url}')
-config.bind('M', 'hint links spawn umpv {hint-url}')
-config.bind('m', 'spawn umpv {url}')

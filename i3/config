@@ -141,14 +141,13 @@ mode "resize" {
 bindsym $mod+d mode "resize"
 
 # brightness: acpilight
-bindsym XF86MonBrightnessDown exec xbacklight -ctrl intel_backlight -dec 1
-bindsym XF86MonBrightnessUp exec xbacklight -ctrl intel_backlight -inc 1
+bindsym XF86MonBrightnessDown exec light -s "sysfs/backlight/intel_backlight" -U 2
+bindsym XF86MonBrightnessUp exec light -s "sysfs/backlight/intel_backlight" -A 2
 
 # XF86LaunchA
 # XF86LaunchB
-
-bindsym XF86KbdBrightnessDown exec xbacklight -ctrl smc::kbd_backlight -dec 1
-bindsym XF86KbdBrightnessUp exec xbacklight -ctrl smc::kbd_backlight -inc 1
+bindsym XF86KbdBrightnessDown exec light -s "sysfs/leds/smc::kbd_backlight" -U 2
+bindsym XF86KbdBrightnessUp exec light -s "sysfs/leds/smc::kbd_backlight" -A 2
 
 # XF86AudioPlay
 # XF86AudioNext
@@ -158,6 +157,19 @@ bindsym XF86KbdBrightnessUp exec xbacklight -ctrl smc::kbd_backlight -inc 1
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+
+bindsym $mod+Escape mode "$mode_system"
+set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (p)oweroff
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3lock -n -c 708090, mode "default"
+    bindsym e exec --no-startup-id light -O, exec --no-startup-id i3-msg exit, mode "default"
+    bindsym r exec --no-startup-id light -O, exec --no-startup-id systemctl reboot
+    bindsym p exec --no-startup-id light -O, exec --no-startup-id systemctl poweroff
+    bindsym s exec --no-startup-id i3lock -n -c 708090, exec --no-startup-id systemctl suspend, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -173,7 +185,6 @@ set $ws6 "6: ٦ "
 set $ws7 "7: ٧ "
 set $ws8 "8: ٨ "
 set $ws9 "9: ٩ "
-
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -197,11 +208,10 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 
-for_window [class=".*"] title_format %class
-
 # workspace assignment
 assign [class="firefox"] $ws1
 
+for_window [class=".*"] title_format %class
 for_window [class="vlc"] florating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -230,3 +240,4 @@ exec --no-startup-id feh --bg-scale $HOME/dev/dotfiles/i3/wall.jpg
 exec --no-startup-id nm-applet
 exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
 exec --no-startup-id xautolock -time 10 -locker 'i3lock -n -c 708090'
+exec --no-startup-id light -I
