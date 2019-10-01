@@ -27,9 +27,10 @@ nmap
 gopass
 urlview
 light
+xclip
 
 # tui
-neovim
+gvim
 mc
 htop
 
@@ -38,3 +39,4 @@ i3
 rofi
 dunst
 alacritty
+redshift
