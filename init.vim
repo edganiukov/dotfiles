@@ -52,6 +52,7 @@ colorscheme gruvbox
 " colorscheme spacegray
 
 " cmd autocomplete
+set wildmenu
 set wildoptions-=pum
 set completeopt=longest,menu,menuone,noinsert,noselect
 
@@ -96,7 +97,7 @@ set pastetoggle=<F2>
 set nopaste
 
 " copy to the system clipboard
-set clipboard=unnamedplus
+set clipboard=unnamed,unnamedplus
 
 set listchars=tab:→\ ,nbsp:·,trail:·
 set list
