@@ -8,8 +8,8 @@ export EDITOR=vim
 export CLICOLOR=YES
 
 # Go vars
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:/usr/local/opt/go/libexec/bin:$PATH
+export GOPATH=$HOME/.go
+export PATH=$GOPATH/bin:$PATH
 export GO111MODULE=auto
 
 # Rust vars
