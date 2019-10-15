@@ -26,8 +26,8 @@ wget
 nmap
 gopass
 urlview
-light
 xclip
+brightnessctl
 
 # tui
 gvim

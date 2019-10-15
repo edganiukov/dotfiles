@@ -141,13 +141,13 @@ mode "resize" {
 bindsym $mod+d mode "resize"
 
 # brightness: acpilight
-bindsym XF86MonBrightnessDown exec light -s "sysfs/backlight/intel_backlight" -U 2
-bindsym XF86MonBrightnessUp exec light -s "sysfs/backlight/intel_backlight" -A 2
+bindsym XF86MonBrightnessDown exec brightnessctl --device=acpi_video0 set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl --device=acpi_video0 set 5%+
 
 # XF86LaunchA
 # XF86LaunchB
-bindsym XF86KbdBrightnessDown exec light -s "sysfs/leds/smc::kbd_backlight" -U 2
-bindsym XF86KbdBrightnessUp exec light -s "sysfs/leds/smc::kbd_backlight" -A 2
+bindsym XF86KbdBrightnessDown exec brightnessctl --device=smc::kbd_backlight set 5%-
+bindsym XF86KbdBrightnessUp exec brightnessctl --device=smc::kbd_backlight set 5%+
 
 # XF86AudioPlay
 # XF86AudioNext
@@ -162,10 +162,10 @@ bindsym $mod+Escape mode "$mode_system"
 set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (p)oweroff
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3lock -n -c 708090, mode "default"
-    bindsym e exec --no-startup-id light -O, exec --no-startup-id i3-msg exit, mode "default"
-    bindsym r exec --no-startup-id light -O, exec --no-startup-id systemctl reboot
-    bindsym p exec --no-startup-id light -O, exec --no-startup-id systemctl poweroff
-    bindsym s exec --no-startup-id i3lock -n -c 708090, exec --no-startup-id systemctl suspend, mode "default"
+    bindsym e exec --no-startup-id brightnessctl -s, exec --no-startup-id i3-msg exit, mode "default"
+    bindsym r exec --no-startup-id brightnessctl -s, exec --no-startup-id systemctl reboot
+    bindsym p exec --no-startup-id brightnessctl -s, exec --no-startup-id systemctl poweroff
+    bindsym s exec --no-startup-id brightnessctl -s, exec --no-startup-id i3lock -n -c 708090, exec --no-startup-id systemctl suspend, mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -240,4 +240,4 @@ exec --no-startup-id feh --bg-scale $HOME/dev/dotfiles/i3/wall.jpg
 exec --no-startup-id nm-applet
 exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
 exec --no-startup-id xautolock -time 10 -locker 'i3lock -n -c 708090'
-exec --no-startup-id light -I
+exec --no-startup-id brightnessctl -r
