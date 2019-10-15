@@ -10,7 +10,8 @@ c.qt.highdpi = True
 c.zoom.default = "100%"
 
 # Uncomment this to still load settings configured via autoconfig.yml
-# config.load_autoconfig()
+config.load_autoconfig()
+
 c.downloads.location.directory = '~/downloads'
 
 # Remove downloads after 5 seconds.
@@ -45,6 +46,7 @@ c.content.proxy = 'system'
 # Disable cache
 # c.content.cache.size = 0
 
+c.content.cache.maximum_pages = 20
 # Which cookies to accept.
 c.content.cookies.accept = 'all'
 

@@ -222,8 +222,9 @@ bar {
     position top
     strip_workspace_numbers yes
     tray_output primary
-    # status_command ~/.config/i3/i3status-xkb-layout.sh
+    status_command ~/.config/i3/i3status-xkb-layout.sh
     status_command i3status -c ~/.config/i3/i3status.conf
+    # status_command i3blocks -c ~/.config/i3/i3blocks.conf
     colors {
         separator #928374
         background #282828
