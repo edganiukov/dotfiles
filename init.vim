@@ -4,6 +4,7 @@ call plug#begin('~/.vim/plugged')
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
 Plug 'ajh17/Spacegray.vim'
+Plug 'arzg/vim-substrata'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -48,7 +49,8 @@ set t_ut=
 set termguicolors
 
 set bg=dark
-colorscheme gruvbox
+colorscheme substrata
+" colorscheme gruvbox
 " colorscheme spacegray
 
 " cmd autocomplete
