@@ -3,8 +3,7 @@ call plug#begin('~/.vim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
-Plug 'ajh17/Spacegray.vim'
-Plug 'arzg/vim-substrata'
+Plug 'tomasr/molokai'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -49,9 +48,8 @@ set t_ut=
 set termguicolors
 
 set bg=dark
-colorscheme substrata
-" colorscheme gruvbox
-" colorscheme spacegray
+colorscheme gruvbox
+" colorscheme molokai
 
 " cmd autocomplete
 set wildmenu
