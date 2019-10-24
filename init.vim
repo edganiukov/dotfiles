@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
-Plug 'tomasr/molokai'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -49,7 +48,6 @@ set termguicolors
 
 set bg=dark
 colorscheme gruvbox
-" colorscheme molokai
 
 " cmd autocomplete
 set wildmenu

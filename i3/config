@@ -29,7 +29,7 @@ font pango:Source Code Pro, Inconsolata 9
 client.placeholder        #2f343f #2f343f #d8dee8 #2f343f #2f343f
 client.background         #2f343f
 
-client.focused #689d6a #689d6a #282828 #282828
+client.focused #81a2be #81a2be #282828 #282828
 client.focused_inactive #1d2021 #1d2021 #928374 #282828
 client.unfocused #32302f #32302f #928374 #282828
 client.urgent #cc241d #cc241d #ebdbb2 #282828
@@ -222,14 +222,14 @@ bar {
     position top
     strip_workspace_numbers yes
     tray_output primary
-    status_command ~/.config/i3/i3status-xkb-layout.sh
+    # status_command ~/.config/i3/i3status-xkb-layout.sh
     status_command i3status -c ~/.config/i3/i3status.conf
     # status_command i3blocks -c ~/.config/i3/i3blocks.conf
     colors {
         separator #928374
         background #282828
         statusline #ebdbb2
-        focused_workspace #689d6a #689d6a #282828
+        focused_workspace #81a2be #81a2be #282828
         active_workspace #1d2021 #1d2021 #928374
         inactive_workspace #32302f #32302f #928374
         urgent_workspace #cc241d #cc241d #ebdbb2
@@ -237,8 +237,8 @@ bar {
 }
 
 # startup
+# exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
 exec --no-startup-id feh --bg-scale $HOME/dev/dotfiles/i3/wall.jpg
 exec --no-startup-id nm-applet
-exec --no-startup-id spotifyd --config=~/.config/spotifyd/spotifyd.conf
 exec --no-startup-id xautolock -time 10 -locker 'i3lock -n -c 708090'
 exec --no-startup-id brightnessctl -r
