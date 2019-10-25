@@ -256,6 +256,7 @@ nnoremap <leader>c :CalendarH<CR>
 " Plug 'majutsushi/tagbar'
 "
 nmap <F4> :TagbarToggle<CR>
+let g:tagbar_sort = 0
 
 
 " Plug 'tpope/vim-markdown'
@@ -364,8 +365,8 @@ let NERDTreeIgnore = [
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
 
-let g:NERDTreeDirArrowExpandable = '~'
-let g:NERDTreeDirArrowCollapsible = '~'
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 
 
 map <F3> :NERDTreeToggle<CR>
