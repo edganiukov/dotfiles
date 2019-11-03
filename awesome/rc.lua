@@ -14,7 +14,7 @@ local awful         = require("awful")
                       require("awful.autofocus")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
--- local naughty       = require("naughty")
+local naughty       = require("naughty")
 local lain          = require("lain")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
@@ -56,14 +56,12 @@ local function run_once(cmd_arr)
 end
 
 run_once({
-    "nm-applet",
     -- "spotifyd --config=~/.config/spotifyd/spotifyd.conf --no-daemon",
 }) -- entries must be separated by commas
 
 -- }}}
 
 -- {{{ Variable definitions
-
 local theme        = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
@@ -123,7 +121,7 @@ awful.util.tasklist_buttons = my_table.join(
         if c == client.focus then
             c.minimized = true
         else
-            --c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
+            --c:emit_signal("request::activate", "tasklist", {raise = true})
 
             -- Without this, the following
             -- :isvisible() makes no sense
@@ -172,8 +170,6 @@ beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv
 -- {{{ Menu
 local myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end },
-    { "manual", terminal .. " -e man awesome" },
-    { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
     { "restart", awesome.restart },
     { "quit", function() awesome.quit() end }
 }
@@ -203,7 +199,10 @@ screen.connect_signal("property::geometry", function(s)
 end)
 
 -- No borders when rearranging only 1 non-floating or maximized client
-screen.connect_signal("arrange", function (s) local only_one = #s.tiled_clients == 1 for _, c in pairs(s.clients) do if only_one and not c.floating or c.maximized then
+screen.connect_signal("arrange", function (s)
+    local only_one = #s.tiled_clients == 1
+    for _, c in pairs(s.clients) do
+        if only_one and not c.floating or c.maximized then
             c.border_width = 0
         else
             c.border_width = beautiful.border_width
