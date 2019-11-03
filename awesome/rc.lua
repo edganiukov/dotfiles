@@ -1,8 +1,5 @@
 --[[
-
-     Awesome WM configuration by
-     github.com/lcpz
-
+     Awesome WM configuration
 --]]
 
 -- {{{ Required libraries
@@ -26,9 +23,11 @@ local dpi           = require("beautiful.xresources").apply_dpi
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+    naughty.notify({
+        preset = naughty.config.presets.critical,
+        title = "Oops, there were errors during startup!",
+        text = awesome.startup_errors,
+    })
 end
 
 -- Handle runtime errors after startup
@@ -38,9 +37,11 @@ do
         if in_error then return end
         in_error = true
 
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
+        naughty.notify({
+            preset = naughty.config.presets.critical,
+            title = "Oops, an error happened!",
+            text = tostring(err),
+        })
         in_error = false
     end)
 end
@@ -163,7 +164,6 @@ lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), theme))
--- }}}
 
 -- }}}
 
@@ -291,10 +291,10 @@ globalkeys = my_table.join(
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1)    end,
+    awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1) end,
               {description = "swap with next client by index", group = "client"}),
 
-    awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1)    end,
+    awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1) end,
               {description = "swap with previous client by index", group = "client"}),
 
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
@@ -346,9 +346,9 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift" }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ altkey, "Shift" }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    awful.key({ altkey, "Shift" }, "l",     function () awful.tag.incmwfact( 0.05) end,
               {description = "increase master width factor", group = "layout"}),
-    awful.key({ altkey, "Shift" }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    awful.key({ altkey, "Shift" }, "h",     function () awful.tag.incmwfact(-0.05) end,
               {description = "decrease master width factor", group = "layout"}),
     awful.key({ modkey, "Shift" }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
               {description = "increase the number of master clients", group = "layout"}),
@@ -358,12 +358,12 @@ globalkeys = my_table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey }, "space", function () awful.layout.inc( 1) end,
               {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1)                end,
+    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
               {description = "select previous", group = "layout"}),
 
-    awful.key({ modkey, "Control" }, "n",
+    awful.key({ altkey, "Shift" }, "n",
               function ()
                   local c = awful.client.restore()
                   -- Focus restored client
@@ -375,22 +375,22 @@ globalkeys = my_table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Dropdown application
-    awful.key({ modkey, }, "z", function () awful.screen.focused().quake:toggle() end,
-              {description = "dropdown application", group = "launcher"}),
+    awful.key({ modkey }, "z", function () awful.screen.focused().quake:toggle() end,
+        {description = "dropdown application", group = "launcher"}),
 
     -- Widgets popups
-    awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
-              {description = "show calendar", group = "widgets"}),
-    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-            {description = "show filesystem", group = "widgets"}),
-    awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              {description = "show weather", group = "widgets"}),
+    awful.key({ altkey }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
+        {description = "show calendar", group = "widgets"}),
+    awful.key({ altkey }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+        {description = "show filesystem", group = "widgets"}),
+    awful.key({ altkey }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
+        {description = "show weather", group = "widgets"}),
 
     -- Brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%+") end,
-              {description = "+5%", group = "hotkeys"}),
+        {description = "+5%", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
-              {description = "-5%", group = "hotkeys"}),
+        {description = "-5%", group = "hotkeys"}),
 
     -- PulseAudio volume control
     awful.key({ }, "XF86AudioRaiseVolume",

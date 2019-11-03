@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc
 
 CWD=$(shell pwd)
 
@@ -59,3 +59,9 @@ etc:
 
 qutebrowser:
 	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py
+
+vifm:
+	ln -s $(CWD)/vifm $(HOME)/.vifm
+
+mc:
+	ln -s $(CWD)/mc/skins $(HOME)/.local/share/mc/skins

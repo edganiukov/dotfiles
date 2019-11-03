@@ -34,33 +34,28 @@ theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menu_height                               = dpi(20)
 theme.menu_width                                = dpi(140)
-theme.menu_awesome_icon                         = theme.dir .. "/icons/awesome.png"
-theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
-theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
-theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
-theme.layout_tile                               = theme.dir .. "/icons/tile.png"
-theme.layout_tileleft                           = theme.dir .. "/icons/tileleft.png"
-theme.layout_tilebottom                         = theme.dir .. "/icons/tilebottom.png"
-theme.layout_tiletop                            = theme.dir .. "/icons/tiletop.png"
-theme.layout_fairv                              = theme.dir .. "/icons/fairv.png"
-theme.layout_fairh                              = theme.dir .. "/icons/fairh.png"
-theme.layout_spiral                             = theme.dir .. "/icons/spiral.png"
-theme.layout_dwindle                            = theme.dir .. "/icons/dwindle.png"
-theme.layout_max                                = theme.dir .. "/icons/max.png"
-theme.layout_fullscreen                         = theme.dir .. "/icons/fullscreen.png"
-theme.layout_magnifier                          = theme.dir .. "/icons/magnifier.png"
-theme.layout_floating                           = theme.dir .. "/icons/floating.png"
-theme.widget_ac                                 = theme.dir .. "/icons/ac.png"
-theme.widget_battery                            = theme.dir .. "/icons/battery.png"
-theme.widget_battery_low                        = theme.dir .. "/icons/battery_low.png"
-theme.widget_battery_empty                      = theme.dir .. "/icons/battery_empty.png"
-theme.widget_mem                                = theme.dir .. "/icons/mem.png"
-theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
-theme.widget_mail                               = theme.dir .. "/icons/mail.png"
-theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
 theme.useless_gap                               = dpi(0)
+
+theme.menu_awesome_icon = theme.dir .. "/icons/awesome.png"
+theme.menu_submenu_icon = theme.dir .. "/icons/submenu.png"
+
+theme.taglist_squares_sel   = theme.dir .. "/icons/square_sel.png"
+theme.taglist_squares_unsel = theme.dir .. "/icons/square_unsel.png"
+theme.layout_tile           = theme.dir .. "/icons/tile.png"
+theme.layout_tileleft       = theme.dir .. "/icons/tileleft.png"
+theme.layout_tilebottom     = theme.dir .. "/icons/tilebottom.png"
+theme.layout_tiletop        = theme.dir .. "/icons/tiletop.png"
+theme.layout_fairv          = theme.dir .. "/icons/fairv.png"
+theme.layout_fairh          = theme.dir .. "/icons/fairh.png"
+theme.layout_spiral         = theme.dir .. "/icons/spiral.png"
+theme.layout_dwindle        = theme.dir .. "/icons/dwindle.png"
+theme.layout_max            = theme.dir .. "/icons/max.png"
+theme.layout_fullscreen     = theme.dir .. "/icons/fullscreen.png"
+theme.layout_magnifier      = theme.dir .. "/icons/magnifier.png"
+theme.layout_floating       = theme.dir .. "/icons/floating.png"
+
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal              = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active        = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -102,18 +97,16 @@ theme.cal = lain.widget.cal({
 })
 
 -- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font, "  " .. mem_now.used .. "MB "))
     end
 })
 
 -- CPU
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font, "  " .. cpu_now.usage .. "% "))
     end
 })
 
@@ -142,24 +135,15 @@ theme.fs = lain.widget.fs({
 })
 
 -- Battery
-local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
     settings = function()
-        if bat_now.status and bat_now.status ~= "N/A" then
-            if bat_now.ac_status == 1 then
-                baticon:set_image(theme.widget_ac)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 10 then
-                baticon:set_image(theme.widget_battery_empty)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 20 then
-                baticon:set_image(theme.widget_battery_low)
-            else
-                baticon:set_image(theme.widget_battery)
-            end
-            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+        local bat_icon
+        if bat_now.ac_status == 1 then
+            bat_icon = ""
         else
-            widget:set_markup(markup.font(theme.font, " AC "))
-            baticon:set_image(theme.widget_ac)
+            bat_icon = ""
         end
+        widget:set_markup(markup.font(theme.font, " " .. bat_icon .. " " .. bat_now.perc .. "% " .. bat_now.time .. " "))
     end
 })
 
@@ -184,8 +168,8 @@ local net = lain.widget.net({
         local net_info
         if net_now.state == "up" then
             net_info = markup("#7AC82E", "  ") ..
-                markup("#7AC82E", net_now.received .. "kb ") ..
-                markup("#46A8C3", net_now.sent .. "kb ")
+                " " .. net_now.received .. "kb " ..
+                " " .. net_now.sent .. "kb "
         else
             net_info = markup("#FF0000", "  down ")
         end
@@ -258,15 +242,12 @@ function theme.at_screen_connect(s)
             arrl_ld,
             wibox.container.background(theme.volume.widget, theme.bg_focus),
             arrl_dl,
-            baticon,
             bat.widget,
             arrl_ld,
             wibox.container.background(net.widget, theme.bg_focus),
             arrl_dl,
-            memicon,
             mem.widget,
             arrl_ld,
-            wibox.container.background(cpuicon, theme.bg_focus),
             wibox.container.background(cpu.widget, theme.bg_focus),
             arrl_dl,
             temp.widget,
