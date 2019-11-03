@@ -17,7 +17,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
-theme.font                                      = "Source Code Pro, Inconsolata 9"
+theme.font                                      = "Source Code Pro, Inconsolata 9.5"
 theme.fg_normal                                 = "#928374"
 theme.fg_focus                                  = "#EA6F81"
 theme.fg_urgent                                 = "#CC9393"
@@ -56,15 +56,6 @@ theme.widget_battery_low                        = theme.dir .. "/icons/battery_l
 theme.widget_battery_empty                      = theme.dir .. "/icons/battery_empty.png"
 theme.widget_mem                                = theme.dir .. "/icons/mem.png"
 theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
-theme.widget_temp                               = theme.dir .. "/icons/temp.png"
-theme.widget_net                                = theme.dir .. "/icons/net.png"
-theme.widget_hdd                                = theme.dir .. "/icons/hdd.png"
-theme.widget_music                              = theme.dir .. "/icons/note.png"
-theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
-theme.widget_vol                                = theme.dir .. "/icons/vol.png"
-theme.widget_vol_low                            = theme.dir .. "/icons/vol_low.png"
-theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.png"
-theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
 theme.widget_mail                               = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name                  = true
@@ -188,13 +179,13 @@ theme.volume = lain.widget.pulse {
 -- Net
 local net = lain.widget.net({
     notify = "off",
-    units = 1048576,
+    units = 1024,
     settings = function()
         local net_info
         if net_now.state == "up" then
             net_info = markup("#7AC82E", "  ") ..
-                markup("#7AC82E", net_now.received .. "Mb ") ..
-                markup("#46A8C3", net_now.sent .. "Mb ")
+                markup("#7AC82E", net_now.received .. "kb ") ..
+                markup("#46A8C3", net_now.sent .. "kb ")
         else
             net_info = markup("#FF0000", "  down ")
         end
@@ -239,7 +230,7 @@ function theme.at_screen_connect(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(18), bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(20), bg = theme.bg_normal, fg = theme.fg_normal })
 
     -- Keyboard map indicator and switcher
     s.mykeyboardlayout = awful.widget.keyboardlayout()
