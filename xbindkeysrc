@@ -18,23 +18,22 @@
     m:0x0 + Mod4 + c:107
     Mod4 + XF86Eject
 
-## Requires acpilight
-# Dim screen
+# Brighten screen
 "xbacklight -ctrl intel_backlight -inc 1"
     m:0x0 + c:237
     XF86MonBrightnessUp
 
-# Brighten screen
+# Dim screen
 "xbacklight -ctrl intel_backlight -dec 1"
     m:0x0 + c:238
     XF86MonBrightnessDown
 
-# Dim keyboard
+# Brighten keyboard
 "xbacklight -ctrl smc::kbd_backlight -inc 1"
     m:0x0 + c:237
     XF86KbdBrightnessUp
 
-# Brighten keyboard
+# Dim keyboard
 "xbacklight -ctrl smc::kbd_backlight -dec 1"
     m:0x0 + c:238
     XF86KbdBrightnessDown
