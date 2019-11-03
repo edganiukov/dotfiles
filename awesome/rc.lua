@@ -63,7 +63,6 @@ run_once({
 -- }}}
 
 -- {{{ Variable definitions
-local theme        = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
@@ -73,15 +72,11 @@ local scrlocker    = "i3lock -n -c 708090"
 
 awful.util.terminal = terminal
 --  ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
-awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ ", " ٦ "}
+awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ "}
 awful.layout.layouts = {
     awful.layout.suit.max,
     awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.magnifier,
+    -- awful.layout.suit.magnifier,
     -- awful.layout.suit.floating,
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
@@ -149,7 +144,7 @@ awful.util.tasklist_buttons = my_table.join(
     awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
 )
 
-beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), theme))
+beautiful.init(string.format("%s/.config/awesome/theme.lua", os.getenv("HOME")))
 
 -- }}}
 
@@ -279,13 +274,10 @@ globalkeys = my_table.join(
     -- Layout manipulation
     awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1) end,
         {description = "swap with next client by index", group = "client"}),
-
     awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1) end,
         {description = "swap with previous client by index", group = "client"}),
-
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
         {description = "focus the next screen", group = "screen"}),
-
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
         {description = "focus the previous screen", group = "screen"}),
 
@@ -337,15 +329,16 @@ globalkeys = my_table.join(
         {description = "increase master width factor", group = "layout"}),
     awful.key({ altkey, "Shift" }, "h",     function () awful.tag.incmwfact(-0.05) end,
         {description = "decrease master width factor", group = "layout"}),
-    awful.key({ modkey, "Shift" }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+    awful.key({ modkey, "Shift" }, "h",     function () awful.tag.incnmaster(1, nil, true) end,
         {description = "increase the number of master clients", group = "layout"}),
     awful.key({ modkey, "Shift" }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
         {description = "decrease the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(1, nil, true)    end,
         {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
         {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey }, "space", function () awful.layout.inc( 1) end,
+
+    awful.key({ modkey }, "space", function () awful.layout.inc(1) end,
         {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
         {description = "select previous", group = "layout"}),

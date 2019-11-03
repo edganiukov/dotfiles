@@ -1,8 +1,5 @@
 --[[
-
-     Powerarrow Dark Awesome WM theme
-     github.com/lcpz
-
+    Awesome Theme configuration
 --]]
 
 local gears = require("gears")
@@ -15,7 +12,7 @@ local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                    = {}
-theme.dir                      = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
+theme.dir                      = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper                = theme.dir .. "/wall.png"
 theme.font                     = "Source Code Pro, Inconsolata 9.5"
 theme.fg_normal                = "#ebdbb2"
@@ -180,6 +177,19 @@ local net = lain.widget.net({
     end
 })
 
+-- local email = lain.widget.imap({
+--     timeout  = 120,
+--     port     = 993,
+--     server   = "imap.fastmail.com",
+--     mail     = "",
+--     password = function()
+--         return retrieved_password, try_again
+--     end,
+--     settings = function()
+--         widget:set_text(markup.font(theme.font("  " .. mailcount))
+--     end
+-- })
+
 -- Separators
 local spr     = wibox.widget.textbox(' ')
 local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
@@ -204,12 +214,14 @@ function theme.at_screen_connect(s)
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(my_table.join(
-                           awful.button({}, 1, function () awful.layout.inc( 1) end),
-                           awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
-                           awful.button({}, 3, function () awful.layout.inc(-1) end),
-                           awful.button({}, 4, function () awful.layout.inc( 1) end),
-                           awful.button({}, 5, function () awful.layout.inc(-1) end)))
+    s.mylayoutbox:buttons(
+        my_table.join(
+            awful.button({}, 1, function () awful.layout.inc(1) end),
+            awful.button({}, 2, function () awful.layout.set(awful.layout.layouts[1]) end),
+            awful.button({}, 3, function () awful.layout.inc(-1) end),
+            awful.button({}, 4, function () awful.layout.inc( 1) end),
+            awful.button({}, 5, function () awful.layout.inc(-1) end)
+        ))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
@@ -217,7 +229,13 @@ function theme.at_screen_connect(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(20), bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({
+        position = "top",
+        screen = s,
+        height = dpi(20),
+        bg = theme.bg_normal,
+        fg = theme.fg_normal,
+    })
 
     -- Keyboard map indicator and switcher
     s.mykeyboardlayout = awful.widget.keyboardlayout()
@@ -241,6 +259,7 @@ function theme.at_screen_connect(s)
             spr,
             arrl_ld,
             arrl_dl,
+            s.mykeyboardlayout,
             arrl_ld,
             wibox.container.background(theme.volume.widget, theme.bg_focus),
             arrl_dl,
@@ -248,11 +267,11 @@ function theme.at_screen_connect(s)
             arrl_ld,
             wibox.container.background(net.widget, theme.bg_focus),
             arrl_dl,
-            mem.widget,
+            temp.widget,
             arrl_ld,
             wibox.container.background(cpu.widget, theme.bg_focus),
             arrl_dl,
-            temp.widget,
+            mem.widget,
             arrl_ld,
             wibox.container.background(theme.fs.widget, theme.bg_focus),
             arrl_dl,
