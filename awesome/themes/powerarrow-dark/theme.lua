@@ -14,29 +14,29 @@ local dpi   = require("beautiful.xresources").apply_dpi
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
-local theme                                     = {}
-theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
-theme.wallpaper                                 = theme.dir .. "/wall.png"
-theme.font                                      = "Source Code Pro, Inconsolata 9.5"
-theme.fg_normal                                 = "#928374"
-theme.fg_focus                                  = "#EA6F81"
-theme.fg_urgent                                 = "#CC9393"
-theme.bg_normal                                 = "#1A1A1A"
-theme.bg_focus                                  = "#313131"
-theme.bg_urgent                                 = "#1A1A1A"
-theme.border_width                              = dpi(2)
-theme.border_normal                             = "#3F3F3F"
-theme.border_focus                              = "#7F7F7F"
-theme.border_marked                             = "#CC9393"
-theme.tasklist_bg_focus                         = "#1A1A1A"
-theme.titlebar_bg_focus                         = theme.bg_focus
-theme.titlebar_bg_normal                        = theme.bg_normal
-theme.titlebar_fg_focus                         = theme.fg_focus
-theme.menu_height                               = dpi(20)
-theme.menu_width                                = dpi(140)
-theme.tasklist_plain_task_name                  = true
-theme.tasklist_disable_icon                     = true
-theme.useless_gap                               = dpi(0)
+local theme                    = {}
+theme.dir                      = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
+theme.wallpaper                = theme.dir .. "/wall.png"
+theme.font                     = "Source Code Pro, Inconsolata 9.5"
+theme.fg_normal                = "#ebdbb2"
+theme.fg_focus                 = "#EA6F81"
+theme.fg_urgent                = "#CC9393"
+theme.bg_normal                = "#1A1A1A"
+theme.bg_focus                 = "#313131"
+theme.bg_urgent                = "#1A1A1A"
+theme.border_width             = dpi(2)
+theme.border_normal            = "#3F3F3F"
+theme.border_focus             = "#7F7F7F"
+theme.border_marked            = "#CC9393"
+theme.tasklist_bg_focus        = "#1A1A1A"
+theme.titlebar_bg_focus        = theme.bg_focus
+theme.titlebar_bg_normal       = theme.bg_normal
+theme.titlebar_fg_focus        = theme.fg_focus
+theme.menu_height              = dpi(20)
+theme.menu_width               = dpi(140)
+theme.tasklist_plain_task_name = true
+theme.tasklist_disable_icon    = true
+theme.useless_gap              = dpi(0)
 
 theme.menu_awesome_icon = theme.dir .. "/icons/awesome.png"
 theme.menu_submenu_icon = theme.dir .. "/icons/submenu.png"
@@ -99,7 +99,7 @@ theme.cal = lain.widget.cal({
 -- MEM
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font, "  " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font, "  " .. mem_now.perc .. "% "))
     end
 })
 
@@ -130,12 +130,13 @@ theme.fs = lain.widget.fs({
         font = theme.font,
     },
     settings = function()
-        widget:set_markup(markup.font(theme.font, "  /home: " .. fs_now["/home"].percentage .. "% "))
+        widget:set_markup(markup.font(theme.font, "  home: " .. fs_now["/home"].percentage .. "% "))
     end
 })
 
 -- Battery
 local bat = lain.widget.bat({
+    timeout = 10,
     settings = function()
         local bat_icon
         if bat_now.ac_status == 1 then
@@ -163,11 +164,13 @@ theme.volume = lain.widget.pulse {
 -- Net
 local net = lain.widget.net({
     notify = "off",
+    -- wifi_state = "on",
     units = 1024,
     settings = function()
         local net_info
         if net_now.state == "up" then
             net_info = markup("#7AC82E", "  ") ..
+                -- net_now.devices["wlp3s0"].signal .. "dBm " ..
                 " " .. net_now.received .. "kb " ..
                 " " .. net_now.sent .. "kb "
         else
@@ -238,7 +241,6 @@ function theme.at_screen_connect(s)
             spr,
             arrl_ld,
             arrl_dl,
-            s.mykeyboardlayout,
             arrl_ld,
             wibox.container.background(theme.volume.widget, theme.bg_focus),
             arrl_dl,
