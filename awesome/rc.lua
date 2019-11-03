@@ -14,7 +14,7 @@ local awful         = require("awful")
                       require("awful.autofocus")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
-local naughty       = require("naughty")
+-- local naughty       = require("naughty")
 local lain          = require("lain")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
@@ -56,10 +56,8 @@ local function run_once(cmd_arr)
 end
 
 run_once({
-    "xflux -k 2600 -l 46.57 -g 7.27", -- Bern, CH
     "nm-applet",
-    "kbdd",
-    "spotifyd --config=~/.config/spotifyd/spotifyd.conf --no-daemon",
+    -- "spotifyd --config=~/.config/spotifyd/spotifyd.conf --no-daemon",
 }) -- entries must be separated by commas
 
 -- }}}
@@ -70,19 +68,20 @@ local theme        = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
-local editor       = os.getenv("EDITOR") or "vi"
+local editor       = os.getenv("EDITOR") or "vim"
 local browser      = "firefox"
-local scrlocker    = "i3lock -d -c 000020"
+local scrlocker    = "i3lock -n -c 708090"
 
 awful.util.terminal = terminal
-awful.util.tagnames = {"1:web", "2:im", "3:fm", "4:media" ,"5:dev"}
+awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ ", " ٦ "}
 awful.layout.layouts = {
+    awful.layout.suit.max,
+    awful.layout.suit.tile,
     awful.layout.suit.max,
     awful.layout.suit.tile,
     awful.layout.suit.tile,
     awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.floating,
+    -- awful.layout.suit.floating,
     --awful.layout.suit.fair,
     --awful.layout.suit.fair.horizontal,
     --awful.layout.suit.spiral,
@@ -228,8 +227,8 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end,
-              {description = "take a screenshot", group = "hotkeys"}),
+    -- awful.key({ altkey }, "p", function() os.execute("screenshot") end,
+    --           {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
     awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
@@ -387,47 +386,59 @@ globalkeys = my_table.join(
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
     awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-              {description = "show filesystem", group = "widgets"}),
+            {description = "show filesystem", group = "widgets"}),
     awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
               {description = "show weather", group = "widgets"}),
 
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 2") end,
-              {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 2") end,
-              {description = "-10%", group = "hotkeys"}),
+    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%+") end,
+              {description = "+5%", group = "hotkeys"}),
+    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
+              {description = "-5%", group = "hotkeys"}),
 
-    -- ALSA volume control
+    -- PulseAudio volume control
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
+            os.execute(string.format("pactl set-sink-volume %s +5%%", beautiful.volume.device))
             beautiful.volume.update()
-        end,
-        {description = "volume up", group = "hotkeys"}),
+        end),
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+            os.execute(string.format("pactl set-sink-volume %s -5%%", beautiful.volume.device))
             beautiful.volume.update()
-        end,
-        {description = "volume down", group = "hotkeys"}),
+        end),
     awful.key({ }, "XF86AudioMute",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+            os.execute(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
             beautiful.volume.update()
-        end,
-        {description = "volume mute toggle", group = "hotkeys"}),
+        end),
 
     -- Default
-    --[[ rofi
-    awful.key({ modkey }, "x", function ()
-            os.execute(string.format("rofi -show %s -theme %s",
-            'run', 'dmenu'))
+    -- rofi
+    awful.key({ modkey }, "r", function ()
+            os.execute("rofi -combi-modi drun,run -show combi")
         end,
-        {description = "show rofi", group = "launcher"}),
-    --]]
-    -- Prompt
+        {description = "rofi: run", group = "launcher"}),
+
+    awful.key({ modkey }, "t", function ()
+            os.execute("rofi -show window")
+        end,
+        {description = "rofi: windows", group = "launcher"}),
+
+    awful.key({ modkey }, "c", function ()
+            os.execute("rofi -show calc -modi calc -no-show-match -no-sort -no-history")
+        end,
+        {description = "rofi: calc", group = "launcher"}),
+
+    awful.key({ modkey }, "p", function ()
+            os.execute("gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c")
+        end,
+        {description = "rofi: gopass", group = "launcher"}),
+    --
+    --[[ Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
+    --]]
 
     awful.key({ modkey }, "x",
               function ()
