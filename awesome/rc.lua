@@ -371,7 +371,7 @@ globalkeys = table.join(
     --     {description = "show weather", group = "widgets"}),
 
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%+") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%") end,
         {description = "+5%", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
         {description = "-5%", group = "hotkeys"}),

@@ -17,8 +17,8 @@ xset r rate 200 20
 # autostart
 nm-applet &
 dbus-launch thunar --daemon &
-xautolock -time 10 -locker 'i3lock -n -c 708090' &
-brightnessctl -r &
+xautolock -time 10 -locker 'i3lock -n -c 282828' &
+# brightnessctl -r &
 # spotifyd --config=~/.config/spotifyd/spotifyd.conf &
 
 # ENV vars
