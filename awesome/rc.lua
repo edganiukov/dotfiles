@@ -1,5 +1,5 @@
 --[[
-     Awesome WM configuration
+-- Awesome WM main config
 --]]
 
 -- {{{ Required libraries
@@ -15,8 +15,11 @@ local naughty       = require("naughty")
 local lain          = require("lain")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
-local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
+local table         = awful.util.table or gears.table -- 4.{0,1} compatibility
 local dpi           = require("beautiful.xresources").apply_dpi
+
+local wibar = require("wibar")
+local theme = require("theme")
 -- }}}
 
 -- {{{ Error handling
@@ -72,17 +75,18 @@ local scrlocker    = "i3lock -n -c 708090"
 
 awful.util.terminal = terminal
 --  ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
-awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ "}
+awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ ", " ٦ "}
 awful.layout.layouts = {
     awful.layout.suit.max,
-    awful.layout.suit.tile,
-    -- awful.layout.suit.magnifier,
+    awful.layout.suit.tile.right,
+    awful.layout.suit.tile.left,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.tile.top,
+    -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.floating,
-    -- awful.layout.suit.fair,
-    -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
     -- awful.layout.suit.corner.nw,
@@ -91,7 +95,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.se,
 }
 
-awful.util.taglist_buttons = my_table.join(
+awful.util.taglist_buttons = table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
         if client.focus then
@@ -108,7 +112,7 @@ awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
 
-awful.util.tasklist_buttons = my_table.join(
+awful.util.tasklist_buttons = table.join(
     awful.button({ }, 1, function (c)
         if c == client.focus then
             c.minimized = true
@@ -144,7 +148,7 @@ awful.util.tasklist_buttons = my_table.join(
     awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
 )
 
-beautiful.init(string.format("%s/.config/awesome/theme.lua", os.getenv("HOME")))
+beautiful.init(theme)
 
 -- }}}
 
@@ -192,11 +196,11 @@ screen.connect_signal("arrange", function (s)
 end)
 
 -- Create a wibox for each screen and add it
-awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+awful.screen.connect_for_each_screen(function(s) wibar.at_screen_connect(s) end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(my_table.join(
+root.buttons(table.join(
     awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
@@ -204,7 +208,7 @@ root.buttons(my_table.join(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = my_table.join(
+globalkeys = table.join(
     -- awful.key({ altkey }, "p", function() os.execute("screenshot") end,
     --     {description = "take a screenshot", group = "hotkeys"}),
 
@@ -430,7 +434,7 @@ globalkeys = my_table.join(
     --]]
 )
 
-clientkeys = my_table.join(
+clientkeys = table.join(
     awful.key({ modkey }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
@@ -474,7 +478,7 @@ for i = 1, 9 do
         descr_move = {description = "move focused client to tag #", group = "tag"}
         descr_toggle_focus = {description = "toggle focused client on tag #", group = "tag"}
     end
-    globalkeys = my_table.join(globalkeys,
+    globalkeys = table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
             function ()
@@ -600,7 +604,7 @@ client.connect_signal("request::titlebars", function(c)
 
     -- Default
     -- buttons for the titlebar
-    local buttons = my_table.join(
+    local buttons = table.join(
         awful.button({ }, 1, function()
             c:emit_signal("request::activate", "titlebar", {raise = true})
             awful.mouse.client.move(c)
@@ -645,7 +649,4 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
--- possible workaround for tag preservation when switching back to default screen:
--- https://github.com/lcpz/awesome-copycats/issues/251
 -- }}}
