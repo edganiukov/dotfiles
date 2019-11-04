@@ -12,7 +12,7 @@
 ## Apperance
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Source Code Pro, Inconsolata 10
+font pango:Source Code Pro, Inconsolata 9
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -26,17 +26,16 @@ font pango:Source Code Pro, Inconsolata 10
 # font, it doesn’t scale on retina/hidpi displays.
 
 # color                   border  backgr  text    indictr child_border
-client.placeholder        #2f343f #2f343f #d8dee8 #2f343f #2f343f
-client.background         #2f343f
+client.placeholder        #2F343F #2F343F #D8DEE8 #2F343F #2F343F
+client.background         #2F343F
 
-client.focused #81a2be #81a2be #282828 #282828
-client.focused_inactive #1d2021 #1d2021 #928374 #282828
-client.unfocused #32302f #32302f #928374 #282828
-client.urgent #cc241d #cc241d #ebdbb2 #282828
-#end of window title bars & borders section
+client.focused            #282828 #282828 #81A2BE #81A2BE #7F7F7F
+client.focused_inactive   #1D2021 #1D2021 #928374 #282828
+client.unfocused          #32302F #32302F #928374 #282828
+client.urgent             #CC241D #CC241D #EBDBB2 #282828
 
-# Hide titlebar
 for_window [class="^.*"] border pixel 1
+#end of window title bars & borders section
 
 ## controls
 set $mod Mod4
@@ -222,17 +221,16 @@ bar {
     position top
     strip_workspace_numbers yes
     tray_output primary
-    # status_command ~/.config/i3/i3status-xkb-layout.sh
     status_command i3status -c ~/.config/i3/i3status.conf
     # status_command i3blocks -c ~/.config/i3/i3blocks.conf
     colors {
-        separator #928374
-        background #282828
-        statusline #ebdbb2
-        focused_workspace #81a2be #81a2be #282828
-        active_workspace #1d2021 #1d2021 #928374
-        inactive_workspace #32302f #32302f #928374
-        urgent_workspace #cc241d #cc241d #ebdbb2
+        separator           #928374
+        background          #282828
+        statusline          #EBDBB2
+        focused_workspace   #1D2021 #1D2021 #81A2BE
+        active_workspace    #1D2021 #1D2021 #928374
+        inactive_workspace  #32302F #32302F #928374
+        urgent_workspace    #CC241D #CC241D #EBDBB2
     }
 }
 

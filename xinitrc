@@ -32,5 +32,5 @@ export QT_SCREEN_SCALE_FACTORS=1.5
 # export GDK_DPI_SCALE=0.5
 
 # Start WM
-exec awesome
-# exec i3
+# exec awesome
+exec i3
