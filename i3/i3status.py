@@ -30,6 +30,7 @@ status.register("text",
     text=markup(light, dark, ""),
 )
 
+## CPU usage
 status.register("cpu_usage",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     dynamic_color=True,
@@ -40,7 +41,7 @@ status.register("text",
     text=markup(dark, light, ""),
 )
 
-
+## Core Temperature
 status.register("temp",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     dynamic_color=True,
@@ -52,6 +53,7 @@ status.register("text",
     text=markup(light, dark, ""),
 )
 
+## Battery
 status.register('battery',
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     interval=1,
@@ -72,6 +74,7 @@ status.register("text",
     text=markup(dark, light, ""),
 )
 
+## Wifi
 status.register("network",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     dynamic_color=True,
@@ -86,6 +89,7 @@ status.register("text",
     text=markup(light, dark, ""),
 )
 
+## Audio
 status.register("pulseaudio",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     format=markup(text, dark, "  {volume}% "),
@@ -96,6 +100,7 @@ status.register("text",
     text=markup(dark, light, ""),
 )
 
+## Screen backlight
 status.register("backlight",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     interval=1,
@@ -107,6 +112,7 @@ status.register("text",
     text=markup(light, dark, ""),
 )
 
+## Keyboard laouyt
 status.register("xkblayout",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     layouts=["us", "ru"],
@@ -114,6 +120,7 @@ status.register("xkblayout",
     format=markup(text, dark, " {symbol} "),
 )
 
+##
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     text=markup(light, dark, "") + markup(dark, light, ""),
