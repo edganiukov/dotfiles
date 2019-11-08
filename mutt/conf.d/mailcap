@@ -1,0 +1,3 @@
+image/*; /usr/bin/xdg-open %s
+application/pdf; /usr/bin/xdg-open %s
+text/html; w3m -I %{charset} -T text/html; copiousoutput;

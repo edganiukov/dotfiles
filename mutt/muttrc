@@ -1,0 +1,147 @@
+# Accounts
+source ~/.mutt/accounts/personal
+macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
+
+unset imap_passive
+set imap_check_subscribed
+set imap_keepalive = 300
+set mail_check = 30
+set timeout = 10
+
+set header_cache = ~/.mail/cache/headers
+set message_cachedir = ~/.mail/cache/messages
+
+set editor = "vim +/^$ -c 'set ft=mail enc=utf-8 et nobk nosi nowb noswapfile'"
+
+# SSL hardening
+set ssl_force_tls = yes
+set ssl_starttls = yes
+set ssl_use_sslv3 = no
+set ssl_use_tlsv1 = no
+set ssl_use_tlsv1_1 = no
+set ssl_use_tlsv1_2 = yes
+set ssl_verify_dates = yes
+set ssl_verify_host = yes
+# unset ssl_usesystemcerts
+set certificate_file = ~/.mutt/certificates
+
+set use_from = yes          # allow editing of From:
+set use_envelope_from       # which From:
+set edit_headers = yes      # editable headers in compose
+set reverse_name            # let mutt use the To: address of a message as the From:
+# set reverse_realname = no
+set hidden_host             # hide host details
+set noallow_8bit            # 8bit isn't safe
+set abort_nosubject = ask-yes
+set auto_tag = yes
+set nobeep
+
+set delete = yes            # delete on exit
+set meta_key = yes          # allow to use alt or ESC
+set forward_quote           # include message in forwards
+set forward_decode          # decode when forwarding
+set fcc_attach              # save attachments with the body
+set menu_scroll             # scroll in menus
+set pager_stop              # don't go to next message automatically
+set pipe_decode             # strip headers and eval mimes when piping
+set nostrict_threads        # fuzzy threading
+set nopipe_decode           # don't decode messages when piping
+set reply_to                # reply to Reply to: field
+set fast_reply              # skip initial prompts when replying
+set include                 # include message in replies
+set sendmail_wait = -1      # send mail in the background
+set sig_dashes              # double dash before signature
+set sig_on_top              # signature before reply
+set smart_wrap              # don't split words
+set text_flowed             # label messages as format-flowed
+set nosmart_wrap            # don't want smart wrapping.
+set nomarkers               # don't want any wrap markers
+set thorough_search         # strip headers and eval mimes before searching
+set noconfirmappend         # just append, don't hassle me
+set tilde                   # show tildes like in vim
+
+set signature = ~/.mutt/conf.d/signature
+
+# Attachments
+set mime_forward = yes
+set mime_forward_rest = yes
+
+set mailcap_path = ~/.mutt/conf.d/mailcap
+
+unset metoo
+unset reply_self
+unset wait_key              # only "press a key" if return value non-zero
+unset mark_old              # read/new is good enough
+
+# Sort
+set sort = threads
+set sort_browser = reverse-date
+set sort_aux = reverse-last-date-received
+set sort_re
+set uncollapse_jump
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+# sidebar
+set sidebar_visible = no
+set sidebar_short_path = yes
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+
+set tmpdir = ~/.mail/tmp
+# set alias_file = ~/.mutt/conf.d/aliases
+# set sort_alias = alias
+# set reverse_alias = yes
+# source $alias_file
+
+auto_view text/html
+alternative_order text/plain text/html
+
+source ~/.mutt/conf.d/gruvbox
+source ~/.mutt/conf.d/pgprc
+
+# Headers
+## ignore all headers
+ignore *
+unignore From:
+unignore To:
+unignore Reply-To:
+unignore Subject:
+unignore Date:
+unignore CC:
+unignore BCC:
+unhdr_order *
+hdr_order From: Return-Path: Reply-To: Date: Subject: Importance:
+
+# keybindings
+bind pager j next-line
+bind pager k previous-line
+bind pager q exit
+bind pager i toggle-quoted
+bind pager / search
+bind pager K previous-undeleted
+bind pager J next-undeleted
+
+bind index J next-unread
+bind index K previous-unread
+bind index S sync-mailbox
+
+bind attach,index,pager \Cn next-page
+bind attach,index,pager \Cp previous-page
+
+bind index,pager P sidebar-prev
+bind index,pager N sidebar-next
+bind index,pager O sidebar-open
+bind index,pager b sidebar-toggle-visible
+
+# Macro
+macro index A \
+    "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" \
+    "mark all new as read"
+
+## Abook
+set query_command = "abook --mutt-query '%s'"
+macro index,pager a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
+bind editor <Tab> complete-query
+
+# show version
+push V
