@@ -81,8 +81,8 @@ status.register("network",
     interface="wlp3s0",
     separate_color=False,
     # format_up=markup("", light, "  ")+ markup(text, light, "  {bytes_recv}KB/s  {bytes_sent}KB/s "),
-    format_up=markup("", light, "  ")+ markup(text, light, "{essid} "),
-    format_down=markup(red, light, "  down "),
+    format_up=markup("", light, "  ")+ markup(text, light, "{essid} "),
+    format_down=markup(red, light, "  down "),
 )
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
@@ -93,7 +93,8 @@ status.register("text",
 status.register("pulseaudio",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     format=markup(text, dark, "  {volume}% "),
-    format_muted=markup(text, dark, "  0% "),
+    format_muted=markup(red, dark, "  0% "),
+    on_leftclick="pactl set-sink-mute @DEFAULT_SINK@ toggle"
 )
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
@@ -119,11 +120,15 @@ status.register("xkblayout",
     uppercase=False,
     format=markup(text, dark, " {symbol} "),
 )
+status.register("text",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    text=markup(dark, light, ""),
+)
 
 ##
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
-    text=markup(light, dark, "") + markup(dark, light, ""),
+    text=markup(light, dark, ""),
 )
 
 status.run()

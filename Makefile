@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt
 
 CWD=$(shell pwd)
 
@@ -65,3 +65,9 @@ vifm:
 
 mc:
 	ln -s $(CWD)/mc/skins $(HOME)/.local/share/mc/skins
+
+mutt:
+	mkdir -p $(HOME)/.mutt
+	ln -s $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
+	ln -s $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
+	ln -s $(CWD)/mutt/accounts $(HOME)/.mutt/accounts

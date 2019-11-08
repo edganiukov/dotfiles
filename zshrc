@@ -78,16 +78,17 @@ bindkey "\C-k" vi-kill-eol
 alias ls='ls -h'
 alias df='df -h'
 alias lsl='ls -hl'
-
 alias mv='mv -i'
 alias cp='cp -Ri'
+alias grep="grep --colour"
 
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
-alias grep="grep --colour"
 alias curl="curl -s"
+
 alias k="kubectl"
 alias pass="gopass"
+alias mutt="neomutt"
 
 ### prompt
 autoload -Uz vcs_info
