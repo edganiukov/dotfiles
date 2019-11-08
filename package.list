@@ -26,17 +26,21 @@ wget
 nmap
 gopass
 urlview
+urlscan
 xclip
 brightnessctl
+redshift
 
 # tui
 gvim
 mc
 htop
+mutt
 
 # gui
 i3
+i3pystatus
+i3status
 rofi
 dunst
 alacritty
-redshift

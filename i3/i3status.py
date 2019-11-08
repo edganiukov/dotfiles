@@ -155,8 +155,16 @@ status.register("mail",
     color_unread="#F79494",
     format=markup(text, light, "  ") + markup("", light, "{unread} "),
 )
+status.register("text",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    text=markup(light, dark, ""),
+)
 
-##
+# blob
+status.register("text",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    text=markup(dark, light, ""),
+)
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     text=markup(light, dark, ""),

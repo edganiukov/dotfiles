@@ -143,5 +143,11 @@ set query_command = "abook --mutt-query '%s'"
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
 bind editor <Tab> complete-query
 
+# urlscan
+macro index,pager \Cb "<pipe-message> urlscan<Enter>" "Call urlscan to extract URLs out of a message"
+macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "Call urlscan to extract URLs out of a message"
+
+# Follow URL
+
 # show version
 push V
