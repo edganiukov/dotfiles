@@ -1,10 +1,23 @@
+import os
+import base64
+
 from i3pystatus import Status
+from i3pystatus.mail import imap
 
 def markup(fg, bg, text):
     if fg != "":
         return "<span background='"+bg+"' foreground='"+fg+"'>"+text+"</span>"
     else:
         return "<span background='"+bg+"'>"+text+"</span>"
+
+
+def gopass(name):
+    return os.popen("gopass show " + name).read()
+
+
+def b64decode(name):
+    return str(base64.b64decode(name), "utf-8").rstrip()
+
 
 text="#EBDBB2"
 light='#383838'
@@ -116,6 +129,7 @@ status.register("text",
 ## Keyboard laouyt
 status.register("xkblayout",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    interval=1,
     layouts=["us", "ru"],
     uppercase=False,
     format=markup(text, dark, " {symbol} "),
@@ -123,6 +137,23 @@ status.register("xkblayout",
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     text=markup(dark, light, ""),
+)
+
+## Mail
+status.register("mail",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    interval=10,
+    backends=[
+        imap.IMAP(
+            host="imap.fastmail.com",
+            password=gopass("core/imap.fastmail.com"),
+            username=b64decode("ZWRAZ25rdi5pbwo="),
+            mailbox="Inbox",
+        )
+    ],
+    hide_if_null=False,
+    color_unread="#F79494",
+    format=markup(text, light, "  ") + markup("", light, "{unread} "),
 )
 
 ##

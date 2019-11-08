@@ -37,11 +37,12 @@ Plug 'lifepillar/vim-mucomplete'
 call plug#end()
 
 " Standard VIM TUI Settings
-"
+set nocompatible
 filetype off
-filetype plugin indent on
 
+filetype plugin indent on
 syntax on
+
 set t_Co=256
 set t_ut=
 set termguicolors
