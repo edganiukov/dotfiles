@@ -1,13 +1,14 @@
-"" Settings
+" Settings
 color zenburn
 
 set vicmd=vim
 set incsearch
 set syscalls
 set wildmenu
-set wildstyle=popup
-" set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
-"    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
+set wildstyle=bar
+set vimhelp
+set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
+    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
 
 set nodotfiles
 set ignorecase
@@ -15,19 +16,13 @@ set smartcase
 
 filetype * xdg-open
 
-"" Keybindings
-noremap W :!watched %"f<cr>
+" Keybindings
+"" Renaming
+nnoremap N cw<c-u>
+nnoremap R cw
 
-" Mappings for faster renaming
-nnoremap I cw<c-a>
-nnoremap cc cw<c-u>
-nnoremap A cw
-
-" Toggle visibility of preview window
+"" Toggle preview window
 nnoremap w :view<cr>
 vnoremap w :view<cr>gv
 
-" Open editor to edit vifmrc and apply settings after returning to vifm
-nnoremap ,c :write | edit $MYVIFMRC | restart<cr>
-
-" vim: syntax=vim foldmethod=marker
+" vim: syntax=vim

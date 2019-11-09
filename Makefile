@@ -61,7 +61,10 @@ qutebrowser:
 	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py
 
 vifm:
-	ln -s $(CWD)/vifm $(HOME)/.vifm
+	mkdir -p $(HOME)/.vifm
+	ln -s $(CWD)/vifm/vifmrc $(HOME)/.vifm/vifmrc
+	ln -s $(CWD)/vifm/colors $(HOME)/.vifm/colors
+	ln -s $(CWD)/vifm/scripts $(HOME)/.vifm/scripts
 
 mc:
 	ln -s $(CWD)/mc/skins $(HOME)/.local/share/mc/skins

@@ -148,12 +148,11 @@ status.register("mail",
             host="imap.fastmail.com",
             password=gopass("core/imap.fastmail.com"),
             username=b64decode("ZWRAZ25rdi5pbwo="),
-            mailbox="Inbox",
         )
     ],
     hide_if_null=False,
-    color_unread="#F79494",
-    format=markup(text, light, "  ") + markup("", light, "{unread} "),
+    color_unread="#00FF00",
+    format=markup("", light, "  ") + markup(text, light, "{unread} "),
 )
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
@@ -161,6 +160,14 @@ status.register("text",
 )
 
 # blob
+status.register("text",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    text=markup(dark, light, ""),
+)
+status.register("text",
+    hints={"markup": "pango", "separator": False, "separator_block_width": 0},
+    text=markup(light, dark, ""),
+)
 status.register("text",
     hints={"markup": "pango", "separator": False, "separator_block_width": 0},
     text=markup(dark, light, ""),

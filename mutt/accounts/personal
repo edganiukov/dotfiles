@@ -1,5 +1,6 @@
-# FastMail account
+# vim: ft=muttrc
 #
+# FastMail account
 set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d `
 set my_realname = "Eduard Ganiukov"
 set realname = $my_realname
@@ -13,17 +14,11 @@ set my_imap_pass = `gopass show core/imap.fastmail.com`
 set imap_user = $my_user
 set imap_pass = $my_imap_pass
 set folder = "imaps://imap.fastmail.com:993"
-set spoolfile = "=Inbox"
+set spoolfile = "=INBOX"
 set record = "=Sent"
 set postponed = "=Drafts"
 
 bind index,pager g noop
-macro index,pager e "<save-message>=Archive<enter>" "archive message"
-macro index,pager d "<save-message>=Trash<enter>" "move message to Trash"
-macro index,pager D "<delete-message>" "delete message"
-macro index,pager gi "<change-folder>=<enter>" "go to inbox"
-macro index,pager ga "<change-folder>=Archive<enter>" "go to Archive"
-macro index,pager gd "<change-folder>=Drafts<enter>" "go to Drafts"
-macro index,pager gt "<change-folder>=Sent<enter>" "go to Sent Items"
-
-# vim: ft=muttrc
+macro index,pager e "<save-message>=Archive<enter>" "Archive message"
+macro index,pager t "<save-message>=Trash<enter>" "Move message to Trash"
+macro index,pager gi "<change-folder>=<enter>" "Go to inbox"
