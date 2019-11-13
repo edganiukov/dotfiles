@@ -14,7 +14,7 @@ set nodotfiles
 set ignorecase
 set smartcase
 
-filetype * xdg-open
+filetype * xdg-open &
 
 " Keybindings
 "" Renaming

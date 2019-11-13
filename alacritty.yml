@@ -112,8 +112,8 @@ debug:
   render_timer: false
 
 colors:
-  # Colors (Tomorrow Night)
-  # Default colors
+  # # Colors (Tomorrow Night)
+  # # Default colors
   # primary:
   #   background: '0x1d1f21'
   #   foreground: '0xc5c8c6'
@@ -144,7 +144,6 @@ colors:
   #   magenta: '0xb77ee0'
   #   cyan:    '0x54ced6'
   #   white:   '0x282a2e'
-
 
   # Base16 Gruvbox dark, hard 256 - alacritty color config
   # Default colors
