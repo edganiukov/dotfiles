@@ -25,7 +25,7 @@ Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
 Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
-Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
+" Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'hashivim/vim-terraform'
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -632,10 +632,10 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 " filetype config
 "
+au FileType c,cpp setlocal noexpandtab
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
-
 au FileType gitcommit setlocal spell tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf

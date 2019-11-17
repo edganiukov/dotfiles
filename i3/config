@@ -111,9 +111,11 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning \
+  -m 'Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+d mode "resize"
 mode "resize" {
     # These bindings trigger as soon as you enter the resize mode
 
@@ -137,24 +139,6 @@ mode "resize" {
     bindsym Escape mode "default"
     bindsym $mod+d mode "default"
 }
-
-bindsym $mod+d mode "resize"
-
-# brightness: acpilight
-bindsym XF86MonBrightnessDown exec brightnessctl --device=acpi_video0 set 5%-
-bindsym XF86MonBrightnessUp exec brightnessctl --device=acpi_video0 set 5%+
-# XF86LaunchA
-# XF86LaunchB
-bindsym XF86KbdBrightnessDown exec brightnessctl --device=smc::kbd_backlight set 5%-
-bindsym XF86KbdBrightnessUp exec brightnessctl --device=smc::kbd_backlight set 5%+
-# XF86AudioPlay
-# XF86AudioNext
-# XF86AudioPrev
-
-# volume
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 bindsym $mod+Escape mode "$mode_system"
 set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (p)oweroff
@@ -235,6 +219,3 @@ bar {
         urgent_workspace    #32302F #32302F #F79494
     }
 }
-
-# startup
-exec --no-startup-id feh --bg-scale $HOME/dev/dotfiles/i3/wall.png

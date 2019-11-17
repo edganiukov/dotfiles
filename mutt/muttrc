@@ -145,13 +145,16 @@ bind index,pager b sidebar-toggle-visible
 
 ## Macro
 macro index A "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "Mark all new as read"
+
 # Abook
 set query_command = "abook --mutt-query '%s'"
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
 bind editor <Tab> complete-query
+
 # Follow URL
 macro index,pager \Cb "<pipe-message> urlscan<Enter>" "Follow links"
 macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "Follow links"
+
 # Save all attachments
 macro pager S "<pipe-message> ripmime -i - -d ~/downloads && rm ~/downloads/textfile*" "Save all non-text attachments"
 

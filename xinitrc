@@ -9,6 +9,7 @@
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
+xbindkeys
 # keyboard setting
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
@@ -28,6 +29,10 @@ systemctl --user import-environment DISPLAY
 export QT_SCREEN_SCALE_FACTORS=1.5
 export GDK_DPI_SCALE=1
 
+feh --bg-scale ~/dev/dotfiles/wall.png
+
 # Start WM
 # exec awesome
-exec i3
+# exec i3
+slstatus &
+exec dwm

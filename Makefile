@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts
 
 CWD=$(shell pwd)
 
@@ -33,6 +33,7 @@ terminal:
 x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
+	ln -s $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
 
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
@@ -74,3 +75,8 @@ mutt:
 	ln -s $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
 	ln -s $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
 	ln -s $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
+
+fonts:
+	mkdir -p $(HOME)/.config/fontconfig
+	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
+
