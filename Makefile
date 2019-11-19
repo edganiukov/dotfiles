@@ -79,4 +79,3 @@ mutt:
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
-

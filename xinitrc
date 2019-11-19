@@ -35,4 +35,6 @@ feh --bg-scale ~/dev/dotfiles/wall.png
 # exec awesome
 # exec i3
 slstatus &
-exec dwm
+while true; do
+    dwm 2> ~/.dwm.log
+done
