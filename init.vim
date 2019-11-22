@@ -25,7 +25,6 @@ Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
 Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
-" Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'hashivim/vim-terraform'
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -404,7 +403,6 @@ hi link EchoDocFloat Pmenu
 
 " Plug 'lifepillar/vim-mucomplete'
 "
-
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#completion_delay= 2
 let g:mucomplete#reopen_immediately = 0
@@ -418,8 +416,7 @@ let g:mucomplete#can_complete = {
     \ }
 
 " mucomplete + vim-lsp
-autocmd FileType go,rust,python,c,cpp,java setlocal omnifunc=lsp#complete
-
+autocmd FileType go,rust,c,cpp setlocal omnifunc=lsp#complete
 inoremap <leader>f <C-x><C-o>
 
 " Plug 'prabirshrestha/vim-lsp'
@@ -434,13 +431,6 @@ au User lsp_setup call lsp#register_server({
     \ 'whitelist': ['go'],
     \ })
 
-" https://github.com/palantir/python-language-server
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'python',
-    \ 'cmd': {server_info->['pyls']},
-    \ 'whitelist': ['python'],
-    \ })
-
 " https://github.com/rust-lang/rls
 au User lsp_setup call lsp#register_server({
     \ 'name': 'rust',
@@ -453,27 +443,20 @@ au User lsp_setup call lsp#register_server({
     \ })
 
 " https://github.com/cquery-project/cquery
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'cpp',
-    \ 'cmd': {server_info->['cquery']},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
-        \ )},
-    \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
-    \ 'whitelist': ['c', 'cpp'],
-    \ })
+" au User lsp_setup call lsp#register_server({
+"     \ 'name': 'cpp',
+"     \ 'cmd': {server_info->['cquery']},
+"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"         \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
+"         \ )},
+"     \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
+"     \ 'whitelist': ['c', 'cpp'],
+"     \ })
 
-" https://github.com/edganiukov/homebrew/blob/master/jdt-ls.rb
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'java',
-    \ 'cmd': {server_info->[
-        \'jdt-ls',
-        \'-data', expand('~/.cache/jdt-ls')
-        \ ]},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['pom.xml', '.git'])
-        \ )},
-    \ 'whitelist': ['java'],
+    \ 'name': 'clangd',
+    \ 'cmd': {server_info->['clangd', '-background-index']},
+    \ 'whitelist': ['c', 'cpp'],
     \ })
 
 let g:lsp_auto_enable = 1
@@ -516,77 +499,14 @@ nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 
-
-" TODO: alternative language servers.
-"
-" Plug 'natebosch/vim-lsc'
-"
-" let g:lsc_server_commands = {
-"     \ 'go': 'gopls',
-" \}
-
-" nnoremap <silent> gd :LSClientGoToDefinition<CR>
-" nnoremap <silent> gds :LSClientGoToDefinitionSplit<cr>
-" nnoremap <silent> gr :LSClientRename<CR>
-" nnoremap <silent> ga :LSClientFindCodeActions<CR>
-" nnoremap <silent> gx :LSClientFindReferences<CR>
-" nnoremap <silent> gi :LSClientFindImplementations<CR>
-" nnoremap <silent> gh :LSClientShowHover<CR>
-" nnoremap <silent> gs :LSClientDocumentSymbol<CR>
-
-
-" Plug 'autozimu/LanguageClient-neovim'
-"
-" let g:LanguageClient_serverCommands = {
-"     \ 'go': ['gopls', 'serve'],
-"     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-"     \ }
-
-" let g:LanguageClient_rootMarkers = {
-"     \ 'go': ['go.mod', '.git'],
-"     \ 'rust': ['Cargo.toml', '.git'],
-"     \ }
-
-" let g:LanguageClient_diagnosticsDisplay = {
-"     \ 1: {
-"         \ "name": "Error",
-"         \ "texthl": "Error",
-"         \ "signText": "✗",
-"         \ "signTexthl": "Error",
-"         \ },
-"     \ 2: {
-"         \ "name": "Warning",
-"         \ "texthl": "Todo",
-"         \ "signText": "➤",
-"         \ "signTexthl": "Todo",
-"         \ },
-"     \ }
-
-" let g:LanguageClient_hasSnippetSupport = 0
-" let g:LanguageClient_useVirtualText = 0
-
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> gds :call LanguageClient#textDocument_definition({'gotoCmd': 'split'})<CR>
-" nnoremap <silent> gtd :call LanguageClient#textDocument_typeDefinition()<CR>
-" nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-" nnoremap <silent> gf :call LanguageClient#textDocument_formatting()<CR>
-" nnoremap <silent> grf :call LanguageClient#textDocument_rangeFormatting()<CR>
-" nnoremap <silent> ga :call LanguageClient#textDocument_codeAction()<CR>
-" nnoremap <silent> gx :call LanguageClient#textDocument_references()<CR>
-" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gs :call LanguageClient#workspace_symbol()<CR>
+autocmd FileType go,rust,c,cpp
+            \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 
 " Plug 'rust-lang/rust.vim'
 "
 let g:rustfmt_autosave = 1
 au FileType rust nnoremap gt :RustTest<CR>
-
-
-" Plug 'rhysd/vim-clang-format'
-"
-let g:clang_format#code_style = 'llvm'
-let g:clang_format#auto_format = 1
 
 
 " Plug 'pearofducks/ansible-vim'
@@ -605,8 +525,7 @@ au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
 "
 let g:go_disable_autoinstall = 1
 let g:go_fmt_fail_silently = 1
-let g:go_fmt_command = "goimports"
-let g:go_fmt_autosave = 1
+let g:go_fmt_autosave = 0
 let g:go_addtags_transform = "camelcase"
 
 nnoremap <C-g> :GoAlternate<CR>
@@ -615,10 +534,9 @@ au FileType go nmap gt <Plug>(go-test)
 au FileType go nmap gc <Plug>(go-coverage-toggle)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 
-au FileType go setlocal noexpandtab
-
 
 " Plug 'sebdahvim-delve'
+"
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
 let g:delve_breakpoint_sign_highlight = 'DlvPoint'
 let g:delve_tracepoint_sign_highlight = 'DlvPoint'
@@ -630,9 +548,10 @@ nnoremap <silent> drd :DlvDebug<CR>
 nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
-" filetype config
+" General: filetype config
 "
-au FileType c,cpp setlocal noexpandtab
+au FileType go setlocal noexpandtab
+
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
