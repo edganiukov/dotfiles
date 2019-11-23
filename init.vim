@@ -499,8 +499,8 @@ nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 
-autocmd FileType go,rust,c,cpp
-            \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+" autocmd FileType go,rust,c,cpp
+"             \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 
 " Plug 'rust-lang/rust.vim'
