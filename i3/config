@@ -12,7 +12,7 @@
 ## Apperance
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Source Code Pro 9
+font pango:monospace 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -29,9 +29,9 @@ font pango:Source Code Pro 9
 client.placeholder        #2F343F #2F343F #D8DEE8 #2F343F #2F343F
 client.background         #2F343F
 
-client.focused            #282828 #282828 #81A2BE #81A2BE #7F7F7F
-client.focused_inactive   #1D2021 #1D2021 #928374 #282828
-client.unfocused          #32302F #32302F #928374 #282828
+client.focused            #83A598 #83A598 #282828 #282828 #83A598
+client.focused_inactive   #1D2021 #1D2021 #928374 #928374
+client.unfocused          #282828 #32302F #D5C4A1 #D5C4A1
 client.urgent             #1D2021 #1D2021 #F79494 #F79494
 
 for_window [class="^.*"] border pixel 1
@@ -66,6 +66,7 @@ bindsym $mod1+l exec $locker
 
 # change focus
 bindsym $mod+h focus left
+bindsym $mod+Tab focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
@@ -213,9 +214,9 @@ bar {
         separator           #928374
         background          #282828
         statusline          #EBDBB2
-        focused_workspace   #1D2021 #1D2021 #81A2BE
-        active_workspace    #1D2021 #1D2021 #928374
-        inactive_workspace  #32302F #32302F #928374
+        focused_workspace   #83A598 #83A598 #282828
+        active_workspace    #1D2021 #1D2021 #D5C4A1
+        inactive_workspace  #32302F #32302F #D5C4A1
         urgent_workspace    #32302F #32302F #F79494
     }
 }
