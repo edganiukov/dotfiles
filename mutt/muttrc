@@ -120,6 +120,8 @@ unignore BCC:
 unhdr_order *
 hdr_order From: Return-Path: Reply-To: Date: Subject: Importance:
 
+my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238
+
 ## Keybindings
 bind pager j next-line
 bind pager k previous-line
@@ -159,6 +161,6 @@ macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "Follow links"
 macro pager S "<pipe-message> ripmime -i - -d ~/downloads && rm ~/downloads/textfile*" "Save all non-text attachments"
 
 ## NeoMutt hooks
-timeout-hook 'exec sync-mailbox'
-startup-hook 'exec sync-mailbox'
-shutdown-hook 'exec sync-mailbox'
+# timeout-hook 'exec sync-mailbox'
+# startup-hook 'exec sync-mailbox'
+# shutdown-hook 'exec sync-mailbox'

@@ -6,9 +6,9 @@ gotags
 rustup
 gdb
 lldb
+clang
 cquery
 ctags
-tig
 git
 
 # tools
@@ -27,7 +27,7 @@ nmap
 gopass
 urlview
 urlscan
-xclip
+xsel
 brightnessctl
 redshift
 
@@ -39,8 +39,8 @@ mutt
 
 # gui
 i3
-i3pystatus
 i3status
 rofi
 dunst
-alacritty
+sxiv
+mpv

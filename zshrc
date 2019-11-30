@@ -1,8 +1,8 @@
 ### env vars
 
 # General vars
+export PATH=/usr/local/bin:$HOME/.bin:$PATH
 export LANG=en_US.UTF-8
-export PATH=/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export EDITOR=vim
 export CLICOLOR=YES
@@ -10,7 +10,6 @@ export CLICOLOR=YES
 # Go vars
 export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
-export GO111MODULE=auto
 
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
@@ -85,7 +84,6 @@ alias grep="grep --colour"
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
-
 alias k="kubectl"
 
 ### prompt

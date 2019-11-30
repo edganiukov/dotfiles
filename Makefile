@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin
 
 CWD=$(shell pwd)
 
@@ -79,3 +79,6 @@ mutt:
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
+
+bin:
+	ln -s $(CWD)/bin $(HOME)/.bin

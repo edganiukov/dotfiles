@@ -8,12 +8,12 @@ Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'scrooloose/nerdtree'
 Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 Plug 'vimwiki/vimwiki'
 Plug 'majutsushi/tagbar'
+Plug 'mcchrish/nnn.vim'
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
@@ -350,27 +350,13 @@ function! LightlineFilename()
 endfunction
 
 
-" Plug 'scrooloose/nerdtree'
+" Plug 'mcchrish/nnn.vim'
 "
-let NERDTreeDirArrows = 1
-let NERDTreeMinimalUI = 1
-let NERDTreeShowHidden = 1
-let NERDTreeIgnore = [
-    \ '\.DS_Store',
-    \ '\.git$',
-    \ '\.test$',
-    \ '\.pyc$',
-    \ '\.idea'
-    \]
-let NERDTreeMapActivateNode = '<Space>'
-let g:NERDTreeWinSize = 40
+let g:nnn#command = 'n'
+let g:nnn#layout = 'new'
+let g:nnn#layout = { 'left': '~20%' }
 
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-
-
-map <F3> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+nnoremap <silent> <F3> :NnnPicker<CR>
 
 " Plug 'tmsvg/pear-tree'
 "
