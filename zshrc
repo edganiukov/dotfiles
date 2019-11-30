@@ -134,29 +134,20 @@ fi
 # krew (kubectl plugin manager)
 # export PATH=$HOME/.krew/bin:$PATH
 
-# pet
-function prev() {
-  PREV=$(fc -lrn | head -n 1)
-  sh -c "pet new `printf %q "$PREV"`"
+# nn - creates a session with two instances of nnn in double pain mode.
+nn() {
+    SESSION="fm"
+    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+    tmux $change -t "$SESSION" 2>/dev/null || tmux new-session -d -s "$SESSION" "n" && tmux $chnge -t "$SESSION" && tmux split-window -v "n"
 }
-
-function pet-select() {
-  BUFFER=$(pet search --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle redisplay
-}
-
-zle -N pet-select
-stty -ixon
-bindkey '^s' pet-select
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
-  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-  if [ $1 ]; then
-    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
-  fi
-  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+    if [ $1 ]; then
+      tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+    fi
+    session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
 # custom zsh config

@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv
 
 CWD=$(shell pwd)
 
@@ -82,3 +82,7 @@ fonts:
 
 bin:
 	ln -s $(CWD)/bin $(HOME)/.bin
+
+mpv:
+	mkdir -p $(HOME)/.config/mpv
+	ln -s $(CWD)/mpv.conf $(HOME)/.config/mpv/mpv.conf
