@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Description: Copy selection to clipboard
+#
+# Shell: POSIX compliant
+# Author: Arun Prakash Jana
+
+SELECTION=$HOME/.config/nnn/.selection
+
+# Linux
+xargs -0 < "$SELECTION" | xsel -bi
+
+# Wayland
+# xargs -0 < "$SELECTION" | wl-copy

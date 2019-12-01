@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent
 
 CWD=$(shell pwd)
 
@@ -86,3 +86,8 @@ bin:
 mpv:
 	mkdir -p $(HOME)/.config/mpv
 	ln -s $(CWD)/mpv.conf $(HOME)/.config/mpv/mpv.conf
+
+rtorrent:
+	mkdir -p $(HOME)/.rtorrent
+	ln -s $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
+
