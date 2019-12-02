@@ -35,7 +35,7 @@ throttle.max_peers.seed.set = 80
 trackers.numwant.set = 80
 
 # Global upload and download rate in KiB, `0` for unlimited (`download_rate`, `upload_rate`)
-throttle.global_down.max_rate.set_kb = 15728640 # 15 GiB
+throttle.global_down.max_rate.set_kb = 0
 throttle.global_up.max_rate.set_kb   = 100
 
 protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
