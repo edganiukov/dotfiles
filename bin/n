@@ -3,7 +3,7 @@
 export NNN_BMS="h:~;d:~/downloads"
 export NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv"
 export NNN_USE_EDITOR=1
-export NNN_CONTEXT_COLORS="6423"
+export NNN_CONTEXT_COLORS="4623"
 export NNN_COPIER="$HOME/.bin/copier"
 export NNN_TRASH=1
 
