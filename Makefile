@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot
 
 CWD=$(shell pwd)
 
@@ -91,3 +91,9 @@ rtorrent:
 	mkdir -p $(HOME)/.rtorrent
 	ln -s $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
 
+sxiv:
+	ln -s $(CWD)/sxiv $(HOME)/.config/sxiv
+
+ncspot:
+	mkdir -p $(HOME)/.config/ncspot
+	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
