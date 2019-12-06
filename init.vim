@@ -44,7 +44,6 @@ syntax on
 
 set t_Co=256
 set t_ut=
-set termguicolors
 
 set bg=dark
 colorscheme gruvbox
