@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura
 
 CWD=$(shell pwd)
 
@@ -97,3 +97,7 @@ sxiv:
 ncspot:
 	mkdir -p $(HOME)/.config/ncspot
 	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
+
+zathura:
+	mkdir -p $(HOME)/.config/zathura
+	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc

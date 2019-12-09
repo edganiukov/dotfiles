@@ -7,7 +7,7 @@ do
         "r")
                 convert -rotate 90 "$file" "$file" ;;
         "c")
-                echo -n "$file" | xsel -selection clipboard ;;
+                echo -n "$file" | xclip -selection clipboard ;;
         "w")
                 feh --bg-scale "$file" ;;
         esac

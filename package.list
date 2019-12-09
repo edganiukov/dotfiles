@@ -27,7 +27,7 @@ nmap
 gopass
 urlview
 urlscan
-xsel
+xclip
 brightnessctl
 redshift
 

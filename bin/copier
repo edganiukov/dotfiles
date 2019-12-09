@@ -8,7 +8,7 @@
 SELECTION=$HOME/.config/nnn/.selection
 
 # Linux
-xargs -0 < "$SELECTION" | xsel -bi
+xargs -0 < "$SELECTION" | xclip -i
 
 # Wayland
 # xargs -0 < "$SELECTION" | wl-copy
