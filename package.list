@@ -36,10 +36,12 @@ gvim
 mc
 htop
 mutt
+vifm
+rtorrent
 
 # gui
-i3
-i3status
+# i3
+# i3status
 rofi
 dunst
 sxiv

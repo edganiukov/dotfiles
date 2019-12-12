@@ -1,28 +1,54 @@
-" Settings
-color zenburn
+"" Settings
+color gruvbox
 
-set vicmd=vim
-set incsearch
-set syscalls
 set wildmenu
 set wildstyle=bar
-set vimhelp
-set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
-    \phistory,fhistory,dirstack,registers,bookmarks,bmarks
 
-set nodotfiles
+set incsearch
 set ignorecase
 set smartcase
+set nohlsearch
+
+set trash
+set vicmd=vim
+set syscalls
+set vimhelp
+set vifminfo=chistory,phistory,bmarks,state,tui
+
+set nofollowlinks
+set nodotfiles
+
+filetype *.md5 md5sum -c %f
+filetype *.sha256 sha256sum -c %f
 
 filetype * xdg-open &
 
-" Keybindings
-"" Renaming
+"" Custom commands
+" view images
+command! sxiv :!sxiv -r -t -s d %d &
+
+"" Key bindings
+" rename
 nnoremap N cw<c-u>
 nnoremap R cw
 
-"" Toggle preview window
+" toggle preview
 nnoremap w :view<cr>
 vnoremap w :view<cr>gv
+nnoremap sx :sxiv<cr>
+
+" yank directory path
+nnoremap yd :!echo %d | xclip %i<cr>
+" yank file path
+nnoremap yf :!echo %c:p | xclip %i<cr>
+
+" fm mappings
+nnoremap <f3> :!less %f<cr>
+nnoremap <f4> :edit<cr>
+nnoremap <f5> :copy<cr>
+nnoremap <f6> :move<cr>
+nnoremap <f7> :mkdir<space>
+nnoremap <f8> :delete<cr>
+nnoremap <f10> :q<cr>
 
 " vim: syntax=vim

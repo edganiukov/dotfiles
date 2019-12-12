@@ -85,8 +85,6 @@ alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
 alias k="kubectl"
-alias tl="trash-list"
-alias te="trash-empty"
 
 ### prompt
 autoload -Uz vcs_info
@@ -135,13 +133,6 @@ fi
 #
 # krew (kubectl plugin manager)
 # export PATH=$HOME/.krew/bin:$PATH
-
-# nn - creates a session with two instances of nnn in double pain mode.
-nn() {
-    SESSION="fm"
-    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-    tmux $change -t "$SESSION" 2>/dev/null || tmux new-session -d -s "$SESSION" "n" && tmux $change -t "$SESSION" && tmux split-window -v "n"
-}
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
