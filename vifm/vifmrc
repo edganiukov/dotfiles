@@ -42,6 +42,9 @@ nnoremap yd :!echo %d | xclip %i<cr>
 " yank file path
 nnoremap yf :!echo %c:p | xclip %i<cr>
 
+nnoremap tl :lstrash<cr>
+nnoremap te :empty<cr>
+
 " fm mappings
 nnoremap <f3> :!less %f<cr>
 nnoremap <f4> :edit<cr>
