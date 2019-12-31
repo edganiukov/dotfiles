@@ -17,7 +17,7 @@ xset r rate 200 20
 
 # autostart
 nm-applet &
-xautolock -time 10 -locker 'i3lock -n -c 282828' &
+xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
 # brightnessctl -r &
 # spotifyd --config=~/.config/spotifyd/spotifyd.conf &
 
