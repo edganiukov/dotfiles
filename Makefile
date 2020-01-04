@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura calcurse isync
 
 CWD=$(shell pwd)
 
@@ -101,3 +101,11 @@ ncspot:
 zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
+
+calcurse:
+	ln -s $(CWD)/calcurse $(HOME)/.config/calcurse
+
+isync:
+	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
+	ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
+	ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer

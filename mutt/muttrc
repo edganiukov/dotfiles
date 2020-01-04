@@ -134,7 +134,6 @@ bind pager J next-undeleted
 bind index J next-unread
 bind index K previous-unread
 bind index S sync-mailbox
-bind index G imap-fetch-mail
 bind index <space> collapse-thread
 
 bind attach,index,pager \Cn next-page

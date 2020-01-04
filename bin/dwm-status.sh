@@ -32,7 +32,21 @@ datetime() {
     echo "$(date +'%a %d %b %R')"
 }
 
+# yay -S sysstat
+cpu_usage() {
+    mpstat 1 1 | tail -n 1 | awk -F " " '{print 100 -  $12"%"}'
+}
+
+xkb_layout() {
+    case "$(xset -q|grep LED| awk '{ print $10 }')" in
+        "00000000") KBD="us" ;;
+        "00001000") KBD="ru" ;;
+        *) KBD="N/A" ;;
+    esac
+    printf "%s" $KBD
+}
+
 while true; do
-    xsetroot -name "< $(alsa_volume) < $(battery) < $(temp) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < $(alsa_volume) < $(battery) < $(cpu_usage) $(temp) < $(datetime) <"
     sleep 1
 done

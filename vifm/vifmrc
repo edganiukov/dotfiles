@@ -10,6 +10,7 @@ set smartcase
 set nohlsearch
 
 set trash
+set trashdir=~/.local/share/Trash
 set vicmd=vim
 set syscalls
 set vimhelp
