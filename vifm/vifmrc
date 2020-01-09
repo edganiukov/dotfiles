@@ -39,13 +39,13 @@ vnoremap w :view<cr>gv
 nnoremap sx :sxiv<cr>
 
 " yank directory path
-nnoremap yd :!echo %d | xclip %i<cr>
+nnoremap yd :!echo %d | xclip -selection clipboard %i<cr>
 " yank file path
-nnoremap yf :!echo %c:p | xclip %i<cr>
+nnoremap yf :!echo %c:p | xclip -selection clipboard %i<cr>
 " yank current filename without path into the clipboard
-nnoremap yn :!echo -n %c | xclip %i<cr>
+nnoremap yn :!echo -n %c | xclip -selection clipboard %i<cr>
 " yank root of current file's name into the clipboard
-nnoremap yr :!echo -n %c:r | xclip %i<cr>
+nnoremap yr :!echo -n %c:r | xclip -selection clipboard %i<cr>
 
 nnoremap tl :lstrash<cr>
 nnoremap te :empty<cr>

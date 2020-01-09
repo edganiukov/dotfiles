@@ -11,7 +11,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
-Plug 'vimwiki/vimwiki'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 " Git
@@ -25,7 +24,6 @@ Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
 Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
-Plug 'hashivim/vim-terraform'
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -94,7 +92,7 @@ set pastetoggle=<F2>
 set nopaste
 
 " copy to the system clipboard
-set clipboard=unnamed,unnamedplus
+set clipboard=unnamedplus
 
 set listchars=tab:→\ ,nbsp:·,trail:·
 set list
@@ -359,7 +357,8 @@ let NERDTreeIgnore = [
     \ '\.git$',
     \ '\.test$',
     \ '\.pyc$',
-    \ '\.idea'
+    \ '\.idea',
+    \ '\.stfolder'
     \]
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40

@@ -13,6 +13,7 @@ export PATH=$GOPATH/bin:$PATH
 
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
+export PATH=$HOME/.cargo/bin:$PATH
 
 ### settings
 HISTFILE=~/.histfile

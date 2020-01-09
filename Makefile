@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura calcurse isync
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura calcurse isync spotify
 
 CWD=$(shell pwd)
 
@@ -109,3 +109,7 @@ isync:
 	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
 	ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
 	ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
+
+spotify:
+	mkdir -p $(HOME)/.config/spotifyd
+	ln -s $(CWD)/spotifyd.conf $(HOME)/.config/spotifyd/spotifyd.conf
