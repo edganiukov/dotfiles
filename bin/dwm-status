@@ -17,6 +17,8 @@ battery() {
 
     if [ "${STATUS}" == "Charging" ]; then
         echo "+$CAP%"
+    elif [ "${STATUS}" == "Full" ]; then
+        echo "=$CAP%"
     else
         echo "-$CAP%"
     fi
@@ -43,10 +45,14 @@ xkb_layout() {
         "00001000") KBD="ru" ;;
         *) KBD="N/A" ;;
     esac
-    printf "%s" $KBD
+    echo "$KBD"
+}
+
+new_emails() {
+    echo "$(ls -1 --file-type ~/.mail/personal/Inbox/new | wc -l)"
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < $(alsa_volume) < $(battery) < $(cpu_usage) $(temp) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < ~ $(alsa_volume) < $(battery) < t $(temp) < $(datetime) <"
     sleep 1
 done
