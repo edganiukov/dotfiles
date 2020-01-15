@@ -13,17 +13,21 @@ Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
+
 " Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+
 " Lang
+" installed manually
+Plug 'edganiukov/vim-gol', {'for': ['go', 'gomod']}
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'edganiukov/vim-go-lite', {'for': ['go', 'gomod']}
 Plug 'sebdah/vim-delve', {'for': 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
+
 " LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -44,7 +48,7 @@ set t_Co=256
 set t_ut=
 
 set bg=dark
-set termguicolors     " enable true colors support
+set termguicolors
 colorscheme gruvbox
 
 " cmd autocomplete
@@ -118,11 +122,11 @@ set laststatus=2
 set shortmess+=c
 
 if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[6 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[6 q\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
 else
-    let &t_SI = "\e[6 q"
-    let &t_EI = "\e[2 q"
+  let &t_SI = "\e[6 q"
+  let &t_EI = "\e[2 q"
 endif
 
 " abbreviations
@@ -263,15 +267,15 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown
 
 let g:vim_markdown_fenced_languages = [
-    \ 'vim',
-    \ 'bash=sh',
-    \ 'go',
-    \ 'py=python',
-    \ 'rs=rust',
-    \ 'c',
-    \ 'cpp',
-    \ 'yaml',
-    \ ]
+  \ 'vim',
+  \ 'bash=sh',
+  \ 'go',
+  \ 'py=python',
+  \ 'rs=rust',
+  \ 'c',
+  \ 'cpp',
+  \ 'yaml',
+  \ ]
 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_style_pythonic = 1
@@ -287,20 +291,20 @@ let g:fzf_layout = { 'down': '~40%' }
 
 " match vim colorscheme
 let g:fzf_colors = {
-    \ 'fg':      ['fg', 'Normal'],
-    \ 'bg':      ['bg', 'Normal'],
-    \ 'hl':      ['fg', 'PreProc'],
-    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'border':  ['fg', 'Ignore'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment']
-    \ }
+  \ 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'PreProc'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment']
+  \ }
 
 
 " https://github.com/BurntSushi/ripgrep
@@ -319,32 +323,32 @@ nnoremap <leader>f :Files<CR>
 "
 let g:bufferline_echo = 0
 let g:lightline = {
-    \ "colorscheme": "jellybeans",
-    \ 'active': {
-        \ 'left': [
-            \ ['mode', 'paste'],
-            \ ['readonly', 'filename', 'modified']
-        \ ],
-        \ 'right': [
-            \ ['lineinfo'],
-            \ ['percent'],
-            \ ['fileformat', 'fileencoding', 'filetype']
-        \ ]
+  \ "colorscheme": "jellybeans",
+  \ 'active': {
+    \ 'left': [
+      \ ['mode', 'paste'],
+      \ ['readonly', 'filename', 'modified']
+      \ ],
+    \ 'right': [
+      \ ['lineinfo'],
+      \ ['percent'],
+      \ ['fileformat', 'fileencoding', 'filetype']
+      \ ]
     \ },
     \ 'component_function': {
-        \ 'filename': 'LightlineFilename',
-        \ },
+      \ 'filename': 'LightlineFilename',
+      \ },
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': ':', 'right': ':' },
     \ }
 
 function! LightlineFilename()
-    let root = fnamemodify(get(b:, 'git_dir'), ':h')
-    let path = expand('%:p')
-    if path[:len(root)-1] ==# root
-        return path[len(root)+1:]
-    endif
-    return expand('%')
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+      return path[len(root)+1:]
+  endif
+  return expand('%')
 endfunction
 
 
@@ -354,13 +358,14 @@ let NERDTreeDirArrows = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = [
-    \ '\.DS_Store',
-    \ '\.git$',
-    \ '\.test$',
-    \ '\.pyc$',
-    \ '\.idea',
-    \ '\.stfolder'
-    \]
+  \ '\.DS_Store',
+  \ '\.git$',
+  \ '\.test$',
+  \ '\.pyc$',
+  \ '\.idea',
+  \ '\.stfolder'
+  \]
+
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
 
@@ -373,14 +378,14 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Plug 'tmsvg/pear-tree'
 "
-" let g:pear_tree_pairs = {
-    \ '(': {'closer': ')'},
-    \ '[': {'closer': ']'},
-    \ '{': {'closer': '}'},
-    \ "'": {'closer': "'"},
-    \ '"': {'closer': '"'},
-    \ '`': {'closer': '`'}
-"     \ }
+let g:pear_tree_pairs = {
+  \ '(': {'closer': ')'},
+  \ '[': {'closer': ']'},
+  \ '{': {'closer': '}'},
+  \ "'": {'closer': "'"},
+  \ '"': {'closer': '"'},
+  \ '`': {'closer': '`'}
+  \ }
 let g:pear_tree_repeatable_expand = 0
 
 
@@ -409,10 +414,10 @@ let g:mucomplete#reopen_immediately = 0
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['omni']
 let g:mucomplete#can_complete = {
-    \ 'default': {
-        \ 'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$' }
-        \ }
+  \ 'default': {
+    \ 'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$' }
     \ }
+  \ }
 
 " mucomplete + vim-lsp
 autocmd FileType go,rust,c,cpp setlocal omnifunc=lsp#complete
@@ -422,41 +427,41 @@ inoremap <leader>f <C-x><C-o>
 "
 " golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'go',
-    \ 'cmd': {server_info->['gopls', 'serve']},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
-        \ )},
-    \ 'whitelist': ['go'],
-    \ })
+  \ 'name': 'go',
+  \ 'cmd': {server_info->['gopls', 'serve']},
+  \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
+    \ )},
+  \ 'whitelist': ['go'],
+  \ })
 
 " https://github.com/rust-lang/rls
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'rust',
-    \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-        \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
-        \ )},
-    \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-    \ 'whitelist': ['rust'],
-    \ })
+  \ 'name': 'rust',
+  \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+  \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
+    \ )},
+  \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+  \ 'whitelist': ['rust'],
+  \ })
 
 " https://github.com/cquery-project/cquery
 " au User lsp_setup call lsp#register_server({
-"     \ 'name': 'cpp',
-"     \ 'cmd': {server_info->['cquery']},
-"     \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"         \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
-"         \ )},
-"     \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
-"     \ 'whitelist': ['c', 'cpp'],
-"     \ })
+"   \ 'name': 'cpp',
+"   \ 'cmd': {server_info->['cquery']},
+"   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
+"     \ )},
+"   \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
+"   \ 'whitelist': ['c', 'cpp'],
+"   \ })
 
 au User lsp_setup call lsp#register_server({
-    \ 'name': 'clangd',
-    \ 'cmd': {server_info->['clangd', '-background-index']},
-    \ 'whitelist': ['c', 'cpp'],
-    \ })
+  \ 'name': 'clangd',
+  \ 'cmd': {server_info->['clangd', '-background-index']},
+  \ 'whitelist': ['c', 'cpp'],
+  \ })
 
 let g:lsp_auto_enable = 1
 let g:lsp_preview_keep_focus = 1
@@ -499,7 +504,7 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 
 " autocmd FileType go,rust,c,cpp
-"             \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+"   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 
 " Plug 'rust-lang/rust.vim'
@@ -520,19 +525,11 @@ au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
 au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
 
 
-" Plug 'fatih/vim-go'
+" Plug 'edganiukov/vim-gol'
 "
-let g:go_disable_autoinstall = 1
+let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
-let g:go_fmt_autosave = 0
-let g:go_addtags_transform = "camelcase"
-
-nnoremap <C-g> :GoAlternate<CR>
-au FileType go nmap gb <Plug>(go-build)
-au FileType go nmap gt <Plug>(go-test)
-au FileType go nmap gc <Plug>(go-coverage-toggle)
-au FileType go nmap <leader>gd <Plug>(go-doc)
-
+let g:go_fmt_autosave = 1
 
 " Plug 'sebdahvim-delve'
 "
@@ -550,6 +547,9 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 " General: filetype config
 "
 au FileType go setlocal noexpandtab
+
+au FileType vim setlocal sw=2 sts=2 ts=2
+au FileType vim setlocal sw=2 sts=2 ts=2
 
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2
