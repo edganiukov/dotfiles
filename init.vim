@@ -427,7 +427,7 @@ inoremap <leader>f <C-x><C-o>
 "
 " golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
-  \ 'name': 'go',
+  \ 'name': 'gopls',
   \ 'cmd': {server_info->['gopls', 'serve']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
@@ -437,7 +437,7 @@ au User lsp_setup call lsp#register_server({
 
 " https://github.com/rust-lang/rls
 au User lsp_setup call lsp#register_server({
-  \ 'name': 'rust',
+  \ 'name': 'rls',
   \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
@@ -461,6 +461,13 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'clangd',
   \ 'cmd': {server_info->['clangd', '-background-index']},
   \ 'whitelist': ['c', 'cpp'],
+  \ })
+
+" https://github.com/palantir/python-language-server
+au User lsp_setup call lsp#register_server({
+  \ 'name': 'pyls',
+  \ 'cmd': {server_info->['pyls']},
+  \ 'whitelist': ['python'],
   \ })
 
 let g:lsp_auto_enable = 1

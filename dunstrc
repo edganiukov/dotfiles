@@ -108,7 +108,7 @@
     icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 16
+    max_icon_size = 64
 
     # Paths to default icons.
     icon_path = /usr/share/icons/Numix/16/actions;/usr/share/icons/Numix/16/status:/usr/share/icons/Numix/16/devices
