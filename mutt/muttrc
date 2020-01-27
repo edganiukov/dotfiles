@@ -19,7 +19,6 @@ set ssl_use_tlsv1_1 = no
 set ssl_use_tlsv1_2 = yes
 set ssl_verify_dates = yes
 set ssl_verify_host = yes
-set ssl_usesystemcerts
 
 set use_from = yes
 set use_envelope_from
@@ -150,7 +149,7 @@ macro index A "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<e
 
 # Abook
 set query_command = "abook --mutt-query '%s'"
-macro index,pager a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
+macro index,pager A "<pipe-message>abook --add-email<return>" "Add this sender to Abook"
 bind editor <Tab> complete-query
 
 # Follow URL

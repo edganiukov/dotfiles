@@ -87,6 +87,8 @@ alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
 alias k="kubectl"
 
+alias mutt="neomutt"
+
 ### prompt
 autoload -Uz vcs_info
 autoload -U promptinit

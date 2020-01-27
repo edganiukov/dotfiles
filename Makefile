@@ -75,6 +75,7 @@ mutt:
 	ln -s $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
 	ln -s $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
 	ln -s $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
+	ln -s $(CWD)/mutt/msmtprc $(HOME)/.msmtprc
 
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
