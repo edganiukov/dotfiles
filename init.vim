@@ -22,11 +22,11 @@ Plug 'junegunn/gv.vim'
 
 " Lang
 " installed manually
-Plug 'edganiukov/vim-gol', {'for': ['go', 'gomod']}
-Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'sebdah/vim-delve', {'for': 'go'}
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
+Plug 'edganiukov/vim-gol'
+Plug 'plasticboy/vim-markdown'
+Plug 'sebdah/vim-delve'
+Plug 'rust-lang/rust.vim'
+Plug 'pearofducks/ansible-vim'
 
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -430,7 +430,7 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'gopls',
   \ 'cmd': {server_info->['gopls', 'serve']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
   \ 'whitelist': ['go'],
   \ })
@@ -440,7 +440,7 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'rls',
   \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     \ )},
   \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
   \ 'whitelist': ['rust'],
@@ -448,10 +448,10 @@ au User lsp_setup call lsp#register_server({
 
 " https://github.com/cquery-project/cquery
 " au User lsp_setup call lsp#register_server({
-"   \ 'name': 'cpp',
+"   \ 'name': 'cquery',
 "   \ 'cmd': {server_info->['cquery']},
 "   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
+"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery'])
 "     \ )},
 "   \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
 "   \ 'whitelist': ['c', 'cpp'],
