@@ -8,11 +8,12 @@ Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
+Plug 'qpkorr/vim-bufkill'
+Plug 'junegunn/vim-easy-align'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -139,6 +140,10 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
+
+" Non-plugin Keybindings:
+"
+
 " yank to the EOL
 nnoremap Y y$
 " delete without yanking
@@ -155,6 +160,16 @@ vnoremap <Leader>q( di()<Esc>P
 vnoremap <Leader>q[ di[]<Esc>P
 vnoremap <Leader>q{ di{}<Esc>P
 vnoremap <Leader>q< di<><Esc>P
+
+" Expand opening-brace followed by ENTER
+inoremap {<CR> {<CR>}<Esc>O
+
+" Auto-insert closing parenthesis/brace
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap ' ''<Left>
+inoremap " ""<Left>
 
 " semicolon in the EOL
 nnoremap ;; A;<Esc>
@@ -375,19 +390,6 @@ map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
-" Plug 'tmsvg/pear-tree'
-"
-let g:pear_tree_pairs = {
-  \ '(': {'closer': ')'},
-  \ '[': {'closer': ']'},
-  \ '{': {'closer': '}'},
-  \ "'": {'closer': "'"},
-  \ '"': {'closer': '"'},
-  \ '`': {'closer': '`'}
-  \ }
-let g:pear_tree_repeatable_expand = 0
-
-
 " Plug 'jreybert/vimagit'
 "
 let g:magit_commit_title_limit = 80
@@ -396,6 +398,12 @@ let g:magit_commit_title_limit = 80
 " Plug 'junegunn/gv.vim'
 "
 nnoremap <leader>gv :GV<CR>
+
+
+" Plug 'junegunn/vim-easy-align'
+"
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 
 "Plug 'Shougo/echodoc.vim'
@@ -537,6 +545,7 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 1
 
+
 " Plug 'sebdahvim-delve'
 "
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
@@ -549,6 +558,7 @@ nnoremap <silent> drt :DlvTest<CR>
 nnoremap <silent> drd :DlvDebug<CR>
 nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
+
 
 " General: filetype config
 "
