@@ -5,15 +5,17 @@ set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d `
 set my_realname = "Eduard Ganiukov"
 set realname = $my_realname
 set from = "$my_realname <$my_user>"
-set sendmail="/usr/bin/msmtp -a personal"
-set envelope_from=yes
+set my_smtp_pass = `gopass show core/smtp.fastmail.com`
+
+set smtp_url = "smtps://$my_user@smtp.fastmail.com:465"
+set smtp_pass = $my_smtp_pass
 
 set mbox_type=Maildir
 set folder="~/.mail/personal"
 set spoolfile = "=Inbox"
 set record = "=Sent"
 set postponed = "=Drafts"
-mailboxes =Inbox =Inbox/Github =Archive =Archive/Bookings =Archive/Invoices =Archive/Private =Drafts =Sent =Spam =Trash
+mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Spam =Trash
 
 bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"

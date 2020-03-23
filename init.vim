@@ -8,11 +8,12 @@ Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'tmsvg/pear-tree'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
+Plug 'qpkorr/vim-bufkill'
+Plug 'junegunn/vim-easy-align'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -22,11 +23,11 @@ Plug 'junegunn/gv.vim'
 
 " Lang
 " installed manually
-Plug 'edganiukov/vim-gol', {'for': ['go', 'gomod']}
-Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'sebdah/vim-delve', {'for': 'go'}
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'pearofducks/ansible-vim', {'for': ['yaml.ansible', 'yaml', 'ansible']}
+Plug 'edganiukov/vim-gol'
+Plug 'plasticboy/vim-markdown'
+Plug 'sebdah/vim-delve'
+Plug 'rust-lang/rust.vim'
+Plug 'pearofducks/ansible-vim'
 
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -48,7 +49,6 @@ set t_Co=256
 set t_ut=
 
 set bg=dark
-set termguicolors
 colorscheme gruvbox
 
 " cmd autocomplete
@@ -140,6 +140,10 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
+
+" Non-plugin Keybindings:
+"
+
 " yank to the EOL
 nnoremap Y y$
 " delete without yanking
@@ -156,6 +160,16 @@ vnoremap <Leader>q( di()<Esc>P
 vnoremap <Leader>q[ di[]<Esc>P
 vnoremap <Leader>q{ di{}<Esc>P
 vnoremap <Leader>q< di<><Esc>P
+
+" Expand opening-brace followed by ENTER
+inoremap {<CR> {<CR>}<Esc>O
+
+" Auto-insert closing parenthesis/brace
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap ' ''<Left>
+inoremap " ""<Left>
 
 " semicolon in the EOL
 nnoremap ;; A;<Esc>
@@ -378,19 +392,6 @@ map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
-" Plug 'tmsvg/pear-tree'
-"
-let g:pear_tree_pairs = {
-  \ '(': {'closer': ')'},
-  \ '[': {'closer': ']'},
-  \ '{': {'closer': '}'},
-  \ "'": {'closer': "'"},
-  \ '"': {'closer': '"'},
-  \ '`': {'closer': '`'}
-  \ }
-let g:pear_tree_repeatable_expand = 0
-
-
 " Plug 'jreybert/vimagit'
 "
 let g:magit_commit_title_limit = 80
@@ -399,6 +400,12 @@ let g:magit_commit_title_limit = 80
 " Plug 'junegunn/gv.vim'
 "
 nnoremap <leader>gv :GV<CR>
+
+
+" Plug 'junegunn/vim-easy-align'
+"
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 
 "Plug 'Shougo/echodoc.vim'
@@ -432,7 +439,7 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'gopls',
   \ 'cmd': {server_info->['gopls', 'serve']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', '.git'])
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
   \ 'whitelist': ['go'],
   \ })
@@ -442,7 +449,7 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'rls',
   \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml', '.git'])
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     \ )},
   \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
   \ 'whitelist': ['rust'],
@@ -450,10 +457,10 @@ au User lsp_setup call lsp#register_server({
 
 " https://github.com/cquery-project/cquery
 " au User lsp_setup call lsp#register_server({
-"   \ 'name': 'cpp',
+"   \ 'name': 'cquery',
 "   \ 'cmd': {server_info->['cquery']},
 "   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery', '.git'])
+"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery'])
 "     \ )},
 "   \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
 "   \ 'whitelist': ['c', 'cpp'],
@@ -540,6 +547,7 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 1
 
+
 " Plug 'sebdahvim-delve'
 "
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
@@ -552,6 +560,7 @@ nnoremap <silent> drt :DlvTest<CR>
 nnoremap <silent> drd :DlvDebug<CR>
 nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
+
 
 " General: filetype config
 "
