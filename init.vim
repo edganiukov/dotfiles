@@ -97,7 +97,7 @@ set pastetoggle=<F2>
 set nopaste
 
 " copy to the system clipboard
-set clipboard=unnamedplus
+set clipboard=unnamedplus,unnamed
 
 set listchars=tab:→\ ,nbsp:·,trail:·
 set list
@@ -288,6 +288,8 @@ let g:vim_markdown_new_list_item_indent = 2
 "
 set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'down': '~40%' }
+" Empty value to disable preview window altogether
+let g:fzf_preview_window = ''
 
 " match vim colorscheme
 let g:fzf_colors = {
