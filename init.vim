@@ -168,8 +168,6 @@ inoremap {<CR> {<CR>}<Esc>O
 inoremap ( ()<Left>
 inoremap { {}<Left>
 inoremap [ []<Left>
-inoremap ' ''<Left>
-inoremap " ""<Left>
 
 " semicolon in the EOL
 nnoremap ;; A;<Esc>
