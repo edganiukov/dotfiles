@@ -76,7 +76,7 @@ c.scrolling.smooth = False
 c.scrolling.bar = "always"
 
 # Padding (in pixels) around text for tabs.
-c.tabs.padding = {'bottom': 4, 'left': 4, 'right': 4, 'top': 4}
+c.tabs.padding = {'bottom': 3, 'left': 3, 'right': 3, 'top': 3}
 
 # Open blank page when close last tab
 c.tabs.last_close = 'blank'
@@ -88,7 +88,7 @@ c.tabs.background = True
 c.tabs.title.format = '{audio}{index}: {current_title}'
 
 # Maximum width (in pixels) of tabs (-1 for no maximum).
-c.tabs.max_width = 300
+c.tabs.max_width = 250
 
 # Page to open if :open -t/-b/-w is used without URL. Use `about:blank`
 # for a blank page.
@@ -208,43 +208,43 @@ c.colors.tabs.pinned.selected.even.bg = '#202020'
 # Fonts
 # Default monospace fonts.
 # Whenever "monospace" is used in a font setting, it's replaced with the fonts listed here.
-c.fonts.monospace = '"Source Code Pro"'
+c.fonts.default_family = ["monospace"]
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 9pt monospace'
+c.fonts.completion.category = 'bold 12pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '9pt monospace'
+c.fonts.completion.entry = '12pt monospace'
 
 # Font used for the debugging console.
-c.fonts.debug_console = '9pt monospace'
+c.fonts.debug_console = '10pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '9pt monospace'
+c.fonts.downloads = '12pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 9pt monospace'
+c.fonts.hints = 'bold 12pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '9pt monospace'
+c.fonts.keyhint = '12pt monospace'
 
 # Font used for error messages.
-c.fonts.messages.error = '9pt monospace'
+c.fonts.messages.error = '10pt monospace'
 
 # Font used for info messages.
-c.fonts.messages.info = '9pt monospace'
+c.fonts.messages.info = '10pt monospace'
 
 # Font used for warning messages.
-c.fonts.messages.warning = '9pt monospace'
+c.fonts.messages.warning = '10pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '9pt monospace'
+c.fonts.prompts = '12pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '9pt monospace'
+c.fonts.statusbar = '12pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs = '9pt monospace'
+c.fonts.tabs = '12pt monospace'
 
 
 # Web font

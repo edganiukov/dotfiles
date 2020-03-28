@@ -54,7 +54,7 @@ colorscheme gruvbox
 " cmd autocomplete
 set wildmenu
 set wildoptions-=pum
-set completeopt=longest,menu,menuone,noinsert,noselect
+set completeopt=menuone,noselect
 
 set nospell
 set hidden
@@ -415,8 +415,8 @@ hi link EchoDocFloat Pmenu
 " Plug 'lifepillar/vim-mucomplete'
 "
 let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay= 2
-let g:mucomplete#reopen_immediately = 0
+let g:mucomplete#completion_delay= 0
+let g:mucomplete#reopen_immediately = 1
 
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['omni']
