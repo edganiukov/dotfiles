@@ -210,6 +210,11 @@ c.colors.tabs.pinned.selected.even.bg = '#1D2021'
 # Whenever "monospace" is used in a font setting, it's replaced with the fonts listed here.
 c.fonts.default_family = ["monospace"]
 
+# Default font families to use.
+# Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
+# If set to an empty value, a system-specific monospace default is used.
+c.fonts.default_size = "12pt"
+
 # Font used in the completion categories.
 c.fonts.completion.category = 'bold 12pt monospace'
 
@@ -270,7 +275,7 @@ c.fonts.web.size.default = 18
 c.fonts.web.size.default_fixed = 18
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 18
+c.fonts.web.size.minimum = 16
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 12
+c.fonts.web.size.minimum_logical = 14

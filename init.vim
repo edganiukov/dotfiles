@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Plugins
 " https://github.com/junegunn/vim-plug
@@ -232,8 +232,7 @@ hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 
-" Highlights for floating windows
-hi link NormalFloat Pmenu
+" hi NormalFloat
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'

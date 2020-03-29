@@ -4,7 +4,7 @@
 export PATH=/usr/local/bin:$HOME/.bin:$PATH
 export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
-export EDITOR=vim
+export EDITOR=nvim
 export CLICOLOR=YES
 
 # Go vars
@@ -87,6 +87,7 @@ alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
 alias k="kubectl"
 
+alias vim="nvim"
 alias mutt="neomutt"
 
 ### prompt
