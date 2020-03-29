@@ -79,28 +79,28 @@ c.scrolling.bar = "always"
 c.tabs.padding = {'bottom': 3, 'left': 3, 'right': 3, 'top': 3}
 
 # Open blank page when close last tab
-c.tabs.last_close = 'blank'
+c.tabs.last_close = 'default-page'
 
 # Open new tabs (middleclick/ctrl+click) in the background.
 c.tabs.background = True
 
 # Format to use for the tab title.
-c.tabs.title.format = '{audio}{index}: {current_title}'
+c.tabs.title.format = '[{index}] {current_title}'
 
 # Maximum width (in pixels) of tabs (-1 for no maximum).
-c.tabs.max_width = 250
+c.tabs.max_width = 300
 
 # Page to open if :open -t/-b/-w is used without URL. Use `about:blank`
 # for a blank page.
 # c.url.default_page = 'https://ddg.gg'
-c.url.default_page = 'qute:bookmarks'
+c.url.default_page = 'qute://bookmarks'
 
 # Page(s) to open at the start.
 # c.url.start_pages = 'https://start.duckduckgo.com/'
-c.url.start_pages = 'qute:bookmarks'
+c.url.start_pages = 'qute://bookmarks'
 
-# Hide the window decoration.  This setting requires a restart on Wayland.
-c.window.hide_decoration = False
+# Hide the window decoration. This setting requires a restart on Wayland.
+c.window.hide_decoration = True
 
 # Text color of the completion widget. May be a single color to use for
 
@@ -154,55 +154,55 @@ c.colors.statusbar.url.success.https.fg = '#8fee96'
 c.colors.statusbar.url.warn.fg = '#cd950c'
 
 # Background color of the tab bar.
-c.colors.tabs.bar.bg = '#323232'
+c.colors.tabs.bar.bg = '#3C3836'
 
 # Foreground color of unselected odd tabs.
 c.colors.tabs.odd.fg = '#707070'
 
 # Background color of unselected odd tabs.
-c.colors.tabs.odd.bg = '#323232'
+c.colors.tabs.odd.bg = '#3C3836'
 
 # Foreground color of unselected even tabs.
 c.colors.tabs.even.fg = '#707070'
 
 # Background color of unselected even tabs.
-c.colors.tabs.even.bg = '#323232'
+c.colors.tabs.even.bg = '#3C3836'
 
 # Foreground color of selected odd tabs.
 c.colors.tabs.selected.odd.fg = '#d5c4a1'
 
 # Background color of selected odd tabs.
-c.colors.tabs.selected.odd.bg = '#202020'
+c.colors.tabs.selected.odd.bg = '#1D2021'
 
 # Foreground color of selected even tabs.
 c.colors.tabs.selected.even.fg = '#d5c4a1'
 
 # Background color of selected even tabs.
-c.colors.tabs.selected.even.bg = '#202020'
+c.colors.tabs.selected.even.bg = '#1D2021'
 
 # Foreground color of pinned unselected odd tabs.
 c.colors.tabs.pinned.odd.fg = '#707070'
 
 # Background color of pinned unselected odd tabs.
-c.colors.tabs.pinned.odd.bg = '#323232'
+c.colors.tabs.pinned.odd.bg = '#3C3836'
 
 # Foreground color of pinned unselected even tabs.
 c.colors.tabs.pinned.even.fg = '#707070'
 
 # Background color of pinned unselected even tabs.
-c.colors.tabs.pinned.even.bg = '#323232'
+c.colors.tabs.pinned.even.bg = '#3C3836'
 
 # Foreground color of pinned selected odd tabs.
 c.colors.tabs.pinned.selected.odd.fg = '#d5c4a1'
 
 # Background color of pinned selected odd tabs.
-c.colors.tabs.pinned.selected.odd.bg = '#202020'
+c.colors.tabs.pinned.selected.odd.bg = '#1D2021'
 
 # Foreground color of pinned selected even tabs.
 c.colors.tabs.pinned.selected.even.fg = '#d5c4a1'
 
 # Background color of pinned selected even tabs.
-c.colors.tabs.pinned.selected.even.bg = '#202020'
+c.colors.tabs.pinned.selected.even.bg = '#1D2021'
 
 
 # Fonts
@@ -273,4 +273,4 @@ c.fonts.web.size.default_fixed = 18
 c.fonts.web.size.minimum = 18
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 6
+c.fonts.web.size.minimum_logical = 12
