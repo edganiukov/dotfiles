@@ -4,7 +4,7 @@
 #   qute://help/settings.html
 
 # Turn on Qt HighDPI scaling.
-c.qt.highdpi = True
+c.qt.highdpi = False
 
 # Default zoom level.
 c.zoom.default = "100%"
@@ -53,6 +53,13 @@ c.content.cookies.accept = 'all'
 # Enable pdfjs
 c.content.pdfjs = True
 
+# Automatically start playing `<video>` elements.
+c.content.autoplay = False
+
+# Default encoding to use for websites.
+# The encoding must be a string describing an encoding such as _utf-8_, _iso-8859-1_, etc.
+c.content.default_encoding = 'utf-8'
+
 # Save session
 c.auto_save.session= False
 
@@ -76,7 +83,7 @@ c.scrolling.smooth = False
 c.scrolling.bar = "always"
 
 # Padding (in pixels) around text for tabs.
-c.tabs.padding = {'bottom': 3, 'left': 3, 'right': 3, 'top': 3}
+c.tabs.padding = {'bottom': 4, 'left': 4, 'right': 4, 'top': 4}
 
 # Open blank page when close last tab
 c.tabs.last_close = 'default-page'
@@ -105,7 +112,7 @@ c.window.hide_decoration = True
 # Text color of the completion widget. May be a single color to use for
 
 # all columns or a list of three colors, one for each column.
-c.colors.completion.fg = '#d5c4a1'
+c.colors.completion.fg = '#D5C4A1'
 
 # Background color of the completion widget for odd rows.
 c.colors.completion.odd.bg = '#333333'
@@ -113,8 +120,11 @@ c.colors.completion.odd.bg = '#333333'
 # Background color of the completion widget for even rows.
 c.colors.completion.even.bg = '#202020'
 
+# Foreground color of the selected completion item.
+c.colors.completion.item.selected.fg = '#FFFFFF'
+
 # Background color of the selected completion item.
-c.colors.completion.item.selected.bg = '#8fee96'
+c.colors.completion.item.selected.bg = '#558598'
 
 # Top border color of the completion widget category headers.
 c.colors.completion.item.selected.border.top = '#151515'
@@ -123,38 +133,38 @@ c.colors.completion.item.selected.border.top = '#151515'
 c.colors.completion.item.selected.border.bottom = '#151515'
 
 # Foreground color of the matched text in the completion.
-c.colors.completion.match.fg = '#d75f5f'
+c.colors.completion.match.fg = '#D75F5F'
 
 # Foreground color of the statusbar.
-c.colors.statusbar.normal.fg = '#d5c4a1'
+c.colors.statusbar.normal.fg = '#D5C4A1'
 
 # Background color of the statusbar.
 c.colors.statusbar.normal.bg = '#202020'
 
 # Foreground color of the statusbar in command mode.
-c.colors.statusbar.command.fg = '#d4c5a1'
+c.colors.statusbar.command.fg = '#D4C5A1'
 
 # Background color of the statusbar in command mode.
 c.colors.statusbar.command.bg = '#202020'
 
 # Default foreground color of the URL in the statusbar.
-c.colors.statusbar.url.fg = '#d5c4a1'
+c.colors.statusbar.url.fg = '#D5C4A1'
 
 # Foreground color of the URL in the statusbar on error.
-c.colors.statusbar.url.error.fg = '#d75f5f'
+c.colors.statusbar.url.error.fg = '#D75F5F'
 
 # Foreground color of the URL in the statusbar on successful load (http).
-c.colors.statusbar.url.success.http.fg = '#84edb9'
+c.colors.statusbar.url.success.http.fg = '#84EDB9'
 
 # Foreground color of the URL in the statusbar on successful load
 # (https).
-c.colors.statusbar.url.success.https.fg = '#8fee96'
+c.colors.statusbar.url.success.https.fg = '#8FEE96'
 
 # Foreground color of the URL in the statusbar when there's a warning.
-c.colors.statusbar.url.warn.fg = '#cd950c'
+c.colors.statusbar.url.warn.fg = '#CD950C'
 
 # Background color of the tab bar.
-c.colors.tabs.bar.bg = '#3C3836'
+c.colors.tabs.bar.bg = '#282828'
 
 # Foreground color of unselected odd tabs.
 c.colors.tabs.odd.fg = '#707070'
@@ -169,13 +179,13 @@ c.colors.tabs.even.fg = '#707070'
 c.colors.tabs.even.bg = '#3C3836'
 
 # Foreground color of selected odd tabs.
-c.colors.tabs.selected.odd.fg = '#d5c4a1'
+c.colors.tabs.selected.odd.fg = '#EBDBB2'
 
 # Background color of selected odd tabs.
 c.colors.tabs.selected.odd.bg = '#1D2021'
 
 # Foreground color of selected even tabs.
-c.colors.tabs.selected.even.fg = '#d5c4a1'
+c.colors.tabs.selected.even.fg = '#EBDBB2'
 
 # Background color of selected even tabs.
 c.colors.tabs.selected.even.bg = '#1D2021'
@@ -193,7 +203,7 @@ c.colors.tabs.pinned.even.fg = '#707070'
 c.colors.tabs.pinned.even.bg = '#3C3836'
 
 # Foreground color of pinned selected odd tabs.
-c.colors.tabs.pinned.selected.odd.fg = '#d5c4a1'
+c.colors.tabs.pinned.selected.odd.fg = '#D5C4A1'
 
 # Background color of pinned selected odd tabs.
 c.colors.tabs.pinned.selected.odd.bg = '#1D2021'
@@ -213,25 +223,25 @@ c.fonts.default_family = ["monospace"]
 # Default font families to use.
 # Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
 # If set to an empty value, a system-specific monospace default is used.
-c.fonts.default_size = "12pt"
+c.fonts.default_size = "11pt"
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 12pt monospace'
+c.fonts.completion.category = 'bold 11pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '12pt monospace'
+c.fonts.completion.entry = '11pt monospace'
 
 # Font used for the debugging console.
 c.fonts.debug_console = '10pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '12pt monospace'
+c.fonts.downloads = '11pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 12pt monospace'
+c.fonts.hints = 'bold 11pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '12pt monospace'
+c.fonts.keyhint = '11pt monospace'
 
 # Font used for error messages.
 c.fonts.messages.error = '10pt monospace'
@@ -243,13 +253,13 @@ c.fonts.messages.info = '10pt monospace'
 c.fonts.messages.warning = '10pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '12pt monospace'
+c.fonts.prompts = '11pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '12pt monospace'
+c.fonts.statusbar = '11pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs = '12pt monospace'
+c.fonts.tabs = '11pt monospace'
 
 
 # Web font
@@ -275,7 +285,7 @@ c.fonts.web.size.default = 18
 c.fonts.web.size.default_fixed = 18
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 16
+c.fonts.web.size.minimum = 18
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 14
+c.fonts.web.size.minimum_logical = 18

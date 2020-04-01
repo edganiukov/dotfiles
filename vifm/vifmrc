@@ -11,7 +11,7 @@ set nohlsearch
 
 set trash
 set trashdir=~/.local/share/Trash
-set vicmd=vim
+set vicmd=nvim
 set syscalls
 set vimhelp
 set vifminfo=chistory,phistory,bmarks,state,tui
@@ -22,7 +22,7 @@ set nodotfiles
 filetype *.md5 md5sum -c %f
 filetype *.sha256 sha256sum -c %f
 
-" filetype * xdg-open &
+filetype * xdg-open &
 
 "" Custom commands
 " view images
