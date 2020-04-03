@@ -8,7 +8,7 @@ set imap_keepalive = 300
 set mail_check = 60
 set timeout = 30
 
-set editor = "vim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
+set editor = "nvim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
 
 ## SSL hardening
 set ssl_force_tls = yes
@@ -72,7 +72,7 @@ unset mark_old
 ## Status bar, date format, etc
 set status_chars = " *%A"
 set status_format = "[ Folder: %f ] [%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]%>─%?p?( %p postponed )?"
-set date_format = "%d.%m.%Y %H:%M"
+set date_format = "%d %b %Y %H:%M"
 set index_format = "[%Z] %?X?A&-? %D  %-20.20F  %s"
 set sort = threads
 set sort_browser = reverse-date

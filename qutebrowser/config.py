@@ -223,25 +223,25 @@ c.fonts.default_family = ["monospace"]
 # Default font families to use.
 # Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
 # If set to an empty value, a system-specific monospace default is used.
-c.fonts.default_size = "11pt"
+c.fonts.default_size = "10pt"
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 11pt monospace'
+c.fonts.completion.category = 'bold 10pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '11pt monospace'
+c.fonts.completion.entry = '10pt monospace'
 
 # Font used for the debugging console.
 c.fonts.debug_console = '10pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '11pt monospace'
+c.fonts.downloads = '10pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 11pt monospace'
+c.fonts.hints = 'bold 10pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '11pt monospace'
+c.fonts.keyhint = '10pt monospace'
 
 # Font used for error messages.
 c.fonts.messages.error = '10pt monospace'
@@ -253,13 +253,13 @@ c.fonts.messages.info = '10pt monospace'
 c.fonts.messages.warning = '10pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '11pt monospace'
+c.fonts.prompts = '10pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '11pt monospace'
+c.fonts.statusbar = '10pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs = '11pt monospace'
+c.fonts.tabs = '10pt monospace'
 
 
 # Web font
@@ -279,13 +279,13 @@ c. fonts.web.family.sans_serif = 'Droid Sans Serif'
 c.fonts.web.family.cursive = 'Droid Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 18
+c.fonts.web.size.default = 14
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 18
+c.fonts.web.size.default_fixed = 14
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 18
+c.fonts.web.size.minimum = 14
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 18
+c.fonts.web.size.minimum_logical = 14

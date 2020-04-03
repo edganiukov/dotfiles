@@ -25,7 +25,7 @@ xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828 -R 128' &
 systemctl --user import-environment DISPLAY
 
 # Let QT and GTK autodetect retina screen and autoadjust
-export QT_SCREEN_SCALE_FACTORS=1.5
+export QT_SCREEN_SCALE_FACTORS=2
 export GDK_DPI_SCALE=1
 
 feh --bg-scale ~/dev/dotfiles/wall.png
