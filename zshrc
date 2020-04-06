@@ -1,4 +1,5 @@
-### env vars
+## ENV vars
+###########
 
 # General vars
 export PATH=/usr/local/bin:$HOME/.bin:$PATH
@@ -15,7 +16,9 @@ export PATH=$GOPATH/bin:$PATH
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
 export PATH=$HOME/.cargo/bin:$PATH
 
-### settings
+## Settings
+###########
+
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
@@ -39,7 +42,9 @@ setopt autocd
 setopt nohup
 setopt HASH_CMDS
 
-### completion
+## Completion
+#############
+
 autoload -Uz compinit
 compinit
 
@@ -47,7 +52,9 @@ zstyle ':completion:*' completer _expand _complete _ignored
 zstyle :compinstall filename '~/.zshrc'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-### binds
+## Bindings
+###########
+
 # delete
 bindkey "^[[3~" delete-char
 
@@ -74,23 +81,25 @@ bindkey '^[[1;5C' forward-word
 # Ctrl+k remove to eol
 bindkey "\C-k" vi-kill-eol
 
-### aliases
-alias ls='ls -h'
-alias df='df -h'
+## Aliases
+##########
+
 alias lsl='ls -hl'
-alias mv='mv -i'
-alias cp='cp -Ri'
 alias grep="grep --colour"
 
 alias tmux="tmux -u2"
 alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
-alias k="kubectl"
 
 alias vim="nvim"
 alias mutt="neomutt"
+alias fm="vifm"
 
-### prompt
+alias k="kubectl"
+
+## Prompt
+#########
+
 autoload -Uz vcs_info
 autoload -U promptinit
 promptinit
@@ -104,7 +113,10 @@ setopt prompt_subst
 PROMPT='%F{green}#%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f $ '
 RPROMPT='[%F{yellow}%*%f]'
 
-### plugins
+
+## Plugins
+##########
+
 # https://github.com/zsh-users/zsh-history-substring-search
 if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]; then
     source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -127,8 +139,6 @@ if [ -d ~/.zsh/zsh-completions/src ]; then
     fpath=(~/.zsh/zsh-completions/src $fpath)
 fi
 
-### Custom functions
-
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
 
@@ -137,6 +147,10 @@ fi
 #
 # krew (kubectl plugin manager)
 # export PATH=$HOME/.krew/bin:$PATH
+
+
+## Custom functions
+###################
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
@@ -147,5 +161,6 @@ tm() {
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# custom zsh config
+# Local zsh config
+###################
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local

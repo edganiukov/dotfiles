@@ -267,7 +267,7 @@ c.fonts.tabs = '10pt monospace'
 c.fonts.web.family.standard = 'Droid Sans'
 
 # Font family for fixed fonts.
-c.fonts.web.family.fixed = 'Droid Sans Mono'
+c.fonts.web.family.fixed = 'monospace'
 
 # Font family for serif fonts
 c.fonts.web.family.serif = 'Droid Serif'
@@ -279,10 +279,10 @@ c. fonts.web.family.sans_serif = 'Droid Sans Serif'
 c.fonts.web.family.cursive = 'Droid Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 14
+c.fonts.web.size.default = 16
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 14
+c.fonts.web.size.default_fixed = 16
 
 # Hard minimum font size (in pixels).
 c.fonts.web.size.minimum = 14
