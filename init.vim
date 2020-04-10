@@ -431,6 +431,7 @@ inoremap <leader>f <C-x><C-o>
 
 " Plug 'prabirshrestha/vim-lsp'
 "
+
 " golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
   \ 'name': 'gopls',
@@ -452,22 +453,24 @@ au User lsp_setup call lsp#register_server({
   \ 'whitelist': ['rust'],
   \ })
 
-" https://github.com/cquery-project/cquery
-" au User lsp_setup call lsp#register_server({
-"   \ 'name': 'cquery',
-"   \ 'cmd': {server_info->['cquery']},
-"   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.cquery'])
-"     \ )},
-"   \ 'initialization_options': {'cacheDirectory': expand('~/.cache/cquery')},
-"   \ 'whitelist': ['c', 'cpp'],
-"   \ })
-
+" https://github.com/MaskRay/ccls
 au User lsp_setup call lsp#register_server({
-  \ 'name': 'clangd',
-  \ 'cmd': {server_info->['clangd', '-background-index']},
+  \ 'name': 'ccls',
+  \ 'cmd': {server_info->['ccls']},
+  \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls'])
+    \ )},
+  \ 'initialization_options': {'cacheDirectory': expand('~/.cache/ccls')},
   \ 'whitelist': ['c', 'cpp'],
   \ })
+
+" Alternative: clangd
+"
+" au User lsp_setup call lsp#register_server({
+"   \ 'name': 'clangd',
+"   \ 'cmd': {server_info->['clangd', '-background-index']},
+"   \ 'whitelist': ['c', 'cpp'],
+"   \ })
 
 " https://github.com/palantir/python-language-server
 au User lsp_setup call lsp#register_server({
