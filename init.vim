@@ -164,11 +164,6 @@ vnoremap <Leader>q< di<><Esc>P
 " Expand opening-brace followed by ENTER
 inoremap {<CR> {<CR>}<Esc>O
 
-" Auto-insert closing parenthesis/brace
-inoremap ( ()<Left>
-inoremap { {}<Left>
-inoremap [ []<Left>
-
 " semicolon in the EOL
 nnoremap ;; A;<Esc>
 inoremap ;; <C-o>A;
