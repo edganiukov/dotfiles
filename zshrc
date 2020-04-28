@@ -105,12 +105,12 @@ autoload -U promptinit
 promptinit
 
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git*' formats "[%b]"
+zstyle ':vcs_info:git*' formats "%b"
 precmd() {
     vcs_info
 }
 setopt prompt_subst
-PROMPT='%F{green}#%f %F{yellow}%1~%f %F{magenta}${vcs_info_msg_0_}%f $ '
+PROMPT='%F{green}#%f %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
 RPROMPT='[%F{yellow}%*%f]'
 
 
