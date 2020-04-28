@@ -15,7 +15,7 @@ set folder="~/.mail/personal"
 set spoolfile = "=Inbox"
 set record = "=Sent"
 set postponed = "=Drafts"
-mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Spam =Trash
+mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
 
 bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"
