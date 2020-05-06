@@ -270,7 +270,7 @@ let g:tagbar_sort = 0
 " Plug 'tpope/vim-markdown'
 "
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown
+au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown conceallevel=2
 
 let g:vim_markdown_fenced_languages = [
   \ 'vim',
@@ -283,10 +283,16 @@ let g:vim_markdown_fenced_languages = [
   \ 'yaml',
   \ ]
 
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_folding_style_pythonic = 1
-let g:tex_conceal = ""
+let g:vim_markdown_conceal = 2
+let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_math = 1
+let g:tex_conceal = ""
+
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_autowrite = 1
+let g:vim_markdown_edit_url_in = 'current'
+let g:vim_markdown_follow_anchor = 1
+
 let g:vim_markdown_new_list_item_indent = 2
 
 
