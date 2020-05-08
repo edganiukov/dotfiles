@@ -9,11 +9,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
-Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'qpkorr/vim-bufkill'
-Plug 'junegunn/vim-easy-align'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -257,9 +255,10 @@ hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
 hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 
-" Plug 'mattn/calendar-vim'
+" Plug 'qpkorr/vim-bufkill'
 "
-nnoremap <leader>c :CalendarH<CR>
+nnoremap <leader>bk :BA<CR>
+
 
 " Plug 'majutsushi/tagbar'
 "
@@ -461,7 +460,7 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls'])
     \ )},
-  \ 'initialization_options': {'cacheDirectory': expand('~/.cache/ccls')},
+  \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls')}},
   \ 'whitelist': ['c', 'cpp'],
   \ })
 

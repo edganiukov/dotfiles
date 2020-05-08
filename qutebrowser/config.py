@@ -279,13 +279,13 @@ c. fonts.web.family.sans_serif = 'Droid Sans Serif'
 c.fonts.web.family.cursive = 'Droid Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 16
+c.fonts.web.size.default = 14
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 16
+c.fonts.web.size.default_fixed = 14
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 14
+c.fonts.web.size.minimum = 12
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 14
+c.fonts.web.size.minimum_logical = 12
