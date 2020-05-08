@@ -6,6 +6,18 @@
 "amixer set Master 5%-"
     XF86AudioLowerVolume
 
+# Mute with Mod4+m.
+"amixer set Master toggle"
+  Mod4+m
+
+# Increase volume 5% with Mod4+Up
+"amixer set Master 5%+"
+    Mod4+Up
+
+# Decrease volume 5% with Mod4+Down.
+"amixer set Master 5%-"
+    Mod4+Down
+
 # Mute with Apple mute
 "amixer set Master toggle"
     XF86AudioMute
