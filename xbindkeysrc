@@ -8,15 +8,15 @@
 
 # Mute with Mod4+m.
 "amixer set Master toggle"
-  Mod4+m
+    Mod1+m
 
 # Increase volume 5% with Mod4+Up
 "amixer set Master 5%+"
-    Mod4+Up
+    Mod1+Up
 
 # Decrease volume 5% with Mod4+Down.
 "amixer set Master 5%-"
-    Mod4+Down
+    Mod1+Down
 
 # Mute with Apple mute
 "amixer set Master toggle"
@@ -25,6 +25,13 @@
 # Suspend system
 "systemctl suspend"
     Mod4 + XF86Eject
+
+# XRandr
+"autorandr -c"
+    Mod4 + a
+
+"autorandr -c"
+    XF86LaunchA
 
 # Brighten screen
 "brightnessctl --device=acpi_video0 set 5%+"

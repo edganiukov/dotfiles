@@ -494,10 +494,10 @@ let g:lsp_highlight_references_enabled = 0
 let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
 
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '➤'}
-let g:lsp_signs_information = {'text': 'i'}
-let g:lsp_signs_hint = {'text': 'h'}
+let g:lsp_signs_error = {'text': 'x'}
+let g:lsp_signs_warning = {'text': '>'}
+let g:lsp_signs_information = {'text': '!'}
+let g:lsp_signs_hint = {'text': '?'}
 
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('/tmp/lsp.log')
@@ -548,7 +548,7 @@ let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 1
 
 
-" Plug 'sebdahvim-delve'
+" Plug 'sebdah/vim-delve'
 "
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
 let g:delve_breakpoint_sign_highlight = 'DlvPoint'
