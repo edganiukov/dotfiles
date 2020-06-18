@@ -1,14 +1,14 @@
 # dev
 go
 delve
-# gopls
+gopls
 gotags
+ctags
 rustup
 gdb
 lldb
 clang
-cquery
-ctags
+ccls
 git
 
 # tools

@@ -20,6 +20,7 @@ nm-applet &
 xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828 -R 128' &
 # brightnessctl -r &
 # spotifyd --config=~/.config/spotifyd/spotifyd.conf &
+mopidy &
 
 # ENV vars
 systemctl --user import-environment DISPLAY

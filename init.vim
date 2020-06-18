@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
+Plug 'markeganfuller/vim-journeyman'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -47,7 +48,8 @@ set t_Co=256
 set t_ut=
 
 set bg=dark
-colorscheme gruvbox
+set termguicolors
+colorscheme journeyman
 
 " cmd autocomplete
 set wildmenu
@@ -87,8 +89,8 @@ set conceallevel=2
 
 set number
 set signcolumn=yes
-set pumheight=15
-set colorcolumn=121
+set pumheight=20
+set colorcolumn=141
 set cursorline
 
 set pastetoggle=<F2>

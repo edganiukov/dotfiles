@@ -27,11 +27,11 @@
     Mod4 + XF86Eject
 
 # XRandr
-"autorandr -c"
-    Mod4 + a
-
-"autorandr -c"
+"autorandr -c internal"
     XF86LaunchA
+
+"autorandr -c external"
+    XF86LaunchB
 
 # Brighten screen
 "brightnessctl --device=acpi_video0 set 5%+"

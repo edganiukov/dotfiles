@@ -83,7 +83,7 @@ c.scrolling.smooth = False
 c.scrolling.bar = "always"
 
 # Padding (in pixels) around text for tabs.
-c.tabs.padding = {'bottom': 4, 'left': 4, 'right': 4, 'top': 4}
+c.tabs.padding = {'bottom': 2, 'left': 2, 'right': 2, 'top': 2}
 
 # Open blank page when close last tab
 c.tabs.last_close = 'default-page'
