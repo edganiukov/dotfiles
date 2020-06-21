@@ -60,7 +60,6 @@ local function run_once(cmd_arr)
 end
 
 run_once({
-    -- "spotifyd --config=~/.config/spotifyd/spotifyd.conf --no-daemon",
 }) -- entries must be separated by commas
 
 -- }}}
@@ -68,14 +67,14 @@ run_once({
 -- {{{ Variable definitions
 local modkey       = "Mod4"
 local altkey       = "Mod1"
-local terminal     = "alacritty"
+local terminal     = "st"
 local editor       = os.getenv("EDITOR") or "vim"
 local browser      = "firefox"
-local scrlocker    = "i3lock -n -c 708090"
+local scrlocker    = "i3lock -n -c 282828 -R 128"
 
 awful.util.terminal = terminal
 --  ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
-awful.util.tagnames = {" ١ ", " ٢ ", " ٣ ", " ٤ " , " ٥ ", " ٦ "}
+awful.util.tagnames = {" 1 ", " 2 ", " 3 ", " 4 " , " 5 ", " 6 ", " 7 ", " 8 ", " 9 "}
 awful.layout.layouts = {
     awful.layout.suit.max,
     awful.layout.suit.tile.right,
@@ -371,55 +370,45 @@ globalkeys = table.join(
     --     {description = "show weather", group = "widgets"}),
 
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%") end,
-        {description = "+5%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
-        {description = "-5%", group = "hotkeys"}),
+    -- awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%") end,
+    --     {description = "+5%", group = "hotkeys"}),
+    -- awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
+    --     {description = "-5%", group = "hotkeys"}),
 
     -- PulseAudio volume control
-    awful.key({ }, "XF86AudioRaiseVolume",
-        function ()
-            os.execute(string.format("pactl set-sink-volume %s +5%%", beautiful.volume.device))
-            beautiful.volume.update()
-        end),
-    awful.key({ }, "XF86AudioLowerVolume",
-        function ()
-            os.execute(string.format("pactl set-sink-volume %s -5%%", beautiful.volume.device))
-            beautiful.volume.update()
-        end),
-    awful.key({ }, "XF86AudioMute",
-        function ()
-            os.execute(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
-            beautiful.volume.update()
-        end),
+    -- awful.key({ }, "XF86AudioRaiseVolume",
+    --     function ()
+    --         os.execute(string.format("amixer set %s 5%%+", beautiful.volume.channel))
+    --         beautiful.volume.update()
+    --     end),
+    -- awful.key({ }, "XF86AudioLowerVolume",
+    --     function ()
+    --         os.execute(string.format("amixer set %s 5%%-", beautiful.volume.channel)))
+    --         beautiful.volume.update("amixer set %s toggle", beautiful.volume.channel))
+    --     end),
+    -- awful.key({ }, "XF86AudioMute",
+    --     function ()
+    --         os.execute(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
+    --         beautiful.volume.update()
+    --     end),
 
-    -- Rofi
+    -- Dmenu
     awful.key({ modkey }, "r",
         function ()
-            os.execute("rofi -combi-modi drun,run -show combi")
+            os.execute("dmenu_run_recent")
         end,
-        {description = "rofi: run", group = "launcher"}),
-    awful.key({ modkey }, "t",
-        function ()
-            os.execute("rofi -show window")
-        end,
-        {description = "rofi: windows", group = "launcher"}),
-    awful.key({ altkey }, "c",
-        function ()
-            os.execute("rofi -show calc -modi calc -no-show-match -no-sort -no-history")
-        end,
-        {description = "rofi: calc", group = "launcher"}),
+        {description = "dmenu: run", group = "launcher"}),
     awful.key({ modkey }, "p",
         function ()
-            os.execute("gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c")
+            os.execute("gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -c")
         end,
-        {description = "rofi: gopass", group = "launcher"}),
+        {description = "dmenu: gopass", group = "launcher"}),
     --
-    --[[ Prompt
+    -- Prompt
     awful.key({ altkey }, "r",
         function () awful.screen.focused().mypromptbox:run() end,
         {description = "run prompt", group = "launcher"}),
-    --]]
+    --
 
     awful.key({ modkey }, "x",
         function ()

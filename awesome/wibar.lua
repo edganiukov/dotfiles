@@ -16,10 +16,11 @@ local table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme = require("theme")
 
 -- Textclock
+local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
     "date +'%a %d %b %R'", 10,
     function(widget, stdout)
-        widget:set_markup("  " .. markup.font(theme.font, stdout))
+        widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
 )
 
@@ -34,35 +35,39 @@ theme.cal = lain.widget.cal({
 })
 
 -- MEM
+local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     timeout = 1,
     settings = function()
-        widget:set_markup(markup.font(theme.font, "  " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font, " " .. mem_now.perc .. "% "))
     end
 })
 
 -- CPU
+local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     timeout = 1,
     settings = function()
-        widget:set_markup(markup.font(theme.font, "  " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
     end
 })
 
 -- Coretemp
+local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
     timeout = 1,
     tempfile = "/sys/devices/virtual/thermal/thermal_zone1/temp",
     settings = function()
-        local core_temp = "  " .. coretemp_now .. "°C "
+        local core_temp = coretemp_now .. "°C "
         if coretemp_now > 75 then
             core_temp = markup("#FF0000", core_temp)
         end
-        widget:set_markup(markup.font(theme.font,  core_temp))
+        widget:set_markup(markup.font(theme.font, " " .. core_temp))
     end
 })
 
 -- / fs
+local fsicon = wibox.widget.imagebox(theme.widget_hdd)
 theme.fs = lain.widget.fs({
     timeout = 5,
     notification_preset = {
@@ -71,55 +76,68 @@ theme.fs = lain.widget.fs({
         font = theme.font,
     },
     settings = function()
-        widget:set_markup(markup.font(theme.font, "  home: " .. fs_now["/home"].percentage .. "% "))
+        widget:set_markup(markup.font(theme.font, " home: " .. fs_now["/home"].percentage .. "% "))
     end
 })
 
 -- Battery
+local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
     timeout = 5,
     settings = function()
-        local bat_icon
-        if bat_now.ac_status == 1 then
-            bat_icon = ""
+        if bat_now.status and bat_now.status ~= "N/A" then
+            if bat_now.ac_status == 1 then
+                baticon:set_image(theme.widget_ac)
+            elseif not bat_now.perc and tonumber(bat_now.perc) <= 10 then
+                baticon:set_image(theme.widget_battery_empty)
+            elseif not bat_now.perc and tonumber(bat_now.perc) <= 20 then
+                baticon:set_image(theme.widget_battery_low)
+            else
+                baticon:set_image(theme.widget_battery)
+            end
+            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
         else
-            bat_icon = ""
+            widget:set_markup(markup.font(theme.font, " AC "))
+            baticon:set_image(theme.widget_ac)
         end
-        widget:set_markup(markup.font(theme.font, " " .. bat_icon .. " " .. bat_now.perc .. "% " .. bat_now.time .. " "))
     end
 })
 
--- Pulseaudio volume
-theme.volume = lain.widget.pulse {
-    timeout = 1,
+-- Alsa volume
+local volicon = wibox.widget.imagebox(theme.widget_vol)
+theme.volume = lain.widget.alsa({
     settings = function()
-        local vlevel
-        if volume_now.muted == "yes" then
-            vlevel = "  0% "
+        if volume_now.status == "off" then
+            volicon:set_image(theme.widget_vol_mute)
+        elseif tonumber(volume_now.level) == 0 then
+            volicon:set_image(theme.widget_vol_no)
+        elseif tonumber(volume_now.level) <= 50 then
+            volicon:set_image(theme.widget_vol_low)
         else
-            vlevel = "   " .. volume_now.left .. "% "
+            volicon:set_image(theme.widget_vol)
         end
-        widget:set_markup(vlevel)
+        widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
     end
-}
+})
 
 -- Net
+local neticon = wibox.widget.imagebox(theme.widget_net)
 local net = lain.widget.net({
     timeout = 1,
     notify = "off",
     -- wifi_state = "on",
     units = 1024,
     settings = function()
-        local net_info
-        if net_now.state == "up" then
-            net_info = markup("#7AC82E", "  ") ..
-                -- net_now.devices["wlp3s0"].signal .. "dBm " ..
-                " " .. net_now.received .. "kb " ..
-                " " .. net_now.sent .. "kb "
-        else
-            net_info = markup("#FF0000", "  down ")
-        end
-        widget:set_markup(markup.font(theme.font, net_info))
+        -- local net_info
+        -- if net_now.state == "up" then
+        widget:set_markup(markup.font(theme.font,
+                          markup("#7AC82E", " " .. net_now.received)
+                          .. " " ..
+                          markup("#46A8C3", " " .. net_now.sent .. " ")))
+        -- else
+        --     net_info = markup("#FF0000", " down ")
+        -- end
+        -- widget:set_markup(markup.font(theme.font, net_info))
     end
 })
 
@@ -215,20 +233,21 @@ function wibar.at_screen_connect(s)
             arrl_dl,
             s.mykeyboardlayout,
             arrl_ld,
+            wibox.container.background(volicon, theme.bg_focus),
             wibox.container.background(theme.volume.widget, theme.bg_focus),
             arrl_dl,
+            baticon,
             bat.widget,
             arrl_ld,
-            wibox.container.background(net.widget, theme.bg_focus),
             arrl_dl,
+            tempicon,
             temp.widget,
-            arrl_ld,
-            wibox.container.background(cpu.widget, theme.bg_focus),
-            arrl_dl,
-            mem.widget,
+            cpuicon,
+            cpu.widget,
             arrl_ld,
             wibox.container.background(theme.fs.widget, theme.bg_focus),
             arrl_dl,
+            clockicon,
             clock,
             spr,
             arrl_ld,

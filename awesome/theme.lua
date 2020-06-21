@@ -7,7 +7,7 @@ local dpi   = require("beautiful.xresources").apply_dpi
 local theme                    = {}
 theme.dir                      = os.getenv("HOME") .. "/.config/awesome"
 theme.wallpaper                = theme.dir .. "/wall.png"
-theme.font                     = "Source Code Pro, Inconsolata 9"
+theme.font                     = "monospace 10"
 theme.fg_normal                = "#EBDBB2"
 theme.fg_focus                 = "#EA6F81"
 theme.fg_urgent                = "#CC9393"
@@ -33,6 +33,7 @@ theme.menu_submenu_icon = theme.dir .. "/icons/submenu.png"
 
 theme.taglist_squares_sel   = theme.dir .. "/icons/square_sel.png"
 theme.taglist_squares_unsel = theme.dir .. "/icons/square_unsel.png"
+
 theme.layout_tile           = theme.dir .. "/icons/tile.png"
 theme.layout_tileleft       = theme.dir .. "/icons/tileleft.png"
 theme.layout_tilebottom     = theme.dir .. "/icons/tilebottom.png"
@@ -64,5 +65,16 @@ theme.titlebar_maximized_button_focus_active    = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
+
+theme.widget_ac            = theme.dir .. "/icons/ac.png"
+theme.widget_temp          = theme.dir .. "/icons/temp.png"
+theme.widget_battery       = theme.dir .. "/icons/battery.png"
+theme.widget_battery_low   = theme.dir .. "/icons/battery_low.png"
+theme.widget_battery_empty = theme.dir .. "/icons/battery_empty.png"
+theme.widget_mem           = theme.dir .. "/icons/mem.png"
+theme.widget_temp          = theme.dir .. "/icons/temp.png"
+theme.widget_cpu           = theme.dir .. "/icons/cpu.png"
+theme.widget_mail          = theme.dir .. "/icons/mail.png"
+theme.widget_mail_on       = theme.dir .. "/icons/mail_on.png"
 
 return theme

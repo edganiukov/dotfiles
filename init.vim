@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'morhetz/gruvbox'
-Plug 'markeganfuller/vim-journeyman'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -46,10 +45,10 @@ syntax on
 
 set t_Co=256
 set t_ut=
+set termguicolors
 
 set bg=dark
-set termguicolors
-colorscheme journeyman
+colorscheme gruvbox
 
 " cmd autocomplete
 set wildmenu
