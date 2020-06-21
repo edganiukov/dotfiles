@@ -180,7 +180,7 @@ function wibar.at_screen_connect(s)
     awful.tag(awful.util.tagnames, s, awful.layout.layouts)
 
     -- Create a promptbox for each screen
-    -- s.mypromptbox = awful.widget.prompt()
+    s.mypromptbox = awful.widget.prompt()
 
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -203,7 +203,7 @@ function wibar.at_screen_connect(s)
     s.mywibox = awful.wibar({
         position = "top",
         screen = s,
-        height = dpi(20),
+        height = dpi(16),
         bg = theme.bg_normal,
         fg = theme.fg_normal,
     })
@@ -229,7 +229,7 @@ function wibar.at_screen_connect(s)
             wibox.widget.systray(),
             spr,
             arrl_ld,
-            -- wibox.container.background(email.widget, theme.bg_focus),
+            -- spare
             arrl_dl,
             s.mykeyboardlayout,
             arrl_ld,
@@ -239,6 +239,7 @@ function wibar.at_screen_connect(s)
             baticon,
             bat.widget,
             arrl_ld,
+            -- wibox.container.background(email.widget, theme.bg_focus),
             arrl_dl,
             tempicon,
             temp.widget,

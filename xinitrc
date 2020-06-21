@@ -31,11 +31,13 @@ export GDK_DPI_SCALE=0.9
 
 feh --bg-scale ~/dev/dotfiles/wall.png
 
-# Start WM
+## Start WM
 # exec awesome
 # exec i3
-slstatus &
+
+## dwm
 # dwm-status &
+slstatus &
 while true; do
     dwm 2> ~/.dwm.log
 done

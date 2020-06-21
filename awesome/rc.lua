@@ -76,11 +76,11 @@ awful.util.terminal = terminal
 --  ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
 awful.util.tagnames = {" 1 ", " 2 ", " 3 ", " 4 " , " 5 ", " 6 ", " 7 ", " 8 ", " 9 "}
 awful.layout.layouts = {
-    awful.layout.suit.max,
-    awful.layout.suit.tile.right,
-    awful.layout.suit.tile.left,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.tile.right,
+    -- awful.layout.suit.tile.left,
     awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.tile.top,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.floating,
@@ -393,33 +393,33 @@ globalkeys = table.join(
     --     end),
 
     -- Dmenu
-    awful.key({ modkey }, "r",
-        function ()
-            os.execute("dmenu_run_recent")
-        end,
-        {description = "dmenu: run", group = "launcher"}),
-    awful.key({ modkey }, "p",
-        function ()
-            os.execute("gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -c")
-        end,
-        {description = "dmenu: gopass", group = "launcher"}),
+    -- awful.key({ modkey }, "r",
+    --     function ()
+    --         os.execute("dmenu_run_recent")
+    --     end,
+    --     {description = "dmenu: run", group = "launcher"}),
+    -- awful.key({ modkey }, "p",
+    --     function ()
+    --         os.execute("gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -c")
+    --     end,
+    --     {description = "dmenu: gopass", group = "launcher"}),
     --
     -- Prompt
-    awful.key({ altkey }, "r",
+    awful.key({ modkey }, "r",
         function () awful.screen.focused().mypromptbox:run() end,
-        {description = "run prompt", group = "launcher"}),
+        {description = "run prompt", group = "launcher"})
     --
 
-    awful.key({ modkey }, "x",
-        function ()
-            awful.prompt.run {
-            prompt       = "Run Lua code: ",
-            textbox      = awful.screen.focused().mypromptbox.widget,
-            exe_callback = awful.util.eval,
-            history_path = awful.util.get_cache_dir() .. "/history_eval"
-            }
-        end,
-        {description = "lua execute prompt", group = "awesome"})
+    -- awful.key({ modkey }, "x",
+    --     function ()
+    --         awful.prompt.run {
+    --         prompt       = "Run Lua code: ",
+    --         textbox      = awful.screen.focused().mypromptbox.widget,
+    --         exe_callback = awful.util.eval,
+    --         history_path = awful.util.get_cache_dir() .. "/history_eval"
+    --         }
+    --     end,
+    --     {description = "lua execute prompt", group = "awesome"})
     --]]
 )
 
