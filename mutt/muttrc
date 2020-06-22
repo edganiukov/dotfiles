@@ -160,8 +160,8 @@ macro attach,compose \Cb "<pipe-entry> urlscan<Enter>" "Follow links"
 macro pager S "<pipe-message> ripmime -i - -d ~/downloads && rm ~/downloads/textfile*" "Save all non-text attachments"
 
 ## Neomutt specific config
-set new_mail_command="notify-send --icon='~/dev/dotfiles/mutt/mutt.png' \
-    'New Email' '%n new messages, %u unread.' &"
+# set new_mail_command="notify-send --icon='~/dev/dotfiles/mutt/mutt.png' \
+#     'New Email' '%n new messages, %u unread.' &"
 
 # hooks
 timeout-hook 'exec sync-mailbox'

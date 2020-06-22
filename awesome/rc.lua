@@ -208,11 +208,11 @@ root.buttons(table.join(
 
 -- {{{ Key bindings
 globalkeys = table.join(
-    -- awful.key({ altkey }, "p", function() os.execute("screenshot") end,
-    --     {description = "take a screenshot", group = "hotkeys"}),
+    awful.key({ altkey }, "p", function() awful.spawn.with_shell("scrot") end,
+        {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
-    awful.key({ altkey }, "l", function () os.execute(scrlocker) end,
+    awful.key({ modkey }, "m", function () awful.spawn.with_shell(scrlocker) end,
         {description = "lock screen", group = "hotkeys"}),
 
     -- Hotkeys
@@ -233,13 +233,13 @@ globalkeys = table.join(
         {description = "view  previous nonempty", group = "tag"}),
 
     -- Default client focus
-    awful.key({ altkey }, "j",
+    awful.key({ modkey, "Shift" }, "j",
         function ()
             awful.client.focus.byidx( 1)
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ altkey }, "k",
+    awful.key({ modkey , "Shift" }, "k",
         function ()
             awful.client.focus.byidx(-1)
         end,
@@ -275,13 +275,15 @@ globalkeys = table.join(
         {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1) end,
+    awful.key({ modkey, "Shift" }, "h", function () awful.client.swap.byidx(  1) end,
         {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1) end,
+    awful.key({ modkey, "Shift" }, "l", function () awful.client.swap.byidx( -1) end,
         {description = "swap with previous client by index", group = "client"}),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
+
+    -- Screen
+    awful.key({ altkey,         }, "h", function () awful.screen.focus_relative( 1) end,
         {description = "focus the next screen", group = "screen"}),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
+    awful.key({ altkey,         }, "l", function () awful.screen.focus_relative(-1) end,
         {description = "focus the previous screen", group = "screen"}),
 
     awful.key({ modkey }, "u", awful.client.urgent.jumpto,
@@ -295,6 +297,11 @@ globalkeys = table.join(
             end
         end,
         {description = "go back", group = "client"}),
+
+    awful.key({ modkey }, "space", function () awful.layout.inc(1) end,
+        {description = "select next", group = "layout"}),
+    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
+        {description = "select previous", group = "layout"}),
 
     -- Show/Hide Wibox
     awful.key({ modkey }, "b",
@@ -328,24 +335,6 @@ globalkeys = table.join(
     awful.key({ modkey, "Shift" }, "q", awesome.quit,
         {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ altkey, "Shift" }, "l",     function () awful.tag.incmwfact( 0.05) end,
-        {description = "increase master width factor", group = "layout"}),
-    awful.key({ altkey, "Shift" }, "h",     function () awful.tag.incmwfact(-0.05) end,
-        {description = "decrease master width factor", group = "layout"}),
-    awful.key({ modkey, "Shift" }, "h",     function () awful.tag.incnmaster(1, nil, true) end,
-        {description = "increase the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Shift" }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-        {description = "decrease the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol(1, nil, true)    end,
-        {description = "increase the number of columns", group = "layout"}),
-    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
-        {description = "decrease the number of columns", group = "layout"}),
-
-    awful.key({ modkey }, "space", function () awful.layout.inc(1) end,
-        {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
-        {description = "select previous", group = "layout"}),
-
     awful.key({ altkey, "Shift" }, "n",
         function ()
             local c = awful.client.restore()
@@ -357,10 +346,6 @@ globalkeys = table.join(
         end,
         {description = "restore minimized", group = "client"}),
 
-    -- Dropdown application
-    awful.key({ modkey }, "z", function () awful.screen.focused().quake:toggle() end,
-        {description = "dropdown application", group = "launcher"}),
-
     -- Widgets popups
     -- awful.key({ altkey }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
     --     {description = "show calendar", group = "widgets"}),
@@ -370,39 +355,39 @@ globalkeys = table.join(
     --     {description = "show weather", group = "widgets"}),
 
     -- Brightness
-    -- awful.key({ }, "XF86MonBrightnessUp", function () os.execute("brightnessctl --device=acpi_video0 set 5%") end,
+    -- awful.key({ }, "XF86MonBrightnessUp", function () awful.spawn.with_shell("brightnessctl --device=acpi_video0 set 5%") end,
     --     {description = "+5%", group = "hotkeys"}),
-    -- awful.key({ }, "XF86MonBrightnessDown", function () os.execute("brightnessctl --device=acpi_video0 set 5%-") end,
+    -- awful.key({ }, "XF86MonBrightnessDown", function () awful.spawn.with_shell("brightnessctl --device=acpi_video0 set 5%-") end,
     --     {description = "-5%", group = "hotkeys"}),
 
     -- PulseAudio volume control
     -- awful.key({ }, "XF86AudioRaiseVolume",
     --     function ()
-    --         os.execute(string.format("amixer set %s 5%%+", beautiful.volume.channel))
+    --         awful.spawn.with_shell(string.format("amixer set %s 5%%+", beautiful.volume.channel))
     --         beautiful.volume.update()
     --     end),
     -- awful.key({ }, "XF86AudioLowerVolume",
     --     function ()
-    --         os.execute(string.format("amixer set %s 5%%-", beautiful.volume.channel)))
+    --         awful.spawn.with_shell(string.format("amixer set %s 5%%-", beautiful.volume.channel)))
     --         beautiful.volume.update("amixer set %s toggle", beautiful.volume.channel))
     --     end),
     -- awful.key({ }, "XF86AudioMute",
     --     function ()
-    --         os.execute(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
+    --         awful.spawn.with_whell(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
     --         beautiful.volume.update()
     --     end),
 
     -- Dmenu
     -- awful.key({ modkey }, "r",
     --     function ()
-    --         os.execute("dmenu_run_recent")
+    --         awful.spawn.with_shell("dmenu_run_recent")
     --     end,
     --     {description = "dmenu: run", group = "launcher"}),
-    -- awful.key({ modkey }, "p",
-    --     function ()
-    --         os.execute("gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -c")
-    --     end,
-    --     {description = "dmenu: gopass", group = "launcher"}),
+    awful.key({ modkey }, "p",
+        function ()
+            awful.spawn.with_shell("gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -c")
+        end,
+        {description = "dmenu: gopass", group = "launcher"}),
     --
     -- Prompt
     awful.key({ modkey }, "r",

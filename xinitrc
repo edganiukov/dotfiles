@@ -9,8 +9,7 @@
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
-xbindkeys
-# keyboard setting
+xbindkeys # keyboard setting
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
@@ -32,12 +31,13 @@ export GDK_DPI_SCALE=0.9
 feh --bg-scale ~/dev/dotfiles/wall.png
 
 ## Start WM
-# exec awesome
+exec awesome
 # exec i3
 
 ## dwm
+# slstatus &
+# exec dwm
 # dwm-status &
-slstatus &
-while true; do
-    dwm 2> ~/.dwm.log
-done
+# while true; do
+#     dwm 2> ~/.dwm.log
+# done

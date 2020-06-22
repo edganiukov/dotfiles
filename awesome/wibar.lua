@@ -48,7 +48,11 @@ local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     timeout = 1,
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        local cpu_usage = cpu_now.usage
+        if string.len(cpu_usage) == 1 then
+            cpu_usage = "0" .. cpu_usage
+        end
+        widget:set_markup(markup.font(theme.font, " " .. cpu_usage .. "% "))
     end
 })
 
@@ -106,6 +110,7 @@ local bat = lain.widget.bat({
 -- Alsa volume
 local volicon = wibox.widget.imagebox(theme.widget_vol)
 theme.volume = lain.widget.alsa({
+    timeout = 1,
     settings = function()
         if volume_now.status == "off" then
             volicon:set_image(theme.widget_vol_mute)
@@ -141,26 +146,36 @@ local net = lain.widget.net({
     end
 })
 
--- local email = lain.widget.imap{
---     timeout  = 60,
---     pwdtimeout = 1,
---     port     = 993,
---     is_plain = false,
---     server   = "imap.fastmail.com",
---     mail     = "ed@gnkv.io",
---     password = function()
---         local pass = ""
---         awful.spawn.easy_async("gopass show core/imap.fastmail.com", function(out)
---             pass = out
---         end)
---         print("pass1: " .. pass)
---         return pass, false
---     end,
---     settings = function()
---         mail_notification_preset.position = "top_right"
---         widget:set_markup(markup.font(theme.font, "  " .. mailcount .. " "))
---     end
--- }
+local pass = ""
+awful.spawn.easy_async("gopass show -f core/imap.fastmail.com", function(stdout, stderr, reason, exit_code)
+    pass = stdout
+end)
+
+local mailicon = wibox.widget.imagebox(theme.widget_mail)
+local mail = lain.widget.imap{
+    timeout  = 15,
+    pwdtimeout = 5,
+    port     = 993,
+    is_plain = false,
+    server   = "imap.fastmail.com",
+    mail     = "ed@gnkv.io",
+    password = function()
+        local try_again = false
+        if pass == "" then
+            try_again = true
+        end
+        return pass, try_again
+    end,
+    settings = function()
+        mail_notification_preset.position = "top_right"
+        if mailcount > 0 then
+            mailicon:set_image(theme.widget_mail_on)
+        else
+            mailicon:set_image(theme.widget_mail)
+        end
+        widget:set_markup(markup.font(theme.font, " " .. mailcount .. " "))
+    end
+}
 
 -- Separators
 local spr     = wibox.widget.textbox(' ')
@@ -203,7 +218,7 @@ function wibar.at_screen_connect(s)
     s.mywibox = awful.wibar({
         position = "top",
         screen = s,
-        height = dpi(16),
+        height = dpi(14),
         bg = theme.bg_normal,
         fg = theme.fg_normal,
     })
@@ -233,13 +248,14 @@ function wibar.at_screen_connect(s)
             arrl_dl,
             s.mykeyboardlayout,
             arrl_ld,
-            wibox.container.background(volicon, theme.bg_focus),
-            wibox.container.background(theme.volume.widget, theme.bg_focus),
+            wibox.container.background(mailicon, theme.bg_focus),
+            wibox.container.background(mail.widget, theme.bg_focus),
             arrl_dl,
-            baticon,
-            bat.widget,
+            volicon,
+            theme.volume.widget,
             arrl_ld,
-            -- wibox.container.background(email.widget, theme.bg_focus),
+            wibox.container.background(baticon, theme.bg_focus),
+            wibox.container.background(bat.widget, theme.bg_focus),
             arrl_dl,
             tempicon,
             temp.widget,
