@@ -262,6 +262,7 @@ function wibar.at_screen_connect(s)
             cpuicon,
             cpu.widget,
             arrl_ld,
+            wibox.container.background(fsicon, theme.bg_focus),
             wibox.container.background(theme.fs.widget, theme.bg_focus),
             arrl_dl,
             clockicon,

@@ -50,7 +50,7 @@ do
 end
 -- }}}
 
--- {{{ Autostart windowless processes
+-- {{{ Autostart headless processes
 
 -- This function will run once every time Awesome is started
 local function run_once(cmd_arr)
@@ -73,7 +73,6 @@ local browser      = "firefox"
 local scrlocker    = "i3lock -n -c 282828 -R 128"
 
 awful.util.terminal = terminal
---  ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
 awful.util.tagnames = {" 1 ", " 2 ", " 3 ", " 4 " , " 5 ", " 6 ", " 7 ", " 8 ", " 9 "}
 awful.layout.layouts = {
     -- awful.layout.suit.max,
@@ -280,12 +279,6 @@ globalkeys = table.join(
     awful.key({ modkey, "Shift" }, "l", function () awful.client.swap.byidx( -1) end,
         {description = "swap with previous client by index", group = "client"}),
 
-    -- Screen
-    awful.key({ altkey,         }, "h", function () awful.screen.focus_relative( 1) end,
-        {description = "focus the next screen", group = "screen"}),
-    awful.key({ altkey,         }, "l", function () awful.screen.focus_relative(-1) end,
-        {description = "focus the previous screen", group = "screen"}),
-
     awful.key({ modkey }, "u", awful.client.urgent.jumpto,
         {description = "jump to urgent client", group = "client"}),
 
@@ -302,6 +295,13 @@ globalkeys = table.join(
         {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end,
         {description = "select previous", group = "layout"}),
+
+    -- Screen
+    awful.key({ altkey,         }, "h", function () awful.screen.focus_relative( 1) end,
+        {description = "focus the next screen", group = "screen"}),
+    awful.key({ altkey,         }, "l", function () awful.screen.focus_relative(-1) end,
+        {description = "focus the previous screen", group = "screen"}),
+
 
     -- Show/Hide Wibox
     awful.key({ modkey }, "b",

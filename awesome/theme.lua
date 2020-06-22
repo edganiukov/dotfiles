@@ -77,6 +77,7 @@ theme.widget_battery_empty = theme.dir .. "/icons/battery_empty.png"
 theme.widget_mem           = theme.dir .. "/icons/mem.png"
 theme.widget_temp          = theme.dir .. "/icons/temp.png"
 theme.widget_cpu           = theme.dir .. "/icons/cpu.png"
+theme.widget_hdd           = theme.dir .. "/icons/hdd.png"
 theme.widget_mail          = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on       = theme.dir .. "/icons/mail_on.png"
 
