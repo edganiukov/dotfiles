@@ -11,15 +11,20 @@ local awful         = require("awful")
                       require("awful.autofocus")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
-local naughty       = require("naughty")
 local lain          = require("lain")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local table         = awful.util.table or gears.table -- 4.{0,1} compatibility
 local dpi           = require("beautiful.xresources").apply_dpi
 
+-- Disable built-in notifycation daemon
+local _dbus = dbus; dbus = nil
+local naughty = require("naughty")
+dbus = _dbus
+
 local wibar = require("wibar")
 local theme = require("theme")
+
 -- }}}
 
 -- {{{ Error handling
@@ -74,24 +79,31 @@ local scrlocker    = "i3lock -n -c 282828 -R 128"
 
 awful.util.terminal = terminal
 awful.util.tagnames = {" 1 ", " 2 ", " 3 ", " 4 " , " 5 ", " 6 ", " 7 ", " 8 ", " 9 "}
-awful.layout.layouts = {
-    -- awful.layout.suit.max,
-    -- awful.layout.suit.tile.right,
-    -- awful.layout.suit.tile.left,
+
+--[[
+-- Layouts
+    awful.layout.suit.max,
+    awful.layout.suit.tile.right,
+    awful.layout.suit.tile.left,
     awful.layout.suit.fair,
-    -- awful.layout.suit.fair.horizontal,
-    -- awful.layout.suit.tile.top,
-    -- awful.layout.suit.tile.bottom,
-    -- awful.layout.suit.floating,
-    -- awful.layout.suit.spiral,
-    -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max.fullscreen,
-    -- awful.layout.suit.magnifier,
-    -- awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.floating,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max.fullscreen,
+    awful.layout.suit.magnifier,
+    awful.layout.suit.corner.nw,
+    awful.layout.suit.corner.ne,
+    awful.layout.suit.corner.sw,
+    awful.layout.suit.corner.se,
+]]--
+
+awful.layout.layouts = {
+    awful.layout.suit.fair,
 }
+
 
 awful.util.taglist_buttons = table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -211,7 +223,7 @@ globalkeys = table.join(
         {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
-    awful.key({ modkey }, "m", function () awful.spawn.with_shell(scrlocker) end,
+    awful.key({ modkey }, "e", function () awful.spawn.with_shell(scrlocker) end,
         {description = "lock screen", group = "hotkeys"}),
 
     -- Hotkeys
@@ -349,9 +361,9 @@ globalkeys = table.join(
     -- Widgets popups
     -- awful.key({ altkey }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
     --     {description = "show calendar", group = "widgets"}),
-    -- awful.key({ altkey }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+    -- awful.key({ altkey }, "v", function () if beautiful.fs then beautiful.fs.show(7) end end,
     --     {description = "show filesystem", group = "widgets"}),
-    -- awful.key({ altkey }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
+    -- awful.key({ altkey }, "b", function () if beautiful.weather then beautiful.weather.show(7) end end,
     --     {description = "show weather", group = "widgets"}),
 
     -- Brightness
@@ -415,16 +427,18 @@ clientkeys = table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
+    awful.key({ modkey }, "m",  awful.client.floating.toggle,
+        {description = "toggle floating", group = "client"}),
     awful.key({ modkey }, "q", function (c) c:kill() end,
         {description = "close", group = "client"}),
-    awful.key({ altkey }, "space",  awful.client.floating.toggle,
-        {description = "toggle floating", group = "client"}),
+
     awful.key({ altkey }, "Return", function (c) c:swap(awful.client.getmaster()) end,
         {description = "move to master", group = "client"}),
     awful.key({ altkey }, "o", function (c) c:move_to_screen() end,
         {description = "move to screen", group = "client"}),
     awful.key({ altkey }, "t", function (c) c.ontop = not c.ontop end,
         {description = "toggle keep on top", group = "client"}),
+
     awful.key({ altkey }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be

@@ -8,15 +8,15 @@
 
 # Mute with Mod4+m.
 "amixer set Master toggle"
-    Mod1+m
+    Mod4+0
 
 # Increase volume 5% with Mod4+Up
 "amixer set Master 5%+"
-    Mod1+Up
+    Mod4+Up
 
 # Decrease volume 5% with Mod4+Down.
 "amixer set Master 5%-"
-    Mod1+Down
+    Mod4+Down
 
 # Mute with Apple mute
 "amixer set Master toggle"
