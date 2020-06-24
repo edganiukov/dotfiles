@@ -16,11 +16,10 @@ local table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme = require("theme")
 
 -- Textclock
-local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
     "date +'%a %d %b %R'", 10,
     function(widget, stdout)
-        widget:set_markup(" " .. markup.font(theme.font, stdout))
+        widget:set_markup(" " .. markup.font(theme.font, stdout) .. " ")
     end
 )
 
@@ -34,28 +33,6 @@ theme.cal = lain.widget.cal({
     }
 })
 
--- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
-local mem = lain.widget.mem({
-    timeout = 1,
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.perc .. "% "))
-    end
-})
-
--- CPU
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
-local cpu = lain.widget.cpu({
-    timeout = 1,
-    settings = function()
-        local cpu_usage = cpu_now.usage
-        if string.len(cpu_usage) == 1 then
-            cpu_usage = "0" .. cpu_usage
-        end
-        widget:set_markup(markup.font(theme.font, " " .. cpu_usage .. "% "))
-    end
-})
-
 -- Coretemp
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
@@ -67,20 +44,6 @@ local temp = lain.widget.temp({
             core_temp = markup("#FF0000", core_temp)
         end
         widget:set_markup(markup.font(theme.font, " " .. core_temp))
-    end
-})
-
--- / fs
-local fsicon = wibox.widget.imagebox(theme.widget_hdd)
-theme.fs = lain.widget.fs({
-    timeout = 5,
-    notification_preset = {
-        fg = theme.fg_normal,
-        bg = theme.bg_normal,
-        font = theme.font,
-    },
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " home: " .. fs_now["/home"].percentage .. "% "))
     end
 })
 
@@ -122,27 +85,6 @@ theme.volume = lain.widget.alsa({
             volicon:set_image(theme.widget_vol)
         end
         widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
-    end
-})
-
--- Net
-local neticon = wibox.widget.imagebox(theme.widget_net)
-local net = lain.widget.net({
-    timeout = 1,
-    notify = "off",
-    -- wifi_state = "on",
-    units = 1024,
-    settings = function()
-        -- local net_info
-        -- if net_now.state == "up" then
-        widget:set_markup(markup.font(theme.font,
-                          markup("#7AC82E", " " .. net_now.received)
-                          .. " " ..
-                          markup("#46A8C3", " " .. net_now.sent .. " ")))
-        -- else
-        --     net_info = markup("#FF0000", " down ")
-        -- end
-        -- widget:set_markup(markup.font(theme.font, net_info))
     end
 })
 
@@ -192,7 +134,7 @@ function wibar.at_screen_connect(s)
     gears.wallpaper.maximized(wallpaper, s, true)
 
     -- Tags
-    awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+    awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -257,15 +199,6 @@ function wibar.at_screen_connect(s)
             wibox.container.background(baticon, theme.bg_focus),
             wibox.container.background(bat.widget, theme.bg_focus),
             arrl_dl,
-            tempicon,
-            temp.widget,
-            cpuicon,
-            cpu.widget,
-            arrl_ld,
-            wibox.container.background(fsicon, theme.bg_focus),
-            wibox.container.background(theme.fs.widget, theme.bg_focus),
-            arrl_dl,
-            clockicon,
             clock,
             spr,
             arrl_ld,
