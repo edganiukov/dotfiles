@@ -33,6 +33,7 @@ feh --bg-scale ~/dev/dotfiles/wall.png
 ## Start WM
 exec awesome
 # exec i3
+# exec xmonad
 
 ## dwm
 # slstatus &

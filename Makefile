@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv ncspot zathura calcurse isync spotify
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad
 
 CWD=$(shell pwd)
 
@@ -97,16 +97,9 @@ rtorrent:
 sxiv:
 	ln -s $(CWD)/sxiv $(HOME)/.config/sxiv
 
-ncspot:
-	mkdir -p $(HOME)/.config/ncspot
-	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
-
 zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
-
-calcurse:
-	ln -s $(CWD)/calcurse $(HOME)/.config/calcurse
 
 isync:
 	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
@@ -116,3 +109,8 @@ isync:
 spotify:
 	mkdir -p $(HOME)/.config/spotifyd
 	ln -s $(CWD)/spotifyd.conf $(HOME)/.config/spotifyd/spotifyd.conf
+
+xmonad:
+	mkdir -p $(HOME)/.xmonad
+	ln -s $(CWD)/xmonad/xmonad.hs $(HOME)/.xmonad/xmonad.hs
+	ln -s $(CWD)/xmonad/xmobarrc $(HOME)/.xmobarrc
