@@ -25,7 +25,6 @@ Plug 'edganiukov/vim-gol'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
 Plug 'rust-lang/rust.vim'
-Plug 'pearofducks/ansible-vim'
 
 " LSP
 Plug 'prabirshrestha/async.vim'
@@ -530,16 +529,6 @@ let g:rustfmt_autosave = 1
 au FileType rust nnoremap gt :RustTest<CR>
 
 
-" Plug 'pearofducks/ansible-vim'
-"
-let g:ansible_unindent_after_newline = 1
-let g:ansible_name_highlight = 'b'
-let g:ansible_extra_keywords_highlight = 0
-
-au BufRead,BufNewFile */playbooks/*/*.yml setlocal filetype=yaml.ansible
-au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
-au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
-au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
 
 
 " Plug 'edganiukov/vim-gol'
@@ -579,3 +568,8 @@ au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
 au BufRead,BufNewFile *.slide setlocal ft=markdown
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy
+
+" Jinja templates
+au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
+au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
+au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
