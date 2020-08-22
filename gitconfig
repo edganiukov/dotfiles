@@ -9,6 +9,9 @@
 [commit]
     gpgsign = true
 
+[gpg]
+    program = gpg2
+
 [push]
     default = simple
 
@@ -36,5 +39,4 @@
     followRedirects = true
 
 [url "git@github.com:"]
-    insteadOf = https://github.com/
-
+    insteadof = https://github.com/

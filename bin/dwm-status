@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 alsa_volume() {
     ON=$(amixer get Master | awk -F'[][]' 'END{ print $6 }')
@@ -53,6 +53,6 @@ new_emails() {
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < ♫ $(alsa_volume) < $(battery) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(alsa_volume) < $(battery) < $(datetime) <"
     sleep 1
 done

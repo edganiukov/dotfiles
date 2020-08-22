@@ -7,6 +7,7 @@ export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
+export SHELL=zsh
 
 # Go vars
 export GOPATH=$HOME/.go
@@ -88,7 +89,6 @@ alias lsl='ls -hl'
 alias grep="grep --colour"
 
 alias tmux="tmux -u2"
-alias wget="wget --continue --content-disposition"
 alias curl="curl -s"
 
 alias vim="nvim"
@@ -96,6 +96,10 @@ alias mutt="neomutt"
 alias fm="vifm"
 
 alias k="kubectl"
+
+alias xi="sudo xbps-install"
+alias xq="sudo xbps-query"
+alias xr="sudo xbps-remove"
 
 ## Prompt
 #########

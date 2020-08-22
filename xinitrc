@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 #
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
-
 
 # X settings
 xrdb -merge .Xresources &&
@@ -14,31 +13,23 @@ setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
 
-# autostart
-nm-applet &
-xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828 -R 128' &
-# brightnessctl -r &
-# spotifyd --config=~/.config/spotifyd/spotifyd.conf &
-mopidy &
-
-# ENV vars
-systemctl --user import-environment DISPLAY
-
 # Let QT and GTK autodetect retina screen and autoadjust
 export QT_SCREEN_SCALE_FACTORS=1.75
 export GDK_DPI_SCALE=0.9
 
-feh --bg-scale ~/dev/dotfiles/wall.png
+feh --bg-scale ~/dev/dotfiles/wall_f1_vettel.webp
+
+# autostart
+xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
+# mopidy &
+redshift &
+dunst &
+nm-applet &
 
 ## Start WM
-# exec awesome
-# exec i3
-# exec xmonad
-
-## dwm
-slstatus &
+# exec slstatus
+dwm-status &
 exec dwm
-# dwm-status &
 # while true; do
 #     dwm 2> ~/.dwm.log
 # done

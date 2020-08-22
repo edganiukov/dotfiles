@@ -5,11 +5,13 @@ gopls
 gotags
 ctags
 rustup
-gdb
-lldb
-clang
-ccls
 git
+
+# C
+# lldb
+# gdb
+# clang
+# ccls
 
 # tools
 zsh
@@ -20,7 +22,6 @@ bat
 ripgrep
 fd
 tree
-unrar
 direnv
 wget
 nmap
@@ -42,7 +43,6 @@ rtorrent
 # gui
 # i3
 # i3status
-rofi
 dunst
 sxiv
 mpv

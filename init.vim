@@ -97,7 +97,7 @@ set nopaste
 " copy to the system clipboard
 set clipboard=unnamedplus,unnamed
 
-set listchars=tab:→\ ,nbsp:·,trail:·
+set listchars=tab:>\ ,nbsp:.,trail:.
 set list
 
 " Vim formatting options
