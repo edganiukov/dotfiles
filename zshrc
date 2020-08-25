@@ -7,7 +7,7 @@ export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
-export SHELL=zsh
+export SHELL=/bin/zsh
 
 # Go vars
 export GOPATH=$HOME/.go
@@ -16,6 +16,9 @@ export PATH=$GOPATH/bin:$PATH
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
 export PATH=$HOME/.cargo/bin:$PATH
+
+# MC vars
+export MC_XDG_OPEN=$HOME/.bin/nohup-open
 
 ## Settings
 ###########
@@ -93,7 +96,7 @@ alias curl="curl -s"
 
 alias vim="nvim"
 alias mutt="neomutt"
-alias fm="vifm"
+alias sxivd="sxiv -r -t -s d"
 
 alias k="kubectl"
 
@@ -115,7 +118,7 @@ precmd() {
 }
 setopt prompt_subst
 PROMPT='%F{green}#%f %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
-RPROMPT='[%F{yellow}%*%f]'
+RPROMPT='[%F{yellow}%*%f] $ '
 
 
 ## Plugins

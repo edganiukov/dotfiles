@@ -18,12 +18,11 @@ zsh
 tmux
 jq
 fzf
-bat
 ripgrep
 fd
 tree
 direnv
-wget
+curl
 nmap
 gopass
 urlview

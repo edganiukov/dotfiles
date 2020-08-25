@@ -14,17 +14,18 @@ setxkbmap -layout us,ru -option 'grp:caps_toggle'
 xset r rate 200 20
 
 # Let QT and GTK autodetect retina screen and autoadjust
-export QT_SCREEN_SCALE_FACTORS=1.75
-export GDK_DPI_SCALE=0.9
+export QT_SCREEN_SCALE_FACTORS=2
+export GDK_DPI_SCALE=1
 
 feh --bg-scale ~/dev/dotfiles/wall_f1_vettel.webp
 
 # autostart
 xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
-# mopidy &
 redshift &
 dunst &
 nm-applet &
+syncthing &
+# mopidy &
 
 ## Start WM
 # exec slstatus

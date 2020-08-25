@@ -22,7 +22,7 @@ set nodotfiles
 filetype *.md5 md5sum -c %f
 filetype *.sha256 sha256sum -c %f
 
-filetype * xdg-open &
+filetype * mimeo &
 
 "" Custom commands
 " view images
