@@ -20,6 +20,8 @@ export PATH=$HOME/.cargo/bin:$PATH
 # MC vars
 export MC_XDG_OPEN=$HOME/.bin/nohup-open
 
+export LIBVA_DRIVER_NAME=iHD
+
 ## Settings
 ###########
 
@@ -101,8 +103,8 @@ alias sxivd="sxiv -r -t -s d"
 alias k="kubectl"
 
 alias xi="sudo xbps-install"
-alias xq="sudo xbps-query"
 alias xr="sudo xbps-remove"
+alias xq="xbps-query"
 
 ## Prompt
 #########

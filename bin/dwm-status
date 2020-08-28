@@ -11,6 +11,12 @@ alsa_volume() {
     fi
 }
 
+wifi() {
+    WIFI_STATE=$(cat /sys/class/net/wlp3s0/operstate)
+
+    echo $WIFI_STATE
+}
+
 battery() {
     CAP=$(cat /sys/class/power_supply/BAT0/capacity)
     STATUS=$(cat /sys/class/power_supply/BAT0/status)
@@ -53,6 +59,6 @@ new_emails() {
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(alsa_volume) < $(battery) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(alsa_volume) < $(battery) < wifi: $(wifi) < $(datetime) <"
     sleep 1
 done
