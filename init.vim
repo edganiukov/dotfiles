@@ -95,7 +95,7 @@ set pastetoggle=<F2>
 set nopaste
 
 " copy to the system clipboard
-set clipboard=unnamedplus,unnamed
+set clipboard=unnamedplus
 
 set listchars=tab:>\ ,nbsp:.,trail:.
 set list

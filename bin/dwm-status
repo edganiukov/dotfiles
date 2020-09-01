@@ -59,6 +59,6 @@ new_emails() {
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(alsa_volume) < $(battery) < wifi: $(wifi) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(alsa_volume) < $(battery) < w: $(wifi) < $(datetime) <"
     sleep 1
 done
