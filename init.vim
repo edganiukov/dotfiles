@@ -82,7 +82,8 @@ set smartindent
 set scrolljump=1
 set scrolloff=4
 set backspace=2
-set foldenable
+" set foldenable
+set nofoldenable
 set conceallevel=2
 
 set number
@@ -527,8 +528,6 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 "
 let g:rustfmt_autosave = 1
 au FileType rust nnoremap gt :RustTest<CR>
-
-
 
 
 " Plug 'edganiukov/vim-gol'

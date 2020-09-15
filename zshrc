@@ -8,6 +8,7 @@ export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
+export DISPLAY=:0.0
 
 # Go vars
 export GOPATH=$HOME/.go
@@ -119,7 +120,7 @@ precmd() {
     vcs_info
 }
 setopt prompt_subst
-PROMPT='%F{green}#%f %F{green}%n@%m: %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
+PROMPT='%F{green}#%f %F{blue}%n@%m: %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
 RPROMPT='[%F{yellow}%*%f] $ '
 
 

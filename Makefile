@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad bin
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad
 
 CWD=$(shell pwd)
 
@@ -84,7 +84,9 @@ fonts:
 	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
 
 bin:
-	ln -s $(CWD)/bin $(HOME)/.bin
+	mkdir -p $(HOME)/.bin
+	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/dwm-status
+	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/nohup-open
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
