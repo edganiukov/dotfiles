@@ -562,6 +562,8 @@ au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
+au FileType rst setlocal spell tw=80 cc=81
+au FileType markdown setlocal spell tw=79 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
