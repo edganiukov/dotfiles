@@ -27,7 +27,6 @@ Plug 'sebdah/vim-delve'
 Plug 'rust-lang/rust.vim'
 
 " LSP
-Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 " Completion
 Plug 'Shougo/echodoc.vim'
@@ -440,6 +439,7 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
+  \ 'workspace_config': {'gopls': {'codelens': {'generate': 'false', 'gc_details': 'true'}}},
   \ 'allowlist': ['go'],
   \ })
 
