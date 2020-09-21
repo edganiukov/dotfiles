@@ -440,7 +440,7 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
-  \ 'whitelist': ['go'],
+  \ 'allowlist': ['go'],
   \ })
 
 " https://github.com/rust-lang/rls
@@ -451,7 +451,7 @@ au User lsp_setup call lsp#register_server({
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     \ )},
   \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-  \ 'whitelist': ['rust'],
+  \ 'allowlist': ['rust'],
   \ })
 
 " https://github.com/MaskRay/ccls
@@ -462,7 +462,7 @@ au User lsp_setup call lsp#register_server({
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls'])
     \ )},
   \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls')}},
-  \ 'whitelist': ['c', 'cpp'],
+  \ 'allowlist': ['c', 'cpp'],
   \ })
 
 " Alternative: clangd
@@ -470,14 +470,14 @@ au User lsp_setup call lsp#register_server({
 " au User lsp_setup call lsp#register_server({
 "   \ 'name': 'clangd',
 "   \ 'cmd': {server_info->['clangd', '-background-index']},
-"   \ 'whitelist': ['c', 'cpp'],
+"   \ 'allowlist': ['c', 'cpp'],
 "   \ })
 
 " https://github.com/palantir/python-language-server
 au User lsp_setup call lsp#register_server({
   \ 'name': 'pyls',
   \ 'cmd': {server_info->['pyls']},
-  \ 'whitelist': ['python'],
+  \ 'allowlist': ['python'],
   \ })
 
 let g:lsp_auto_enable = 1
@@ -514,6 +514,7 @@ nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
 nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gl :LspCodeLens<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
