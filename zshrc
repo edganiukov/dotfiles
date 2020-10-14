@@ -2,7 +2,7 @@
 ###########
 
 # General vars
-export PATH=/usr/local/bin:$HOME/.bin:$PATH
+export PATH=/usr/local/bin:$HOME/.bin:$HOME/.local/bin:$PATH
 export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
 export EDITOR=nvim
@@ -107,6 +107,8 @@ alias xi="sudo xbps-install"
 alias xr="sudo xbps-remove"
 alias xq="xbps-query"
 
+alias w="watson"
+
 ## Prompt
 #########
 
@@ -169,6 +171,14 @@ tm() {
       tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
     fi
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+# git sync
+gitsync() {
+    git fetch ${1}
+    git checkout ${2}
+    git rebase ${1}/${2}
+    git push origin ${2}
 }
 
 # Local zsh config
