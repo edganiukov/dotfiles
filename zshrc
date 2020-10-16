@@ -175,10 +175,18 @@ tm() {
 
 # git sync
 gitsync() {
-    git fetch ${1}
-    git checkout ${2}
-    git rebase ${1}/${2}
-    git push origin ${2}
+    remote=${1}
+    if [ -z "${remote}" ]; then
+        echo "[ERROR]: remote is not specified"
+        return 1
+    fi
+    branch=${2:-"master"}
+    echo "[INFO] Sync ${remote}/${branch} with origin/${branch}"
+
+    git fetch ${remote}
+    git checkout ${branch}
+    git rebase ${remote}/${branch}
+    git push origin ${branch}
 }
 
 # Local zsh config
