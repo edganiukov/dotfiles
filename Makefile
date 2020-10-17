@@ -69,6 +69,7 @@ vifm:
 
 mc:
 	ln -s $(CWD)/mc/skins $(HOME)/.local/share/mc/skins
+	ln -s $(CWD)/mc/mc.keymap $(HOME)/.config/mc/mc.keymap
 
 mutt:
 	mkdir -p $(HOME)/.mutt

@@ -4,10 +4,10 @@
 #   qute://help/settings.html
 
 # Turn on Qt HighDPI scaling.
-c.qt.highdpi = False
+c.qt.highdpi = True
 
 # Default zoom level.
-c.zoom.default = "100%"
+c.zoom.default = "90%"
 
 # Uncomment this to still load settings configured via autoconfig.yml
 config.load_autoconfig()
@@ -259,24 +259,27 @@ c.fonts.prompts = '10pt monospace'
 c.fonts.statusbar = '10pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs = '10pt monospace'
+c.fonts.tabs.selected = '10pt monospace'
+
+# Font used in the tab bar.
+c.fonts.tabs.unselected = '10pt monospace'
 
 
 # Web font
 # Font family for standard fonts.
-c.fonts.web.family.standard = 'Droid Sans'
+c.fonts.web.family.standard = 'Liberation Sans'
 
 # Font family for fixed fonts.
-c.fonts.web.family.fixed = 'monospace'
+c.fonts.web.family.fixed = 'Liberation Mono'
 
 # Font family for serif fonts
-c.fonts.web.family.serif = 'Droid Serif'
+c.fonts.web.family.serif = 'Liberation Serif'
 
 # Font family for sans-serif fonts.
-c. fonts.web.family.sans_serif = 'Droid Sans Serif'
+c. fonts.web.family.sans_serif = 'Liberation Sans'
 
 # Font family for cursive fonts.
-c.fonts.web.family.cursive = 'Droid Sans'
+c.fonts.web.family.cursive = 'Liberation Sans'
 
 # Default font size (in pixels) for regular text.
 c.fonts.web.size.default = 14

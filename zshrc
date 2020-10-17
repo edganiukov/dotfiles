@@ -19,7 +19,7 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 # MC vars
-export MC_XDG_OPEN=$HOME/.bin/nohup-open
+export MC_XDG_OPEN=mimeo
 
 export LIBVA_DRIVER_NAME=iHD
 
@@ -122,7 +122,7 @@ precmd() {
     vcs_info
 }
 setopt prompt_subst
-PROMPT='%F{green}#%f %F{blue}%n@%m: %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
+PROMPT='%F{green}#%f %F{green}%n@%m: %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
 RPROMPT='[%F{yellow}%*%f] $ '
 
 

@@ -1,2 +1,3 @@
 #!/bin/bash
-nohup mimeo "$@" &
+
+nohup xdg-open "$@" &
