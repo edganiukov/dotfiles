@@ -7,7 +7,7 @@
 c.qt.highdpi = True
 
 # Default zoom level.
-c.zoom.default = "90%"
+c.zoom.default = "100%"
 
 # Uncomment this to still load settings configured via autoconfig.yml
 config.load_autoconfig()
