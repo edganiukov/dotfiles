@@ -19,7 +19,7 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 # MC vars
-export MC_XDG_OPEN=mimeo
+export MC_XDG_OPEN=nohup-open
 
 export LIBVA_DRIVER_NAME=iHD
 

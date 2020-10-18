@@ -15,7 +15,7 @@ xset r rate 200 20
 
 # Let QT and GTK autodetect retina screen and autoadjust
 export QT_SCREEN_SCALE_FACTORS=1.5
-export GDK_DPI_SCALE=1
+export GDK_DPI_SCALE=0.8
 
 feh --bg-scale ~/dev/dotfiles/wall_f1_vettel.webp
 
