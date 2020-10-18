@@ -142,14 +142,10 @@ if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]; 
 fi
 
 # https://github.com/zsh-users/zsh-autosuggestions
-if [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # https://github.com/zsh-users/zsh-completions
-if [ -d ~/.zsh/zsh-completions/src ]; then
-    fpath=(~/.zsh/zsh-completions/src $fpath)
-fi
+[ -d ~/.zsh/zsh-completions/src ] && fpath=(~/.zsh/zsh-completions/src $fpath)
 
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
@@ -181,7 +177,7 @@ gitsync() {
         return 1
     fi
     branch=${2:-"master"}
-    echo "[INFO] Sync ${remote}/${branch} with origin/${branch}"
+    echo "[INFO] Sync ${remote}/${branch} to origin/${branch}"
 
     git fetch ${remote}
     git checkout ${branch}
