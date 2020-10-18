@@ -11,7 +11,6 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
-Plug 'qpkorr/vim-bufkill'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -255,11 +254,6 @@ hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
 hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 
-" Plug 'qpkorr/vim-bufkill'
-"
-nnoremap <leader>bk :BA<CR>
-
-
 " Plug 'majutsushi/tagbar'
 "
 nmap <F4> :TagbarToggle<CR>
@@ -397,12 +391,6 @@ let g:magit_commit_title_limit = 80
 " Plug 'junegunn/gv.vim'
 "
 nnoremap <leader>gv :GV<CR>
-
-
-" Plug 'junegunn/vim-easy-align'
-"
-nmap ga <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
 
 
 "Plug 'Shougo/echodoc.vim'
