@@ -1,7 +1,7 @@
 # vim: ft=muttrc
 
 # Default
-color normal       color253     color234
+color normal       color251     color234
 color indicator    color230     color238
 color status       color101     color16
 color tree         color208     color234
@@ -25,19 +25,19 @@ color quoted7      color109     color234
 color quoted8      color41      color234
 
 color index        color202     color234    ~F  # Flagged
-color index        color39      color234    ~N  # New
+color index        brightgreen  color234    ~N  # New
 color index        color39      color234    ~O
 color index        color229     color22     ~T  # Tagged
 color index        color240     color234    ~D  # Deleted
 
 # header
-color hdrdefault    color30     color233
-color header        green       color233    "^(From|To|Cc|Bcc)"
-color header        blue        color233    "^(Subject|Date)"
+color hdrdefault   color30      color233
+color header       green        color233    "^(From|To|Cc|Bcc)"
+color header       blue         color233    "^(Subject|Date)"
 
 # URLs.
-color body          cyan           default   "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
-color body          cyan           default   "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
+color body         cyan         default     "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
+color body         cyan         default     "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
 
 # Email addresses.
-color body          brightblue     default   "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+color body         brightblue   default     "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
