@@ -101,7 +101,7 @@ set message_cachedir = ~/.cache/mutt/messages
 # set sort_alias = alias
 # set reverse_alias = yes
 # source $alias_file
-source ~/.mutt/conf.d/dracula
+source ~/.mutt/conf.d/colors
 source ~/.mutt/conf.d/pgprc
 
 auto_view text/html
@@ -111,13 +111,12 @@ alternative_order text/plain text/html
 ignore *
 unignore From:
 unignore To:
-unignore Reply-To:
 unignore Subject:
 unignore Date:
 unignore CC:
 unignore BCC:
 unhdr_order *
-hdr_order From: Return-Path: Reply-To: Date: Subject: Importance:
+hdr_order From: Return-Path: Date: Subject: Importance:
 
 my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238
 
