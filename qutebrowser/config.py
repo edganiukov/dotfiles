@@ -4,7 +4,7 @@
 #   qute://help/settings.html
 
 # Turn on Qt HighDPI scaling.
-c.qt.highdpi = True
+c.qt.highdpi = False
 
 # Default zoom level.
 c.zoom.default = "100%"
@@ -223,47 +223,46 @@ c.fonts.default_family = ["monospace"]
 # Default font families to use.
 # Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
 # If set to an empty value, a system-specific monospace default is used.
-c.fonts.default_size = "10pt"
+c.fonts.default_size = "8pt"
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 10pt monospace'
+c.fonts.completion.category = 'bold 8pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '10pt monospace'
+c.fonts.completion.entry = '8pt monospace'
 
 # Font used for the debugging console.
-c.fonts.debug_console = '10pt monospace'
+c.fonts.debug_console = '8pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '10pt monospace'
+c.fonts.downloads = '8pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 10pt monospace'
+c.fonts.hints = 'bold 8pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '10pt monospace'
+c.fonts.keyhint = '8pt monospace'
 
 # Font used for error messages.
-c.fonts.messages.error = '10pt monospace'
+c.fonts.messages.error = '8pt monospace'
 
 # Font used for info messages.
-c.fonts.messages.info = '10pt monospace'
+c.fonts.messages.info = '8pt monospace'
 
 # Font used for warning messages.
-c.fonts.messages.warning = '10pt monospace'
+c.fonts.messages.warning = '8pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '10pt monospace'
+c.fonts.prompts = '8pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '10pt monospace'
+c.fonts.statusbar = '8pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.selected = '10pt monospace'
+c.fonts.tabs.selected = '8pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.unselected = '10pt monospace'
-
+c.fonts.tabs.unselected = '8pt monospace'
 
 # Web font
 # Font family for standard fonts.
@@ -282,13 +281,13 @@ c. fonts.web.family.sans_serif = 'Liberation Sans'
 c.fonts.web.family.cursive = 'Liberation Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 14
+c.fonts.web.size.default = 10
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 14
+c.fonts.web.size.default_fixed = 10
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 12
+c.fonts.web.size.minimum = 10
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 12
+c.fonts.web.size.minimum_logical = 10
