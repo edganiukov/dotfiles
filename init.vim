@@ -320,7 +320,7 @@ nnoremap <leader>s :Rg<CR>
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-  \ 1, { 'options': '--color hl:72,hl+:167' }, 0)
+  \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :Files<CR>
@@ -563,3 +563,8 @@ au BufNewFile,BufRead Jenkinsfile set filetype=groovy
 au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
 au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
 au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
+
+au BufRead,BufNewFile *.yml.tmpl setlocal ft=yaml
+au BufRead,BufNewFile *.conf.tmpl setlocal ft=conf
+au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
+au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
