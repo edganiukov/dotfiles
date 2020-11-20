@@ -1,25 +1,25 @@
 # Increase volume 5% with Apple volume up
-"amixer set Master 5%+"
+"pactl set-sink-volume @DEFAULT_SINK@ +5%"
     XF86AudioRaiseVolume
 
 # Decrease volume 5% with Apple volume down
-"amixer set Master 5%-"
+"pactl set-sink-volume @DEFAULT_SINK@ -5%"
     XF86AudioLowerVolume
 
 # Mute with Mod4+m.
-"amixer set Master toggle"
+"pactl set-sink-mute @DEFAULT_SINK@ toggle"
     Mod4+0
 
 # Increase volume 5% with Mod4+Up
-"amixer set Master 5%+"
+"pactl set-sink-volume @DEFAULT_SINK@ +5%"
     Mod4+Up
 
 # Decrease volume 5% with Mod4+Down.
-"amixer set Master 5%-"
+"pactl set-sink-volume @DEFAULT_SINK@ -5%"
     Mod4+Down
 
 # Mute with Apple mute
-"amixer set Master toggle"
+"pactl set-sink-mute @DEFAULT_SINK@ toggle"
     XF86AudioMute
 
 # Suspend system

@@ -15,8 +15,7 @@ xset r rate 200 20
 
 # export QT_FONT_DPI=96
 # export GDK_DPI_SCALE=0.8
-export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export QT_SCALE_FACTOR=0.8
+# export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 feh --bg-scale ~/dev/dotfiles/wall_f1_vettel.webp
 

@@ -9,7 +9,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar'
+Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 
 " Git

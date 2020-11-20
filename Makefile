@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad
+.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad luakit
 
 CWD=$(shell pwd)
 
@@ -34,6 +34,7 @@ x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
 	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
 	ln -s $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
+	ln -s $(CWD)/urlview $(HOME)/.urlview
 
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
@@ -117,3 +118,7 @@ xmonad:
 	mkdir -p $(HOME)/.xmonad
 	ln -s $(CWD)/xmonad/xmonad.hs $(HOME)/.xmonad/xmonad.hs
 	ln -s $(CWD)/xmonad/xmobarrc $(HOME)/.xmobarrc
+
+luakit:
+	mkdir -p $(HOME)/.config/luakit
+	ln -s $(CWD)/luakit/userconf.lua $(HOME)/.config/luakit/userconf.lua

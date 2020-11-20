@@ -17,7 +17,7 @@ c.qt.process_model = "process-per-site"
 c.qt.args = ["disable-remote-fonts"]
 
 # Default zoom level.
-c.zoom.default = "100%"
+c.zoom.default = "75%"
 
 c.downloads.location.directory = '~/downloads'
 
@@ -232,46 +232,46 @@ c.fonts.default_family = ["monospace"]
 # Default font families to use.
 # Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
 # If set to an empty value, a system-specific monospace default is used.
-c.fonts.default_size = "12pt"
+c.fonts.default_size = "10pt"
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 12pt monospace'
+c.fonts.completion.category = 'bold 10pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '12pt monospace'
+c.fonts.completion.entry = '10pt monospace'
 
 # Font used for the debugging console.
-c.fonts.debug_console = '12pt monospace'
+c.fonts.debug_console = '10pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '12pt monospace'
+c.fonts.downloads = '10pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 12pt monospace'
+c.fonts.hints = 'bold 10pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '12pt monospace'
+c.fonts.keyhint = '10pt monospace'
 
 # Font used for error messages.
-c.fonts.messages.error = '12pt monospace'
+c.fonts.messages.error = '10pt monospace'
 
 # Font used for info messages.
-c.fonts.messages.info = '12pt monospace'
+c.fonts.messages.info = '10pt monospace'
 
 # Font used for warning messages.
-c.fonts.messages.warning = '12pt monospace'
+c.fonts.messages.warning = '10pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '12pt monospace'
+c.fonts.prompts = '10pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '12pt monospace'
+c.fonts.statusbar = '10pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.selected = '12pt monospace'
+c.fonts.tabs.selected = '10pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.unselected = '12pt monospace'
+c.fonts.tabs.unselected = '10pt monospace'
 
 # Web font
 # Font family for standard fonts.
