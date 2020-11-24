@@ -23,7 +23,6 @@ Plug 'junegunn/gv.vim'
 Plug 'edganiukov/vim-gol'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
-Plug 'rust-lang/rust.vim'
 
 " LSP
 Plug 'prabirshrestha/vim-lsp'
@@ -427,7 +426,11 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
-  \ 'workspace_config': {'gopls': {'codelens': {'generate': 'false', 'gc_details': 'true'}}},
+  \ 'workspace_config': {
+    \ 'gopls': {
+      \ 'codelens': {'generate': v:false, 'gc_details': v:true},
+      \ 'gofumpt': v:true
+    \ }},
   \ 'allowlist': ['go'],
   \ })
 
@@ -498,6 +501,7 @@ nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
 nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
 nnoremap <silent> gdc :LspDeclaration<cr>
+nnoremap <silent> gi :LspImplementation<cr>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
@@ -508,22 +512,15 @@ nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
+nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-" autocmd FileType go,rust,c,cpp
-"   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
-
-
-" Plug 'rust-lang/rust.vim'
-"
-let g:rustfmt_autosave = 1
-au FileType rust nnoremap gt :RustTest<CR>
+autocmd FileType go,rust,c,cpp,python
+  \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 
 " Plug 'edganiukov/vim-gol'
 "
-let g:go_fmt_command = "goimports"
-let g:go_fmt_fail_silently = 1
-let g:go_fmt_autosave = 1
+let g:go_fmt_autosave = 0
 
 
 " Plug 'sebdah/vim-delve'
