@@ -253,6 +253,16 @@ hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
 hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 
+" Plug 'jreybert/vimagit'
+"
+let g:magit_commit_title_limit = 80
+
+
+" Plug 'junegunn/gv.vim'
+"
+nnoremap <leader>gv :GV<CR>
+
+
 " Plug 'majutsushi/tagbar'
 "
 nmap <F4> :TagbarToggle<CR>
@@ -382,21 +392,10 @@ map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
-" Plug 'jreybert/vimagit'
-"
-let g:magit_commit_title_limit = 80
-
-
-" Plug 'junegunn/gv.vim'
-"
-nnoremap <leader>gv :GV<CR>
-
-
 "Plug 'Shougo/echodoc.vim'
 "
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'echo'
-hi link EchoDocFloat Pmenu
 
 " Plug 'lifepillar/vim-mucomplete'
 "
