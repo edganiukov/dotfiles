@@ -275,18 +275,15 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown conceallevel=2
 
 let g:vim_markdown_fenced_languages = [
-  \ 'vim',
-  \ 'bash=sh',
   \ 'go',
-  \ 'py=python',
-  \ 'rs=rust',
+  \ 'python',
+  \ 'rust',
   \ 'c',
   \ 'cpp',
   \ 'yaml',
   \ ]
-
-let g:vim_markdown_conceal = 2
-let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_conceal = 1
+let g:vim_markdown_conceal_code_blocks = 1
 let g:vim_markdown_math = 1
 let g:tex_conceal = ""
 
@@ -428,7 +425,7 @@ au User lsp_setup call lsp#register_server({
   \ 'workspace_config': {
     \ 'gopls': {
       \ 'codelens': {'generate': v:false, 'gc_details': v:true},
-      \ 'gofumpt': v:true
+      \ 'hoverKind': 'FullDocumentation',
     \ }},
   \ 'allowlist': ['go'],
   \ })
@@ -481,6 +478,7 @@ let g:lsp_textprop_enabled = 0
 let g:lsp_virtual_text_enabled = 0
 
 let g:lsp_highlight_references_enabled = 0
+let g:lsp_syntax_highlights = 1
 
 let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
@@ -535,7 +533,7 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 au FileType go setlocal noexpandtab tw=100 cc=101
 
 au FileType vim setlocal sw=2 sts=2 ts=2
-au FileType yaml setlocal sw=2 sts=2 ts=2
+au FileType yaml setlocal sw=2 sts=2 ts=2 tw=140 cc=141
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
 
