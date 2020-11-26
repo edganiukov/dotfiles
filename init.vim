@@ -79,7 +79,7 @@ set smartindent
 set scrolljump=1
 set scrolloff=4
 set backspace=2
-" set foldenable
+
 set nofoldenable
 set conceallevel=2
 
@@ -136,10 +136,8 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-
 " Non-plugin Keybindings:
 "
-
 " yank to the EOL
 nnoremap Y y$
 " delete without yanking
@@ -216,6 +214,11 @@ inoremap <Right> <NOP>
 nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
+" Quickly open/reload vim
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+
 " Highlights
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
@@ -223,14 +226,8 @@ hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 
-" hi NormalFloat
-
 " trailing whitespaces
 match ErrorMsg '\s\+$'
-
-" Quickly open/reload vim
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Plug 'mhinz/vim-signify'
 "
@@ -480,6 +477,9 @@ let g:lsp_virtual_text_enabled = 0
 let g:lsp_highlight_references_enabled = 0
 let g:lsp_syntax_highlights = 1
 
+let g:lsp_fold_enabled = 0
+let g:lsp_hover_conceal = 1
+
 let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
 
@@ -490,8 +490,6 @@ let g:lsp_signs_hint = {'text': '?'}
 
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('/tmp/lsp.log')
-
-" highlight PopupWindow guibg=#fdf6e3
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
