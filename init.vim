@@ -19,7 +19,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
 " Lang
-" installed manually
 Plug 'edganiukov/vim-gol'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
@@ -268,27 +267,19 @@ let g:tagbar_sort = 0
 
 " Plug 'tpope/vim-markdown'
 "
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-au FileType markdown setlocal spell sw=2 sts=2 ts=2 syntax=markdown conceallevel=2
-
 let g:vim_markdown_fenced_languages = [
   \ 'go',
   \ 'python',
   \ 'rust',
   \ 'c',
   \ 'cpp',
-  \ 'yaml',
+  \ 'bash=sh',
+  \ 'yaml=yml',
   \ ]
+
 let g:vim_markdown_conceal = 1
 let g:vim_markdown_conceal_code_blocks = 1
 let g:vim_markdown_math = 1
-let g:tex_conceal = ""
-
-let g:vim_markdown_strikethrough = 1
-let g:vim_markdown_autowrite = 1
-let g:vim_markdown_edit_url_in = 'current'
-let g:vim_markdown_follow_anchor = 1
-
 let g:vim_markdown_new_list_item_indent = 2
 
 
@@ -537,7 +528,7 @@ au FileType conf setlocal sw=2 sts=2 ts=2
 
 au FileType gitcommit setlocal spell tw=80 cc=81
 au FileType rst setlocal spell tw=80 cc=81
-au FileType markdown setlocal spell tw=80 cc=81
+au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
 
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
