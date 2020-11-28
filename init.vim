@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'edganiukov/vim-colors-off'
-Plug 'fxn/vim-monochrome'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -310,7 +309,10 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>s :Rg<CR>
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
+    \ 'rg --column --line-number
+    \ --no-heading --color=always
+    \ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '
+    \ .shellescape(<q-args>),
   \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
 
 
@@ -365,7 +367,9 @@ let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
 
 map <F3> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1
+      \ && exists("b:NERDTree") 
+      \ && b:NERDTree.isTabTree()) | q | endif
 
 
 "Plug 'Shougo/echodoc.vim'
