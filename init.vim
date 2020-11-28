@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'edganiukov/vim-colors-off'
+Plug 'fxn/vim-monochrome'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -136,13 +137,12 @@ cnoreabbrev Q q
 cnoreabbrev Qall qall
 
 " Non-plugin Keybindings:
-"
 " yank to the EOL
 nnoremap Y y$
 " delete without yanking
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
-" replace currently selected text with default register without yanking it
+" replace selected text without yanking
 vnoremap <leader>p "_dP"
 
 " quotes
@@ -153,13 +153,6 @@ vnoremap <Leader>q( di()<Esc>P
 vnoremap <Leader>q[ di[]<Esc>P
 vnoremap <Leader>q{ di{}<Esc>P
 vnoremap <Leader>q< di<><Esc>P
-
-" Expand opening-brace followed by ENTER
-inoremap {<CR> {<CR>}<Esc>O
-
-" semicolon in the EOL
-nnoremap ;; A;<Esc>
-inoremap ;; <C-o>A;
 
 noremap j gj
 noremap k gk
@@ -183,14 +176,12 @@ nnoremap <silent>qc :cclose<CR>
 nnoremap <silent>qp <C-w><C-z>
 " close a window with qq<CR>
 nnoremap <silent>qq :q
-
+" quickfix switch
+nnoremap qn :cn!<CR>
+nnoremap qb :cp!<CR>
 " buffers switch
 nnoremap bn :bn!<CR>
-nnoremap bm :bp!<CR>
-
-" quickfix switch
-map <C-n> :cp!<CR>
-map <C-m> :cn!<CR>
+nnoremap bb :bp!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
@@ -212,11 +203,15 @@ inoremap <Right> <NOP>
 " insert current date
 nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
+" semicolon in the EOL
+nnoremap ;; A;<Esc>
+inoremap ;; <C-o>A;
+" expand opening-brace
+inoremap {<CR> {<CR>}<Esc>O
 
-" Quickly open/reload vim
+" open/reload vim.rc
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
-
 
 " Highlights
 hi SignColumn ctermbg=NONE guibg=NONE
@@ -227,6 +222,7 @@ hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 
 " trailing whitespaces
 match ErrorMsg '\s\+$'
+
 
 " Plug 'mhinz/vim-signify'
 "
@@ -287,7 +283,7 @@ let g:vim_markdown_new_list_item_indent = 2
 "
 set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'down': '~40%' }
-" Empty value to disable preview window altogether
+" disable preview window
 let g:fzf_preview_window = ''
 
 " match vim colorscheme
@@ -307,17 +303,15 @@ let g:fzf_colors = {
   \ 'header':  ['fg', 'Comment']
   \ }
 
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>f :Files<CR>
 
 " https://github.com/BurntSushi/ripgrep
 nnoremap <leader>s :Rg<CR>
-
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
   \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
-
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>f :Files<CR>
 
 
 " Plug 'itchyny/lightline'
@@ -359,13 +353,10 @@ let NERDTreeDirArrows = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = [
-  \ '\.DS_Store',
   \ '\.git$',
   \ '\.test$',
   \ '\.pyc$',
-  \ '\.idea',
-  \ '\.stfolder'
-  \]
+  \ ]
 
 let NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
@@ -381,6 +372,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'echo'
+
 
 " Plug 'lifepillar/vim-mucomplete'
 "
@@ -398,11 +390,11 @@ let g:mucomplete#can_complete = {
 
 " mucomplete + vim-lsp
 autocmd FileType go,rust,c,cpp,python setlocal omnifunc=lsp#complete
-inoremap <leader>f <C-x><C-o>
+inoremap <leader>c <C-x><C-o>
+
 
 " Plug 'prabirshrestha/vim-lsp'
 "
-
 " golang.org/x/tools/cmd/gopls
 au User lsp_setup call lsp#register_server({
   \ 'name': 'gopls',
@@ -410,11 +402,10 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
-  \ 'workspace_config': {
-    \ 'gopls': {
+  \ 'workspace_config': {'gopls': {
       \ 'codelens': {'generate': v:false, 'gc_details': v:true},
       \ 'hoverKind': 'FullDocumentation',
-    \ }},
+  \ }},
   \ 'allowlist': ['go'],
   \ })
 
@@ -425,7 +416,9 @@ au User lsp_setup call lsp#register_server({
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     \ )},
-  \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+  \ 'workspace_config': {'rust': {
+      \ 'clippy_preference': 'on',
+  \ }},
   \ 'allowlist': ['rust'],
   \ })
 
@@ -455,23 +448,12 @@ au User lsp_setup call lsp#register_server({
   \ 'allowlist': ['python'],
   \ })
 
-let g:lsp_auto_enable = 1
-let g:lsp_preview_keep_focus = 1
-
-let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_signs_enabled = 1
-let g:lsp_highlights_enabled = 1
+
 let g:lsp_textprop_enabled = 0
 let g:lsp_virtual_text_enabled = 0
-
 let g:lsp_highlight_references_enabled = 0
-let g:lsp_syntax_highlights = 1
-
 let g:lsp_fold_enabled = 0
-let g:lsp_hover_conceal = 1
-
-let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
 
 let g:lsp_signs_error = {'text': 'x'}
@@ -479,7 +461,7 @@ let g:lsp_signs_warning = {'text': '>'}
 let g:lsp_signs_information = {'text': '!'}
 let g:lsp_signs_hint = {'text': '?'}
 
-let g:lsp_log_verbose = 1
+let g:lsp_log_verbose = 0
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
@@ -502,6 +484,7 @@ nnoremap <silent> gth :LspTypeHierarchy<CR>
 
 autocmd FileType go,rust,c,cpp,python
   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+
 
 " Plug 'sebdah/vim-delve'
 "
