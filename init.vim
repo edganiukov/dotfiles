@@ -85,7 +85,7 @@ set conceallevel=2
 set number
 set signcolumn=yes
 set pumheight=20
-set colorcolumn=141
+set colorcolumn=121
 set cursorline
 
 set pastetoggle=<F2>
@@ -506,28 +506,21 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 " General: filetype config
 "
-au FileType go setlocal noexpandtab tw=100 cc=101
-
-au FileType vim setlocal sw=2 sts=2 ts=2
-au FileType yaml setlocal sw=2 sts=2 ts=2 tw=140 cc=141
-au FileType json setlocal sw=2 sts=2 ts=2
-au FileType conf setlocal sw=2 sts=2 ts=2
-
-au FileType gitcommit setlocal spell tw=80 cc=81
-au FileType rst setlocal spell tw=80 cc=81
-au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
-
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
 au BufRead,BufNewFile *.slide setlocal ft=markdown
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy
 
-" Jinja templates
-au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
-au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
-au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
-
 au BufRead,BufNewFile *.yml.tmpl setlocal ft=yaml
 au BufRead,BufNewFile *.conf.tmpl setlocal ft=conf
 au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
 au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
+
+au FileType go setlocal noexpandtab tw=100 cc=101
+au FileType vim setlocal sw=2 sts=2 ts=2
+au FileType yaml setlocal sw=2 sts=2 ts=2
+au FileType json setlocal sw=2 sts=2 ts=2
+au FileType conf setlocal sw=2 sts=2 ts=2
+au FileType gitcommit setlocal spell tw=80 cc=81
+au FileType rst setlocal spell tw=80 cc=81
+au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
