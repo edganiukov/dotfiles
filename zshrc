@@ -8,7 +8,7 @@ export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
-export DISPLAY=:0.0
+export DISPLAY=localhost:10.0
 
 # Go vars
 export GOPATH=$HOME/.go
