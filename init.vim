@@ -177,10 +177,10 @@ nnoremap <silent>qp <C-w><C-z>
 nnoremap <silent>qq :q
 " quickfix switch
 nnoremap qn :cn!<CR>
-nnoremap qb :cp!<CR>
+nnoremap qp :cp!<CR>
 " buffers switch
 nnoremap bn :bn!<CR>
-nnoremap bb :bp!<CR>
+nnoremap bp :bp!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
