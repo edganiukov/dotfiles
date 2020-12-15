@@ -527,3 +527,4 @@ au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
 au FileType rst setlocal spell tw=80 cc=81
 au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
+au FileType python setlocal spell sw=4 sts=4 ts=4 tw=100 cc=101
