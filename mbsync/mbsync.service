@@ -2,6 +2,6 @@
 Description=Mailbox synchronization service
 
 [Service]
-Environment="DISPLAY=:0.0"
+Environment="DISPLAY=:0"
 Type=oneshot
 ExecStart=/usr/bin/mbsync -Va
