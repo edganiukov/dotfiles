@@ -407,7 +407,7 @@ au User lsp_setup call lsp#register_server({
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
     \ )},
   \ 'workspace_config': {'gopls': {
-      \ 'codelens': {'generate': v:false, 'gc_details': v:true},
+      \ 'codelenses': {'generate': v:false, 'gc_details': v:true},
       \ 'hoverKind': 'FullDocumentation',
   \ }},
   \ 'allowlist': ['go'],
