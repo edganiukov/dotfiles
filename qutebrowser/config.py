@@ -19,7 +19,7 @@ c.qt.args = ["disable-remote-fonts"]
 # Default zoom level.
 c.zoom.default = "75%"
 
-c.downloads.location.directory = '~/downloads'
+c.downloads.location.directory = '~/tmp'
 
 # Remove downloads after 5 seconds.
 c.downloads.remove_finished = 5
@@ -284,7 +284,7 @@ c.fonts.web.family.fixed = 'Liberation Mono'
 c.fonts.web.family.serif = 'Liberation Serif'
 
 # Font family for sans-serif fonts.
-c. fonts.web.family.sans_serif = 'Liberation Sans'
+c.fonts.web.family.sans_serif = 'Liberation Sans'
 
 # Font family for cursive fonts.
 c.fonts.web.family.cursive = 'Liberation Sans'

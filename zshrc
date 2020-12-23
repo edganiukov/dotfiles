@@ -20,7 +20,12 @@ export PATH=$HOME/.cargo/bin:$PATH
 # MC vars
 export MC_XDG_OPEN=nohup-open
 
+# mpv
 export LIBVA_DRIVER_NAME=iHD
+
+# Tex
+export TEXMFHOME=$HOME/.texmf
+alias tlmgr='/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME'
 
 ## Settings
 ###########
