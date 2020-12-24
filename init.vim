@@ -20,6 +20,7 @@ Plug 'junegunn/gv.vim'
 
 " Lang
 Plug 'edganiukov/vim-gol'
+Plug 'edganiukov/kotlin-vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
 
@@ -458,6 +459,13 @@ au User lsp_setup call lsp#register_server({
   \ 'allowlist': ['python'],
   \ })
 
+" https://github.com/fwcd/kotlin-language-server
+au User lsp_setup call lsp#register_server({
+  \ 'name': 'kls',
+  \ 'cmd': {server_info->['kotlin-language-server']},
+  \ 'whitelist': ['kotlin']
+  \ })
+
 let g:lsp_diagnostics_echo_cursor = 1
 
 let g:lsp_textprop_enabled = 0
@@ -471,7 +479,7 @@ let g:lsp_signs_warning = {'text': '>'}
 let g:lsp_signs_information = {'text': '!'}
 let g:lsp_signs_hint = {'text': '?'}
 
-" let g:lsp_log_file = expand('/tmp/lsp.log')
+let g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
@@ -522,6 +530,7 @@ au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
 au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
 
 au FileType go setlocal noexpandtab tw=100 cc=101
+au FileType groovy setlocal noexpandtab
 au FileType vim setlocal sw=2 sts=2 ts=2
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2

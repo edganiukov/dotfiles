@@ -13,6 +13,8 @@ setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
 
+wmname compiz
+
 # export QT_FONT_DPI=96
 # export GDK_DPI_SCALE=0.8
 # export QT_AUTO_SCREEN_SCALE_FACTOR=1
