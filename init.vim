@@ -11,6 +11,7 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
+Plug 'chaoren/vim-wordmotion'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -86,6 +87,7 @@ set conceallevel=2
 set number
 set signcolumn=yes
 set pumheight=20
+set textwidth=120
 set colorcolumn=121
 set cursorline
 
@@ -180,8 +182,8 @@ nnoremap <silent>qq :q
 nnoremap qn :cn!<CR>
 nnoremap qp :cp!<CR>
 " buffers switch
-nnoremap bn :bn!<CR>
-nnoremap bp :bp!<CR>
+nnoremap fn :bn!<CR>
+nnoremap fp :bp!<CR>
 
 " window navigation
 nnoremap <C-h> <C-w>h
@@ -530,12 +532,14 @@ au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
 au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
 
 au FileType go setlocal noexpandtab tw=100 cc=101
+au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=101
 au FileType groovy setlocal noexpandtab
+
 au FileType vim setlocal sw=2 sts=2 ts=2
 au FileType yaml setlocal sw=2 sts=2 ts=2
 au FileType json setlocal sw=2 sts=2 ts=2
 au FileType conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
+
 au FileType rst setlocal spell tw=80 cc=81
 au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
-au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=101
