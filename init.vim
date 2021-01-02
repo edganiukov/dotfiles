@@ -319,6 +319,32 @@ command! -bang -nargs=* Rg
   \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
 
 
+" lf file manager
+"
+function! LF()
+    let temp = tempname()
+    exec 'silent !lf -selection-path=' . shellescape(temp)
+    if !filereadable(temp)
+        redraw!
+        return
+    endif
+    let names = readfile(temp)
+    if empty(names)
+        redraw!
+        return
+    endif
+    exec 'edit ' . fnameescape(names[0])
+    for name in names[1:]
+        exec 'argadd ' . fnameescape(name)
+    endfor
+    redraw!
+endfunction
+
+command! -bang LF call LF()
+
+nnoremap <leader>lf :LF<CR>
+
+
 " Plug 'itchyny/lightline'
 "
 let g:bufferline_echo = 0

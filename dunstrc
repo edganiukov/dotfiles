@@ -82,7 +82,7 @@
     # Markup is allowed
     format = "<b>%s</b>\n%b"
 
-   	# Alignment of message text.
+    # Alignment of message text.
     # Possible values are "left", "center" and "right".
     alignment = left
 

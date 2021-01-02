@@ -113,6 +113,8 @@ alias xq="xbps-query"
 
 alias w="watson"
 
+alias tlf='tmux split -h lf; lf'
+
 ## Prompt
 #########
 

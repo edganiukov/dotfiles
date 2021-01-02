@@ -1,4 +1,5 @@
-.PHONY: nvim vim tmux git zsh x i3 awesome redshift etc dunst rofi qutebrowser vifm mc mutt fonts bin mpv rtorrent sxiv zathura isync spotify xmonad luakit
+.PHONY: nvim vim tmux git zsh x alacritty redshift etc bin dunst rofi qutebrowser vifm mc mutt fonts mpv
+.PHONY: rtorrent sxiv zathura isync spotify i3 awesome xmonad luakit lf
 
 CWD=$(shell pwd)
 
@@ -27,7 +28,7 @@ zsh:
 	ln -s $(CWD)/zsh $(HOME)/.zsh
 	ln -s $(CWD)/zlogin $(HOME)/.zlogin
 
-terminal:
+alacritty:
 	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 x:
@@ -36,11 +37,31 @@ x:
 	ln -s $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
 	ln -s $(CWD)/urlview $(HOME)/.urlview
 
+fonts:
+	mkdir -p $(HOME)/.config/fontconfig
+	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
+
+etc:
+	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
+	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
+	sudo cp $(CWD)/etc/resolved.conf /etc/systemd/resolved.conf
+
+bin:
+	mkdir -p $(HOME)/.bin
+	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/dwm-status
+	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/nohup-open
+
+# wm
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome
 
 i3:
 	ln -s $(CWD)/i3 $(HOME)/.config/i3
+
+xmonad:
+	mkdir -p $(HOME)/.xmonad
+	ln -s $(CWD)/xmonad/xmonad.hs $(HOME)/.xmonad/xmonad.hs
+	ln -s $(CWD)/xmonad/xmobarrc $(HOME)/.xmobarrc
 
 rofi:
 	mkdir -p $(HOME)/.config/rofi
@@ -54,14 +75,15 @@ dunst:
 	mkdir -p $(HOME)/.config/dunst
 	ln -s $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
-etc:
-	sudo cp $(CWD)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
-	sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
-	sudo cp $(CWD)/etc/resolved.conf /etc/systemd/resolved.conf
-
+# browsers
 qutebrowser:
 	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py
 
+luakit:
+	mkdir -p $(HOME)/.config/luakit
+	ln -s $(CWD)/luakit/userconf.lua $(HOME)/.config/luakit/userconf.lua
+
+# file managers
 vifm:
 	mkdir -p $(HOME)/.vifm
 	ln -s $(CWD)/vifm/vifmrc $(HOME)/.vifm/vifmrc
@@ -72,23 +94,24 @@ mc:
 	ln -s $(CWD)/mc/skins $(HOME)/.local/share/mc/skins
 	ln -s $(CWD)/mc/mc.keymap $(HOME)/.config/mc/mc.keymap
 
+lf:
+	mkdir -p $(HOME)/.config/lf
+	ln -s $(CWD)/lfrc $(HOME)/.config/lf/lfrc
+
+# email
 mutt:
 	mkdir -p $(HOME)/.mutt
 	ln -s $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
 	ln -s $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
 	ln -s $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
 
+isync:
+	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
+	ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
+	ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
+
 msmtp:
 	ln -s $(CWD)/msmtprc $(HOME)/.msmtprc
-
-fonts:
-	mkdir -p $(HOME)/.config/fontconfig
-	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
-
-bin:
-	mkdir -p $(HOME)/.bin
-	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/dwm-status
-	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/nohup-open
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
@@ -105,20 +128,6 @@ zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
 
-isync:
-	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
-	ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
-	ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
-
-spotify:
+spotifyd:
 	mkdir -p $(HOME)/.config/spotifyd
 	ln -s $(CWD)/spotifyd.conf $(HOME)/.config/spotifyd/spotifyd.conf
-
-xmonad:
-	mkdir -p $(HOME)/.xmonad
-	ln -s $(CWD)/xmonad/xmonad.hs $(HOME)/.xmonad/xmonad.hs
-	ln -s $(CWD)/xmonad/xmobarrc $(HOME)/.xmobarrc
-
-luakit:
-	mkdir -p $(HOME)/.config/luakit
-	ln -s $(CWD)/luakit/userconf.lua $(HOME)/.config/luakit/userconf.lua

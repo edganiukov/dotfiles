@@ -32,16 +32,18 @@ brightnessctl
 redshift
 
 # tui
-vim
+neovim
 mc
+lf
 htop
-mutt
-vifm
 rtorrent
+mutt
+weechat
+weechat-notify-send
+wee-slack
+weechat-vimode-git
 
 # gui
-# i3
-# i3status
 dunst
 sxiv
 mpv
