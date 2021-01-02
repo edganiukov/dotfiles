@@ -26,8 +26,8 @@ set info size:time
 # set drawbox
 
 ## functions {{
-cmd fzf-jump ${{
-    res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location')"
+cmd fzf-find ${{
+    res="$(fzf --reverse --header='Jump to location')"
     if [ -f "$res" ]; then
         cmd="select"
     elif [ -d "$res" ]; then
@@ -35,7 +35,7 @@ cmd fzf-jump ${{
     fi
     lf -remote "send $id $cmd \"$res\""
 }}
-map <c-f> :fzf-jump
+map <c-f> :fzf-find
 
 # define a custom 'open' command
 # This command is called when current file is not a directory. You may want to
