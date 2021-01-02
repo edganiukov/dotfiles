@@ -157,6 +157,7 @@ cmd sxiv ${{
 ## Bindings {{
 # exec file
 map X !$f
-map c clear
+map c :clear
 map gd cd ~/tmp
+map <backspace2> :updir
 #  }}
