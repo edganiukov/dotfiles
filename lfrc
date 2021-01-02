@@ -53,21 +53,19 @@ map <enter> :open
 # cmd rename %[ -e $1 ] && printf "file exists" || mv $f $1
 # map r push :rename<space>
 
-# make sure trash folder exists
-# %mkdir -p ~/.trash
-
-# move current file or selected files to trash folder using trash-cli
+# delete using trash-cli: https://github.com/andreafrancia/trash-cli
 cmd trash ${{
     printf "$fx\n"
     printf "Trash files?[y/n]: "
     read ans
     [ $ans = "y" ] && trash-put $fx
 }}
-cmd trash-list !trash-list
+cmd trash-list !clear && trash-list
 cmd trash-empty %trash-empty
 
 map D :trash
 map Tl :trash-list
+map Te push :trash-empty<space>
 
 # define a custom 'delete' command
 cmd delete ${{
@@ -143,15 +141,22 @@ cmd yank-basename ${{
 }}
 map Yb :yank-basename
 
+cmd mkdir %mkdir "$(echo $* | tr ' ' '\ ')"
+map Md push :mkdir<space>
+
+cmd mkfile ${{
+  $EDITOR "$(echo $* | tr ' ' '\ ')"
+}}
+map Mf push :mkfile<space>
+
 # open sxiv for the current directory
 cmd sxiv ${{
   sxiv -r -t -s d . &
 }}
 
-# bindings {{
-# execute file
-map x $$f
+## Bindings {{
+# exec file
 map X !$f
-
 map c clear
+map gd cd ~/tmp
 #  }}
