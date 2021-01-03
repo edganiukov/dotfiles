@@ -1,5 +1,5 @@
 .PHONY: nvim vim tmux git zsh x alacritty redshift etc bin dunst rofi qutebrowser vifm mc mutt fonts mpv
-.PHONY: rtorrent sxiv zathura isync spotify i3 awesome xmonad luakit lf
+.PHONY: rtorrent sxiv zathura isync spotify i3 awesome xmonad luakit lf weechat
 
 CWD=$(shell pwd)
 
@@ -128,6 +128,9 @@ zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
 
-spotifyd:
+spotify:
 	mkdir -p $(HOME)/.config/spotifyd
 	ln -s $(CWD)/spotifyd.conf $(HOME)/.config/spotifyd/spotifyd.conf
+
+weechat:
+	ln -s $(CWD)/weechat $(HOME)/.weechat

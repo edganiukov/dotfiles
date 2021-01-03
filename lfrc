@@ -33,6 +33,7 @@ map X !$f
 map c :clear
 map gd cd ~/tmp
 map <backspace2> :updir
+map <a-.> :set hidden!
 #  }}
 
 
