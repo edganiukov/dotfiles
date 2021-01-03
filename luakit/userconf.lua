@@ -3,7 +3,7 @@ local downloads = require "downloads"
 local settings = require "settings"
 local modes = require "modes"
 
-downloads.default_dir = os.getenv("HOME") .. "/downloads"
+downloads.default_dir = os.getenv("HOME") .. "/tmp"
 
 settings.window.default_search_engine = "duckduckgo"
 settings.window.home_page = "luakit://bookmarks"

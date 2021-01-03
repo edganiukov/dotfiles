@@ -504,8 +504,8 @@ let g:lsp_insert_text_enabled = 0
 
 let g:lsp_signs_error = {'text': 'x'}
 let g:lsp_signs_warning = {'text': '>'}
-let g:lsp_signs_information = {'text': '!'}
-let g:lsp_signs_hint = {'text': '?'}
+let g:lsp_signs_information = {'text': '@'}
+let g:lsp_signs_hint = {'text': '*'}
 
 let g:lsp_log_file = expand('/tmp/lsp.log')
 

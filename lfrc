@@ -1,4 +1,4 @@
-## Geneal options
+## Geneal options {{
 # set shell
 set shell zsh
 
@@ -24,8 +24,19 @@ set nopreview
 set ratios 1
 set info size:time
 # set drawbox
+# # }}
 
-## functions {{
+
+## Bindings {{
+# exec file
+map X !$f
+map c :clear
+map gd cd ~/tmp
+map <backspace2> :updir
+#  }}
+
+
+## Functions {{
 cmd fzf-find ${{
     res="$(fzf --reverse --header='Jump to location')"
     if [ -f "$res" ]; then
@@ -154,10 +165,4 @@ cmd sxiv ${{
   sxiv -r -t -s d . &
 }}
 
-## Bindings {{
-# exec file
-map X !$f
-map c :clear
-map gd cd ~/tmp
-map <backspace2> :updir
-#  }}
+# }}
