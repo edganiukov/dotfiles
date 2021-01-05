@@ -27,3 +27,5 @@ bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"
 macro index,pager t "<save-message>=Trash<enter>" "Move message to Trash"
 macro index,pager gi "<change-folder>=<enter>" "Go to inbox"
+
+my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238

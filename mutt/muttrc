@@ -5,8 +5,9 @@ source ~/.mutt/accounts/personal
 unset imap_passive
 set imap_check_subscribed
 set imap_keepalive = 300
+set imap_idle = yes
 set mail_check = 30
-set timeout = 5
+set timeout = 30
 
 set editor = "nvim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
 
@@ -117,8 +118,6 @@ unignore CC:
 unignore BCC:
 unhdr_order *
 hdr_order From: Return-Path: Date: Subject: Importance:
-
-my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238
 
 ## Keybindings
 bind pager j next-line

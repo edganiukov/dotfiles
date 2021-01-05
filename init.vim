@@ -307,6 +307,7 @@ let g:fzf_colors = {
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :Files<CR>
+nnoremap <leader>h :Hist<CR>
 
 " https://github.com/BurntSushi/ripgrep
 nnoremap <leader>s :Rg<CR>
