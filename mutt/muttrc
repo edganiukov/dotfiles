@@ -151,7 +151,8 @@ macro index,pager A "<pipe-message>abook --add-email<return>" "Add this sender t
 bind editor <Tab> complete-query
 
 # Follow URL
-macro index,pager \Cb "<pipe-message> urlview<Enter>" "Follow links"
+# macro index,pager \Cb "<pipe-message> urlview<Enter>" "Follow links"
+macro index,pager "<enter-command>set pipe_decode = yes<enter><pipe-message>urlview<enter><enter-command>set pipe_decode = no<enter>" "Follow links"
 macro attach,compose \Cb "<pipe-entry> urlview<Enter>" "Follow links"
 
 # Save all attachments
