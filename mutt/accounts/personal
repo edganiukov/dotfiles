@@ -10,22 +10,22 @@ set my_smtp_pass = `gopass show -f core/smtp.fastmail.com`
 set smtp_url = "smtps://$my_user@smtp.fastmail.com:465"
 set smtp_pass = $my_smtp_pass
 
-# set my_imap_pass = `gopass show core/imap.fastmail.com`
-# set imap_user = $my_user
-# set imap_pass = $my_imap_pass
-# set folder = "imaps://imap.fastmail.com:993"
+set my_imap_pass = `gopass show core/imap.fastmail.com`
+set imap_user = $my_user
+set imap_pass = $my_imap_pass
+set folder = "imaps://imap.fastmail.com:993"
 
-set mbox_type=Maildir
-set folder="~/.mail/personal"
+# set mbox_type=Maildir
+# set folder="~/.mail/personal"
+# mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
 
 set spoolfile = "=Inbox"
 set record = "=Sent"
 set postponed = "=Drafts"
-mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
 
 bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"
 macro index,pager t "<save-message>=Trash<enter>" "Move message to Trash"
-macro index,pager gi "<change-folder>=<enter>" "Go to inbox"
+macro index,pager gi "<change-folder>=Inbox<enter>" "Go to inbox"
 
 my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238
