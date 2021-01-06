@@ -163,6 +163,5 @@ set new_mail_command="dbus-launch notify-send --icon='~/dev/dotfiles/mutt/mutt.p
     'New Email' '%n new messages, %u unread.' &"
 
 # hooks
-timeout-hook 'exec sync-mailbox'
 startup-hook 'exec sync-mailbox'
 shutdown-hook 'exec sync-mailbox'

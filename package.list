@@ -39,9 +39,8 @@ htop
 rtorrent
 mutt
 weechat
-weechat-notify-send
-wee-slack
-weechat-vimode-git
+# for weechat multiline.pl
+perl-pod-parser
 
 # gui
 dunst
