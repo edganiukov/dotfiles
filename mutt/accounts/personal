@@ -10,14 +10,14 @@ set my_smtp_pass = `gopass show -f core/smtp.fastmail.com`
 set smtp_url = "smtps://$my_user@smtp.fastmail.com:465"
 set smtp_pass = $my_smtp_pass
 
-set my_imap_pass = `gopass show core/imap.fastmail.com`
-set imap_user = $my_user
-set imap_pass = $my_imap_pass
-set folder = "imaps://imap.fastmail.com:993"
+# set my_imap_pass = `gopass show core/imap.fastmail.com`
+# set imap_user = $my_user
+# set imap_pass = $my_imap_pass
+# set folder = "imaps://imap.fastmail.com:993"
 
-# set mbox_type=Maildir
-# set folder="~/.mail/personal"
-# mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
+set mbox_type=Maildir
+set folder="~/.mail/personal"
+mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
 
 set spoolfile = "=Inbox"
 set record = "=Sent"
