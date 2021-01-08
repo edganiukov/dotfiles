@@ -68,7 +68,7 @@ map <enter> :open
 # delete using trash-cli: https://github.com/andreafrancia/trash-cli
 cmd trash ${{
     printf "$fx\n"
-    printf "Trash files?[y/n]: "
+    printf "Trash files? [y/n]: "
     read ans
     [ $ans = "y" ] && trash-put $fx
 }}
@@ -76,6 +76,7 @@ cmd trash-list !clear && trash-list
 cmd trash-empty %trash-empty
 
 map D :trash
+map Tp :trash
 map Tl :trash-list
 map Te push :trash-empty<space>
 
@@ -83,7 +84,7 @@ map Te push :trash-empty<space>
 cmd delete ${{
     set -f
     printf "$fx\n"
-    printf "Delete files?[y/n]: "
+    printf "Delete files? [y/n]: "
     read ans
     [ $ans = "y" ] && rm -rf $fx
 }}
