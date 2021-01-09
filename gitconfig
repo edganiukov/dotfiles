@@ -24,9 +24,8 @@
     remote = yellow
 
 [alias]
-    lg = log --pretty=oneline --abbrev-commit
-
     fap = fetch --all --prune
+    lg = log --pretty=oneline --abbrev-commit
     ps = push
     pl = pull
     co = checkout

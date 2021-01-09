@@ -25,7 +25,6 @@ export LIBVA_DRIVER_NAME=iHD
 
 # Tex
 export TEXMFHOME=$HOME/.texmf
-alias tlmgr='/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME'
 
 ## Settings
 ###########
@@ -51,7 +50,7 @@ setopt noequals
 setopt nobeep
 setopt autocd
 setopt nohup
-setopt HASH_CMDS
+setopt hash_cmds
 
 ## Completion
 #############
@@ -95,7 +94,7 @@ bindkey "\C-k" vi-kill-eol
 ## Aliases
 ##########
 
-alias lsl='ls -hl'
+alias ll='ls -hl'
 alias grep="grep --colour"
 
 alias tmux="tmux -u2"
@@ -105,19 +104,22 @@ alias vim="nvim"
 alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 
-alias k="kubectl"
-
+# Void linux package manager
 alias xi="sudo xbps-install"
 alias xr="sudo xbps-remove"
 alias xq="xbps-query"
 
+alias k="kubectl"
 alias w="watson"
 
+# Double pane lf with tmux
 alias tlf='tmux split -h lf; lf'
+
+# Tex plugin manager
+alias tlmgr='/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME'
 
 ## Prompt
 #########
-
 autoload -Uz vcs_info
 autoload -U promptinit
 promptinit
@@ -155,10 +157,8 @@ fi
 
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
-
 # kubectl
 # eval "$(kubectl completion zsh)"
-#
 # krew (kubectl plugin manager)
 # export PATH=$HOME/.krew/bin:$PATH
 
@@ -175,7 +175,7 @@ tm() {
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# git sync
+# gitsync
 gitsync() {
     remote=${1}
     if [ -z "${remote}" ]; then
@@ -187,10 +187,14 @@ gitsync() {
     read -s -k "?[INFO] Press any key to continue"
     echo "\n[INFO] syncing ... "
 
-    git fetch ${remote}
+    currBranch=$(git branch --show-current)
+
     git checkout ${branch}
+    git fetch ${remote}
     git rebase ${remote}/${branch}
     git push origin ${branch}
+
+    git checkout ${currBranch}
 }
 
 # Local zsh config
