@@ -8,7 +8,8 @@
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
-xbindkeys # keyboard setting
+ # keyboard setting
+xbindkeys
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
@@ -19,7 +20,7 @@ wmname compiz
 # export GDK_DPI_SCALE=0.8
 # export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
-feh --bg-scale ~/dev/dotfiles/wall_f1_vettel.webp
+feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
 xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
@@ -27,7 +28,6 @@ redshift &
 dunst &
 nm-applet &
 syncthing &
-# mopidy &
 
 ## Start WM
 # exec slstatus
