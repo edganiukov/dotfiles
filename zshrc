@@ -102,6 +102,7 @@ alias curl="curl -s"
 
 alias vim="nvim"
 alias mutt="neomutt"
+alias pass="gopass"
 alias sxivd="sxiv -r -t -s d"
 
 # Void linux package manager
@@ -111,12 +112,18 @@ alias xq="xbps-query"
 
 alias k="kubectl"
 alias w="watson"
+alias tp="tmuxp load -y"
 
 # Double pane lf with tmux
 alias tlf='tmux split -h lf; lf'
 
 # Tex plugin manager
-alias tlmgr='/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME'
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME"
+
+# Todo/Notes
+alias todo="nvim ~/misc/notes/todo.md"
+alias note="nvim ~/misc/notes/notes.md"
+
 
 ## Prompt
 #########

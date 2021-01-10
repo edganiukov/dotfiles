@@ -19,6 +19,7 @@ tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	mkdir -p $(HOME)/.tmux/plugins && \
 		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+	ln -s $(CWD)/tmuxp $(HOME)/.tmuxp
 
 git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig

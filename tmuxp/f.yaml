@@ -1,0 +1,9 @@
+session_name: f
+windows:
+- window_name: lf
+  focus: True
+  start_directory: ~/
+  layout: even-horizontal
+  panes:
+  - lf; exit
+  - lf ~/tmp; exit
