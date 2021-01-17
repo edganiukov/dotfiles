@@ -26,10 +26,10 @@ curl
 nmap
 gopass
 urlview
-urlscan
 xclip
 brightnessctl
 redshift
+delta
 
 # tui
 neovim
