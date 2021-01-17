@@ -77,7 +77,7 @@ cmd trash-list !clear && trash-list
 cmd trash-empty %trash-empty
 
 map D :trash
-map Tp :trash
+map Tp :trash-put
 map Tl :trash-list
 map Te push :trash-empty<space>
 

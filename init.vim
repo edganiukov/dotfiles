@@ -489,11 +489,11 @@ au User lsp_setup call lsp#register_server({
   \ })
 
 " https://github.com/fwcd/kotlin-language-server
-au User lsp_setup call lsp#register_server({
-  \ 'name': 'kls',
-  \ 'cmd': {server_info->['kotlin-language-server']},
-  \ 'whitelist': ['kotlin']
-  \ })
+" au User lsp_setup call lsp#register_server({
+"   \ 'name': 'kls',
+"   \ 'cmd': {server_info->['kotlin-language-server']},
+"   \ 'whitelist': ['kotlin']
+"   \ })
 
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1

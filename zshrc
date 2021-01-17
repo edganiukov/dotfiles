@@ -112,7 +112,8 @@ alias xq="xbps-query"
 
 alias k="kubectl"
 alias w="watson"
-alias tp="tmuxp load -y"
+alias tp="tmuxp"
+alias tpl="tmuxp load -y"
 
 # Double pane lf with tmux
 alias tlf='tmux split -h lf; lf'
