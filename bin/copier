@@ -1,10 +1,6 @@
 #!/usr/bin/env sh
 
 # Description: Copy selection to clipboard
-#
-# Shell: POSIX compliant
-# Author: Arun Prakash Jana
-
 SELECTION=$HOME/.config/nnn/.selection
 
 # Linux

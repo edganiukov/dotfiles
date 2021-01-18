@@ -49,8 +49,9 @@ etc:
 
 bin:
 	mkdir -p $(HOME)/.bin
-	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/dwm-status
-	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/nohup-open
+	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/
+	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/
+	ln -s $(CWD)/bin/copier $(HOME)/.bin/
 
 # wm
 awesome:
@@ -98,6 +99,9 @@ mc:
 lf:
 	mkdir -p $(HOME)/.config/lf
 	ln -s $(CWD)/lfrc $(HOME)/.config/lf/lfrc
+
+nnn:
+	mkdir -p $(HOME)/.bin
 
 # email
 mutt:

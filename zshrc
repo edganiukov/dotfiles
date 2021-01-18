@@ -174,6 +174,32 @@ fi
 ## Custom functions
 ###################
 
+# nnn
+n() {
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    export NNN_CTXMAX=1
+    export NNN_BMS="h:~;t:~/tmp"
+    export NNN_TRASH=1
+    export NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv"
+    export NNN_USE_EDITOR=1
+    export NNN_COLORS="4444"
+    export NNN_COPIER="$HOME/.bin/copier"
+    export NNN_FIFO="/tmp/nnn.fifo"
+
+    # Unmask ^Q (if required, see `stty -a`) to Quit nnn
+    stty start undef
+    stty stop undef
+    stty lnext undef
+
+    # Start nnn with your preferred options
+    nnn -e -C "$@"
+}
+
 # tm - creates new tmux session, or switch to existing one.
 tm() {
     [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
