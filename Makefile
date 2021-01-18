@@ -51,7 +51,6 @@ bin:
 	mkdir -p $(HOME)/.bin
 	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/
 	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/
-	ln -s $(CWD)/bin/copier $(HOME)/.bin/
 
 # wm
 awesome:

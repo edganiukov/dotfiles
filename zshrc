@@ -188,7 +188,7 @@ n() {
     export NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv"
     export NNN_USE_EDITOR=1
     export NNN_COLORS="4444"
-    export NNN_COPIER="$HOME/.bin/copier"
+    export NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i"
     export NNN_FIFO="/tmp/nnn.fifo"
 
     # Unmask ^Q (if required, see `stty -a`) to Quit nnn
