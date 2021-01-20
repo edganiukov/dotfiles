@@ -25,7 +25,7 @@ set postponed = "=Drafts"
 
 bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"
-macro index,pager t "<save-message>=Trash<enter>" "Move message to Trash"
+macro index,pager d "<save-message>=Trash<enter>" "Move message to Trash"
 macro index,pager gi "<change-folder>=Inbox<enter>" "Go to Inbox"
 macro index,pager ga "<change-folder>=Archive<enter>" "Go to Archive"
 macro index,pager gt "<change-folder>=Trash<enter>" "Go to Trash"

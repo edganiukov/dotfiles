@@ -40,6 +40,7 @@ mutt
 weechat
 # for weechat multiline.pl
 perl-pod-parser
+glow
 
 # gui
 dunst

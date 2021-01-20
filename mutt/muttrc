@@ -2,12 +2,12 @@
 source ~/.mutt/accounts/personal
 # macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
 
-unset imap_passive
 set imap_check_subscribed
 set imap_keepalive = 300
 set mail_check = 90
 set timeout = 15
 set imap_idle = yes
+unset imap_passive
 
 set editor = "nvim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
 
@@ -86,11 +86,18 @@ set charset = "utf-8"
 
 ## Sidebar
 set sidebar_visible = yes
-set sidebar_short_path
+# Should the mailbox paths be abbreviated?
+set sidebar_short_path = yes
+# When abbreviating mailbox path names, use any of these characters as path
+# separators. Only the part after the last separators will be shown.
+# For file folders '/' is good. For IMAP folders, often '.' is useful.
+set sidebar_delim_chars = '/.'
+
 set sidebar_folder_indent
 set sidebar_width = 30
 set sidebar_divider_char = ' | '
-set sidebar_format = "%B %* [%?N?%N/?%S]"
+# set sidebar_format = "%B %* [%?N?%N/?%S]"
+set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
 set mail_check_stats
 
 set signature = ~/.mutt/conf.d/signature
