@@ -5,12 +5,12 @@ set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d`
 set my_realname = "Eduard Ganiukov"
 set realname = $my_realname
 set from = "$my_realname <$my_user>"
-set my_smtp_pass = `gopass show -f core/smtp.fastmail.com`
+set my_smtp_pass = `pass show core/smtp.fastmail.com`
 
 set smtp_url = "smtps://$my_user@smtp.fastmail.com:465"
 set smtp_pass = $my_smtp_pass
 
-# set my_imap_pass = `gopass show core/imap.fastmail.com`
+# set my_imap_pass = `pass show core/imap.fastmail.com`
 # set imap_user = $my_user
 # set imap_pass = $my_imap_pass
 # set folder = "imaps://imap.fastmail.com:993"

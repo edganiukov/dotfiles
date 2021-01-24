@@ -24,7 +24,8 @@ tree
 direnv
 curl
 nmap
-gopass
+pass
+prs
 urlview
 xclip
 brightnessctl

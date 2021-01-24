@@ -1,7 +1,7 @@
 IMAPAccount personal
 Host imap.fastmail.com
 User ed@gnkv.io
-PassCmd "gopass show -f core/imap.fastmail.com"
+PassCmd "pass show core/imap.fastmail.com"
 SSLType IMAPS
 
 IMAPStore personal-remote

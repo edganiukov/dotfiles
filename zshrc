@@ -102,8 +102,8 @@ alias curl="curl -s"
 
 alias vim="nvim"
 alias mutt="neomutt"
-alias pass="gopass"
 alias sxivd="sxiv -r -t -s d"
+alias i3lock="i3lock -n -c 282828"
 
 # Void linux package manager
 alias xi="sudo xbps-install"
