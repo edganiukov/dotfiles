@@ -21,7 +21,6 @@ Plug 'junegunn/gv.vim'
 
 " Lang
 Plug 'edganiukov/vim-gol'
-Plug 'edganiukov/kotlin-vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
 

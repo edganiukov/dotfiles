@@ -1,9 +1,0 @@
-session_name: m
-windows:
-- window_name: im
-  start_directory: ~/
-  panes:
-  - focus: True
-    shell_command: weechat
-  - focus: False
-    shell_command: neomutt

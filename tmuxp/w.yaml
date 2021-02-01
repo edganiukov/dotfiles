@@ -1,0 +1,12 @@
+session_name: w
+windows:
+- window_name: work
+  layout: main-vertical
+  options:
+    main-pane-width: 120
+  start_directory: ~/
+  panes:
+  - pane
+  - focus: True
+    shell_command: weechat
+  - shell_command: neomutt

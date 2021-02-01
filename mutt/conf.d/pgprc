@@ -1,7 +1,5 @@
 # vim: ft=muttrc
 
-set pgp_sign_as=0x500D3238
-
 # Crypt options
 set crypt_autosmime="no"
 set crypt_autosign="yes"

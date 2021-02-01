@@ -1,13 +1,16 @@
 ## Accounts
+#
 source ~/.mutt/accounts/personal
-# macro index,pager <F2> "<sync-mailbox><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
+
+macro index,pager <F2> "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
+macro index,pager <F3> "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/work<enter><change-folder>!<enter>"
+macro index,pager \e2 "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
+macro index,pager \e3 "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/work<enter><change-folder>!<enter>"
 
 set imap_check_subscribed
 set imap_keepalive = 300
-set mail_check = 90
 set timeout = 15
 set imap_idle = yes
-unset imap_passive
 
 set editor = "nvim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
 
@@ -149,9 +152,16 @@ bind attach,index,pager \Cp previous-page
 bind index,pager <A-down> sidebar-next
 bind index,pager <A-up> sidebar-prev
 bind index,pager <A-right> sidebar-open
+bind index,pager \ej sidebar-next
+bind index,pager \ek sidebar-prev
+bind index,pager \el sidebar-open
 bind index,pager \eb sidebar-toggle-visible
 
 ## Macro
+macro index,pager gi "<change-folder>$spoolfile<enter>" "Go to Inbox"
+macro index,pager gt "<change-folder>$trash<enter>" "Go to Trash"
+macro index gs "<change-folder>$record<enter>" "Go to Sent Mail"
+
 macro index L "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "Mark all new as read"
 
 # Abook

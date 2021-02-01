@@ -1,0 +1,33 @@
+# vim: ft=muttrc
+#
+
+# Reset sidebar
+unmailboxes *
+
+# GMail account
+unset pgp_sign_as
+unset crypt_autosign
+unset crypt_replysign
+
+set my_user = `echo "Z2FuaXVrb3ZAYW5hcGF5YS5uZXQK" | base64 -d`
+set my_realname = "Eduard Ganiukov"
+set realname = $my_realname
+set from = "$my_realname <$my_user>"
+set my_smtp_pass = `pass show work/mutt.gmail.com`
+
+set smtp_url = "smtps://$my_user@smtp.gmail.com"
+set smtp_pass = $my_smtp_pass
+
+set my_imap_pass = `pass show work/mutt.gmail.com`
+set imap_user = $my_user
+set imap_pass = $my_imap_pass
+set folder = "imaps://imap.gmail.com"
+
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent Mail"
+set trash = "+[Gmail]/Trash"
+
+bind index g noop
+macro index ga "<change-folder>+Alerts<enter>" "Go to Alerts"
+macro index gh "<change-folder>+Github<enter>" "Go to Github"

@@ -1,6 +1,11 @@
 # vim: ft=muttrc
 #
+# Reset sidebar
+unmailboxes *
+
 # FastMail account
+set pgp_sign_as=0x500D3238
+
 set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d`
 set my_realname = "Eduard Ganiukov"
 set realname = $my_realname
@@ -22,12 +27,8 @@ mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Dr
 set spoolfile = "=Inbox"
 set record = "=Sent"
 set postponed = "=Drafts"
+set trash = "=Trash"
 
 bind index,pager g noop
 macro index,pager e "<save-message>=Archive<enter>" "Archive message"
-macro index,pager d "<save-message>=Trash<enter>" "Move message to Trash"
-macro index,pager gi "<change-folder>=Inbox<enter>" "Go to Inbox"
 macro index,pager ga "<change-folder>=Archive<enter>" "Go to Archive"
-macro index,pager gt "<change-folder>=Trash<enter>" "Go to Trash"
-
-my_hdr X-PGP-Key: https://keybase.io/edganiukov/pgp_keys.asc?fingerprint=7815b422d0beec08234218ad396929a5500d3238

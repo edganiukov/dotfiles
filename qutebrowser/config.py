@@ -14,7 +14,7 @@ c.qt.highdpi = True
 c.qt.process_model = "process-per-site"
 
 # Additional arguments to pass to Qt, without leading --.
-c.qt.args = ["disable-remote-fonts"]
+c.qt.args = ["enable-native-gpu-memory-buffers", "enable-gpu-rasterization", "use-gl=egl", "ignore-gpu-blacklist", "num-raster-threads=4"]
 
 # Default zoom level.
 c.zoom.default = "75%"

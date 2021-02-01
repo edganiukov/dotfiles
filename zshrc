@@ -100,7 +100,7 @@ alias grep="grep --colour"
 alias tmux="tmux -u2"
 alias curl="curl -s"
 
-alias vim="nvim"
+# alias vim="nvim"
 alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 alias i3lock="i3lock -n -c 282828"

@@ -1,5 +1,5 @@
 .PHONY: nvim vim tmux git zsh x alacritty redshift etc bin dunst rofi qutebrowser vifm mc mutt fonts mpv
-.PHONY: rtorrent sxiv zathura isync spotify i3 awesome xmonad luakit lf weechat
+.PHONY: rtorrent sxiv zathura isync spotify i3 awesome xmonad luakit lf weechat wtfutil
 
 CWD=$(shell pwd)
 
@@ -138,3 +138,7 @@ spotify:
 
 weechat:
 	ln -s $(CWD)/weechat $(HOME)/.weechat
+
+wtfutil:
+	mkdir -p $(HOME)/.config/wtf
+	ln -s $(CWD)/wtfutil.yml $(HOME)/.config/wtf/config.yml
