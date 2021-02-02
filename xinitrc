@@ -23,15 +23,15 @@ wmname compiz
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
-xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
-redshift &
-dunst &
-nm-applet &
-syncthing &
+[ -n "$(pidof xautolock)" ] || xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
+[ -n "$(pidof redshift)" ] || redshift &
+[ -n "$(pidof dunst)" ] || dunst &
+[ -n "$(pidof nm-applet)" ] || nm-applet &
+[ -n "$(pidof syncthing)" ] || syncthing &
 
 ## Start WM
 # exec slstatus
-dwm-status &
+[ -n "$(pidof dwm-status)" ] || dwm-status &
 exec dwm
 # while true; do
 #     dwm 2> ~/.dwm.log
