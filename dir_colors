@@ -1,0 +1,66 @@
+# Below are the color init strings for the basic file types. A color init string
+# consists of one or more of the following numeric codes:
+#
+# Attributes:
+#
+#  0     to restore default color
+#  1     for brighter colors
+#  4     for underlined text
+#  5     for flashing text
+#
+# Foreground:
+#
+# 30     for black foreground
+# 31     for red foreground
+# 32     for green foreground
+# 33     for yellow (or brown) foreground
+# 34     for blue foreground
+# 35     for purple foreground
+# 36     for cyan foreground
+# 37     for white (or gray) foreground
+#
+# Background:
+#
+# 40     for black background
+# 41     for red background
+# 42     for green background
+# 43     for yellow (or brown) background
+# 44     for blue background
+# 45     for purple background
+# 46     for cyan background
+# 47     for white (or gray) background
+#
+# 256 colour is available:
+#
+# - https://www.mail-archive.com/bug-coreutils@gnu.org/msg11030.html
+# - https://github.com/morhetz/gruvbox
+#
+# Text color coding:
+# 38;5;COLOR_NUMBER
+# Background color coding:
+# 48;5;COLOR_NUMBER
+# COLOR_NUMBER is from 0 to 255.
+
+NORMAL 00;38;5;250 # no color code at all
+FILE   00;38;5;223 # regular file: use no color at all
+RESET  00;38;5;172 # reset to "normal" color
+DIR    00;38;5;109 # directory
+LINK   target      # symbolic link. (If you set this to 'target' instead of a
+                   # numerical value, the color is as for the file pointed to.)
+
+MULTIHARDLINK         04        # regular file with more than one link
+FIFO                  40;33     # pipe
+SOCK                  38;5;211  # socket
+DOOR                  38;5;211  # door
+BLK                   40;33;01  # block device driver
+CHR                   40;33;01  # character device driver
+ORPHAN                40;31;01  # symlink to nonexistent file, or non-stat'able file
+SETUID                37;41     # file that is setuid (u+s)
+SETGID                30;43     # file that is setgid (g+s)
+CAPABILITY            30;41     # file with capability
+STICKY_OTHER_WRITABLE 01;36;44  # dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE        38;5;208;48;5;243 # dir that is other-writable (o+w) and not sticky
+STICKY                38;5;208;48;5;243 # dir with the sticky bit set (+t) and not other-writable
+
+# This is for files with execute permission:
+EXEC  01;30;32

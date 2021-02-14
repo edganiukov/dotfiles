@@ -54,16 +54,6 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+q kill
 
-# First class rofi
-bindsym $mod+r exec --no-startup-id "rofi -combi-modi drun,run -show combi"
-bindsym $mod+p exec --no-startup-id "gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -c"
-
-# Second class rofi
-bindsym $mod1+t exec --no-startup-id "rofi -show window"
-bindsym $mod1+c exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -no-history"
-
-bindsym $mod1+l exec $locker
-
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+Tab focus left

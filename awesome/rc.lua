@@ -60,7 +60,7 @@ local altkey       = "Mod1"
 local terminal     = "st"
 local editor       = os.getenv("EDITOR") or "vim"
 local browser      = "firefox"
-local scrlocker    = "i3lock -n -c 282828 -R 128"
+local scrlocker    = "i3lock -n -c 282828"
 
 awful.util.terminal = terminal
 awful.util.tagnames = {" 1 ", " 2 ", " 3 ", " 4 " , " 5 ", " 6 ", " 7 ", " 8 ", " 9 "}

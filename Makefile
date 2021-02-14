@@ -25,6 +25,7 @@ git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
 
 zsh:
+	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
 	mkdir $(HOME)/.zsh
 	ln -s $(CWD)/zsh/zshrc $(HOME)/.zshrc
 	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins

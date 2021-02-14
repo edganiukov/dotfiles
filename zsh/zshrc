@@ -20,6 +20,8 @@ export LIBVA_DRIVER_NAME=iHD
 # Tex
 export TEXMFHOME=$HOME/.texmf
 
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+
 ## Settings
 ###########
 
@@ -89,8 +91,9 @@ bindkey "\C-k" vi-kill-eol
 
 ## Aliases
 ##########
-
-alias ll='ls -hl'
+#
+alias ls='ls --color'
+alias ll='ls --color -hl'
 alias grep="grep --colour"
 
 alias tmux="tmux -u2"
