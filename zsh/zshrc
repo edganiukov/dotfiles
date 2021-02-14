@@ -228,7 +228,3 @@ gitsync() {
 
     git checkout ${currBranch}
 }
-
-# Local zsh config
-###################
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
