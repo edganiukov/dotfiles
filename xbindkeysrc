@@ -50,7 +50,7 @@
     XF86KbdBrightnessDown
 
 "dmenu_run_recent"
-Mod4+r
+Mod4+d
 
 "st"
 Mod4+Return
@@ -60,3 +60,6 @@ Mod4+p
 
 "i3lock -n -c 282828"
 Mod4+Shift+s
+
+# "st -c stfloat -g 60x15 -e zsh -c 'compgen -c | sort -u  | fzf --reverse | zsh'"
+# Mod4+r

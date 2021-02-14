@@ -10,10 +10,6 @@ import XMonad.Util.EZConfig(additionalKeys)
 
 import System.IO
 
-myLock = "i3lock -n -c 282828 -R 128"
-
-myTerminal = "st"
-
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 main = do
@@ -28,10 +24,6 @@ main = do
                         }
         , borderWidth = 4
         } `additionalKeys`
-        [ ((mod4Mask,               xK_Return), spawn myTerminal)
-        , ((mod4Mask ,              xK_d),      spawn "dmenu_run_recent")
-        , ((mod4Mask .|. shiftMask, xK_z),      spawn myLock)
-        , ((mod4Mask .|. shiftMask, xK_p),      spawn "sleep 0.2; scrot -s")
-        , ((mod4Mask .|. shiftMask, xK_r),      spawn "xmonad --restart")
+        [ ((mod4Mask .|. shiftMask, xK_r),      spawn "xmonad --restart")
         ]
 

@@ -25,9 +25,10 @@ git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
 
 zsh:
-	ln -s $(CWD)/zshrc $(HOME)/.zshrc
-	ln -s $(CWD)/zsh $(HOME)/.zsh
-	ln -s $(CWD)/zlogin $(HOME)/.zlogin
+	mkdir $(HOME)/.zsh
+	ln -s $(CWD)/zsh/zshrc $(HOME)/.zshrc
+	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
+	ln -s $(CWD)/zsh/zlogin $(HOME)/.zlogin
 
 alacritty:
 	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml

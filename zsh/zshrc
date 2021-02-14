@@ -2,7 +2,6 @@
 ###########
 
 # General vars
-export PATH=/usr/local/bin:$HOME/.bin:$HOME/.local/bin:$PATH
 export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
 export EDITOR=nvim
@@ -11,18 +10,13 @@ export SHELL=/bin/zsh
 
 # Go vars
 export GOPATH=$HOME/.go
-export PATH=$GOPATH/bin:$PATH
 
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
-export PATH=$HOME/.cargo/bin:$PATH
-
 # MC vars
 export MC_XDG_OPEN=nohup-open
-
 # mpv
 export LIBVA_DRIVER_NAME=iHD
-
 # Tex
 export TEXMFHOME=$HOME/.texmf
 
@@ -57,6 +51,8 @@ setopt hash_cmds
 
 autoload -Uz compinit
 compinit
+# autoload -Uz bashcompinit
+# bashcompinit
 
 zstyle ':completion:*' completer _expand _complete _ignored
 zstyle :compinstall filename '~/.zshrc'
@@ -146,22 +142,24 @@ RPROMPT='[%F{yellow}%*%f] $ '
 ##########
 
 # https://github.com/zsh-users/zsh-history-substring-search
-if [ -f ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh ]; then
-    source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-    bindkey "\e[A" history-substring-search-up
-    bindkey "\e[B" history-substring-search-down
-    # bindkey '^[[A' history-substring-search-up
-    # bindkey '^[[B' history-substring-search-down
+source ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey "\e[A" history-substring-search-up
+bindkey "\e[B" history-substring-search-down
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
 
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
-fi
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
 # https://github.com/zsh-users/zsh-autosuggestions
-[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # https://github.com/zsh-users/zsh-completions
-[ -d ~/.zsh/zsh-completions/src ] && fpath=(~/.zsh/zsh-completions/src $fpath)
+fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
+
+# FZF
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
