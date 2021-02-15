@@ -438,6 +438,7 @@ au User lsp_setup call lsp#register_server({
   \ 'workspace_config': {'gopls': {
       \ 'codelenses': {'generate': v:false, 'gc_details': v:true},
       \ 'hoverKind': 'FullDocumentation',
+      \ 'experimentalWorkspaceModule': v:true,
   \ }},
   \ 'allowlist': ['go'],
   \ })
