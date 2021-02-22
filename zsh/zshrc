@@ -103,11 +103,8 @@ alias curl="curl -s"
 alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 alias i3lock="i3lock -n -c 282828"
-
-# Void linux package manager
-alias xi="sudo xbps-install"
-alias xr="sudo xbps-remove"
-alias xq="xbps-query"
+alias tig="nvim -c :GV"
+alias magit="nvim -c :Magit"
 
 alias k="kubectl"
 alias w="watson"
@@ -212,12 +209,8 @@ tm() {
 
 # gitsync
 gitsync() {
-    remote=${1}
-    if [ -z "${remote}" ]; then
-        echo "[ERROR]: remote is not specified"
-        return 1
-    fi
-    branch=${2:-"master"}
+    branch=${1:-"master"}
+    remote=${2:-"upstream"}
     echo "[INFO] Sync ${remote}/${branch} to origin/${branch}"
     read -s -k "?[INFO] Press any key to continue"
     echo "\n[INFO] syncing ... "

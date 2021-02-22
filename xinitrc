@@ -9,7 +9,6 @@ xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
  # keyboard setting
-xbindkeys
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
@@ -24,10 +23,13 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
 [ -n "$(pidof xautolock)" ] || xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
+[ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
-[ -n "$(pidof dunst)" ] || dunst &
 [ -n "$(pidof nm-applet)" ] || nm-applet &
 [ -n "$(pidof syncthing)" ] || syncthing &
+
+# via systemd
+# [ -n "$(pidof dunst)" ] || dunst &
 
 ## Start WM
 # exec slstatus

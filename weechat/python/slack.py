@@ -76,31 +76,31 @@ RECORD_DIR = "/tmp/weeslack-debug"
 
 SLACK_API_TRANSLATOR = {
     "channel": {
-        "history": "channels.history",
+        "history": "conversations.history",
         "join": "conversations.join",
         "leave": "conversations.leave",
-        "mark": "channels.mark",
-        "info": "channels.info",
+        "mark": "conversations.mark",
+        "info": "conversations.info",
     },
     "im": {
-        "history": "im.history",
+        "history": "conversations.history",
         "join": "conversations.open",
         "leave": "conversations.close",
-        "mark": "im.mark",
+        "mark": "conversations.mark",
     },
     "mpim": {
-        "history": "mpim.history",
-        "join": "mpim.open",  # conversations.open lacks unread_count_display
+        "history": "conversations.history",
+        "join": "conversations.open",
         "leave": "conversations.close",
-        "mark": "mpim.mark",
-        "info": "groups.info",
+        "mark": "conversations.mark",
+        "info": "conversations.info",
     },
     "group": {
-        "history": "groups.history",
+        "history": "conversations.history",
         "join": "conversations.join",
         "leave": "conversations.leave",
-        "mark": "groups.mark",
-        "info": "groups.info"
+        "mark": "conversations.mark",
+        "info": "conversations.info"
     },
     "private": {
         "history": "conversations.history",
@@ -113,7 +113,7 @@ SLACK_API_TRANSLATOR = {
         "history": "conversations.history",
         "join": "conversations.join",
         "leave": "conversations.leave",
-        "mark": "channels.mark",
+        "mark": "conversations.mark",
         "info": "conversations.info",
     },
     "thread": {
@@ -1615,11 +1615,12 @@ class SlackChannelCommon(object):
                 self.print_getting_history()
 
     def send_message(self, message, subtype=None, request_dict_ext={}):
-        message = linkify_text(message, self.team)
         if subtype == 'me_message':
+            message = linkify_text(message, self.team, escape_characters=False)
             s = SlackRequest(self.team, "chat.meMessage", {"channel": self.identifier, "text": message}, channel=self)
             self.eventrouter.receive(s)
         else:
+            message = linkify_text(message, self.team)
             request = {"type": "message", "channel": self.identifier,
                     "text": message, "user": self.team.myidentifier}
             request.update(request_dict_ext)
@@ -3643,23 +3644,24 @@ def render_formatting(text):
     return text
 
 
-def linkify_text(message, team, only_users=False):
+def linkify_text(message, team, only_users=False, escape_characters=True):
     # The get_username_map function is a bit heavy, but this whole
     # function is only called on message send..
     usernames = team.get_username_map()
     channels = team.get_channel_map()
     usergroups = team.generate_usergroup_map()
-    message_escaped = (message
-        # Replace IRC formatting chars with Slack formatting chars.
-        .replace('\x02', '*')
-        .replace('\x1D', '_')
-        .replace('\x1F', config.map_underline_to)
-        # Escape chars that have special meaning to Slack. Note that we do not
-        # (and should not) perform full HTML entity-encoding here.
-        # See https://api.slack.com/docs/message-formatting for details.
-        .replace('&', '&amp;')
-        .replace('<', '&lt;')
-        .replace('>', '&gt;'))
+    if escape_characters:
+        message = (message
+            # Replace IRC formatting chars with Slack formatting chars.
+            .replace('\x02', '*')
+            .replace('\x1D', '_')
+            .replace('\x1F', config.map_underline_to)
+            # Escape chars that have special meaning to Slack. Note that we do not
+            # (and should not) perform full HTML entity-encoding here.
+            # See https://api.slack.com/docs/message-formatting for details.
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;'))
 
     def linkify_word(match):
         word = match.group(0)
@@ -3677,7 +3679,7 @@ def linkify_text(message, team, only_users=False):
         return word
 
     linkify_regex = r'(?:^|(?<=\s))([@#])([\w\(\)\'.-]+)'
-    return re.sub(linkify_regex, linkify_word, message_escaped, flags=re.UNICODE)
+    return re.sub(linkify_regex, linkify_word, message, flags=re.UNICODE)
 
 
 def unfurl_blocks(blocks):
@@ -3791,6 +3793,8 @@ def unwrap_attachments(message_json, text_before):
             # $author: (if rest of line is non-empty) $title ($title_link) OR $from_url
             # $author: (if no $author on previous line) $text
             # $fields
+            if 'original_url' in attachment and not config.link_previews:
+               continue
             t = []
             prepend_title_text = ''
             if 'author_name' in attachment:
@@ -4578,7 +4582,7 @@ def command_showmuted(data, current_buffer, args):
 @utf8_decode
 def command_thread(data, current_buffer, args):
     """
-    /thread [message_id]
+    /thread [count/message_id]
     Open the thread for the message.
     If no message id is specified the last thread in channel will be opened.
     """
@@ -4588,8 +4592,10 @@ def command_thread(data, current_buffer, args):
         print_error('/thread can not be used in the team buffer, only in a channel')
         return w.WEECHAT_RC_ERROR
 
-    message_filter = lambda message: message.number_of_replies()
-    message = channel.message_from_hash_or_index(args, message_filter)
+    message = channel.message_from_hash(args)
+    if not message:
+        message_filter = lambda message: message.number_of_replies()
+        message = channel.message_from_hash_or_index(args, message_filter)
 
     if message:
         message.open_thread(switch=config.switch_buffer_on_join)
@@ -5362,6 +5368,9 @@ class PluginConfig(object):
             default='200',
             desc='The number of messages to fetch for each channel when fetching'
             ' history, between 1 and 1000.'),
+        'link_previews': Setting(
+            default='true',
+            desc='Show previews of website content linked by teammates.'),
         'map_underline_to': Setting(
             default='_',
             desc='When sending underlined text to slack, use this formatting'
