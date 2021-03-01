@@ -22,6 +22,9 @@ export TEXMFHOME=$HOME/.texmf
 
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
+[ -n "$(pidof ssh-agent)" ] || ssh-agent -s > ~/.ssh-agent.env
+source ~/.ssh-agent.env
+
 ## Settings
 ###########
 
@@ -209,8 +212,8 @@ tm() {
 
 # gitsync
 gitsync() {
-    branch=${1:-"master"}
-    remote=${2:-"upstream"}
+    remote=${1:-"upstream"}
+    branch=${2:-"master"}
     echo "[INFO] Sync ${remote}/${branch} to origin/${branch}"
     read -s -k "?[INFO] Press any key to continue"
     echo "\n[INFO] syncing ... "
