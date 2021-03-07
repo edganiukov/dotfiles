@@ -7,6 +7,11 @@ export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
+export LC_COLLATE=C
+
+typeset -U path
+path+=('~/.bin')
+export PATH
 
 # Go vars
 export GOPATH=$HOME/.go
@@ -22,7 +27,7 @@ export TEXMFHOME=$HOME/.texmf
 
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
-[ -n "$(pidof ssh-agent)" ] || ssh-agent -s > ~/.ssh-agent.env
+[ -n "$(pidof ssh-agent)" ] || ssh-agent -s | grep -v echo > ~/.ssh-agent.env
 source ~/.ssh-agent.env
 
 ## Settings

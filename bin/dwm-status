@@ -21,6 +21,11 @@ wifi() {
     echo $WIFI_STATE
 }
 
+vpn() {
+    VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp)[0-9]+")
+    [ -n "$VPNS" ] && echo "on" || echo "off"
+}
+
 battery() {
     CAP=$(cat /sys/class/power_supply/BAT0/capacity)
     STATUS=$(cat /sys/class/power_supply/BAT0/status)
@@ -63,6 +68,6 @@ new_emails() {
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < $(datetime) <"
+    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < vpn: $(vpn) < net: $(wifi) < $(datetime) <"
     sleep 1
 done

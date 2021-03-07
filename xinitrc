@@ -25,11 +25,10 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 [ -n "$(pidof xautolock)" ] || xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828' &
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
-[ -n "$(pidof nm-applet)" ] || nm-applet &
 [ -n "$(pidof syncthing)" ] || syncthing &
 
-# via systemd
 # [ -n "$(pidof dunst)" ] || dunst &
+# [ -n "$(pidof nm-applet)" ] || nm-applet &
 
 ## Start WM
 # exec slstatus
