@@ -10,7 +10,7 @@ export SHELL=/bin/zsh
 export LC_COLLATE=C
 
 typeset -U path
-path+=('~/.bin')
+path+=('~/.local/bin')
 export PATH
 
 # Go vars

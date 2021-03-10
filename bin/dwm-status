@@ -23,7 +23,7 @@ wifi() {
 
 vpn() {
     VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp)[0-9]+")
-    [ -n "$VPNS" ] && echo "on" || echo "off"
+    [ -n "$VPNS" ] && echo "up" || echo "down"
 }
 
 battery() {

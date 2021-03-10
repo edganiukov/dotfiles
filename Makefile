@@ -50,9 +50,9 @@ etc:
 	sudo cp $(CWD)/etc/resolved.conf /etc/systemd/resolved.conf
 
 bin:
-	mkdir -p $(HOME)/.bin
-	ln -s $(CWD)/bin/dwm-status $(HOME)/.bin/
-	ln -s $(CWD)/bin/nohup-open $(HOME)/.bin/
+	mkdir -p $(HOME)/.local/bin
+	ln -s $(CWD)/bin/dwm-status $(HOME)/.local/bin/
+	ln -s $(CWD)/bin/nohup-open $(HOME)/.local/bin/
 
 # wm
 awesome:
