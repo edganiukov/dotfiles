@@ -7,12 +7,12 @@
 # X settings
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
-
  # keyboard setting
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
 # key repeat
 xset r rate 200 20
 
+systemctl --user import-environment DISPLAY
 wmname compiz
 
 # export QT_FONT_DPI=96

@@ -4,7 +4,7 @@
 unmailboxes *
 
 # FastMail account
-set pgp_sign_as=0x396929A5500D3238
+set pgp_sign_as=0xCCC46DB51C913328
 set crypt_autosign="yes"
 set crypt_replysign="yes"
 
