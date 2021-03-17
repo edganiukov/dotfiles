@@ -24,7 +24,7 @@ set smtp_pass = $my_smtp_pass
 
 set mbox_type=Maildir
 set folder="~/.mail/personal"
-mailboxes =Inbox =Archive =Archive/Dev =Archive/Important =Archive/Purchases =Drafts =Sent =Trash
+mailboxes =Inbox =Archive =Archive/D =Archive/I =Archive/P =Drafts =Sent =Trash
 
 set spoolfile = "=Inbox"
 set record = "=Sent"
