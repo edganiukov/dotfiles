@@ -3,11 +3,12 @@
 
 # General vars
 export LANG=en_US.UTF-8
-export GPG_TTY=$(tty)
 export EDITOR=nvim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
 export LC_COLLATE=C
+export LIBVA_DRIVER_NAME=iHD
+export TEXMFHOME=$HOME/.texmf
 
 typeset -U path
 path+=('~/.local/bin')
@@ -15,20 +16,15 @@ export PATH
 
 # Go vars
 export GOPATH=$HOME/.go
-
 # Rust vars
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
-# MC vars
-export MC_XDG_OPEN=nohup-open
-# mpv
-export LIBVA_DRIVER_NAME=iHD
-# Tex
-export TEXMFHOME=$HOME/.texmf
+
+# ssh and gpg
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
-
-[ -n "$(pidof ssh-agent)" ] || ssh-agent -s | grep -v echo > ~/.ssh-agent.env
-source ~/.ssh-agent.env
 
 ## Settings
 ###########
