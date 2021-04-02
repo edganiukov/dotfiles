@@ -175,7 +175,7 @@ macro index,pager "<enter-command>set pipe_decode = yes<enter><pipe-message>urlv
 macro attach,compose \Cb "<pipe-entry> urlview<Enter>" "Follow links"
 
 # Save all attachments
-macro pager S "<pipe-message> ripmime -i - -d ~/downloads && rm ~/downloads/textfile*" "Save all non-text attachments"
+macro pager S "<pipe-message> ripmime -i - -d ~/tmp && rm ~/tmp/textfile*" "Save all non-text attachments"
 
 ## Neomutt specific config
 set new_mail_command="notify-send --icon='~/dev/dotfiles/mutt/mutt.png' \
