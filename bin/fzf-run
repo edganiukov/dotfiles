@@ -9,4 +9,4 @@ touch "$cache"
 most_used=$(sort "$cache" | grep -v "^$" | sort | uniq -c | awk '{print $2}')
 
 export FZF_DEFAULT_COMMAND="fd . $(echo $PATH | tr ':' ' ') -c never -t x -X echo {/} | tr ' ' '\n' | sort -u"
-st -c stfloat -g 60x15 -e zsh -c 'fzf --reverse --bind "enter:execute({})+accept"' &
+st -c stfloat -g 60x15 -e zsh -c 'fzf --reverse --bind "enter:execute({} > /dev/null 2>&1)+accept"' &

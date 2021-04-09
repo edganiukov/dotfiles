@@ -5,6 +5,5 @@ export FZF_DEFAULT_COMMAND="fd '.*.gpg' ${pass_store} -c never -x echo {.} | sed
 
 st -c stfloat -g 60x15 -e zsh -c 'fzf --reverse --bind \
     "enter:execute(\
-        pass show -c {} \
-            && notify-send \"Password store\" \"# Password {} copied for 45s.\" \
+        pass show -c {} && notify-send \"Password store\" \"# Password {} copied for 45s.\" \
     )+accept"'
