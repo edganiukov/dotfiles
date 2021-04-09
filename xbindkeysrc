@@ -52,10 +52,13 @@
 "dmenu_run_recent"
 Mod4+d
 
+"fzf-run"
+Mod4+e
+
 "st"
 Mod4+Return
 
-"passmenu"
+"fzf-pass"
 Mod4+p
 
 "i3lock -n -c 282828"
