@@ -1,9 +1,16 @@
 #!/bin/zsh
-#
-pass_store=${PASSWORD_STORE_DIR-~/.password-store/}
-export FZF_DEFAULT_COMMAND="fd '.*.gpg' ${pass_store} -c never -x echo {.} | sed -e 's#${pass_store}##g'"
 
-st -c stfloat -g 60x15 -e zsh -c 'fzf --reverse --bind \
-    "enter:execute(\
-        pass show -c {} && notify-send \"Password store\" \"# Password {} copied for 45s.\" \
-    )+accept"'
+set -o pipefail
+
+cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
+last_pass="${cachedir}/.last_run"
+pass_store=${PASSWORD_STORE_DIR-~/.password-store/}
+
+truncate -s0 $last_pass
+
+st -c stfloat -g 60x15 -e zsh -c "fd '.*.gpg' ${pass_store} -c never -x echo {.} \
+    | sed -e 's#${pass_store}##g' \
+    | fzf --reverse > ${last_pass}"
+
+password=$(cat ${last_pass})
+[ -n "$password" ] && pass -c $password && notify-send "Password store" "# Password $password copied for 45s."
