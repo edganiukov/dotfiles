@@ -15,6 +15,8 @@ xset r rate 200 20
 systemctl --user import-environment DISPLAY
 wmname compiz
 
+gpgconf --launch gpg-agent
+
 # export QT_FONT_DPI=96
 # export GDK_DPI_SCALE=0.8
 # export QT_AUTO_SCREEN_SCALE_FACTOR=1

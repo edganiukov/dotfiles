@@ -4,7 +4,7 @@ set -o pipefail
 
 cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
 last_run="${cachedir}/.last_run"
-cache="$cachedir/run_recent"
+cache="$cachedir/.run_recent"
 
 truncate -s0 $last_run
 

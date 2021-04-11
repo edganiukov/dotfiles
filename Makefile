@@ -28,6 +28,7 @@ zsh:
 	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
 	mkdir $(HOME)/.zsh
 	ln -s $(CWD)/zsh/zshrc $(HOME)/.zshrc
+	ln -s $(CWD)/zsh/zshenv $(HOME)/.zshenv
 	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
 	ln -s $(CWD)/zsh/zlogin $(HOME)/.zlogin
 

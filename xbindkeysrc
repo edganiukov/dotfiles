@@ -49,11 +49,11 @@
 "brightnessctl --device=smc::kbd_backlight set 5%+"
     XF86KbdBrightnessDown
 
-"dmenu_run_recent"
+"fzf-run"
 Mod4+d
 
 "fzf-run"
-Mod4+e
+Mod4+r
 
 "st"
 Mod4+Return
@@ -63,6 +63,3 @@ Mod4+p
 
 "i3lock -n -c 282828"
 Mod4+Shift+s
-
-# "st -c stfloat -g 60x15 -e zsh -c 'compgen -c | sort -u  | fzf --reverse | zsh'"
-# Mod4+r

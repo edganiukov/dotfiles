@@ -1,0 +1,26 @@
+# General
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+export CLICOLOR=YES
+export SHELL=/bin/zsh
+export LC_COLLATE=C
+export LIBVA_DRIVER_NAME=iHD
+
+# LS_COLORS
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+
+# PATH
+typeset -U path
+path+=($HOME'/.local/bin')
+export PATH
+
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# Fix Java apps
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# Lang vars
+export GOPATH=$HOME/.go
+[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env
+export TEXMFHOME=$HOME/.texmf
