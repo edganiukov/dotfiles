@@ -15,7 +15,8 @@ path+=($HOME'/.local/bin')
 export PATH
 
 export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+[ -n "$(pidof ssh-agent)" ] || ssh-agent -s | grep -v echo > ~/.ssh-agent.env
+source ~/.ssh-agent.env
 
 # Fix Java apps
 export _JAVA_AWT_WM_NONREPARENTING=1

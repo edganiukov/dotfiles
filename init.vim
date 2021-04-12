@@ -354,6 +354,7 @@ let NERDTreeIgnore = [
   \ '\.git$',
   \ '\.test$',
   \ '\.pyc$',
+  \ '^bazel-*',
   \ ]
 
 let g:NERDTreeMapActivateNode = '<Space>'
