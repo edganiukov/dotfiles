@@ -1,3 +1,4 @@
 *.local
 *.log
 *sec.conf
+weechat/*.txt

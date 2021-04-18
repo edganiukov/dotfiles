@@ -12,6 +12,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chaoren/vim-wordmotion'
+Plug 'mcchrish/nnn.vim'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -41,7 +42,7 @@ syntax on
 
 set t_Co=256
 set t_ut=
-set termguicolors
+" set termguicolors
 set bg=dark
 
 colorscheme off
@@ -249,11 +250,12 @@ hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 " Plug 'jreybert/vimagit'
 "
 let g:magit_commit_title_limit = 80
+nnoremap vm :Magit<CR>
 
 
 " Plug 'junegunn/gv.vim'
 "
-nnoremap <leader>gv :GV<CR>
+nnoremap vg :GV<CR>
 
 
 " Plug 'majutsushi/tagbar'
@@ -319,32 +321,6 @@ command! -bang -nargs=* Rg
   \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
 
 
-" lf file manager
-"
-function! LF()
-    let temp = tempname()
-    exec 'silent !lf -selection-path=' . shellescape(temp)
-    if !filereadable(temp)
-        redraw!
-        return
-    endif
-    let names = readfile(temp)
-    if empty(names)
-        redraw!
-        return
-    endif
-    exec 'edit ' . fnameescape(names[0])
-    for name in names[1:]
-        exec 'argadd ' . fnameescape(name)
-    endfor
-    redraw!
-endfunction
-
-command! -bang LF call LF()
-
-nnoremap <leader>lf :LF<CR>
-
-
 " Plug 'itchyny/lightline'
 "
 let g:bufferline_echo = 0
@@ -399,6 +375,11 @@ map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1
       \ && exists("b:NERDTree") 
       \ && b:NERDTree.isTabTree()) | q | endif
+
+" Plug 'mcchrish/nnn.vim'
+"
+let g:nnn#command = 'zsh -i -c n'
+let g:nnn#layout = { 'left': '40' }
 
 
 "Plug 'Shougo/echodoc.vim'

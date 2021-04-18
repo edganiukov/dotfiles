@@ -6,6 +6,7 @@ gotags
 ctags
 rustup
 git
+github-cli
 
 # C
 # lldb
@@ -25,23 +26,30 @@ direnv
 curl
 nmap
 pass
-prs
+gopass
 urlview
 xclip
 brightnessctl
-redshift
+redshift-minimal
+feh
+isync
 
 # tui
 neovim
-mc
-lf
+nnn
 htop
 rtorrent
 mutt
 weechat
-glow
+perl-pod-parser
 
 # gui
 dunst
 sxiv
 mpv
+zathura
+
+# obsolete
+# glow
+# mc
+# lf

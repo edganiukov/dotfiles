@@ -15,8 +15,8 @@ setopt hist_expire_dups_first
 setopt hist_save_no_dups
 setopt hist_find_no_dups
 setopt hist_reduce_blanks
-setopt share_history
 setopt hist_verify
+# setopt share_history
 
 setopt extended_glob
 setopt noequals
@@ -203,7 +203,7 @@ gitsync() {
     git checkout ${cbranch}
 }
 
-function gitbr() {
+gitbr() {
     action=${1:-"co"}
     case $action in
     "del")
@@ -223,7 +223,7 @@ function gitbr() {
     esac
 }
 
-function gitpr() {
+gitpr() {
    pr=$(
        gh api 'repos/:owner/:repo/pulls' |
        jq --raw-output '.[] | "#\(.number) \(.title)"' |
