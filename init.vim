@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'edganiukov/vim-colors-off'
+Plug 'doums/darcula'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -12,7 +13,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chaoren/vim-wordmotion'
-Plug 'mcchrish/nnn.vim'
 
 " Git
 Plug 'mhinz/vim-signify'
@@ -42,10 +42,11 @@ syntax on
 
 set t_Co=256
 set t_ut=
-" set termguicolors
+set termguicolors
 set bg=dark
 
-colorscheme off
+colorscheme darcula
+call darcula#Hi('Constant', ['#9876AA', 103])
 
 " cmd autocomplete
 set wildmenu
@@ -127,6 +128,8 @@ else
   let &t_EI = "\e[2 q"
 endif
 
+let mapleader=';'
+
 " abbreviations
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
@@ -205,9 +208,11 @@ inoremap <Right> <NOP>
 " insert current date
 nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
+
 " semicolon in the EOL
-nnoremap ;; A;<Esc>
-inoremap ;; <C-o>A;
+" nnoremap ;; A;<Esc>
+" inoremap ;; <C-o>A;
+"
 " expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
@@ -365,7 +370,7 @@ let NERDTreeIgnore = [
   \ '\.pyc$',
   \ ]
 
-let NERDTreeMapActivateNode = '<Space>'
+let g:NERDTreeMapActivateNode = '<Space>'
 let g:NERDTreeWinSize = 40
 
 let g:NERDTreeDirArrowExpandable = '+'
@@ -375,11 +380,6 @@ map <F3> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1
       \ && exists("b:NERDTree") 
       \ && b:NERDTree.isTabTree()) | q | endif
-
-" Plug 'mcchrish/nnn.vim'
-"
-let g:nnn#command = 'zsh -i -c n'
-let g:nnn#layout = { 'left': '40' }
 
 
 "Plug 'Shougo/echodoc.vim'
