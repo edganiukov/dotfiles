@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'edganiukov/vim-colors-off'
-Plug 'doums/darcula'
 
 " Basic
 Plug 'itchyny/lightline.vim'
@@ -45,8 +44,7 @@ set t_ut=
 set termguicolors
 set bg=dark
 
-colorscheme darcula
-call darcula#Hi('Constant', ['#9876AA', 103])
+colorscheme off
 
 " cmd autocomplete
 set wildmenu
