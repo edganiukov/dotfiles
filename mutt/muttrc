@@ -116,7 +116,7 @@ source ~/.mutt/conf.d/colors
 source ~/.mutt/conf.d/pgprc
 
 auto_view text/html
-alternative_order text/plain text/html
+# alternative_order text/plain text/html
 
 ## Headers
 ignore *

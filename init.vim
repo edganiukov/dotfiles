@@ -126,7 +126,7 @@ else
   let &t_EI = "\e[2 q"
 endif
 
-" let mapleader=';'
+let mapleader=';'
 
 " abbreviations
 cnoreabbrev W! w!

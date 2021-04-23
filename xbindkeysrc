@@ -12,11 +12,11 @@
 
 # Increase volume 5% with Mod4+Up
 "pactl set-sink-volume @DEFAULT_SINK@ +5%"
-    Mod4+Up
+    Mod4+k
 
 # Decrease volume 5% with Mod4+Down.
 "pactl set-sink-volume @DEFAULT_SINK@ -5%"
-    Mod4+Down
+    Mod4+j
 
 # Mute with Apple mute
 "pactl set-sink-mute @DEFAULT_SINK@ toggle"
