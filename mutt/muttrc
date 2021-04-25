@@ -155,6 +155,7 @@ bind index,pager <A-right> sidebar-open
 bind index,pager \ej sidebar-next
 bind index,pager \ek sidebar-prev
 bind index,pager \el sidebar-open
+bind index,pager \em sidebar-open
 bind index,pager \eb sidebar-toggle-visible
 
 ## Macro
