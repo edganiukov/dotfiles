@@ -33,6 +33,7 @@
     cb = checkout -b
     cm = commit
     st = status
+    d = diff
 
 [interactive]
     diffFilter = delta --color-only
