@@ -50,9 +50,6 @@
     XF86KbdBrightnessDown
 
 "fzf-run"
-Mod4+d
-
-"fzf-run"
 Mod4+r
 
 "st"
