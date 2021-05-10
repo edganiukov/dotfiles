@@ -33,6 +33,7 @@ zsh:
 	ln -s $(CWD)/zsh/zlogin $(HOME)/.zlogin
 
 alacritty:
+	mkdir -p $(HOME)/.config/alacritty
 	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 x:

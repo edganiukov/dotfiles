@@ -7,13 +7,14 @@
 # X settings
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
- # keyboard setting
-setxkbmap -layout us,ru -option 'grp:caps_toggle'
+
 # key repeat
 xset r rate 200 20
 
+ # keyboard setting
+setxkbmap -layout us,ru -option 'grp:caps_toggle'
+
 systemctl --user import-environment DISPLAY
-wmname compiz
 
 gpgconf --launch gpg-agent
 

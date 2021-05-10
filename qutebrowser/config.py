@@ -17,7 +17,7 @@ c.qt.process_model = "process-per-site"
 c.qt.args = ["enable-native-gpu-memory-buffers", "enable-gpu-rasterization", "use-gl=egl", "ignore-gpu-blacklist", "num-raster-threads=4"]
 
 # Default zoom level.
-c.zoom.default = "75%"
+c.zoom.default = "100%"
 
 c.downloads.location.directory = '~/tmp'
 
@@ -92,7 +92,7 @@ c.scrolling.smooth = False
 c.scrolling.bar = "always"
 
 # Padding (in pixels) around text for tabs.
-c.tabs.padding = {'bottom': 2, 'left': 2, 'right': 2, 'top': 2}
+c.tabs.padding = {'bottom': 1, 'left': 1, 'right': 1, 'top': 1}
 
 # Open blank page when close last tab
 c.tabs.last_close = 'default-page'
@@ -290,13 +290,13 @@ c.fonts.web.family.sans_serif = 'Liberation Sans'
 c.fonts.web.family.cursive = 'Liberation Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 14
+c.fonts.web.size.default = 10
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 14
+c.fonts.web.size.default_fixed = 10
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 12
+c.fonts.web.size.minimum = 10
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 12
+c.fonts.web.size.minimum_logical = 10
