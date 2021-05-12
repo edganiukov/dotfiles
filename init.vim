@@ -472,19 +472,17 @@ au User lsp_setup call lsp#register_server({
 "   \ 'whitelist': ['kotlin']
 "   \ })
 
+let g:lsp_fold_enabled = 0
+let g:lsp_insert_text_enabled = 0
+
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_virtual_text_enabled = 0
 
-let g:lsp_textprop_enabled = 0
-let g:lsp_highlight_references_enabled = 0
-let g:lsp_fold_enabled = 0
-let g:lsp_insert_text_enabled = 0
-
-let g:lsp_signs_error = {'text': 'x'}
-let g:lsp_signs_warning = {'text': '>'}
-let g:lsp_signs_information = {'text': '@'}
-let g:lsp_signs_hint = {'text': '*'}
+let g:lsp_diagnostics_signs_error = {'text': 'x'}
+let g:lsp_diagnostics_signs_warning = {'text': '>'}
+let g:lsp_diagnostics_signs_information = {'text': '@'}
+let g:lsp_diagnostics_signs_hint = {'text': '*'}
 
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
@@ -506,7 +504,10 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-autocmd FileType go,rust,c,cpp,python
+" autocmd FileType c,cpp
+"   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+
+autocmd FileType go,rust,python
   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 
