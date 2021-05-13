@@ -76,7 +76,7 @@ except ImportError:
 
 SCRIPT_NAME = "slack"
 SCRIPT_AUTHOR = "Ryan Huber <rhuber@gmail.com>"
-SCRIPT_VERSION = "2.7.0"
+SCRIPT_VERSION = "2.8.0"
 SCRIPT_LICENSE = "MIT"
 SCRIPT_DESC = "Extends weechat for typing notification/search/etc on slack.com"
 REPO_URL = "https://github.com/wee-slack/wee-slack"
@@ -1511,7 +1511,7 @@ class SlackTeam(object):
         users,
         bots,
         channels,
-        **kwargs
+        **kwargs,
     ):
         self.slack_api_translator = copy.deepcopy(SLACK_API_TRANSLATOR)
         self.identifier = team_info["id"]
@@ -2084,6 +2084,7 @@ class SlackChannel(SlackChannelCommon):
         self.last_read = SlackTS(kwargs.get("last_read", 0))
         self.channel_buffer = None
         self.got_history = False
+        self.got_members = False
         self.history_needs_update = False
         self.pending_history_requests = set()
         self.messages = OrderedDict()
@@ -2465,14 +2466,8 @@ class SlackChannel(SlackChannelCommon):
     def is_visible(self):
         return w.buffer_get_integer(self.channel_buffer, "hidden") == 0
 
-    def get_history(self, slow_queue=False, full=False, no_log=False):
-        if self.identifier in self.pending_history_requests:
-            return
-
-        self.print_getting_history()
-        self.pending_history_requests.add(self.identifier)
-
-        if not self.got_history:
+    def get_members(self):
+        if not self.got_members:
             # Slack has started returning only a few members for some channels
             # in rtm.start. I don't know how we can check if the member list is
             # complete, so we have to fetch members for all channels.
@@ -2483,6 +2478,14 @@ class SlackChannel(SlackChannelCommon):
                 channel=self,
             )
             self.eventrouter.receive(s)
+
+    def get_history(self, slow_queue=False, full=False, no_log=False):
+        if self.identifier in self.pending_history_requests:
+            return
+
+        self.print_getting_history()
+        self.pending_history_requests.add(self.identifier)
+        self.get_members()
 
         post_data = {"channel": self.identifier, "count": config.history_fetch_count}
         if self.got_history and self.messages and not full:
@@ -2672,8 +2675,14 @@ class SlackChannel(SlackChannelCommon):
         text = message.render(force)
         if isinstance(message, SlackThreadMessage):
             thread_hash = self.hashed_messages[message.thread_ts]
+            if config.thread_broadcast_prefix and message.subtype == "thread_broadcast":
+                prefix = config.thread_broadcast_prefix
+            else:
+                prefix = ""
+
             hash_str = colorize_string(
-                get_thread_color(str(thread_hash)), "[{}]".format(thread_hash)
+                get_thread_color(str(thread_hash)),
+                "[{}{}]".format(prefix, thread_hash),
             )
             return "{} {}".format(hash_str, text)
 
@@ -2847,14 +2856,25 @@ class SlackMPDMChannel(SlackChannel):
     """
 
     def __init__(self, eventrouter, team_users, myidentifier, **kwargs):
-        kwargs["name"] = ",".join(
+        if "members" in kwargs:
+            kwargs["name"] = self.name_from_members(
+                team_users, kwargs["members"], myidentifier
+            )
+        super(SlackMPDMChannel, self).__init__(eventrouter, "mpim", **kwargs)
+
+    def name_from_members(self, team_users=None, members=None, myidentifier=None):
+        return ",".join(
             sorted(
-                getattr(team_users.get(user_id), "name", user_id)
-                for user_id in kwargs["members"]
-                if user_id != myidentifier
+                getattr((team_users or self.team.users).get(user_id), "name", user_id)
+                for user_id in (members or self.members)
+                if user_id != (myidentifier or self.team.myidentifier)
             )
         )
-        super(SlackMPDMChannel, self).__init__(eventrouter, "mpim", **kwargs)
+
+    def create_buffer(self):
+        if not self.channel_buffer:
+            self.get_members()
+            super(SlackMPDMChannel, self).create_buffer()
 
     def open(self, update_remote=True):
         self.create_buffer()
@@ -3589,6 +3609,10 @@ def handle_rtmstart(login_data, eventrouter, team, channel, metadata):
         for item in login_data["channels"]:
             if item["is_shared"]:
                 channels[item["id"]] = SlackSharedChannel(eventrouter, **item)
+            elif item["is_mpim"]:
+                channels[item["id"]] = SlackMPDMChannel(
+                    eventrouter, users, login_data["self"]["id"], **item
+                )
             elif item["is_private"]:
                 channels[item["id"]] = SlackPrivateChannel(eventrouter, **item)
             else:
@@ -3597,12 +3621,13 @@ def handle_rtmstart(login_data, eventrouter, team, channel, metadata):
         for item in login_data["ims"]:
             channels[item["id"]] = SlackDMChannel(eventrouter, users, **item)
 
+        for item in login_data["mpims"]:
+            channels[item["id"]] = SlackMPDMChannel(
+                eventrouter, users, login_data["self"]["id"], **item
+            )
+
         for item in login_data["groups"]:
-            if item["is_mpim"]:
-                channels[item["id"]] = SlackMPDMChannel(
-                    eventrouter, users, login_data["self"]["id"], **item
-                )
-            else:
+            if not item["is_mpim"]:
                 channels[item["id"]] = SlackGroupChannel(eventrouter, **item)
 
         t = SlackTeam(
@@ -3777,11 +3802,15 @@ def handle_conversationsreplies(message_json, eventrouter, team, channel, metada
 
 def handle_conversationsmembers(members_json, eventrouter, team, channel, metadata):
     if members_json["ok"]:
+        channel.got_members = True
         channel.set_members(members_json["members"])
         unknown_users = set(members_json["members"]) - set(team.users.keys())
         for user in unknown_users:
             s = SlackRequest(team, "users.info", {"user": user}, channel=channel)
             eventrouter.receive(s)
+        if channel.type == "mpim":
+            name = channel.name_from_members()
+            channel.set_name(name)
     else:
         w.prnt(
             team.channel_buffer,
@@ -4009,7 +4038,10 @@ def download_files(message_json, channel):
     download_location = config.files_download_location
     if not download_location:
         return
-    download_location = w.string_eval_path_home(download_location, {}, {}, {})
+    options = {
+        "directory": "data",
+    }
+    download_location = w.string_eval_path_home(download_location, {}, {}, options)
 
     if not os.path.exists(download_location):
         try:
@@ -4218,14 +4250,20 @@ def process_im_close(message_json, eventrouter, team, channel, metadata):
     )
 
 
+def process_mpim_joined(message_json, eventrouter, team, channel, metadata):
+    item = message_json["channel"]
+    channel = SlackMPDMChannel(
+        eventrouter, team.users, team.myidentifier, team=team, **item
+    )
+    team.channels[item["id"]] = channel
+    channel.open()
+
+
 def process_group_joined(message_json, eventrouter, team, channel, metadata):
     item = message_json["channel"]
-    if item["name"].startswith("mpdm-"):
-        channel = SlackMPDMChannel(
-            eventrouter, team.users, team.myidentifier, team=team, **item
-        )
-    else:
-        channel = SlackGroupChannel(eventrouter, team=team, **item)
+    if item["is_mpim"]:
+        return
+    channel = SlackGroupChannel(eventrouter, team=team, **item)
     team.channels[item["id"]] = channel
     channel.open()
 
@@ -5784,7 +5822,7 @@ def command_upload(data, current_buffer, args):
     Uploads a file to the current buffer.
     """
     channel = EVENTROUTER.weechat_controller.buffers[current_buffer]
-    weechat_dir = w.info_get("weechat_dir", "")
+    weechat_dir = w.info_get("weechat_data_dir", "") or w.info_get("weechat_dir", "")
     file_path = os.path.join(weechat_dir, os.path.expanduser(args))
 
     if channel.type == "team":
@@ -6051,7 +6089,9 @@ def create_slack_debug_buffer():
 
 def load_emoji():
     try:
-        weechat_dir = w.info_get("weechat_dir", "")
+        weechat_dir = w.info_get("weechat_data_dir", "") or w.info_get(
+            "weechat_dir", ""
+        )
         weechat_sharedir = w.info_get("weechat_sharedir", "")
         local_weemoji, global_weemoji = (
             "{}/weemoji.json".format(path) for path in (weechat_dir, weechat_sharedir)
@@ -6418,6 +6458,11 @@ class PluginConfig(object):
             default="true",
             desc="When /joining a channel, automatically switch to it as well.",
         ),
+        "thread_broadcast_prefix": Setting(
+            default="+ ",
+            desc="Prefix to distinguish thread messages that were also sent "
+            "to the channel, when thread_messages_in_channel is enabled.",
+        ),
         "thread_messages_in_channel": Setting(
             default="false",
             desc="When enabled shows thread messages in the parent channel.",
@@ -6534,6 +6579,7 @@ class PluginConfig(object):
     get_history_fetch_count = get_int
     get_map_underline_to = get_string
     get_muted_channels_activity = get_string
+    get_thread_broadcast_prefix = get_string
     get_render_bold_as = get_string
     get_render_italic_as = get_string
     get_shared_name_prefix = get_string
@@ -6623,10 +6669,14 @@ def trace_calls(frame, event, arg):
 
 
 def initiate_connection(token, retries=3, team=None, reconnect=False):
+    request_type = "connect" if team else "start"
+    post_data = {"batch_presence_aware": 1}
+    if request_type == "start":
+        post_data["mpim_aware"] = "true"
     return SlackRequest(
         team,
-        "rtm.{}".format("connect" if team else "start"),
-        {"batch_presence_aware": 1},
+        "rtm.{}".format(request_type),
+        post_data,
         retries=retries,
         token=token,
         metadata={"reconnect": reconnect},
