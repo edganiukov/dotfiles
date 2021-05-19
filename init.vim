@@ -473,6 +473,7 @@ au User lsp_setup call lsp#register_server({
 "   \ })
 
 let g:lsp_fold_enabled = 0
+let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 0
 
 let g:lsp_diagnostics_enabled = 1
