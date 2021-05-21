@@ -114,17 +114,7 @@ set splitbelow
 set encoding=utf-8
 
 set laststatus=2
-
-" suppress the annoying 'match x of y', 'The only match', etc.
 set shortmess+=c
-
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[6 q\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
-else
-  let &t_SI = "\e[6 q"
-  let &t_EI = "\e[2 q"
-endif
 
 " abbreviations
 cnoreabbrev W! w!
