@@ -3,7 +3,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Plugins
 " https://github.com/junegunn/vim-plug
 Plug 'edganiukov/vim-colors-off'
-Plug 'arzg/vim-substrata'
 
 " Basic
 Plug 'itchyny/lightline.vim'
