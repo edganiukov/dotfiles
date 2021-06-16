@@ -45,7 +45,7 @@ set t_ut=
 set termguicolors
 set bg=dark
 
-colorscheme substrata
+colorscheme off
 
 " cmd autocomplete
 set wildmenu
@@ -478,23 +478,23 @@ let g:lsp_diagnostics_signs_hint = {'text': '*'}
 
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
-nnoremap <silent> md :LspDefinition<CR>
-nnoremap <silent> mds :sp<cr>:LspDefinition<cr>
-nnoremap <silent> mdv :vsp<cr>:LspDefinition<cr>
-nnoremap <silent> mtd :LspTypeDefinition<CR>
-nnoremap <silent> mdc :LspDeclaration<cr>
-nnoremap <silent> mi :LspImplementation<cr>
-nnoremap <silent> mr :LspRename<CR>
-nnoremap <silent> mf :LspDocumentFormat<CR>
-nnoremap <silent> mrf :LspDocumentRangeFormat<CR>
-nnoremap <silent> ma :LspCodeAction<CR>
-nnoremap <silent> ml :LspCodeLens<CR>
-nnoremap <silent> mn :LspNextError<CR>
-nnoremap <silent> mp :LspPreviousError<CR>
-nnoremap <silent> mx :LspReferences<CR>
-nnoremap <silent> mh :LspHover<CR>
-nnoremap <silent> ms :LspWorkspaceSymbol<CR>
-nnoremap <silent> mth :LspTypeHierarchy<CR>
+nnoremap <silent> fd :LspDefinition<CR>
+nnoremap <silent> fds :sp<cr>:LspDefinition<cr>
+nnoremap <silent> fdv :vsp<cr>:LspDefinition<cr>
+nnoremap <silent> ftd :LspTypeDefinition<CR>
+nnoremap <silent> fdc :LspDeclaration<cr>
+nnoremap <silent> fi :LspImplementation<cr>
+nnoremap <silent> fr :LspRename<CR>
+nnoremap <silent> ff :LspDocumentFormat<CR>
+nnoremap <silent> frf :LspDocumentRangeFormat<CR>
+nnoremap <silent> fa :LspCodeAction<CR>
+nnoremap <silent> fl :LspCodeLens<CR>
+nnoremap <silent> fn :LspNextError<CR>
+nnoremap <silent> fp :LspPreviousError<CR>
+nnoremap <silent> fx :LspReferences<CR>
+nnoremap <silent> fh :LspHover<CR>
+nnoremap <silent> fs :LspWorkspaceSymbol<CR>
+nnoremap <silent> fth :LspTypeHierarchy<CR>
 
 " autocmd FileType c,cpp
 "   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
