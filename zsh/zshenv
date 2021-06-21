@@ -1,6 +1,6 @@
 # General
 export LANG=en_US.UTF-8
-export EDITOR=nvim
+export EDITOR=vim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
 export LC_COLLATE=C

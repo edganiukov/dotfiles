@@ -25,7 +25,7 @@
     remote = yellow
 
 [alias]
-    lg = log --pretty=format:'%Cgreen%h%C(auto)%d: %s %Cblue[%aN %as]' --abbrev-commit
+    lg = log --pretty=format:'%Cblue %as %C(auto)%h%d %s %Cgreen[%aN]' --abbrev-commit
     fap = fetch --all --prune
     ps = push
     pl = pull

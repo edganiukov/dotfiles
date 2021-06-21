@@ -1,4 +1,4 @@
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Plugins
 " https://github.com/junegunn/vim-plug
@@ -45,6 +45,14 @@ set termguicolors
 set bg=dark
 
 colorscheme off
+
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[6 q\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+else
+  let &t_SI = "\e[6 q"
+  let &t_EI = "\e[2 q"
+endif
 
 " cmd autocomplete
 set wildmenu
