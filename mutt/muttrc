@@ -12,7 +12,7 @@ set imap_keepalive = 300
 set timeout = 15
 set imap_idle = yes
 
-set editor = "nvim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
+set editor = "vim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
 
 ## SSL hardening
 set ssl_force_tls = yes

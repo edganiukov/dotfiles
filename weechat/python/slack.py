@@ -1514,7 +1514,7 @@ class SlackTeam(object):
         users,
         bots,
         channels,
-        **kwargs,
+        **kwargs
     ):
         self.slack_api_translator = copy.deepcopy(SLACK_API_TRANSLATOR)
         self.identifier = team_info["id"]
@@ -2413,6 +2413,7 @@ class SlackChannel(SlackChannelCommon):
                 config.unhide_buffers_with_activity
                 and not self.is_visible()
                 and not self.muted
+                and not no_log
             ):
                 w.buffer_set(self.channel_buffer, "hidden", "0")
 

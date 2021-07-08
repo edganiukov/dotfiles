@@ -485,23 +485,23 @@ let g:lsp_diagnostics_signs_hint = {'text': '*'}
 
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
-nnoremap <silent> fd :LspDefinition<CR>
-nnoremap <silent> fds :sp<cr>:LspDefinition<cr>
-nnoremap <silent> fdv :vsp<cr>:LspDefinition<cr>
-nnoremap <silent> ftd :LspTypeDefinition<CR>
-nnoremap <silent> fdc :LspDeclaration<cr>
-nnoremap <silent> fi :LspImplementation<cr>
-nnoremap <silent> fr :LspRename<CR>
-nnoremap <silent> ff :LspDocumentFormat<CR>
-nnoremap <silent> frf :LspDocumentRangeFormat<CR>
-nnoremap <silent> fa :LspCodeAction<CR>
-nnoremap <silent> fl :LspCodeLens<CR>
-nnoremap <silent> fn :LspNextError<CR>
-nnoremap <silent> fp :LspPreviousError<CR>
-nnoremap <silent> fx :LspReferences<CR>
-nnoremap <silent> fh :LspHover<CR>
-nnoremap <silent> fs :LspWorkspaceSymbol<CR>
-nnoremap <silent> fth :LspTypeHierarchy<CR>
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
+nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
+nnoremap <silent> gtd :LspTypeDefinition<CR>
+nnoremap <silent> gdc :LspDeclaration<cr>
+nnoremap <silent> gi :LspImplementation<cr>
+nnoremap <silent> gr :LspRename<CR>
+nnoremap <silent> gf :LspDocumentFormat<CR>
+nnoremap <silent> grf :LspDocumentRangeFormat<CR>
+nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> gl :LspCodeLens<CR>
+nnoremap <silent> gn :LspNextError<CR>
+nnoremap <silent> gp :LspPreviousError<CR>
+nnoremap <silent> gx :LspReferences<CR>
+nnoremap <silent> gh :LspHover<CR>
+nnoremap <silent> gs :LspWorkspaceSymbol<CR>
+nnoremap <silent> gth :LspTypeHierarchy<CR>
 
 " autocmd FileType c,cpp
 "   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
