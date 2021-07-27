@@ -82,23 +82,18 @@ alias curl="curl -s"
 alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 alias i3lock="i3lock -n -c 282828"
-alias tig="nvim -c :GV"
-alias magit="nvim -c :Magit"
+alias tig="vim -c :GV"
+alias magit="vim -c :Magit"
 
 alias k="kubectl"
 alias w="watson"
-alias tp="tmuxp"
-alias tpl="tmuxp load -y"
-
-# Double pane lf with tmux
-alias tlf='tmux split -h lf; lf'
 
 # Tex plugin manager
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME"
 
 # Todo/Notes
-alias todo="nvim ~/misc/notes/todo.md"
-alias note="nvim ~/misc/notes/notes.md"
+alias todo="vim ~/misc/notes/todo.md"
+alias note="vim ~/misc/notes/notes.md"
 
 
 ## Prompt

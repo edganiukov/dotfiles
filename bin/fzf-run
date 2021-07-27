@@ -4,15 +4,15 @@ set -o pipefail
 
 cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
 last_run="${cachedir}/.last_run"
-cache="$cachedir/.run_recent"
+recent="$cachedir/.run_recent"
 
 truncate -s0 $last_run
-touch "$cache"
+touch "$recent"
 
-used=$(sort "$cache" | grep -v "^$" | uniq -c | sort -r | awk '{print $2}')
+used=$(sort "$recent" | grep -v "^$" | uniq -c | sort -r | awk '{print $2}')
 not_used=$(fd . $(echo $PATH | tr ':' ' ') -c never -t x -X echo {/} | tr ' ' '\n' | sort -uR | grep -vxF $used)
 
 st -c stfloat -g 60x15 -e zsh -c "echo '${used}\n${not_used}' | fzf --reverse > ${last_run}"
 
 run=$(cat ${last_run})
-[ -n "$run" ] && echo $run >> $cache && exec "$run"
+[ -n "$run" ] && echo $run >> $recent && exec "$run"
