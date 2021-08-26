@@ -148,3 +148,7 @@ weechat:
 wtfutil:
 	mkdir -p $(HOME)/.config/wtf
 	ln -s $(CWD)/wtfutil.yml $(HOME)/.config/wtf/config.yml
+
+ncspot:
+	mkdir -p $(HOME)/.config/ncspot
+	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml

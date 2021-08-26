@@ -472,7 +472,7 @@ au User lsp_setup call lsp#register_server({
 
 let g:lsp_fold_enabled = 0
 let g:lsp_text_edit_enabled = 0
-let g:lsp_insert_text_enabled = 0
+let g:lsp_insert_text_enabled = 1
 
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
@@ -483,6 +483,7 @@ let g:lsp_diagnostics_signs_warning = {'text': '>'}
 let g:lsp_diagnostics_signs_information = {'text': '@'}
 let g:lsp_diagnostics_signs_hint = {'text': '*'}
 
+let g:lsp_show_message_log_level = 'error'
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
@@ -528,23 +529,16 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 "
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
-au BufRead,BufNewFile *.slide setlocal ft=markdown
-au BufNewFile,BufRead Jenkinsfile set filetype=groovy
 
 au BufRead,BufNewFile *.yml.tmpl setlocal ft=yaml
 au BufRead,BufNewFile *.conf.tmpl setlocal ft=conf
 au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
 au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
 
+au FileType vim,yaml,json,conf setlocal sw=2 sts=2 ts=2
+
+au FileType gitcommit setlocal spell tw=80 cc=81
+au FileType rst, markdown setlocal spell tw=80 cc=81
+
 au FileType go setlocal noexpandtab tw=100 cc=101
 au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=101
-au FileType groovy setlocal noexpandtab
-
-au FileType vim setlocal sw=2 sts=2 ts=2
-au FileType yaml setlocal sw=2 sts=2 ts=2
-au FileType json setlocal sw=2 sts=2 ts=2
-au FileType conf setlocal sw=2 sts=2 ts=2
-au FileType gitcommit setlocal spell tw=80 cc=81
-
-au FileType rst setlocal spell tw=80 cc=81
-au FileType markdown setlocal spell sw=2 sts=2 ts=2 tw=80 cc=81
