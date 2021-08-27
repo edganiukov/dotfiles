@@ -89,7 +89,7 @@ set scrolloff=4
 set backspace=2
 
 set nofoldenable
-set conceallevel=2
+set conceallevel=0
 
 set number
 set signcolumn=yes
@@ -385,7 +385,7 @@ let g:echodoc#type = 'echo'
 " Plug 'lifepillar/vim-mucomplete'
 "
 let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay= 0
+let g:mucomplete#completion_delay= 100
 let g:mucomplete#reopen_immediately = 1
 
 let g:mucomplete#chains = {}
@@ -413,6 +413,7 @@ au User lsp_setup call lsp#register_server({
   \ 'workspace_config': {'gopls': {
       \ 'codelenses': {'generate': v:false, 'gc_details': v:true},
       \ 'hoverKind': 'FullDocumentation',
+      \ 'linksInHover': v:false,
       \ 'experimentalWorkspaceModule': v:true,
   \ }},
   \ 'allowlist': ['go'],
@@ -482,6 +483,10 @@ let g:lsp_diagnostics_signs_error = {'text': 'x'}
 let g:lsp_diagnostics_signs_warning = {'text': '>'}
 let g:lsp_diagnostics_signs_information = {'text': '@'}
 let g:lsp_diagnostics_signs_hint = {'text': '*'}
+
+let g:lsp_hover_conceal = 1
+let g:lsp_format_sync_timeout = 1000
+let g:lsp_semantic_enabled = 0
 
 let g:lsp_show_message_log_level = 'error'
 let g:lsp_log_file = expand('/tmp/lsp.log')
