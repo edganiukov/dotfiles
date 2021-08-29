@@ -13,20 +13,17 @@ Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chaoren/vim-wordmotion'
 
-" Git
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
-" Lang
 Plug 'edganiukov/vim-gol'
 Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
 
 " LSP
 Plug 'prabirshrestha/vim-lsp'
-" Completion
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/vim-mucomplete'
 
@@ -280,7 +277,6 @@ let g:vim_markdown_conceal_code_blocks = 1
 let g:vim_markdown_math = 1
 let g:vim_markdown_new_list_item_indent = 2
 
-
 " Plug 'junegunn/fzf.vim'
 "
 set rtp+=/usr/local/opt/fzf
@@ -513,7 +509,7 @@ nnoremap <silent> gth :LspTypeHierarchy<CR>
 "   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 autocmd FileType go,rust,python
-  \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+  \ autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
 
 " Plug 'sebdah/vim-delve'
@@ -543,7 +539,7 @@ au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
 au FileType vim,yaml,json,conf setlocal sw=2 sts=2 ts=2
 
 au FileType gitcommit setlocal spell tw=80 cc=81
-au FileType rst, markdown setlocal spell tw=80 cc=81
+au FileType rst,markdown setlocal spell tw=80 cc=81 cole=2
 
 au FileType go setlocal noexpandtab tw=100 cc=101
 au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=101
