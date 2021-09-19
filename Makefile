@@ -4,21 +4,20 @@
 CWD=$(shell pwd)
 
 nvim:
-	mkdir -p ~/.config/nvim && \
-		ln -s $(CWD)/init.vim $(HOME)/.config/nvim/init.vim
-	curl -sfLo $(HOME)/.config/nvim/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	mkdir -p ~/.config/nvim
+	ln -s $(CWD)/nvim/init.lua $(HOME)/.config/nvim/init.lua
+	ln -s $(CWD)/nvim/lua $(HOME)/.config/nvim/lua
 
 vim:
 	mkdir -p $(HOME)/.vim
-	ln -s $(CWD)/init.vim $(HOME)/.vimrc
+	ln -s $(CWD)/vimrc $(HOME)/.vimrc
 	curl -sfLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
-	mkdir -p $(HOME)/.tmux/plugins && \
-		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+	mkdir -p $(HOME)/.tmux/plugins
+	git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
 	ln -s $(CWD)/tmuxp $(HOME)/.tmuxp
 
 git:
@@ -144,10 +143,6 @@ spotify:
 
 weechat:
 	ln -s $(CWD)/weechat $(HOME)/.weechat
-
-wtfutil:
-	mkdir -p $(HOME)/.config/wtf
-	ln -s $(CWD)/wtfutil.yml $(HOME)/.config/wtf/config.yml
 
 ncspot:
 	mkdir -p $(HOME)/.config/ncspot
