@@ -416,15 +416,32 @@ au User lsp_setup call lsp#register_server({
   \ })
 
 " https://github.com/rust-lang/rls
+" au User lsp_setup call lsp#register_server({
+"   \ 'name': 'rls',
+"   \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+"   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
+"     \ )},
+"   \ 'workspace_config': {'rust': {
+"       \ 'clippy_preference': 'on',
+"   \ }},
+"   \ 'allowlist': ['rust'],
+"   \ })
+
 au User lsp_setup call lsp#register_server({
   \ 'name': 'rls',
-  \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+  \ 'cmd': {server_info->['rust-analyzer']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     \ )},
-  \ 'workspace_config': {'rust': {
-      \ 'clippy_preference': 'on',
-  \ }},
+  \ 'initialization_options': {
+    \ 'cargo': {
+      \ 'loadOutDirsFromCheck': v:true,
+    \ },
+    \ 'procMacro': {
+      \ 'enable': v:true,
+    \ },
+  \ },
   \ 'allowlist': ['rust'],
   \ })
 
@@ -509,7 +526,7 @@ nnoremap <silent> gth :LspTypeHierarchy<CR>
 "   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
 
 autocmd FileType go,rust,python
-  \ autocmd BufWritePre <buffer> :LspDocumentFormatSync
+  \ autocmd BufWritePre <buffer> :LspDocumentFormat
 
 
 " Plug 'sebdah/vim-delve'
