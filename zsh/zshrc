@@ -83,7 +83,7 @@ alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 alias i3lock="i3lock -n -c 282828"
 alias tig="vim -c :GV"
-alias magit="vim -c :Magit"
+alias magit="vim -c :MagitOnly"
 
 alias k="kubectl"
 alias w="watson"
