@@ -414,6 +414,7 @@ au User lsp_setup call lsp#register_server({
       \ 'experimentalWorkspaceModule': v:true,
   \ }},
   \ 'allowlist': ['go'],
+  \  'languageId': {server_info->'filetype'},
   \ })
 
 " https://github.com/rust-lang/rls
@@ -494,9 +495,11 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_virtual_text_enabled = 0
 
 let g:lsp_diagnostics_signs_error = {'text': 'x'}
-let g:lsp_diagnostics_signs_warning = {'text': '>'}
+let g:lsp_diagnostics_signs_warning = {'text': 'w'}
 let g:lsp_diagnostics_signs_information = {'text': '@'}
 let g:lsp_diagnostics_signs_hint = {'text': '*'}
+
+let g:lsp_document_code_action_signs_hint = {'text': '>'}
 
 let g:lsp_hover_conceal = 1
 let g:lsp_format_sync_timeout = 1000
