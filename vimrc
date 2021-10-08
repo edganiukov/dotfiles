@@ -60,6 +60,7 @@ set nospell
 set hidden
 set noerrorbells
 set novisualbell
+set modelines=0
 set t_vb=
 set tm=500
 set mouse=a
