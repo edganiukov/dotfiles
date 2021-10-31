@@ -21,27 +21,3 @@ Patterns *
 Create Both
 # Save the synchronization state files in the relevant directory
 SyncState *
-
-IMAPAccount work
-Host imap.gmail.com
-User ganiukov@anapaya.net
-PassCmd "pass show work/mutt.gmail.com"
-SSLType IMAPS
-
-IMAPStore work-remote
-Account work
-
-MaildirStore work-local
-Subfolders Verbatim
-Path ~/.mail/work/
-Inbox ~/.mail/work/INBOX
-
-Channel work
-Master :work-remote:
-Slave :work-local:
-# Include all folders
-Patterns *
-# Automatically create missing mailboxes, both locally and on the server
-Create Both
-# Save the synchronization state files in the relevant directory
-SyncState *
