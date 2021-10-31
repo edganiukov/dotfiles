@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -o pipefail
+
+export DISPLAY=:0.0
+export XAUTHORITY=/home/ed/.Xauthority
+
+function connect() {
+    echo "connect"
+    xrandr --output $1 --auto --primary --output eDP-1 --off
+}
+
+function disconnect() {
+    echo "disconnect"
+    xrandr --output eDP-1 --mode 1920x1080 --primary --output $1 --off
+}
+
+main() {
+    # list of all different HDMI ports on docking stations etc.
+    for disp in "DP-1"; do
+        if xrandr --query | grep -e "^$disp connected" &> /dev/null; then
+            connect $disp
+        else
+            disconnect $disp
+        fi
+    done
+}
+
+# start it forked so the monitor is active
+# this is needed because udev activates the monitor
+# AFTER this script returns
+main &

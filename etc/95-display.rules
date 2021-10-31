@@ -1,0 +1,1 @@
+ACTION=="change", SUBSYSTEM=="drm", HOTPLUG=="1", RUN+="/home/ed/.local/bin/display-plug"

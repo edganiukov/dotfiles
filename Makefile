@@ -18,7 +18,7 @@ tmux:
 	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	mkdir -p $(HOME)/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
-	ln -s $(CWD)/tmuxp $(HOME)/.tmuxp
+	# ln -s $(CWD)/tmuxp $(HOME)/.tmuxp
 
 git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
@@ -55,7 +55,8 @@ etc:
 bin:
 	mkdir -p $(HOME)/.local/bin
 	ln -s $(CWD)/bin/dwm-status $(HOME)/.local/bin/
-	ln -s $(CWD)/bin/nohup-open $(HOME)/.local/bin/
+	ln -s $(CWD)/bin/fzf-run $(HOME)/.local/bin/
+	ln -s $(CWD)/bin/fzf-pass $(HOME)/.local/bin/
 
 # wm
 awesome:

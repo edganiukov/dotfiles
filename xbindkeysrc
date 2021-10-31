@@ -22,10 +22,6 @@
 "pactl set-sink-mute @DEFAULT_SINK@ toggle"
     XF86AudioMute
 
-# Suspend system
-"systemctl suspend"
-    Mod4 + XF86Eject
-
 # XRandr
 "autorandr -c internal"
     XF86LaunchA

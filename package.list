@@ -30,16 +30,17 @@ gopass
 urlview
 xclip
 brightnessctl
-redshift-minimal
+redshift
 feh
 isync
+xdg-utils
 
 # tui
-neovim
+vim
 nnn
 htop
 rtorrent
-mutt
+neomutt
 weechat
 perl-pod-parser
 

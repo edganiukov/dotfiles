@@ -16,9 +16,9 @@ pa_volume() {
 }
 
 wifi() {
-    WIFI_STATE=$(cat /sys/class/net/wlp3s0/operstate)
+    WIFI_STATE=$(cat /sys/class/net/wlp0s20f3/operstate)
 
-    echo $WIFI_STATE
+    echo ${WIFI_STATE:-"down"}
 }
 
 vpn() {

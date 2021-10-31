@@ -8,20 +8,12 @@
 xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
-# key repeat
+# keyboard setting
 xset r rate 200 20
-
- # keyboard setting
 setxkbmap -layout us,ru -option 'grp:caps_toggle'
-
-systemctl --user import-environment DISPLAY
-
 gpgconf --launch gpg-agent
 
-# export QT_FONT_DPI=96
-# export GDK_DPI_SCALE=0.8
-# export QT_AUTO_SCREEN_SCALE_FACTOR=1
-
+# systemctl --user import-environment DISPLAY
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
@@ -29,14 +21,8 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
 [ -n "$(pidof syncthing)" ] || syncthing &
-
-# [ -n "$(pidof dunst)" ] || dunst &
-# [ -n "$(pidof nm-applet)" ] || nm-applet &
+[ -n "$(pidof dunst)" ] || dunst &
 
 ## Start WM
-# exec slstatus
 [ -n "$(pidof dwm-status)" ] || dwm-status &
 exec dwm
-# while true; do
-#     dwm 2> ~/.dwm.log
-# done

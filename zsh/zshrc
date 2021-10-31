@@ -81,15 +81,8 @@ alias curl="curl -s"
 # alias vim="nvim"
 alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
-alias i3lock="i3lock -n -c 282828"
 alias tig="vim -c :GV"
 alias magit="vim -c :MagitOnly"
-
-alias k="kubectl"
-alias w="watson"
-
-# Tex plugin manager
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode --usertree $TEXMFHOME"
 
 # Todo/Notes
 alias todo="vim ~/misc/notes/todo.md"
@@ -109,7 +102,7 @@ precmd() {
 }
 setopt prompt_subst
 PROMPT='%F{green}#%f %F{green}%n@%m: %F{yellow}%1~%f %F{magenta}[${vcs_info_msg_0_:0:30}]%f $ '
-RPROMPT='[%F{yellow}%*%f] $ '
+RPROMPT=''
 
 
 ## Plugins
@@ -132,8 +125,8 @@ source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
 
 # FZF
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+source /usr/share/doc/fzf/key-bindings.zsh
+source /usr/share/doc/fzf/completion.zsh
 
 # https://github.com/direnv/direnv
 # eval "$(direnv hook zsh)"
