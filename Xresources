@@ -1,5 +1,5 @@
 ! Xft settings
-Xft.dpi: 144
+! Xft.dpi: 120
 Xft.autohint: 1
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
@@ -7,4 +7,4 @@ Xft.hinting: true
 Xft.antialias: 1
 Xft.rgb: rgb
 Xcursor.theme: Adwaita
-Xcursor.size: 32
+Xcursor.size: 24
