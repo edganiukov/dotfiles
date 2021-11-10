@@ -198,7 +198,7 @@ fbr() {
     "del")
         git branch --no-color --sort=-committerdate --format='%(refname:short)' |
             fzf --header "git branch -D" --multi --ansi --tabstop=4 --preview-window 'right:60%' --preview="git lg {} --" |
-            xargs --no-run-if-empty git branch --delete
+            xargs --no-run-if-empty git branch --delete --force
         ;;
     "co")
         git branch --no-color --sort=-committerdate --format='%(refname:short)' |
