@@ -9,10 +9,9 @@ git
 github-cli
 
 # C
-# lldb
-# gdb
+gdb
+ccls
 # clang
-# ccls
 
 # tools
 zsh
