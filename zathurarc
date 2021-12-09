@@ -4,10 +4,10 @@ set selection-clipboard clipboard
 set synctex true
 set synctex-editor-command "vim --remote-silent +%{line} %{input}"
 
+set guioptions sv
 set pages-per-row 1
 set adjust-open "width"
 
-set show-scrollbars "true"
 set scroll-step 100
 
 set font "monospace 20"

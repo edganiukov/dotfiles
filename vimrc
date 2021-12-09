@@ -552,10 +552,10 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
 
-au BufRead,BufNewFile *.yml.tmpl setlocal ft=yaml
-au BufRead,BufNewFile *.conf.tmpl setlocal ft=conf
-au BufRead,BufNewFile *.sh.tmpl setlocal ft=sh
-au BufRead,BufNewFile *.toml.tmpl setlocal ft=conf
+au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
+au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
+au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
+au BufRead,BufNewFile *.toml.j2 setlocal ft=conf
 
 au FileType vim,yaml,json,conf setlocal sw=2 sts=2 ts=2
 

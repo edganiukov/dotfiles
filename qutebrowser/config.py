@@ -3,7 +3,6 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
-
 # Uncomment this to still load settings configured via autoconfig.yml
 config.load_autoconfig()
 
@@ -14,7 +13,10 @@ c.qt.highdpi = True
 c.qt.process_model = "process-per-site"
 
 # Additional arguments to pass to Qt, without leading --.
-c.qt.args = ["enable-native-gpu-memory-buffers", "enable-gpu-rasterization", "use-gl=egl", "ignore-gpu-blacklist", "num-raster-threads=4"]
+c.qt.args = [
+    "enable-native-gpu-memory-buffers", "enable-gpu-rasterization",
+    "use-gl=egl", "ignore-gpu-blacklist", "num-raster-threads=4"
+]
 
 # Default zoom level.
 c.zoom.default = "100%"
@@ -70,7 +72,7 @@ c.content.autoplay = False
 c.content.default_encoding = 'utf-8'
 
 # Save session
-c.auto_save.session= False
+c.auto_save.session = False
 
 # Enable spellchecking
 c.spellcheck.languages = ['en-US', 'ru-RU']
@@ -223,7 +225,6 @@ c.colors.tabs.pinned.selected.even.fg = '#d5c4a1'
 # Background color of pinned selected even tabs.
 c.colors.tabs.pinned.selected.even.bg = '#1D2021'
 
-
 # Fonts
 # Default monospace fonts.
 # Whenever "monospace" is used in a font setting, it's replaced with the fonts listed here.
@@ -232,46 +233,46 @@ c.fonts.default_family = ["monospace"]
 # Default font families to use.
 # Whenever "default_family" is used in a font setting, it's replaced with the fonts listed here.
 # If set to an empty value, a system-specific monospace default is used.
-c.fonts.default_size = "10pt"
+c.fonts.default_size = "12pt"
 
 # Font used in the completion categories.
-c.fonts.completion.category = 'bold 10pt monospace'
+c.fonts.completion.category = 'bold 12pt monospace'
 
 # Font used in the completion widget.
-c.fonts.completion.entry = '10pt monospace'
+c.fonts.completion.entry = '12pt monospace'
 
 # Font used for the debugging console.
-c.fonts.debug_console = '10pt monospace'
+c.fonts.debug_console = '12pt monospace'
 
 # Font used for the downloadbar.
-c.fonts.downloads = '10pt monospace'
+c.fonts.downloads = '12pt monospace'
 
 # Font used for the hints.
-c.fonts.hints = 'bold 10pt monospace'
+c.fonts.hints = 'bold 12pt monospace'
 
 # Font used in the keyhint widget.
-c.fonts.keyhint = '10pt monospace'
+c.fonts.keyhint = '12pt monospace'
 
 # Font used for error messages.
-c.fonts.messages.error = '10pt monospace'
+c.fonts.messages.error = '12pt monospace'
 
 # Font used for info messages.
-c.fonts.messages.info = '10pt monospace'
+c.fonts.messages.info = '12pt monospace'
 
 # Font used for warning messages.
-c.fonts.messages.warning = '10pt monospace'
+c.fonts.messages.warning = '12pt monospace'
 
 # Font used for prompts.
-c.fonts.prompts = '10pt monospace'
+c.fonts.prompts = '12pt monospace'
 
 # Font used in the statusbar.
-c.fonts.statusbar = '10pt monospace'
+c.fonts.statusbar = '12pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.selected = '10pt monospace'
+c.fonts.tabs.selected = '12pt monospace'
 
 # Font used in the tab bar.
-c.fonts.tabs.unselected = '10pt monospace'
+c.fonts.tabs.unselected = '12pt monospace'
 
 # Web font
 # Font family for standard fonts.
@@ -290,13 +291,13 @@ c.fonts.web.family.sans_serif = 'Liberation Sans'
 c.fonts.web.family.cursive = 'Liberation Sans'
 
 # Default font size (in pixels) for regular text.
-c.fonts.web.size.default = 10
+c.fonts.web.size.default = 12
 
 # Default font size (in pixels) for fixed-pitch text.
-c.fonts.web.size.default_fixed = 10
+c.fonts.web.size.default_fixed = 12
 
 # Hard minimum font size (in pixels).
-c.fonts.web.size.minimum = 10
+c.fonts.web.size.minimum = 12
 
 # Minimum logical font size (in pixels) that is applied when zooming out.
-c.fonts.web.size.minimum_logical = 10
+c.fonts.web.size.minimum_logical = 12
