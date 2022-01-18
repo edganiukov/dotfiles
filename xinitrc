@@ -10,7 +10,8 @@ xgamma -gamma 0.8
 
 # keyboard setting
 xset r rate 200 20
-setxkbmap -layout us,ru -option 'grp:caps_toggle'
+setxkbmap -layout us,ru -option "grp:caps_toggle"
+
 gpgconf --launch gpg-agent
 
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp

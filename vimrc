@@ -448,15 +448,15 @@ au User lsp_setup call lsp#register_server({
   \ })
 
 " https://github.com/MaskRay/ccls
-" au User lsp_setup call lsp#register_server({
-"   \ 'name': 'ccls',
-"   \ 'cmd': {server_info->['ccls']},
-"   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-"     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
-"     \ )},
-"   \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls')}},
-"   \ 'allowlist': ['c', 'cpp'],
-"   \ })
+au User lsp_setup call lsp#register_server({
+  \ 'name': 'ccls',
+  \ 'cmd': {server_info->['ccls']},
+  \ 'root_uri':{server_info->lsp#utils#path_to_uri(
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
+    \ )},
+  \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls')}},
+  \ 'allowlist': ['c', 'cpp'],
+  \ })
 
 " Alternative: clangd
 "
@@ -526,11 +526,12 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-" autocmd FileType c,cpp
-"   \ autocmd BufWrite <buffer> :LspDocumentFormatSync
+autocmd FileType go,rust,python,c,cpp
+  \ autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
-autocmd FileType go,rust,python
-  \ autocmd BufWritePre <buffer> :LspDocumentFormat
+autocmd FileType go,rust,python,c,cpp
+  \ autocmd BufWritePre <buffer>
+  \ call execute('LspCodeActionSync source.organizeImports')
 
 
 " Plug 'sebdah/vim-delve'

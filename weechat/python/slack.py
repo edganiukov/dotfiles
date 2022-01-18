@@ -263,7 +263,8 @@ class WeechatWrapper(object):
     # number of spaces, so it aligns correctly.
     def prnt_date_tags(self, buffer, date, tags, message):
         prefix, _, _ = message.partition("\t")
-        prefix_spaces = " " * len(weechat.string_remove_color(prefix, ""))
+        prefix = weechat.string_remove_color(encode_to_utf8(prefix), "")
+        prefix_spaces = " " * weechat.strlen_screen(prefix)
         message = message.replace("\n", "\n{}\t".format(prefix_spaces))
         return self.wrap_for_utf8(self.wrapped_class.prnt_date_tags)(
             buffer, date, tags, message
@@ -4484,7 +4485,7 @@ def unfurl_block_element(text):
 def unfurl_refs(text):
     """
     input : <@U096Q7CQM|someuser> has joined the channel
-    ouput : someuser has joined the channel
+    output : someuser has joined the channel
     """
     # Find all strings enclosed by <>
     #  - <https://example.com|example with spaces>
@@ -6750,7 +6751,11 @@ if __name__ == "__main__":
             auto_connect = weechat.info_get("auto_connect", "") != "0"
 
             if auto_connect:
-                tokens = [token.strip() for token in config.slack_api_token.split(",")]
+                tokens = [
+                    token.strip()
+                    for token in config.slack_api_token.split(",")
+                    if token
+                ]
                 w.prnt(
                     "",
                     "Connecting to {} slack team{}.".format(

@@ -89,7 +89,7 @@ theme.volume = lain.widget.alsa({
 })
 
 local pass = ""
-awful.spawn.easy_async("gopass show -f core/imap.fastmail.com", function(stdout, stderr, reason, exit_code)
+awful.spawn.easy_async("pass show core/imap.fastmail.com", function(stdout, stderr, reason, exit_code)
     pass = stdout
 end)
 
@@ -99,8 +99,8 @@ local mail = lain.widget.imap{
     pwdtimeout = 5,
     port     = 993,
     is_plain = false,
-    server   = "imap.fastmail.com",
-    mail     = "ed@gnkv.io",
+    -- server   = "",
+    -- mail     = "",
     password = function()
         local try_again = false
         if pass == "" then
