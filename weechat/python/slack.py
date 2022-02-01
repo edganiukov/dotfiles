@@ -1472,7 +1472,7 @@ class SlackRequest(object):
         return self.tries < self.retries
 
     def retry_ready(self):
-        return (self.start_time + (self.tries ** 2)) < time.time()
+        return (self.start_time + (self.tries**2)) < time.time()
 
 
 class SlackSubteam(object):
@@ -3300,14 +3300,10 @@ class SlackMessage(object):
         if self.message_json.get("mrkdwn", True):
             text = render_formatting(text)
 
-        if (
-            self.message_json.get("subtype")
-            in (
-                "channel_join",
-                "group_join",
-            )
-            and self.message_json.get("inviter")
-        ):
+        if self.message_json.get("subtype") in (
+            "channel_join",
+            "group_join",
+        ) and self.message_json.get("inviter"):
             inviter_id = self.message_json.get("inviter")
             text += " by invitation from <@{}>".format(inviter_id)
 
@@ -4007,14 +4003,15 @@ def process_pong(message_json, eventrouter, team, channel, metadata):
 def process_message(
     message_json, eventrouter, team, channel, metadata, history_message=False
 ):
+    subtype = message_json.get("subtype")
     if (
         not history_message
+        and not subtype
         and "ts" in message_json
         and SlackTS(message_json["ts"]) in channel.messages
     ):
         return
 
-    subtype = message_json.get("subtype")
     subtype_functions = get_functions_with_prefix("subprocess_")
 
     if "thread_ts" in message_json and "reply_count" not in message_json:
@@ -4485,7 +4482,7 @@ def unfurl_block_element(text):
 def unfurl_refs(text):
     """
     input : <@U096Q7CQM|someuser> has joined the channel
-    output : someuser has joined the channel
+    ouput : someuser has joined the channel
     """
     # Find all strings enclosed by <>
     #  - <https://example.com|example with spaces>

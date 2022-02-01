@@ -38,7 +38,7 @@ syntax on
 
 set t_Co=256
 set t_ut=
-set termguicolors
+" set termguicolors
 set bg=dark
 
 colorscheme off
@@ -505,7 +505,7 @@ let g:lsp_hover_conceal = 1
 let g:lsp_format_sync_timeout = 1000
 let g:lsp_semantic_enabled = 0
 
-let g:lsp_show_message_log_level = 'error'
+let g:lsp_show_message_log_level = 'none'
 let g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
