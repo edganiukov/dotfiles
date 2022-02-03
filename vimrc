@@ -526,10 +526,10 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-autocmd FileType go,rust,python,c,cpp
+autocmd FileType go,rust,python
   \ autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
-autocmd FileType go,rust,python,c,cpp
+autocmd FileType go,rust,python
   \ autocmd BufWritePre <buffer>
   \ call execute('LspCodeActionSync source.organizeImports')
 

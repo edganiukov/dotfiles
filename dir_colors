@@ -42,7 +42,7 @@
 # COLOR_NUMBER is from 0 to 255.
 
 NORMAL 00;38;5;250 # no color code at all
-FILE   00;38;5;223 # regular file: use no color at all
+FILE   00;38;5;252 # regular file: use no color at all
 RESET  00;38;5;172 # reset to "normal" color
 DIR    00;38;5;109 # directory
 LINK   target      # symbolic link. (If you set this to 'target' instead of a
