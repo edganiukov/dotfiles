@@ -125,13 +125,10 @@ set shortmess+=c
 " abbreviations
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
-cnoreabbrev WQ wq
 cnoreabbrev W w
 cnoreabbrev Q q
-cnoreabbrev Qall qall
 
 " Non-plugin Keybindings:
 " yank to the EOL
@@ -167,15 +164,16 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 inoremap jj <Esc>
 
-" close quickfix window
-nnoremap <silent>qc :cclose<CR>
-" close preview window
+" preview close
 nnoremap <silent>qp <C-w><C-z>
-" close a window with qq<CR>
-nnoremap <silent>qq :q
+" quickfix close
+nnoremap <silent>qc :cclose<CR>
 " quickfix switch
 nnoremap qn :cn!<CR>
 nnoremap qp :cp!<CR>
+nnoremap <Down> :cn!<CR>
+nnoremap <Up> :cp!<CR>
+
 " buffers switch
 nnoremap fn :bn!<CR>
 nnoremap fp :bp!<CR>
@@ -187,8 +185,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " disable arrows
-noremap <Up> <NOP>
-noremap <Down> <NOP>
+" noremap <Up> <NOP>
+" noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
