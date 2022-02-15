@@ -88,6 +88,9 @@ alias magit="vim -c :MagitOnly"
 alias todo="vim ~/misc/notes/todo.md"
 alias note="vim ~/misc/notes/notes.md"
 
+# void linux
+alias xq="sudo xbps-query"
+alias xr="sudo xbps-remove"
 
 ## Prompt
 #########
