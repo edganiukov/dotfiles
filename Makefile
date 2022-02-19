@@ -1,5 +1,5 @@
-.PHONY: nvim vim tmux git zsh x redshift etc bin dunst mutt fonts mpv
-.PHONY: rtorrent sxiv zathura isync spotifyd weechat
+.PHONY: nvim vim tmux git zsh x redshift etc bin dunst mutt isync
+.PHONY: fonts mpv rtorrent sxiv zathura  spotifyd weechat
 
 CWD=$(shell pwd)
 
@@ -71,8 +71,8 @@ mutt:
 
 isync:
 	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
-	ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
-	ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
+	#ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
+	#ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv

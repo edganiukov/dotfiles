@@ -1,9 +1,8 @@
 ## Accounts
 #
-source ~/.mutt/accounts/personal
+source ~/.mutt/accounts/default
 
-macro index,pager <F2> "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>"
-macro index,pager <F3> "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/work<enter><change-folder>!<enter>"
+macro index,pager <F2> "<sync-mailbox><refresh><enter-command>source ~/.mutt/accounts/default<enter><change-folder>!<enter>"
 
 set imap_check_subscribed
 set imap_keepalive = 300
@@ -187,6 +186,6 @@ set new_mail_command="notify-send --icon='~/dev/dotfiles/mutt/mutt.png' \
     'New Email' '%n new messages, %u unread.' &"
 
 # hooks
-startup-hook 'exec sync-mailbox'
-timeout-hook 'exec sync-mailbox'
-shutdown-hook 'exec sync-mailbox'
+#startup-hook 'exec sync-mailbox'
+#timeout-hook 'exec sync-mailbox'
+#shutdown-hook 'exec sync-mailbox'

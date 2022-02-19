@@ -5,8 +5,10 @@ export CLICOLOR=YES
 export SHELL=/bin/zsh
 export LC_COLLATE=C
 
-# LS_COLORS
-[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+export SVDIR=$HOME/.service
+
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # PATH
 typeset -U path
@@ -15,9 +17,8 @@ path+=($HOME'/.go/bin')
 path+=($HOME'/.cargo/bin')
 export PATH
 
-export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+# LS_COLORS
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
 # Lang vars
 export GOPATH=$HOME/.go
-[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env

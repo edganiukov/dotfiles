@@ -64,7 +64,7 @@ xkb_layout() {
 }
 
 new_emails() {
-    echo "$(ls -1 --file-type ~/.mail/personal/Inbox/new | wc -l)"
+    echo "$(ls -1 --file-type ~/.mail/default/Inbox/new | wc -l)"
 }
 
 while true; do

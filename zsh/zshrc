@@ -78,15 +78,9 @@ alias grep="grep --colour"
 alias tmux="tmux -u2"
 alias curl="curl -s"
 
-# alias vim="nvim"
-alias mutt="neomutt"
 alias sxivd="sxiv -r -t -s d"
 alias tig="vim -c :GV"
 alias magit="vim -c :MagitOnly"
-
-# Todo/Notes
-alias todo="vim ~/misc/notes/todo.md"
-alias note="vim ~/misc/notes/notes.md"
 
 # void linux
 alias xq="sudo xbps-query"

@@ -7,7 +7,7 @@ unmailboxes *
 set pgp_default_key="0xCCC46DB51C913328"
 
 set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d`
-set my_realname = "Eduard Ganiukov"
+set my_realname = "Ed Ganiukov"
 set realname = $my_realname
 set from = "$my_realname <$my_user>"
 set my_smtp_pass = `pass show core/smtp.fastmail.com`
@@ -21,8 +21,8 @@ set smtp_pass = $my_smtp_pass
 # set folder = "imaps://imap.fastmail.com:993"
 
 set mbox_type=Maildir
-set folder="~/.mail/personal"
-mailboxes =Inbox =Archive =Archive/D =Archive/I =Archive/P =Drafts =Sent =Trash
+set folder="~/.mail/default"
+mailboxes =Inbox =Archive =Archive/Prio =Archive/Dev =Archive/Shop =Drafts =Sent =Trash
 
 set spoolfile = "=Inbox"
 set record = "=Sent"
