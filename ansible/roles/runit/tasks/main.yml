@@ -1,0 +1,18 @@
+---
+- name: Create user service dir
+  file:
+    path: "{{ runit_user_service_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Create runsvdir-{{ runit_user }} directory
+  file:
+    path: "{{ runit_service_src }}/runsvdir-{{ runit_user }}"
+    state: directory
+    mode: 0755
+
+- name: Deploy runit run script
+  template:
+    src: runsvdir.j2
+    dest: "{{ runit_service_src }}/runsvdir-{{ runit_user }}/run"
+    mode: 0755

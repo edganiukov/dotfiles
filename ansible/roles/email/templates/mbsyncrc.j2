@@ -1,0 +1,23 @@
+IMAPAccount {{ email_account_name }}
+Host {{ email_imap_server }}
+User {{ email_account }}
+PassCmd "{{ email_imap_pass_cmd }}"
+SSLType IMAPS
+
+IMAPStore {{ email_account_name }}-remote
+Account {{ email_account_name }}
+
+MaildirStore {{ email_account_name }}-local
+Subfolders Verbatim
+Path {{ email_maildir }}/{{ email_account_name }}/
+Inbox {{ email_maildir }}/{{ email_account_name }}/Inbox
+
+Channel {{ email_account_name }}
+Master :{{ email_account_name }}-remote:
+Slave :{{ email_account_name }}-local:
+# Include all folders
+Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *

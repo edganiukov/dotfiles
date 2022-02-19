@@ -1,0 +1,6 @@
+[local]
+c2
+
+[local:vars]
+ansible_host=locahost
+ansible_connection=local

@@ -1,0 +1,28 @@
+---
+email_packages:
+  - isync
+  - himalaya
+
+email_downloads_dir: /tmp
+email_maildir: /tmp/mail
+
+email_config_dir: /etc
+email_home_dir: /root
+
+email_account_name: default
+email_account: me@example.com
+email_name: Ivan Ivanov
+email_signature: "Best Regards,\n{{ himalaya_name }}"
+
+email_imap_server: imap.example.com
+email_imap_port: 993
+email_imap_pass_cmd: "echo pass"
+
+email_smtp_server: smpt.example.com
+email_smtp_port: 465
+email_smtp_pass_cmd: "echo pass"
+
+email_enable_isync: true
+
+email_service_src: "{{ email_config_dir }}/sv"
+email_service_dir: /var/service

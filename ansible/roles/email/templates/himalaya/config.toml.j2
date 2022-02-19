@@ -1,0 +1,20 @@
+name = "{{ email_name }}"
+downloads-dir = "{{ email_downloads_dir }}"
+{% if email_enable_isync %}
+watch-cmds = ["/usr/bin/mbsync -Va"]
+{% endif %}
+signature = "{{ email_signature | replace('\n', '\\n') }}"
+
+[{{ email_account_name }}]
+default = true
+email = "{{ email_account }}"
+
+imap-host = "{{ email_imap_server }}"
+imap-port = {{ email_imap_port }}
+imap-login = "{{ email_account }}"
+imap-passwd-cmd = "{{ email_imap_pass_cmd }}"
+
+smtp-host = "{{ email_smtp_server }}"
+smtp-port = {{ email_smtp_port }}
+smtp-login = "{{ email_account }}"
+smtp-passwd-cmd = "{{ email_smtp_pass_cmd }}"

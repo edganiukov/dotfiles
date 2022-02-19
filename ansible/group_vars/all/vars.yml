@@ -1,0 +1,21 @@
+---
+global_user: ed
+global_home_dir: "/home/{{ global_user }}"
+
+runit_user: "{{ global_user }}"
+runit_user_service_dir: "{{ global_home_dir }}/.service"
+
+email_home_dir: "{{ global_home_dir }}"
+email_downloads_dir: "{{ email_home_dir }}/tmp"
+email_maildir: "{{ email_home_dir }}/.mail"
+email_name: "Ed Ganiukov"
+email_account: "{{ vault_email_gnkv }}"
+email_signature: "br,\ned gnkv"
+
+email_imap_server: "imap.fastmail.com"
+email_imap_pass_cmd: "pass show core/imap.fastmail.com"
+email_smtp_server: "smtp.fastmail.com"
+email_smtp_pass_cmd: "pass show core/smtp.fastmail.com"
+
+email_config_dir: "{{ global_home_dir }}/.config"
+email_service_dir: "{{ runit_user_service_dir }}"
