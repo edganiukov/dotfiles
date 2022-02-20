@@ -1,6 +1,8 @@
 - hosts: all
   become: yes
   roles:
+    - role: etc
+      tags: etc
     - role: runit
       tags: runit
     - role: email

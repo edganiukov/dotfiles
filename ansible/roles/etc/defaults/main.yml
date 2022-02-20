@@ -1,0 +1,9 @@
+---
+etc_xorg_conf_dir: /etc/X11/xorg.conf.d
+
+etc_keyboard_layout: "us,ru"
+etc_keyboard_switch: "grp:caps_toggle"
+
+etc_udev_rules_dir: /etc/udev/rules.d
+etc_udev_display_plug_run: true
+etc_udev_yubikey_vendor: 1050

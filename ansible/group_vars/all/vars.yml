@@ -19,3 +19,5 @@ email_smtp_pass_cmd: "pass show core/smtp.fastmail.com"
 
 email_config_dir: "{{ global_home_dir }}/.config"
 email_service_dir: "{{ runit_user_service_dir }}"
+
+etc_udev_display_plug_run: "{{ global_home_dir }}/.local/bin/display-plug"

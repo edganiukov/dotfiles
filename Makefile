@@ -41,13 +41,6 @@ fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
 
-etc:
-	sudo cp $(CWD)/etc/40-keyboard-layout.conf /etc/X11/xorg.conf.d/40-keyboard-layout.conf
-	sudo cp $(CWD)/etc/50-synaptics.conf /etc/X11/xorg.conf.d/50-synaptics.conf
-	# sudo cp $(cwd)/etc/90-backlight.rules /etc/udev/rules.d/90-backlight.rules
-	# sudo cp $(CWD)/etc/91-leds.rules /etc/udev/rules.d/91-leds.rules
-	# sudo cp $(CWD)/etc/resolved.conf /etc/systemd/resolved.conf
-
 bin:
 	mkdir -p $(HOME)/.local/bin
 	ln -s $(CWD)/bin/dwm-status $(HOME)/.local/bin/
