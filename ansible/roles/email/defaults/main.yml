@@ -12,7 +12,7 @@ email_home_dir: /root
 email_account_name: default
 email_account: me@example.com
 email_name: Ivan Ivanov
-email_signature: "Best Regards,\n{{ himalaya_name }}"
+email_signature: "Best Regards,\n{{ email_name }}"
 
 email_imap_server: imap.example.com
 email_imap_port: 993
