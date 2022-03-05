@@ -9,7 +9,7 @@ xrdb -merge .Xresources &&
 xgamma -gamma 0.8
 
 # keyboard setting
-xset r rate 200 20
+xset r rate 220 25
 setxkbmap -layout us,ru -option "grp:caps_toggle"
 
 gpgconf --launch gpg-agent

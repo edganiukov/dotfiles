@@ -12,7 +12,7 @@ function connect() {
 
 function disconnect() {
     echo "disconnect"
-    xrandr --dpi 120 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
+    xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
 }
 
 main() {
