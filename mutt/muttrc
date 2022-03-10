@@ -120,7 +120,7 @@ set crypt_verify_sig="yes"
 source ~/.mutt/conf.d/gpg.rc
 
 auto_view text/html
-# alternative_order text/plain text/html
+alternative_order text/plain text/html
 
 ## Headers
 ignore *

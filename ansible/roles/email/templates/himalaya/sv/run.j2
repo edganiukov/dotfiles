@@ -1,4 +1,5 @@
 #!/bin/sh
 
+RUST_LOG={{ email_log_level }}
 exec 2>&1
 exec /usr/bin/himalaya watch

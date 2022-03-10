@@ -24,5 +24,7 @@ email_smtp_pass_cmd: "echo pass"
 
 email_enable_isync: true
 
+email_log_level: info
+
 email_service_src: "{{ email_config_dir }}/sv"
 email_service_dir: /var/service
