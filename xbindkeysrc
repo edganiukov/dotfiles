@@ -45,13 +45,13 @@
 "brightnessctl --device=smc::kbd_backlight set 5%+"
     XF86KbdBrightnessDown
 
-"fzf-run"
-Mod4+r
-
 "st"
 Mod4+Return
 
-"fzf-pass"
+"dmenu-run-recent"
+Mod4+r
+
+"dmenu-pass"
 Mod4+p
 
 "i3lock -n -c 282828"

@@ -1,4 +1,10 @@
 ---
+- name: Install system packages
+  package:
+    name:
+      - xf86-input-synaptics
+    state: latest
+
 - name: Deploy xorg configs
   template:
     src: "{{ item }}.j2"

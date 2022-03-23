@@ -13,6 +13,8 @@ Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'chaoren/vim-wordmotion'
 
+Plug 'soywod/himalaya', {'rtp': 'vim'}
+
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 Plug 'tpope/vim-fugitive'
@@ -403,7 +405,7 @@ au User lsp_setup call lsp#register_server({
   \ 'name': 'gopls',
   \ 'cmd': {server_info->['gopls', 'serve']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
-    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod'])
+    \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.work', 'go.mod'])
     \ )},
   \ 'workspace_config': {'gopls': {
       \ 'codelenses': {'generate': v:false, 'gc_details': v:true},
@@ -464,10 +466,10 @@ au User lsp_setup call lsp#register_server({
 "   \ 'allowlist': ['c', 'cpp'],
 "   \ })
 
-" https://github.com/palantir/python-language-server
+" https://github.com/python-lsp/python-lsp-server
 au User lsp_setup call lsp#register_server({
-  \ 'name': 'pyls',
-  \ 'cmd': {server_info->['pyls']},
+  \ 'name': 'pylsp',
+  \ 'cmd': {server_info->['pylsp']},
   \ 'root_uri':{server_info->lsp#utils#path_to_uri(
     \ lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
     \ )},
@@ -561,5 +563,5 @@ au FileType vim,yaml,json,conf setlocal sw=2 sts=2 ts=2
 au FileType gitcommit setlocal spell tw=80 cc=81
 au FileType rst,markdown setlocal spell tw=80 cc=81 cole=2
 
-au FileType go setlocal noexpandtab tw=100 cc=101
+au FileType go,c,cpp setlocal noexpandtab tw=100 cc=101
 au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=101
