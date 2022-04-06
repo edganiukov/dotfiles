@@ -1,0 +1,4 @@
+---
+syncthing_config_base_dir: /etc/
+syncthing_service_src: "{{ syncthing_config_base_dir }}/sv"
+syncthing_service_dir: /var/service

@@ -81,6 +81,7 @@ alias curl="curl -s"
 alias sxivd="sxiv -r -t -s d"
 alias tig="vim -c :GV"
 alias magit="vim -c :MagitOnly"
+alias notes="vim -c ':lcd ~/misc/notes'"
 
 # void linux
 alias xq="sudo xbps-query"
@@ -144,14 +145,14 @@ n() {
         return
     fi
 
-    export NNN_CTXMAX=1
-    export NNN_BMS="h:~;t:~/tmp"
-    export NNN_TRASH=1
-    export NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv"
-    export NNN_USE_EDITOR=1
-    export NNN_COLORS="4444"
-    export NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i"
-    export NNN_FIFO="/tmp/nnn.fifo"
+    local NNN_CTXMAX=1
+    local NNN_BMS="h:~;t:~/tmp"
+    local NNN_TRASH=1
+    local NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv"
+    local NNN_USE_EDITOR=1
+    local NNN_COLORS="4444"
+    local NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i"
+    local NNN_FIFO="/tmp/nnn.fifo"
 
     # Unmask ^Q (if required, see `stty -a`) to Quit nnn
     stty start undef
@@ -206,6 +207,7 @@ fbr() {
 }
 
 fpr() {
-   gh pr list | fzf --header "gh pr checkout" --tabstop=4 |
-       awk '{print $1}' | xargs --no-run-if-empty gh pr checkout
+    lim=${1:-"30"}
+    gh pr list -L $lim | fzf --header "gh pr checkout" --tabstop=4 |
+        awk '{print $1}' | xargs --no-run-if-empty gh pr checkout
 }

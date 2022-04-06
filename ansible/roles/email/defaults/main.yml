@@ -6,7 +6,7 @@ email_packages:
 email_downloads_dir: /tmp
 email_maildir: /tmp/mail
 
-email_conf_dir: /etc
+email_config_base_dir: /etc
 email_home_dir: /root
 
 email_account_name: default

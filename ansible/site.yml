@@ -1,5 +1,4 @@
 - hosts: all
-  become: yes
   roles:
     - role: etc
       tags: etc
@@ -7,3 +6,5 @@
       tags: runit
     - role: email
       tags: email
+    - role: syncthing
+      tags: syncthing

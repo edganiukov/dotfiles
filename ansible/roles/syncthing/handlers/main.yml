@@ -1,0 +1,6 @@
+---
+- name: Restart syncthing
+  runit:
+    name: syncthing
+    state: restarted
+    service_dir: "{{ syncting_service_dir }}"

@@ -11,14 +11,14 @@
 
 - name: Ensure himalaya config dir exists
   file:
-    path: "{{ email_conf_dir }}/himalaya"
+    path: "{{ email_config_base_dir }}/himalaya"
     state: directory
     mode: 0755
 
 - name: Configure himalaya
   template:
     src: himalaya/config.toml.j2
-    dest: "{{ email_conf_dir }}/himalaya/config.toml"
+    dest: "{{ email_config_base_dir }}/himalaya/config.toml"
     mode: 0755
   notify: Restart himalaya
 
@@ -28,7 +28,6 @@
     state: directory
     mode: 0755
   loop:
-    - "{{ email_service_src }}/himalaya"
     - "{{ email_service_src }}/himalaya/log"
 
 - name: Deploy himalaya runit service

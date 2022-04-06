@@ -1,0 +1,39 @@
+---
+- name: Installing packages
+  package:
+    name:
+      - syncthing
+    state: latest
+
+- name: Generate config
+  command: /usr/bin/syncthing generate
+  changed_when: no
+
+- name: Ensure syncthing service dirs exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "{{ syncthing_service_src }}/syncthing/log"
+
+- name: Deploy syncthing runit service
+  template:
+    src: sv/run.j2
+    dest: "{{ syncthing_service_src }}/syncthing/run"
+    mode: 0755
+
+- name: Deploy syncthing runit log script
+  template:
+    src: sv/log-run.j2
+    dest: "{{ syncthing_service_src }}/syncthing/log/run"
+    mode: 0755
+  notify: Restart syncthing
+
+- name: Start and enable syncthing runit service
+  runit:
+    name: syncthing
+    state: started
+    service_src: "{{ syncthing_service_src }}"
+    service_dir: "{{ syncthing_service_dir }}"
+    enabled: yes
