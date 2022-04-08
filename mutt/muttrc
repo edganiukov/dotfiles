@@ -40,6 +40,7 @@ set reply_to
 set fast_reply
 set include
 set sendmail_wait = -1
+set send_charset="us-ascii:utf-8"
 set smart_wrap
 set text_flowed
 set nomarkers
