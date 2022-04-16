@@ -46,7 +46,7 @@ set text_flowed
 set nomarkers
 set thorough_search
 set noconfirmappend
-set sig_on_top
+#set sig_on_top
 unset sig_dashes
 
 ## Pager View Options

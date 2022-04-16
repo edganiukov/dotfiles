@@ -1,6 +1,0 @@
----
-- name: Restart himalaya
-  runit:
-    name: himalaya
-    state: restarted
-    service_dir: "{{ email_service_dir }}"

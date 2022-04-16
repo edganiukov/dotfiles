@@ -1,4 +1,0 @@
----
-runit_service_src: /etc/sv
-runit_user: ed
-runit_user_service_dir: /var/service

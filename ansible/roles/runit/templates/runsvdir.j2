@@ -1,9 +1,0 @@
-#!/bin/sh
-
-export USER="{{ runit_user }}"
-export HOME="/home/{{ runit_user }}"
-
-groups="$(id -Gn "$USER" | tr ' ' ':')"
-svdir="{{ runit_user_service_dir }}"
-
-exec chpst -u "$USER:$groups" runsvdir "$svdir"
