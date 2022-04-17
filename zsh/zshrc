@@ -1,4 +1,3 @@
-
 ## Settings
 ###########
 
@@ -113,6 +112,7 @@ bindkey "\e[B" history-substring-search-down
 # bindkey '^[[A' history-substring-search-up
 # bindkey '^[[B' history-substring-search-down
 
+HISTORY_SUBSTRING_SEARCH_PREFIXED=true
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
@@ -120,7 +120,7 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # https://github.com/zsh-users/zsh-completions
-fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
+fpath+=(~/.zsh/plugins/zsh-completions/src)
 
 # FZF
 source /usr/share/fzf/key-bindings.zsh
@@ -172,7 +172,6 @@ tm() {
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# gitsync
 gitsync() {
     remote=${1:-"upstream"}
     branch=${2:-"master"}
