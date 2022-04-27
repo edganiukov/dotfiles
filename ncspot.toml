@@ -1,7 +1,10 @@
+use_nerdfont = false
 notify = true
 default_keybindings = true
 gapless = false
 flip_status_indicators = true
+volnorm = true
+album_column = true
 
 [keybindings]
 "Space" = "playpause"

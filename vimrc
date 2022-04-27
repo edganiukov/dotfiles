@@ -548,17 +548,11 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 " General: filetype config
 "
-au BufRead,BufNewFile *.toml setlocal ft=conf
 au BufRead,BufNewFile *.conf setlocal ft=conf
-
-au BufRead,BufNewFile *.yml.j2 setlocal ft=yaml
-au BufRead,BufNewFile *.conf.j2 setlocal ft=conf
-au BufRead,BufNewFile *.sh.j2 setlocal ft=sh
-au BufRead,BufNewFile *.toml.j2 setlocal ft=conf
 
 au FileType go,c,cpp setlocal noexpandtab tw=100 cc=100
 au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=100
-au FileType vim,yaml,json,conf setlocal sw=2 sts=2 ts=2
+au FileType vim,yaml,json setlocal sw=2 sts=2 ts=2
 
 au FileType rst,markdown setlocal spell tw=80 cc=80 cole=2
 au FileType mail setlocal sw=4 sts=4 ts=4 tw=72 cc=72 spell

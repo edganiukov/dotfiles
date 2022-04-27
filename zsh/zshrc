@@ -1,7 +1,7 @@
 ## Settings
 ###########
 
-HISTFILE=~/.histfile
+HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -77,7 +77,7 @@ alias grep="grep --colour"
 alias tmux="tmux -u2"
 alias curl="curl -s"
 
-alias sxivd="sxiv -r -t -s d"
+alias nsxivd="nsxiv -r -t -s d"
 alias tig="vim -c :GV"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
@@ -151,7 +151,7 @@ n() {
     NNN_CTXMAX=1 \
     NNN_BMS="h:~;t:~/tmp" \
     NNN_TRASH=1 \
-    NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgsxiv" \
+    NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgview" \
     NNN_USE_EDITOR=1 \
     NNN_COLORS="4444" \
     NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i" \
