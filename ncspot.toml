@@ -5,6 +5,8 @@ gapless = false
 flip_status_indicators = true
 volnorm = true
 album_column = true
+initial_screen = "library"
+library_tabs = ["tracks", "playlists", "artists", "podcasts"]
 
 [keybindings]
 "Space" = "playpause"

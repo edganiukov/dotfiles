@@ -156,7 +156,7 @@ n() {
     NNN_COLORS="4444" \
     NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i" \
     NNN_FIFO="/tmp/nnn.fifo" \
-    nnn -e -C "$@"
+    nnn -e -x -o -C "$@"
 }
 
 # tm - creates new tmux session, or switch to existing one.

@@ -1,6 +1,5 @@
 [core]
     excludesfile = ~/.gitignore
-    pager = delta
 
 [user]
     name = <Name>
@@ -36,11 +35,3 @@
     d = diff
     dh = diff --histogram
     dm = diff --minimal
-
-[interactive]
-    diffFilter = delta --color-only
-
-[delta]
-    plus-color = "#012800"
-    minus-color = "#340001"
-    side-by-side = true
