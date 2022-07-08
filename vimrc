@@ -13,7 +13,6 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
 Plug 'scrooloose/nerdtree'
-Plug 'chaoren/vim-wordmotion'
 
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
@@ -296,36 +295,34 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>h :Hist<CR>
 
-# https://github.com/BurntSushi/ripgrep
 nnoremap <leader>s :Rg<CR>
-command! -bang -nargs=* Rg
-    \ fzf#vim#grep('rg --column --line-number
+command! -bang -nargs=* Rg fzf#vim#grep(
+    \ 'rg --column --line-number
         \ --no-heading --color=always
         \ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-    \ 1, { 'options': '--color hl:72,hl+:167 --nth 2..' }, 0)
-
+    \ 1, {options: '--color hl:72,hl+:167 --nth 2..'}, 0)
 
 # Plug 'itchyny/lightline'
 #
 g:bufferline_echo = 0
 g:lightline = {
-    'colorscheme': 'jellybeans',
-    'active': {
-        'left': [
+    colorscheme: 'jellybeans',
+    active: {
+        left: [
             ['mode', 'paste'],
             ['readonly', 'filename', 'modified']
         ],
-        'right': [
+        right: [
             ['lineinfo'],
             ['percent'],
             ['fileformat', 'fileencoding', 'filetype']
         ]
     },
-    'component_function': {
-        'filename': 'LightlineFilename',
+    component_function: {
+        filename: 'LightlineFilename',
     },
-    'separator': { 'left': '', 'right': '' },
-    'subseparator': { 'left': ':', 'right': ':' },
+    separator: { left: '', right: '' },
+    subseparator: { left: ':', right: ':' },
 }
 
 def LightlineFilename()
@@ -340,10 +337,10 @@ enddef
 
 # Plug 'scrooloose/nerdtree'
 #
-var NERDTreeDirArrows = 1
-var NERDTreeMinimalUI = 1
-var NERDTreeShowHidden = 1
-var NERDTreeIgnore = [
+g:NERDTreeDirArrows = 1
+g:NERDTreeMinimalUI = 1
+g:NERDTreeShowHidden = 1
+g:NERDTreeIgnore = [
     '\.git$',
     '\.test$',
     '\.pyc$',
@@ -376,8 +373,8 @@ g:mucomplete#reopen_immediately = 1
 g:mucomplete#chains = {}
 g:mucomplete#chains.default = ['omni']
 g:mucomplete#can_complete = {
-    'default': {
-        'omni': (t) => strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$',
+    default: {
+        omni: (t) => strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$',
     }
 }
 
@@ -390,66 +387,66 @@ inoremap <leader>c <C-x><C-o>
 #
 # golang.org/x/tools/cmd/gopls
 var gols = {
-    'name': 'gopls',
-    'cmd': (server_info) => ['gopls', 'serve'],
-    'root_uri': (server_info) => lsp#utils#path_to_uri(
+    name: 'gopls',
+    cmd: (server_info) => ['gopls', 'serve'],
+    root_uri: (server_info) => lsp#utils#path_to_uri(
         lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.work', 'go.mod'])
     ),
-    'workspace_config': {'gopls': {
-        'codelenses': {'generate': v:false, 'gc_details': v:true},
-        'hoverKind': 'FullDocumentation',
-        'linksInHover': v:false,
-        'experimentalWorkspaceModule': v:true,
-    }},
-    'allowlist': ['go'],
-    'languageId': (server_info) => 'filetype',
+    workspace_config: {
+        gopls: {
+            codelenses: {generate: v:false, gc_details: v:true},
+            hoverKind: 'FullDocumentation',
+            linksInHover: v:false,
+            experimentalWorkspaceModule: v:true,
+        },
+    },
+    allowlist: ['go'],
+    languageId: (server_info) => 'filetype',
 }
-
 au User lsp_setup call lsp#register_server(gols)
 
 var rls = {
-    'name': 'rls',
-    'cmd': (server_info) => ['rust-analyzer'],
-    'root_uri': (server_info) => lsp#utils#path_to_uri(
+    name: 'rls',
+    cmd: (server_info) => ['rust-analyzer'],
+    root_uri: (server_info) => lsp#utils#path_to_uri(
         lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
     ),
-    'initialization_options': {
-        'cargo': {
-            'loadOutDirsFromCheck': v:true,
+    initialization_options: {
+        cargo: {
+            loadOutDirsFromCheck: v:true,
         },
-        'procMacro': {
-            'enable': v:true,
+        procMacro: {
+            enable: v:true,
         },
     },
-    'allowlist': ['rust'],
+    allowlist: ['rust'],
 }
 au User lsp_setup call lsp#register_server(rls)
 
-
 # https://github.com/MaskRay/ccls
 var cls = {
-    'name': 'ccls',
-    'cmd': (server_info) => ['ccls'],
-    'root_uri': (server_info) => lsp#utils#path_to_uri(
+    name: 'ccls',
+    cmd: (server_info) => ['ccls'],
+    root_uri: (server_info) => lsp#utils#path_to_uri(
         lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
     ),
-    'initialization_options': {'cache': {'directory': expand('~/.cache/ccls')}},
-    'allowlist': ['c', 'cpp'],
+    initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
+    allowlist: ['c', 'cpp'],
 }
 au User lsp_setup call lsp#register_server(cls)
 
+# https://github.com/python-lsp/python-lsp-server
 var pyls = {
-    'name': 'pylsp',
-    'cmd': (server_info) => ['pylsp'],
-    'root_uri': (server_info) => lsp#utils#path_to_uri(
+    name: 'pylsp',
+    cmd: (server_info) => ['pylsp'],
+    root_uri: (server_info) => lsp#utils#path_to_uri(
         lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
     ),
-    'workspace_config': {'pyls': {
-        'configurationSources': ['flake8'],
+    workspace_config: {pyls: {
+        configurationSources: ['flake8'],
     }},
-    'allowlist': ['python'],
+    allowlist: ['python'],
 }
-# https://github.com/python-lsp/python-lsp-server
 au User lsp_setup call lsp#register_server(pyls)
 
 g:lsp_fold_enabled = 0
