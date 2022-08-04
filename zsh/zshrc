@@ -78,7 +78,6 @@ alias tmux="tmux -u2"
 alias curl="curl -s"
 
 alias nsxivd="nsxiv -r -t -s d"
-alias tig="vim -c :GV"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 

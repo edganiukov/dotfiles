@@ -7,7 +7,6 @@ plug#begin('~/.vim/plugged')
 Plug 'edganiukov/vim-colors-off'
 
 # Basic
-Plug 'itchyny/lightline.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
@@ -17,7 +16,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 
 Plug 'edganiukov/vim-gol'
 Plug 'plasticboy/vim-markdown'
@@ -25,7 +23,6 @@ Plug 'sebdah/vim-delve'
 
 # LSP
 Plug 'prabirshrestha/vim-lsp'
-Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/vim-mucomplete'
 
 plug#end()
@@ -239,11 +236,6 @@ g:magit_commit_title_limit = 80
 nnoremap vm :Magit<CR>
 
 
-# Plug 'junegunn/gv.vim'
-#
-nnoremap vg :GV<CR>
-
-
 # Plug 'majutsushi/tagbar'
 #
 nmap <F4> :TagbarToggle<CR>
@@ -296,44 +288,10 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>h :Hist<CR>
 
 nnoremap <leader>s :Rg<CR>
-command! -bang -nargs=* Rg fzf#vim#grep(
-    \ 'rg --column --line-number
-        \ --no-heading --color=always
-        \ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-    \ 1, {options: '--color hl:72,hl+:167 --nth 2..'}, 0)
-
-# Plug 'itchyny/lightline'
-#
-g:bufferline_echo = 0
-g:lightline = {
-    colorscheme: 'jellybeans',
-    active: {
-        left: [
-            ['mode', 'paste'],
-            ['readonly', 'filename', 'modified']
-        ],
-        right: [
-            ['lineinfo'],
-            ['percent'],
-            ['fileformat', 'fileencoding', 'filetype']
-        ]
-    },
-    component_function: {
-        filename: 'LightlineFilename',
-    },
-    separator: { left: '', right: '' },
-    subseparator: { left: ':', right: ':' },
-}
-
-def LightlineFilename()
-  var root = fnamemodify(get(b:, 'git_dir'), ':h')
-  var path = expand('%:p')
-  if path[:len(root)-1] ==# root
-      return path[len(root)+1:]
-  endif
-  return expand('%')
-enddef
-
+command! -bang -nargs=* Rg legacy call fzf#vim#grep(
+  \ 'rg --column --line-number --no-heading --color=always
+    \ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
+  \ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
 
 # Plug 'scrooloose/nerdtree'
 #
@@ -353,15 +311,9 @@ g:NERDTreeDirArrowExpandable = '+'
 g:NERDTreeDirArrowCollapsible = '-'
 
 map <F3> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1
-      \ && exists("b:NERDTree")
-      \ && b:NERDTree.isTabTree()) | q | endif
-
-
-#Plug 'Shougo/echodoc.vim'
-#
-g:echodoc#enable_at_startup = 1
-g:echodoc#type = 'echo'
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
+  | quit
+  | endif
 
 
 # Plug 'lifepillar/vim-mucomplete'
@@ -405,6 +357,7 @@ var gols = {
 }
 au User lsp_setup call lsp#register_server(gols)
 
+# https://github.com/rust-lang/rust-analyzer
 var rls = {
     name: 'rls',
     cmd: (server_info) => ['rust-analyzer'],
@@ -513,12 +466,14 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 # General: filetype config
 #
-au BufRead,BufNewFile *.conf setlocal ft=conf
+augroup filetypedetect
+  au BufRead,BufNewFile *.conf setlocal ft=conf
 
-au FileType go,c,cpp setlocal noexpandtab tw=100 cc=100
-au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=100
-au FileType vim,yaml,json setlocal sw=2 sts=2 ts=2
+  au FileType go,c,cpp setlocal noexpandtab tw=100 cc=100
+  au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=100
+  au FileType vim,yaml,json setlocal sw=2 sts=2 ts=2
 
-au FileType rst,markdown setlocal spell tw=80 cc=80 cole=2
-au FileType mail setlocal sw=4 sts=4 ts=4 tw=72 cc=72 spell
-au FileType gitcommit setlocal spell tw=72 cc=72
+  au FileType rst,markdown setlocal spell tw=80 cc=80 cole=2
+  au FileType mail setlocal sw=4 sts=4 ts=4 tw=72 cc=72 spell
+  au FileType gitcommit setlocal spell tw=72 cc=72
+augroup END

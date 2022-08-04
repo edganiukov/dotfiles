@@ -24,5 +24,8 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 [ -n "$(pidof dunst)" ] || dunst &
 
 export LIBSEAT_BACKEND=logind
+
 # Start WM
-exec dbus-launch --exit-with-session ~/.local/bin/dwm-start
+exec pipewire-pulse &
+exec ~/.local/bin/dwm-status &
+exec dbus-launch --exit-with-session /usr/local/bin/dwm
