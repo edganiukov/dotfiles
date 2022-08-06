@@ -109,8 +109,35 @@ set splitright
 set splitbelow
 set encoding=utf-8
 
-set laststatus=2
 set shortmess+=c
+set laststatus=2
+
+def g:StatusLineMode(): string
+    var modes = {
+        'n': 'NORMAL',
+        'i': 'INSERT',
+        'R': 'REPLACE',
+        'v': 'VISUAL',
+        'V': 'V-LINE',
+        "\<C-v>": 'V-BLOCK',
+        'c': 'NORMAL',
+        's': 'SELECT',
+        'S': 'S-LINE',
+        "\<C-s>": 'S-BLOCK',
+        't': 'TERMINAL'
+    }
+    return get(modes, mode(), '')
+enddef
+
+set statusline=
+set statusline+=\%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*  # mode and paste indicator
+set statusline+=\ %f\ %m\ %r  # filepath and modified flag
+
+set statusline+=%=
+set statusline+=%{&ff}  # file format
+set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}  # file enconding
+set statusline+=\ \|\ %{&ft!=#""?&ft:"none"}  # file type
+set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
 # abbreviations
 cnoreabbrev W! w!
