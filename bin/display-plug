@@ -23,7 +23,6 @@ main() {
             pkill -HUP dwm
             break
         else
-            pkill -HUP dwm
             disconnect $disp
         fi
     done
