@@ -140,6 +140,10 @@ set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}  # file enconding
 set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}  # file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
+# Fix cursor in INSERT mode.
+&t_SI = "\e[5 q"
+&t_EI = "\e[2 q"
+
 # abbreviations
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
