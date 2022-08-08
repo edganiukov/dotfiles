@@ -239,10 +239,6 @@ match ErrorMsg '\s\+$'
 #
 g:signify_vcs_list = ['git']
 g:signify_realtime = 1
-g:signify_cursorhold_insert = 1
-g:signify_cursorhold_normal = 1
-g:signify_update_on_bufenter = 0
-g:signify_update_on_focusgained = 1
 g:signify_sign_show_count = 0
 
 g:signify_sign_add = '+'
@@ -430,9 +426,7 @@ au User lsp_setup call lsp#register_server(pyls)
 
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
-g:lsp_insert_text_enabled = 1
 
-g:lsp_diagnostics_enabled = 1
 g:lsp_diagnostics_echo_cursor = 1
 g:lsp_diagnostics_virtual_text_enabled = 0
 
@@ -443,9 +437,7 @@ g:lsp_diagnostics_signs_hint = {'text': '*'}
 
 g:lsp_document_code_action_signs_hint = {'text': '>'}
 
-g:lsp_hover_conceal = 1
 g:lsp_format_sync_timeout = 1000
-g:lsp_semantic_enabled = 0
 
 g:lsp_show_message_log_level = 'none'
 g:lsp_log_file = expand('/tmp/lsp.log')

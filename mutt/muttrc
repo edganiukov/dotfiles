@@ -176,7 +176,8 @@ bind editor <Tab> complete-query
 
 # Follow URL
 # macro index,pager \Cb "<pipe-message> urlview<Enter>" "Follow links"
-macro index,pager "<enter-command>set pipe_decode = yes<enter><pipe-message>urlview<enter><enter-command>set pipe_decode = no<enter>" "Follow links"
+macro index,pager "<enter-command>set pipe_decode = yes<enter><pipe-message>urlview<enter> \
+	<enter-command>set pipe_decode = no<enter>" "Follow links"
 macro attach,compose \Cb "<pipe-entry> urlview<Enter>" "Follow links"
 
 # Save all attachments
@@ -184,7 +185,7 @@ macro pager S "<pipe-message> ripmime -i - -d ~/tmp && rm ~/tmp/textfile*" "Save
 
 ## Neomutt specific config
 set new_mail_command="notify-send --icon='~/dev/dotfiles/mutt/mutt.png' \
-    'New Email' '%n new messages, %u unread.' &"
+	'New Email' '%n new messages, %u unread.' &"
 
 # hooks
 #startup-hook 'exec sync-mailbox'
