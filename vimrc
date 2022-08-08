@@ -258,7 +258,7 @@ hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 # Plug 'jreybert/vimagit'
 #
-g:magit_commit_title_limit = 80
+g:magit_commit_title_limit = 72
 nnoremap vm :Magit<CR>
 
 
@@ -493,7 +493,7 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 # General: filetype config
 augroup filetypedetect
   au FileType python setlocal et sts=4
-  au FileType yaml,json setlocal et sw=2 sts=2 ts=2
+  au FileType yaml,json,conf,confini setlocal et sw=2 sts=2 ts=2
 
   au FileType rst,markdown setlocal tw=80 cc=80 cole=2 spell
   au FileType mail setlocal tw=72 cc=72 spell
