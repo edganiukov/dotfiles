@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/.local/bin/dwm-status | while true;  do /usr/local/bin/dwm > /dev/null; done;

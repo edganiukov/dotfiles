@@ -6,26 +6,26 @@ export DISPLAY=:0.0
 export XAUTHORITY=/home/ed/.Xauthority
 
 function connect() {
-    echo "connect"
-    xrandr --dpi 160 --output $1 --auto --primary --output eDP-1 --off
+	echo "connect"
+	xrandr --dpi 160 --output $1 --auto --primary --output eDP-1 --off
 }
 
 function disconnect() {
-    echo "disconnect"
-    xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
+	echo "disconnect"
+	xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
 }
 
 main() {
-    # list of all different HDMI ports on docking stations etc.
-    for disp in "DP-1" "HDMI-1"; do
-        if xrandr --query | grep -e "^$disp connected" &> /dev/null; then
-            connect $disp
-            pkill -HUP dwm
-            break
-        else
-            disconnect $disp
-        fi
-    done
+	# list of all different HDMI ports on docking stations etc.
+	for disp in "DP-1" "HDMI-1"; do
+		if xrandr --query | grep -e "^$disp connected" &> /dev/null; then
+			connect $disp
+			pkill -HUP dwm
+			break
+		else
+			disconnect $disp
+		fi
+	done
 }
 
 # start it forked so the monitor is active

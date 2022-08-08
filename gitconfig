@@ -1,37 +1,37 @@
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 
 [user]
-    name = <Name>
-    email = <Email>
-    signingkey = <Key ID>
+	name = <Name>
+	email = <Email>
+	signingkey = <Key ID>
 
 [commit]
-    gpgsign = true
+	gpgsign = true
 
 [gpg]
-    program = gpg2
+	program = gpg2
 
 [push]
-    default = simple
+	default = simple
 
 [pull]
-    default = simple
-    rebase = true
+	default = simple
+	rebase = true
 
 [color "branch"]
-    current = green
-    remote = yellow
+	current = green
+	remote = yellow
 
 [alias]
-    lg = log --pretty=format:'%Cblue %as %C(auto)%h%d %s %Cgreen[%aN]' --abbrev-commit
-    fap = fetch --all --prune
-    ps = push
-    pl = pull
-    co = checkout
-    cb = checkout -b
-    cm = commit
-    st = status
-    d = diff
-    dh = diff --histogram
-    dm = diff --minimal
+	lg = log --pretty=format:'%Cblue %as %C(auto)%h%d %s %Cgreen[%aN]' --abbrev-commit
+	fap = fetch --all --prune
+	ps = push
+	pl = pull
+	co = checkout
+	cb = checkout -b
+	cm = commit
+	st = status
+	d = diff
+	dh = diff --histogram
+	dm = diff --minimal

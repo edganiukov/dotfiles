@@ -1,73 +1,73 @@
 #!/bin/bash
 
 alsa_volume() {
-    ON=$(amixer get Master | awk -F'[][]' 'END{ print $6 }')
-    VOL=$(amixer get Master | awk -F'[][]' 'END{ print $2 }')
+	ON=$(amixer get Master | awk -F'[][]' 'END{ print $6 }')
+	VOL=$(amixer get Master | awk -F'[][]' 'END{ print $2 }')
 
-    if [ "${ON}" == "on" ]; then
-        echo "$VOL"
-    else
-        echo "0% M"
-    fi
+	if [ "${ON}" == "on" ]; then
+		echo "$VOL"
+	else
+		echo "0% M"
+	fi
 }
 
 pa_volume() {
-    echo "$(pamixer --get-volume-human)"
+	echo "$(pamixer --get-volume-human)"
 }
 
 wifi() {
-    WIFI_STATE=$(cat /sys/class/net/wlp0s20f3/operstate)
+	WIFI_STATE=$(cat /sys/class/net/wlp0s20f3/operstate)
 
-    echo ${WIFI_STATE:-"down"}
+	echo ${WIFI_STATE:-"down"}
 }
 
 vpn() {
-    VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp|tailscale)[0-9]+")
-    [ -n "$VPNS" ] && echo "up" || echo "down"
+	VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp|tailscale)[0-9]+")
+	[ -n "$VPNS" ] && echo "up" || echo "down"
 }
 
 battery() {
-    CAP=$(cat /sys/class/power_supply/BAT0/capacity)
-    STATUS=$(cat /sys/class/power_supply/BAT0/status)
+	CAP=$(cat /sys/class/power_supply/BAT0/capacity)
+	STATUS=$(cat /sys/class/power_supply/BAT0/status)
 
-    if [ "${STATUS}" == "Charging" ]; then
-        echo "+$CAP%"
-    elif [ "${STATUS}" == "Full" ]; then
-        echo "=$CAP%"
-    else
-        echo "-$CAP%"
-    fi
+	if [ "${STATUS}" == "Charging" ]; then
+		echo "+$CAP%"
+	elif [ "${STATUS}" == "Full" ]; then
+		echo "=$CAP%"
+	else
+		echo "-$CAP%"
+	fi
 }
 
 temp() {
-    TEMP=$(cat /sys/devices/virtual/thermal/thermal_zone1/temp)
+	TEMP=$(cat /sys/devices/virtual/thermal/thermal_zone1/temp)
 
-    echo "$((TEMP / 1000))°C"
+	echo "$((TEMP / 1000))°C"
 }
 
 datetime() {
-    echo "$(date +'%a %d %b %R')"
+	echo "$(date +'%a %d %b %R')"
 }
 
 # yay -S sysstat
 cpu_usage() {
-    mpstat 1 1 | tail -n 1 | awk -F " " '{print 100 -  $12"%"}'
+	mpstat 1 1 | tail -n 1 | awk -F " " '{print 100 -  $12"%"}'
 }
 
 xkb_layout() {
-    case "$(xset -q|grep LED| awk '{ print $10 }')" in
-        "00000000") KBD="us" ;;
-        "00001000") KBD="ru" ;;
-        *) KBD="N/A" ;;
-    esac
-    echo "$KBD"
+	case "$(xset -q|grep LED| awk '{ print $10 }')" in
+		"00000000") KBD="us" ;;
+		"00001000") KBD="ru" ;;
+		*) KBD="N/A" ;;
+	esac
+	echo "$KBD"
 }
 
 new_emails() {
-    echo "$(ls -1 --file-type ~/.mail/default/Inbox/new | wc -l)"
+	echo "$(ls -1 --file-type ~/.mail/default/Inbox/new | wc -l)"
 }
 
 while true; do
-    xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < vpn: $(vpn) < net: $(wifi) < $(datetime) <"
-    sleep 1
+	xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < vpn: $(vpn) < net: $(wifi) < $(datetime) <"
+	sleep 1
 done
