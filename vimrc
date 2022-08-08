@@ -36,13 +36,12 @@ syntax on
 
 set t_Co=256
 set t_ut=
-# set termguicolors
-set bg=dark
 
+set bg=dark
 colorscheme off
 
 set encoding=utf-8
-# cmd autocomplete
+
 set wildmenu
 set wildoptions-=pum
 set completeopt=menuone,noselect
@@ -51,9 +50,9 @@ set nospell
 set hidden
 set noerrorbells
 set novisualbell
-set modelines=0
 set t_vb=
-set tm=500
+
+set modelines=1
 set mouse=a
 
 set ignorecase
@@ -86,14 +85,12 @@ set cursorline
 
 set pastetoggle=<F2>
 set nopaste
-
-# copy to the system clipboard
 set clipboard=unnamedplus
 
 set listchars=tab:>\ ,nbsp:.,trail:.
 set list
 
-# Vim formatting options
+# Formatting options.
 set wrap
 set formatoptions=qrn1j
 
@@ -142,7 +139,7 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
-# abbreviations
+# Abbreviations.
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
 cnoreabbrev Wq wq
@@ -220,17 +217,14 @@ inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 # expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
-# open/reload vim.rc
+# open/reload vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-# Highlights
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
-
 hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
-
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
@@ -281,6 +275,7 @@ g:vim_markdown_conceal_code_blocks = 1
 g:vim_markdown_math = 1
 g:vim_markdown_new_list_item_indent = 2
 
+
 # Plug 'junegunn/fzf.vim'
 #
 set rtp+=/usr/local/opt/fzf
@@ -314,6 +309,7 @@ command! -bang -nargs=* Rg legacy call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always
 	\ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
   \ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
+
 
 # Plug 'scrooloose/nerdtree'
 #
@@ -482,7 +478,7 @@ nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
 nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 
-# General: filetype config
+# Filetype config.
 augroup filetypedetect
   au FileType python setlocal et sts=4
   au FileType yaml,json,conf,confini setlocal et sw=2 sts=2 ts=2
