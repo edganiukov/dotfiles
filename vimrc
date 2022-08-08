@@ -41,6 +41,7 @@ set bg=dark
 
 colorscheme off
 
+set encoding=utf-8
 # cmd autocomplete
 set wildmenu
 set wildoptions-=pum
@@ -69,9 +70,6 @@ set showcmd
 set lazyredraw
 set autoread
 
-set autoindent
-set smartindent
-
 set scrolljump=1
 set scrolloff=4
 set backspace=2
@@ -98,35 +96,35 @@ set list
 # Vim formatting options
 set wrap
 set formatoptions=qrn1j
+
 set autoindent
+set smartindent
+set noexpandtab
+set tabstop=4
 set shiftwidth=4
 set shiftround
-set expandtab
-set tabstop=4
-set softtabstop=4
-set nojoinspaces
+
 set splitright
 set splitbelow
-set encoding=utf-8
 
 set shortmess+=c
 set laststatus=2
 
 def g:StatusLineMode(): string
-    var modes = {
-        'n': 'NORMAL',
-        'i': 'INSERT',
-        'R': 'REPLACE',
-        'v': 'VISUAL',
-        'V': 'V-LINE',
-        "\<C-v>": 'V-BLOCK',
-        'c': 'COMMAND',
-        's': 'SELECT',
-        'S': 'S-LINE',
-        "\<C-s>": 'S-BLOCK',
-        't': 'TERMINAL'
-    }
-    return get(modes, mode(), '[NONE]')
+	var modes = {
+		'n': 'NORMAL',
+		'i': 'INSERT',
+		'R': 'REPLACE',
+		'v': 'VISUAL',
+		'V': 'V-LINE',
+		"\<C-v>": 'V-BLOCK',
+		'c': 'COMMAND',
+		's': 'SELECT',
+		'S': 'S-LINE',
+		"\<C-s>": 'S-BLOCK',
+		't': 'TERMINAL'
+	}
+	return get(modes, mode(), '[NONE]')
 enddef
 
 set statusline=
@@ -219,10 +217,6 @@ inoremap <Right> <NOP>
 nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
 inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 
-# semicolon in the EOL
-# nnoremap ;; A;<Esc>
-# inoremap ;; <C-o>A;
-#
 # expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
@@ -277,13 +271,13 @@ g:tagbar_sort = 0
 # Plug 'tpope/vim-markdown'
 #
 g:vim_markdown_fenced_languages = [
-    'go',
-    'python',
-    'rust',
-    'c',
-    'cpp',
-    'bash=sh',
-    'yaml=yml',
+	'go',
+	'python',
+	'rust',
+	'c',
+	'cpp',
+	'bash=sh',
+	'yaml=yml',
 ]
 
 g:vim_markdown_conceal = 1
@@ -300,19 +294,19 @@ g:fzf_preview_window = ''
 
 # match vim colorscheme
 g:fzf_colors = {
-    'fg':      ['fg', 'Normal'],
-    'bg':      ['bg', 'Normal'],
-    'hl':      ['fg', 'PreProc'],
-    'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    'hl+':     ['fg', 'Statement'],
-    'info':    ['fg', 'PreProc'],
-    'border':  ['fg', 'Ignore'],
-    'prompt':  ['fg', 'Conditional'],
-    'pointer': ['fg', 'Exception'],
-    'marker':  ['fg', 'Keyword'],
-    'spinner': ['fg', 'Label'],
-    'header':  ['fg', 'Comment']
+	'fg':	  ['fg', 'Normal'],
+	'bg':	  ['bg', 'Normal'],
+	'hl':	  ['fg', 'PreProc'],
+	'fg+':	 ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+	'bg+':	 ['bg', 'CursorLine', 'CursorColumn'],
+	'hl+':	 ['fg', 'Statement'],
+	'info':	['fg', 'PreProc'],
+	'border':  ['fg', 'Ignore'],
+	'prompt':  ['fg', 'Conditional'],
+	'pointer': ['fg', 'Exception'],
+	'marker':  ['fg', 'Keyword'],
+	'spinner': ['fg', 'Label'],
+	'header':  ['fg', 'Comment']
 }
 
 nnoremap <leader>b :Buffers<CR>
@@ -322,7 +316,7 @@ nnoremap <leader>h :Hist<CR>
 nnoremap <leader>s :Rg<CR>
 command! -bang -nargs=* Rg legacy call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always
-    \ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
+	\ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
   \ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
 
 # Plug 'scrooloose/nerdtree'
@@ -331,9 +325,9 @@ g:NERDTreeDirArrows = 1
 g:NERDTreeMinimalUI = 1
 g:NERDTreeShowHidden = 1
 g:NERDTreeIgnore = [
-    '\.git$',
-    '\.test$',
-    '\.pyc$',
+	'\.git$',
+	'\.test$',
+	'\.pyc$',
 ]
 
 g:NERDTreeMapActivateNode = '<Space>'
@@ -357,9 +351,9 @@ g:mucomplete#reopen_immediately = 1
 g:mucomplete#chains = {}
 g:mucomplete#chains.default = ['omni']
 g:mucomplete#can_complete = {
-    default: {
-        omni: (t) => strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$',
-    }
+	default: {
+		omni: (t) => strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$',
+	}
 }
 
 # mucomplete + vim-lsp
@@ -371,66 +365,66 @@ inoremap <leader>c <C-x><C-o>
 #
 # golang.org/x/tools/cmd/gopls
 var gols = {
-    name: 'gopls',
-    cmd: (server_info) => ['gopls', 'serve'],
-    root_uri: (server_info) => lsp#utils#path_to_uri(
-        lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.work', 'go.mod'])
-    ),
-    workspace_config: {
-        gopls: {
-            codelenses: {generate: v:false, gc_details: v:true},
-            hoverKind: 'FullDocumentation',
-            linksInHover: v:false,
-            experimentalWorkspaceModule: v:true,
-        },
-    },
-    allowlist: ['go'],
-    languageId: (server_info) => 'filetype',
+	name: 'gopls',
+	cmd: (server_info) => ['gopls', 'serve'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.work', 'go.mod'])
+	),
+	workspace_config: {
+		gopls: {
+			codelenses: {generate: v:false, gc_details: v:true},
+			hoverKind: 'FullDocumentation',
+			linksInHover: v:false,
+			experimentalWorkspaceModule: v:true,
+		},
+	},
+	allowlist: ['go'],
+	languageId: (server_info) => 'filetype',
 }
 au User lsp_setup call lsp#register_server(gols)
 
 # https://github.com/rust-lang/rust-analyzer
 var rls = {
-    name: 'rls',
-    cmd: (server_info) => ['rust-analyzer'],
-    root_uri: (server_info) => lsp#utils#path_to_uri(
-        lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
-    ),
-    initialization_options: {
-        cargo: {
-            loadOutDirsFromCheck: v:true,
-        },
-        procMacro: {
-            enable: v:true,
-        },
-    },
-    allowlist: ['rust'],
+	name: 'rls',
+	cmd: (server_info) => ['rust-analyzer'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
+	),
+	initialization_options: {
+		cargo: {
+			loadOutDirsFromCheck: v:true,
+		},
+		procMacro: {
+			enable: v:true,
+		},
+	},
+	allowlist: ['rust'],
 }
 au User lsp_setup call lsp#register_server(rls)
 
 # https://github.com/MaskRay/ccls
 var cls = {
-    name: 'ccls',
-    cmd: (server_info) => ['ccls'],
-    root_uri: (server_info) => lsp#utils#path_to_uri(
-        lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
-    ),
-    initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
-    allowlist: ['c', 'cpp'],
+	name: 'ccls',
+	cmd: (server_info) => ['ccls'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
+	),
+	initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
+	allowlist: ['c', 'cpp'],
 }
 au User lsp_setup call lsp#register_server(cls)
 
 # https://github.com/python-lsp/python-lsp-server
 var pyls = {
-    name: 'pylsp',
-    cmd: (server_info) => ['pylsp'],
-    root_uri: (server_info) => lsp#utils#path_to_uri(
-        lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
-    ),
-    workspace_config: {pyls: {
-        configurationSources: ['flake8'],
-    }},
-    allowlist: ['python'],
+	name: 'pylsp',
+	cmd: (server_info) => ['pylsp'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
+	),
+	workspace_config: {pyls: {
+		configurationSources: ['flake8'],
+	}},
+	allowlist: ['python'],
 }
 au User lsp_setup call lsp#register_server(pyls)
 
@@ -475,11 +469,11 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
 autocmd FileType go,rust,python
-    \ autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	\ autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
 autocmd FileType go,rust,python
-    \ autocmd BufWritePre <buffer>
-    \ call execute('LspCodeActionSync source.organizeImports')
+	\ autocmd BufWritePre <buffer>
+	\ call execute('LspCodeActionSync source.organizeImports')
 
 
 # Plug 'sebdah/vim-delve'
@@ -497,15 +491,11 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 
 # General: filetype config
-#
 augroup filetypedetect
-  au BufRead,BufNewFile *.conf setlocal ft=conf
+  au FileType python setlocal et sts=4
+  au FileType yaml,json setlocal et sw=2 sts=2 ts=2
 
-  au FileType go,c,cpp setlocal noexpandtab tw=100 cc=100
-  au FileType python setlocal sw=4 sts=4 ts=4 tw=100 cc=100
-  au FileType vim,yaml,json setlocal sw=2 sts=2 ts=2
-
-  au FileType rst,markdown setlocal spell tw=80 cc=80 cole=2
-  au FileType mail setlocal sw=4 sts=4 ts=4 tw=72 cc=72 spell
-  au FileType gitcommit setlocal spell tw=72 cc=72
+  au FileType rst,markdown setlocal tw=80 cc=80 cole=2 spell
+  au FileType mail setlocal tw=72 cc=72 spell
+  au FileType gitcommit setlocal tw=72 cc=72 spell
 augroup END
