@@ -1,5 +1,5 @@
-.PHONY: nvim vim tmux git zsh x redshift etc bin dunst mutt isync
-.PHONY: fonts mpv rtorrent sxiv zathura  spotifyd weechat
+.PHONY: nvim vim tmux git zsh x redshift bin dunst mutt isync
+.PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat
 
 CWD=$(shell pwd)
 
@@ -44,8 +44,6 @@ fonts:
 bin:
 	mkdir -p $(HOME)/.local/bin
 	ln -s $(CWD)/bin/dwm-status $(HOME)/.local/bin/
-	ln -s $(CWD)/bin/fzf-run $(HOME)/.local/bin/
-	ln -s $(CWD)/bin/fzf-pass $(HOME)/.local/bin/
 
 redshift:
 	mkdir -p $(HOME)/.config/redshift
@@ -82,9 +80,9 @@ zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
 
-spotifyd:
-	mkdir -p $(HOME)/.config/spotifyd
-	ln -s $(CWD)/spotifyd.conf $(HOME)/.config/spotifyd/spotifyd.conf
+ncspot:
+	mkdir -p $(HOME)/.config/ncspot
+	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
 
 weechat:
 	ln -s $(CWD)/weechat $(HOME)/.weechat

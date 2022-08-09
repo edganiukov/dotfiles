@@ -8,9 +8,10 @@ set pgp_default_key="0xCCC46DB51C913328"
 
 set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d`
 set my_realname = "Ed Ganiukov"
+set my_smtp_pass = `pass show core/smtp.fastmail.com`
+
 set realname = $my_realname
 set from = "$my_realname <$my_user>"
-set my_smtp_pass = `pass show core/smtp.fastmail.com`
 
 set smtp_url = "smtps://$my_user@smtp.fastmail.com:465"
 set smtp_pass = $my_smtp_pass
