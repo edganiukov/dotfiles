@@ -52,6 +52,7 @@ set noerrorbells
 set novisualbell
 set t_vb=
 
+set modeline
 set modelines=1
 set mouse=a
 
