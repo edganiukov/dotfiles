@@ -11,14 +11,14 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 Plug 'tpope/vim-fugitive'
 
+Plug 'preservim/vim-markdown'
 Plug 'edganiukov/vim-gol'
-Plug 'plasticboy/vim-markdown'
 Plug 'sebdah/vim-delve'
 
 # LSP
@@ -37,7 +37,6 @@ syntax on
 set t_Co=256
 set t_ut=
 
-set bg=dark
 colorscheme off
 
 set encoding=utf-8
@@ -81,7 +80,7 @@ set number
 set signcolumn=yes
 set pumheight=20
 set textwidth=120
-set colorcolumn=121
+set colorcolumn=120
 set cursorline
 
 set pastetoggle=<F2>
@@ -175,8 +174,8 @@ nmap > >>
 vnoremap < <gv
 vnoremap > >gv
 
-nnoremap <F10> :set list!<CR>
-inoremap <F10> <Esc>:set list!<CR>a
+nnoremap <F5> :set list!<CR>
+inoremap <F5> <Esc>:set list!<CR>a
 nnoremap <leader><space> :nohlsearch<CR>
 
 # preview close
@@ -484,7 +483,7 @@ augroup filetypedetect
   au FileType python setlocal et sts=4
   au FileType yaml,json,conf,confini setlocal et sw=2 sts=2 ts=2
 
-  au FileType rst,markdown setlocal tw=80 cc=80 cole=2 spell
+  au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
   au FileType mail setlocal tw=72 cc=72 spell
   au FileType gitcommit setlocal tw=72 cc=72 spell
 augroup END
