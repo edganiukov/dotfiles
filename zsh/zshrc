@@ -77,6 +77,8 @@ alias grep="grep --colour"
 alias tmux="tmux -u2"
 alias curl="curl -s"
 
+alias diff="diff -u --color"
+
 alias nsxivd="nsxiv -r -t -s d"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
