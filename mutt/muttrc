@@ -10,6 +10,7 @@ set timeout = 15
 set imap_idle = yes
 
 set editor = "vim +/^$ -c 'set ft=mail spell spelllang=en,ru'"
+set quit = ask-yes
 
 ## SSL hardening
 set ssl_force_tls = yes

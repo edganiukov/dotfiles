@@ -11,7 +11,6 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
-Plug 'preservim/nerdtree'
 
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
@@ -139,13 +138,21 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
+# netrw
+g:netrw_keepdir = 0
+g:netrw_winsize = -35
+g:netrw_banner = 0
+g:netrw_list_hide = '^.git/$'
+
+hi! link netrwMarkFile Search
+nnoremap <F3> :Lexplore<CR>
+autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
+  | quit
+  | endif
+
 # Abbreviations.
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
-cnoreabbrev W w
-cnoreabbrev Q q
 
 # Non-plugin Keybindings:
 # yank to the EOL
@@ -309,29 +316,6 @@ command! -bang -nargs=* Rg legacy call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always
 	\ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
   \ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
-
-
-# Plug 'scrooloose/nerdtree'
-#
-g:NERDTreeDirArrows = 1
-g:NERDTreeMinimalUI = 1
-g:NERDTreeShowHidden = 1
-g:NERDTreeIgnore = [
-	'\.git$',
-	'\.test$',
-	'\.pyc$',
-]
-
-g:NERDTreeMapActivateNode = '<Space>'
-g:NERDTreeWinSize = 40
-
-g:NERDTreeDirArrowExpandable = '+'
-g:NERDTreeDirArrowCollapsible = '-'
-
-map <F3> :NERDTreeToggle<CR>
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
-  | quit
-  | endif
 
 
 # Plug 'lifepillar/vim-mucomplete'
