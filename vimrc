@@ -140,15 +140,27 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
 # netrw
 g:netrw_keepdir = 0
-g:netrw_winsize = -35
+g:netrw_winsize = -40
 g:netrw_banner = 0
-g:netrw_list_hide = '^.git/$'
+g:netrw_list_hide = '^.git/$,^bazel-.*$'
+g:netrw_liststyle = 3
 
 hi! link netrwMarkFile Search
+hi! link netrwTreeBar Comment
+
 nnoremap <F3> :Lexplore<CR>
 autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
   | quit
   | endif
+
+def NetrwMapping()
+	nmap <buffer> H u
+	nmap <buffer> h -^
+	nmap <buffer> <Space> <CR>
+	nmap <buffer> . gh
+enddef
+autocmd filetype netrw call NetrwMapping()
+
 
 # Abbreviations.
 cnoreabbrev Wq wq
@@ -406,6 +418,7 @@ au User lsp_setup call lsp#register_server(pyls)
 
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
+g:lsp_semantic_enabled = 0
 
 g:lsp_diagnostics_echo_cursor = 1
 g:lsp_diagnostics_virtual_text_enabled = 0
@@ -464,10 +477,20 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 # Filetype config.
 augroup filetypedetect
-  au FileType python setlocal et sts=4
+  au FileType go,c setlocal tw=100 cc=100
+  au FileType python setlocal et sts=4 tw=100 cc=100
   au FileType yaml,json,conf,confini setlocal et sw=2 sts=2 ts=2
 
   au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
   au FileType mail setlocal tw=72 cc=72 spell
   au FileType gitcommit setlocal tw=72 cc=72 spell
 augroup END
+
+## Custom functions.
+# Print highlight group under the cursor.
+def g:SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+enddef
