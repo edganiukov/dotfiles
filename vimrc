@@ -140,7 +140,7 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
 # netrw
 g:netrw_keepdir = 0
-g:netrw_winsize = -40
+g:netrw_winsize = -35
 g:netrw_banner = 0
 g:netrw_list_hide = '^.git/$,^bazel-.*$'
 g:netrw_liststyle = 3
