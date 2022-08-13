@@ -126,7 +126,7 @@ enddef
 set statusline=
 set statusline+=%#Comment#[%n]%*
 set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*  # mode and paste indicator
-set statusline+=\ %f\ %m\ %r  # filepath and modified flag
+set statusline+=\ %.50f\ %m\ %r  # filepath and modified flag
 
 set statusline+=%=
 set statusline+=%{&ff}  # file format
