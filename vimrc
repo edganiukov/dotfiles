@@ -12,9 +12,9 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
 
+Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
-Plug 'tpope/vim-fugitive'
 
 Plug 'preservim/vim-markdown'
 Plug 'edganiukov/vim-gol'

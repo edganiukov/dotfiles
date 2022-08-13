@@ -28,8 +28,9 @@ zsh:
 	mkdir $(HOME)/.zsh
 	ln -s $(CWD)/zsh/zshrc $(HOME)/.zshrc
 	ln -s $(CWD)/zsh/zshenv $(HOME)/.zshenv
-	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
 	ln -s $(CWD)/zsh/zlogin $(HOME)/.zlogin
+	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
+	ln -s $(CWD)/zsh/func.zsh $(HOME)/.zsh/func.zsh
 
 x:
 	ln -s $(CWD)/Xresources $(HOME)/.Xresources
