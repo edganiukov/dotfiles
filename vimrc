@@ -161,6 +161,8 @@ def NetrwMapping()
 enddef
 autocmd filetype netrw call NetrwMapping()
 
+# No statusline in netrw window.
+au FileType netrw setlocal statusline=NETRW
 
 # Abbreviations.
 cnoreabbrev Wq wq
