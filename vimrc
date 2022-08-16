@@ -11,6 +11,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
+Plug 'preservim/nerdtree'
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
@@ -148,11 +149,6 @@ g:netrw_liststyle = 3
 hi! link netrwMarkFile Search
 hi! link netrwTreeBar Comment
 
-nnoremap <F3> :Lexplore<CR>
-autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
-  | quit
-  | endif
-
 def NetrwMapping()
 	nmap <buffer> H u
 	nmap <buffer> h -^
@@ -162,7 +158,32 @@ enddef
 autocmd filetype netrw call NetrwMapping()
 
 # No statusline in netrw window.
-au FileType netrw setlocal statusline=NETRW
+au FileType netrw setlocal statusline=%F
+
+# Plug 'preservim/nerdtree'
+#
+g:NERDTreeDirArrows = 1
+g:NERDTreeMinimalUI = 1
+g:NERDTreeShowHidden = 1
+g:NERDTreeIgnore = [
+	'^\.git$',
+	'\.test$',
+	'\.pyc$',
+	'^bazel-.*$',
+]
+
+g:NERDTreeMapActivateNode = '<Space>'
+g:NERDTreeWinSize = 35
+
+g:NERDTreeDirArrowExpandable = '+'
+g:NERDTreeDirArrowCollapsible = '-'
+
+map <F3> :NERDTreeToggle<CR>
+
+autocmd BufEnter * if winnr('$') == 1 && (getbufvar(winbufnr(winnr()), "&filetype") == "netrw" || exists('b:NERDTree'))
+  | quit
+  | endif
+
 
 # Abbreviations.
 cnoreabbrev Wq wq
