@@ -160,6 +160,10 @@ autocmd filetype netrw call NetrwMapping()
 # No statusline in netrw window.
 au FileType netrw setlocal statusline=%F
 
+autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
+  | quit
+  | endif
+
 # Plug 'preservim/nerdtree'
 #
 g:NERDTreeDirArrows = 1
@@ -180,7 +184,7 @@ g:NERDTreeDirArrowCollapsible = '-'
 
 map <F3> :NERDTreeToggle<CR>
 
-autocmd BufEnter * if winnr('$') == 1 && (getbufvar(winbufnr(winnr()), "&filetype") == "netrw" || exists('b:NERDTree'))
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
   | quit
   | endif
 
