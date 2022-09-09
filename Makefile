@@ -69,6 +69,7 @@ isync:
 mpv:
 	mkdir -p $(HOME)/.config/mpv
 	ln -s $(CWD)/mpv.conf $(HOME)/.config/mpv/mpv.conf
+	ln -s $(CWD)/mpv-input.conf $(HOME)/.config/mpv/input.conf
 
 rtorrent:
 	mkdir -p $(HOME)/.rtorrent
