@@ -54,5 +54,5 @@
 "dmenu-pass"
     Mod4+p
 
-"i3lock -n -c 282828 --keylayout 0"
+"i3lock -n -c 282828 --inside-color 282828 --keylayout 0"
     Mod4+Shift+s
