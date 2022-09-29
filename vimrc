@@ -169,18 +169,20 @@ autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype
 g:NERDTreeDirArrows = 1
 g:NERDTreeMinimalUI = 1
 g:NERDTreeShowHidden = 1
-g:NERDTreeIgnore = [
-	'^\.git$',
-	'\.test$',
-	'\.pyc$',
-	'^bazel-.*$',
-]
+g:NERDTreeMinimalMenu = 1
 
 g:NERDTreeMapActivateNode = '<Space>'
 g:NERDTreeWinSize = 35
 
 g:NERDTreeDirArrowExpandable = '+'
 g:NERDTreeDirArrowCollapsible = '-'
+
+g:NERDTreeIgnore = [
+	'^\.git$',
+	'\.test$',
+	'\.pyc$',
+	'^bazel-.*$',
+]
 
 map <F3> :NERDTreeToggle<CR>
 
