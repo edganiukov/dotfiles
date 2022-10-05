@@ -1,6 +1,6 @@
 # Copyright (c) 2014-2016 Ryan Huber <rhuber@gmail.com>
 # Copyright (c) 2015-2018 Tollef Fog Heen <tfheen@err.no>
-# Copyright (c) 2015-2020 Trygve Aaberge <trygveaa@gmail.com>
+# Copyright (c) 2015-2022 Trygve Aaberge <trygveaa@gmail.com>
 # Released under the MIT license.
 
 from __future__ import print_function, unicode_literals
@@ -75,7 +75,7 @@ except ImportError:
     pass
 
 SCRIPT_NAME = "slack"
-SCRIPT_AUTHOR = "Ryan Huber <rhuber@gmail.com>"
+SCRIPT_AUTHOR = "Trygve Aaberge <trygveaa@gmail.com>"
 SCRIPT_VERSION = "2.9.0"
 SCRIPT_LICENSE = "MIT"
 SCRIPT_DESC = "Extends weechat for typing notification/search/etc on slack.com"
@@ -1237,7 +1237,7 @@ def channel_completion_cb(data, completion_item, current_buffer, completion):
     for team in other_teams:
         for channel in team.channels.values():
             if should_include_channel(channel):
-                w.hook_completion_list_add(
+                completion_list_add(
                     completion, channel.name, 0, w.WEECHAT_LIST_POS_SORT
                 )
 
@@ -1248,12 +1248,12 @@ def channel_completion_cb(data, completion_item, current_buffer, completion):
             reverse=True,
         ):
             if should_include_channel(channel):
-                w.hook_completion_list_add(
+                completion_list_add(
                     completion, channel.name, 0, w.WEECHAT_LIST_POS_BEGINNING
                 )
 
         if should_include_channel(current_channel):
-            w.hook_completion_list_add(
+            completion_list_add(
                 completion, current_channel.name, 0, w.WEECHAT_LIST_POS_BEGINNING
             )
     return w.WEECHAT_RC_OK
@@ -1267,7 +1267,7 @@ def dm_completion_cb(data, completion_item, current_buffer, completion):
     for team in EVENTROUTER.teams.values():
         for channel in team.channels.values():
             if channel.active and channel.type in ["im", "mpim"]:
-                w.hook_completion_list_add(
+                completion_list_add(
                     completion, channel.name, 0, w.WEECHAT_LIST_POS_SORT
                 )
     return w.WEECHAT_RC_OK
@@ -1282,7 +1282,7 @@ def nick_completion_cb(data, completion_item, current_buffer, completion):
     if current_channel is None or current_channel.members is None:
         return w.WEECHAT_RC_OK
 
-    base_command = w.hook_completion_get_string(completion, "base_command")
+    base_command = completion_get_string(completion, "base_command")
     if base_command in ["invite", "msg", "query", "whois"]:
         members = current_channel.team.members
     else:
@@ -1291,12 +1291,8 @@ def nick_completion_cb(data, completion_item, current_buffer, completion):
     for member in members:
         user = current_channel.team.users.get(member)
         if user and not user.deleted:
-            w.hook_completion_list_add(
-                completion, user.name, 1, w.WEECHAT_LIST_POS_SORT
-            )
-            w.hook_completion_list_add(
-                completion, "@" + user.name, 1, w.WEECHAT_LIST_POS_SORT
-            )
+            completion_list_add(completion, user.name, 1, w.WEECHAT_LIST_POS_SORT)
+            completion_list_add(completion, "@" + user.name, 1, w.WEECHAT_LIST_POS_SORT)
     return w.WEECHAT_RC_OK
 
 
@@ -1309,12 +1305,12 @@ def emoji_completion_cb(data, completion_item, current_buffer, completion):
     if current_channel is None:
         return w.WEECHAT_RC_OK
 
-    base_word = w.hook_completion_get_string(completion, "base_word")
+    base_word = completion_get_string(completion, "base_word")
     reaction = re.match(REACTION_PREFIX_REGEX_STRING + ":", base_word)
     prefix = reaction.group(0) if reaction else ":"
 
     for emoji in current_channel.team.emoji_completions:
-        w.hook_completion_list_add(
+        completion_list_add(
             completion, prefix + emoji + ":", 0, w.WEECHAT_LIST_POS_SORT
         )
     return w.WEECHAT_RC_OK
@@ -1335,7 +1331,7 @@ def thread_completion_cb(data, completion_item, current_buffer, completion):
     for thread_id, message_ts in sorted(threads, key=lambda item: item[1]):
         message = current_channel.messages.get(message_ts)
         if message and message.number_of_replies():
-            w.hook_completion_list_add(
+            completion_list_add(
                 completion, "$" + thread_id, 0, w.WEECHAT_LIST_POS_BEGINNING
             )
     return w.WEECHAT_RC_OK
@@ -1355,7 +1351,7 @@ def topic_completion_cb(data, completion_item, current_buffer, completion):
     if topic.split(" ", 1)[0] in channel_names:
         topic = "{} {}".format(current_channel.name, topic)
 
-    w.hook_completion_list_add(completion, topic, 0, w.WEECHAT_LIST_POS_SORT)
+    completion_list_add(completion, topic, 0, w.WEECHAT_LIST_POS_SORT)
     return w.WEECHAT_RC_OK
 
 
@@ -1372,7 +1368,7 @@ def usergroups_completion_cb(data, completion_item, current_buffer, completion):
         subteam.handle for subteam in current_channel.team.subteams.values()
     ]
     for group in subteam_handles + ["@channel", "@everyone", "@here"]:
-        w.hook_completion_list_add(completion, group, 1, w.WEECHAT_LIST_POS_SORT)
+        completion_list_add(completion, group, 1, w.WEECHAT_LIST_POS_SORT)
     return w.WEECHAT_RC_OK
 
 
@@ -3375,7 +3371,6 @@ class SlackMessage(object):
         if not force and self.message_json.get("_rendered_text"):
             return self.message_json["_rendered_text"]
 
-
         blocks = self.message_json.get("blocks", [])
         blocks_rendered = "\n".join(unfurl_blocks(blocks))
         has_rich_text = any(block["type"] == "rich_text" for block in blocks)
@@ -3806,13 +3801,15 @@ def handle_conversationsinfo(channel_json, eventrouter, team, channel, metadata)
         if unread_count and channel.channel_buffer is None:
             channel.create_buffer()
         channel.set_unread_count_display(unread_count)
+    if channel_info.get("is_open") and channel.channel_buffer is None:
+        channel.create_buffer()
     if "last_read" in channel_info:
         channel.last_read = SlackTS(channel_info["last_read"])
     if "members" in channel_info:
         channel.set_members(channel_info["members"])
 
     # MPIMs don't have unread_count_display so we have to request the history to check if there are unread messages
-    if channel.type == "mpim" and not channel.channel_buffer:
+    if channel.type == "mpim" and not channel.got_history:
         s = SlackRequest(
             team,
             "conversations.history",
@@ -7083,6 +7080,18 @@ if __name__ == "__main__":
 
         weechat_version = int(w.info_get("version_number", "") or 0)
         weechat_upgrading = w.info_get("weechat_upgrading", "")
+
+        completion_get_string = (
+            w.hook_completion_get_string
+            if weechat_version < 0x2090000
+            else w.completion_get_string
+        )
+
+        completion_list_add = (
+            w.hook_completion_list_add
+            if weechat_version < 0x2090000
+            else w.completion_list_add
+        )
 
         if weechat_version < 0x1030000:
             w.prnt(
