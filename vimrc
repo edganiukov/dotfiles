@@ -473,7 +473,7 @@ nnoremap <silent> gi :LspImplementation<cr>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
-nnoremap <silent> ga :LspCodeAction<CR>
+nnoremap <silent> ga :LspCodeAction --ui=float<CR>
 nnoremap <silent> gl :LspCodeLens<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>

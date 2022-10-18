@@ -20,11 +20,9 @@ main() {
 	for disp in "DP-1" "HDMI-1"; do
 		if xrandr --query | grep -e "^$disp connected" &> /dev/null; then
 			connect $disp
-			pkill -HUP dwm
 			break
 		else
 			disconnect $disp
-			pkill -HUP dwm
 		fi
 	done
 }
