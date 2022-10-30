@@ -76,7 +76,7 @@ except ImportError:
 
 SCRIPT_NAME = "slack"
 SCRIPT_AUTHOR = "Trygve Aaberge <trygveaa@gmail.com>"
-SCRIPT_VERSION = "2.9.0"
+SCRIPT_VERSION = "2.9.1"
 SCRIPT_LICENSE = "MIT"
 SCRIPT_DESC = "Extends weechat for typing notification/search/etc on slack.com"
 REPO_URL = "https://github.com/wee-slack/wee-slack"
@@ -3407,8 +3407,8 @@ class SlackMessage(object):
         if "edited" in self.message_json:
             text += " " + colorize_string(config.color_edited_suffix, "(edited)")
 
-        text += unfurl_refs(unwrap_attachments(self.message_json, text))
-        text += unfurl_refs(unwrap_files(self.message_json, text))
+        text += unfurl_refs(unwrap_attachments(self, text))
+        text += unfurl_refs(unwrap_files(self, self.message_json, text))
         text = unhtmlescape(text.lstrip().replace("\t", "    "))
 
         text += create_reactions_string(
@@ -3467,12 +3467,6 @@ class SlackMessage(object):
         elif self.message_json.get("bot_id") in self.team.bots:
             bot = self.team.bots[self.message_json["bot_id"]]
             name = bot.formatted_name(enable_color=not plain)
-            if plain:
-                return name
-            else:
-                return "{} :]".format(name)
-        elif "bot_profile" in self.message_json:
-            name = self.message_json["bot_profile"].get("name")
             if plain:
                 return name
             else:
@@ -4647,7 +4641,7 @@ def unfurl_refs(text):
                 elif url_matches_desc and config.unfurl_auto_link_display == "url":
                     return ref
                 else:
-                    return "{} ({})".format(fallback, ref)
+                    return "{} ({})".format(ref, fallback)
         return ref
 
     return re.sub(r"<([^|>]*)(?:\|([^>]*))?>", unfurl_ref, text)
@@ -4657,10 +4651,10 @@ def unhtmlescape(text):
     return text.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
 
 
-def unwrap_attachments(message_json, text_before):
+def unwrap_attachments(message, text_before):
     text_before_unescaped = unhtmlescape(text_before)
     attachment_texts = []
-    a = message_json.get("attachments")
+    a = message.message_json.get("attachments")
     if a:
         if text_before:
             attachment_texts.append("")
@@ -4671,8 +4665,9 @@ def unwrap_attachments(message_json, text_before):
             # $author: (if rest of line is non-empty) $title ($title_link) OR $from_url
             # $author: (if no $author on previous line) $text
             # $fields
-            if ("app_unfurl_url" in attachment or "original_url" in attachment) \
-                    and not config.link_previews:
+            if not config.link_previews and (
+                "original_url" in attachment or attachment.get("is_app_unfurl")
+            ):
                 continue
             t = []
             prepend_title_text = ""
@@ -4743,7 +4738,7 @@ def unwrap_attachments(message_json, text_before):
                 else:
                     t.append(field["value"])
 
-            files = unwrap_files(attachment, None)
+            files = unwrap_files(message, attachment, None)
             if files:
                 t.append(files)
 
@@ -4786,7 +4781,7 @@ def unwrap_attachments(message_json, text_before):
     return "\n".join(attachment_texts)
 
 
-def unwrap_files(message_json, text_before):
+def unwrap_files(message, message_json, text_before):
     files_texts = []
     for f in message_json.get("files", []):
         if f.get("mode", "") == "tombstone":
@@ -4796,6 +4791,11 @@ def unwrap_files(message_json, text_before):
                 config.color_deleted,
                 "(This file is hidden because the workspace has passed its storage limit.)",
             )
+        elif f.get("mimetype") == "application/vnd.slack-docs":
+            url = "{}?origin_team={}&origin_channel={}".format(
+                f["permalink"], message.team.identifier, message.channel.identifier
+            )
+            text = "{} ({})".format(url, f["title"])
         elif (
             f.get("url_private", None) is not None and f.get("title", None) is not None
         ):
