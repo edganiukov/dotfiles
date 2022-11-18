@@ -3471,6 +3471,12 @@ class SlackMessage(object):
                 return name
             else:
                 return "{} :]".format(name)
+        elif "bot_profile" in self.message_json:
+            name = self.message_json["bot_profile"].get("name")
+            if plain:
+                return name
+            else:
+                return "{} :]".format(name)
         return self.user_identifier or self.message_json.get("bot_id") or ""
 
     @property
@@ -4641,7 +4647,7 @@ def unfurl_refs(text):
                 elif url_matches_desc and config.unfurl_auto_link_display == "url":
                     return ref
                 else:
-                    return "{} ({})".format(ref, fallback)
+                    return "{} ({})".format(fallback, ref)
         return ref
 
     return re.sub(r"<([^|>]*)(?:\|([^>]*))?>", unfurl_ref, text)
