@@ -22,3 +22,5 @@ export PATH
 
 # Lang vars
 export GOPATH=$HOME/.go
+
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock

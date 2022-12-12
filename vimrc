@@ -226,13 +226,13 @@ nnoremap <F5> :set list!<CR>
 inoremap <F5> <Esc>:set list!<CR>a
 nnoremap <leader><space> :nohlsearch<CR>
 
+# pop-up close
+nnoremap <silent>qn :call popup_clear()<CR>
 # preview close
 nnoremap <silent>qp <C-w><C-z>
 # quickfix close
 nnoremap <silent>qc :cclose<CR>
 # quickfix switch
-nnoremap qn :cn!<CR>
-nnoremap qp :cp!<CR>
 nnoremap <Down> :cn!<CR>
 nnoremap <Up> :cp!<CR>
 
