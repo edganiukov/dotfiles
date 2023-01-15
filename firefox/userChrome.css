@@ -14,10 +14,21 @@ tab:not([selected="true"]) {
 }
 
 /* Menu items color */
+
+menubar>menu:not([open]) {
+    color: #EDEDED !important;
+}
+
+/* Style */
 menupopup>menu, menupopup>menuitem {
     padding-block: 2px !important;
 }
 
-menubar>menu:not([open]) {
-    color: #EDEDED !important;
+.tab-background {
+    border-radius: 2px 2px 0px 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.tabbrowser-tab {
+	padding-left: 0 !important;
 }
