@@ -1,42 +1,3 @@
-/* Global UI font */
-* {
-    font-size: 9pt !important;
-    font-weight: 400 !important;
-}
-
-/* no icon on pinned tab */
-.tab-icon-overlay[pinned] {
-    display:none !important;
-}
-
-/* Tabs style */
-:root {
-    --tab-toolbar-navbar-overlap: 0px !important; /* fix for full screen mode */
-    --tab-min-height: 30px !important;
-    --arrowpanel-menuitem-padding: 0px !important;
-}
-
-:root #tabbrowser-tabs {
-    --tab-min-height: 30px !important;
-}
-
-/* #TabsToolbar { */
-/*     height: var(--tab-min-height) !important; */
-/* } */
-
-.tab-background {
-    border-radius: 0px 0px !important;
-    margin-bottom: 0px !important;
-}
-
-.tabbrowser-tab:not([selected=true]):not([multiselected=true]) .tab-background {
-    background-color: color-mix(in srgb, currentColor 5%, transparent);
-}
-
-menupopup>menu, menupopup>menuitem {
-    padding-block: 2px !important;
-}
-
 /* Colors */
 toolbar#TabsToolbar {
     -moz-appearance: none !important;
@@ -53,6 +14,10 @@ tab:not([selected="true"]) {
 }
 
 /* Menu items color */
+menupopup>menu, menupopup>menuitem {
+    padding-block: 2px !important;
+}
+
 menubar>menu:not([open]) {
     color: #EDEDED !important;
 }

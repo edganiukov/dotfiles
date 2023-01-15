@@ -506,9 +506,8 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 # Filetype config.
 augroup filetypedetect
-  au FileType go,c setlocal tw=100 cc=100
-  au FileType python setlocal et sts=4 tw=100 cc=100
-  au FileType yaml,json,conf,confini setlocal et sw=2 sts=2 ts=2
+  au FileType python setlocal et sts=4 tw=80 cc=80
+  au FileType yaml setlocal et sw=2 sts=2 ts=2
 
   au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
   au FileType mail setlocal tw=72 cc=72 spell

@@ -24,6 +24,8 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 [ -n "$(pidof dunst)" ] || dunst &
 
 export LIBSEAT_BACKEND=logind
+export XDG_DESKTOP_DIR="$HOME"
+export XDG_DOWNLOAD_DIR="$HOME/tmp"
 
 # Start WM
 exec pipewire-pulse &

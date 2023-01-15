@@ -4,23 +4,20 @@ export EDITOR=vim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
 export LC_COLLATE=C
-
 export SVDIR=$HOME/.service
 
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+export GOPATH=$HOME/.go
+
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
 # PATH
 typeset -U path
 path+=($HOME"/.local/bin")
 path+=($HOME"/.go/bin")
 path+=($HOME"/.cargo/bin")
+path+=($HOME"/.ns/bin")
 export PATH
-
-# LS_COLORS
-[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
-
-# Lang vars
-export GOPATH=$HOME/.go
-
-export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock

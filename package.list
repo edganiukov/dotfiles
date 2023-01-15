@@ -25,7 +25,6 @@ direnv
 curl
 nmap
 pass
-gopass
 urlview
 xclip
 brightnessctl
@@ -39,7 +38,7 @@ vim
 nnn
 htop
 rtorrent
-neomutt
+mutt
 himalaya
 weechat
 perl-pod-parser
