@@ -18,6 +18,7 @@ Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 
 Plug 'preservim/vim-markdown'
+Plug 'jjo/vim-cue'
 Plug 'edganiukov/vim-gol'
 Plug 'sebdah/vim-delve'
 
@@ -227,9 +228,7 @@ inoremap <F5> <Esc>:set list!<CR>a
 nnoremap <leader><space> :nohlsearch<CR>
 
 # pop-up close
-nnoremap <silent>qn :call popup_clear()<CR>
-# preview close
-nnoremap <silent>qp <C-w><C-z>
+nnoremap <silent>qp :call popup_clear()<CR>
 # quickfix close
 nnoremap <silent>qc :cclose<CR>
 # quickfix switch
@@ -393,6 +392,7 @@ var gols = {
 			hoverKind: 'FullDocumentation',
 			linksInHover: v:false,
 			experimentalWorkspaceModule: v:true,
+			formatting: {gofumpt: v:true},
 		},
 	},
 	allowlist: ['go'],
@@ -508,6 +508,7 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 augroup filetypedetect
   au FileType python setlocal et sts=4 tw=80 cc=80
   au FileType yaml setlocal et sw=2 sts=2 ts=2
+  au FileType proto setlocal et sts=4
 
   au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
   au FileType mail setlocal tw=72 cc=72 spell

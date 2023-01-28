@@ -1,10 +1,5 @@
 /* Colors */
-toolbar#TabsToolbar {
-    -moz-appearance: none !important;
-    background-color: #282828 !important;
-}
-
-#toolbar-menubar, #menubar-items, #main-menubar {
+#titlebar {
     background-color: #282828 !important;
     background-image: none !important;
 }
@@ -14,8 +9,11 @@ tab:not([selected="true"]) {
 }
 
 /* Menu items color */
-
 menubar>menu:not([open]) {
+    color: #EDEDED !important;
+}
+
+#tabs-newtab-button {
     color: #EDEDED !important;
 }
 
