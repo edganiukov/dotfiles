@@ -5,6 +5,8 @@
 # $weechat: 0.4.3
 # $script: theme.py 0.1-dev
 #
+spell.color.misspelled = "lightred"
+spell.color.suggestions = "default"
 irc.color.input_nick = "148"
 irc.color.item_channel_modes = "239"
 irc.color.item_lag_counting = "239"
@@ -42,7 +44,7 @@ weechat.bar.title.color_delim = "239"
 weechat.bar.title.color_fg = "239"
 weechat.bar.input.items = "›,input_text"
 weechat.bar.nicklist.items = "buffer_nicklist"
-weechat.bar.status.items = "[time],| buffer_number+:+buffer_name+:{buffer_nicklist_count},| slack_typing_notice"
+weechat.bar.status.items = "[time],| buffer_number+:+buffer_name+:{buffer_nicklist_count},[spell_suggest],| slack_typing_notice"
 weechat.bar.title.items = "[buffer_count],[hotlist],(away),completion,scroll"
 weechat.color.bar_more = "148"
 weechat.color.chat = "253"
