@@ -2,17 +2,24 @@
 
 set -o pipefail
 
+export HOME=/home/ed
 export DISPLAY=:0.0
-export XAUTHORITY=/home/ed/.Xauthority
+export XAUTHORITY=$HOME/.Xauthority
 
 function connect() {
 	echo "connect"
-	xrandr --dpi 160 --output $1 --auto --primary --output eDP-1 --off
+	sed -i 's/^Xft.dpi\: [0-9]*$/Xft.dpi: 160/g' $HOME/.Xresources
+	sed -i 's/^Xcursor.size\: [0-9]*$/Xcursor.size: 24/g' $HOME/.Xresources
+	xrdb -merge $HOME/.Xresources
+	xrandr --output $1 --auto --primary --output eDP-1 --off
 }
 
 function disconnect() {
 	echo "disconnect"
-	xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
+	sed -i 's/^Xft.dpi\: [0-9]*$/Xft.dpi: 224/g' $HOME/.Xresources
+	sed -i 's/^Xcursor.size\: [0-9]*$/Xcursor.size: 48/g' $HOME/.Xresources
+	xrdb -merge $HOME/.Xresources
+	xrandr --output eDP-1 -auto --primary --output $1 --off
 }
 
 main() {

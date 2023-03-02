@@ -1,5 +1,5 @@
 .PHONY: nvim vim tmux git zsh x redshift bin dunst mutt isync
-.PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat
+.PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat qutebrowser
 
 CWD=$(shell pwd)
 
@@ -88,3 +88,7 @@ ncspot:
 
 weechat:
 	ln -s $(CWD)/weechat $(HOME)/.weechat
+
+# browsers
+qutebrowser:
+	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py

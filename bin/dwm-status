@@ -22,8 +22,13 @@ wifi() {
 }
 
 vpn() {
-	VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp|tailscale)[0-9]+")
+	VPNS=$(ls /proc/sys/net/ipv4/conf/ | egrep "(tun|ppp)[0-9]+")
 	[ -n "$VPNS" ] && echo "up" || echo "down"
+}
+
+tailscale() {
+	ONLINE=$(tailscale status --json | jq '.Self.Online')
+	[ "$ONLINE" = "true" ] && echo "up" || echo "down"
 }
 
 battery() {

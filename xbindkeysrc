@@ -30,20 +30,12 @@
     XF86LaunchB
 
 # Brighten screen
-"brightnessctl --device=acpi_video0 set 5%+"
+"brightnessctl set 5%+"
     XF86MonBrightnessUp
 
 # Dim screen
-"brightnessctl --device=acpi_video0 set 5%-"
+"brightnessctl set 5%-"
     XF86MonBrightnessDown
-
-# Brighten keyboard
-"brightnessctl --device=smc::kbd_backlight set 5%+"
-    XF86KbdBrightnessUp
-
-# Dim keyboard
-"brightnessctl --device=smc::kbd_backlight set 5%+"
-    XF86KbdBrightnessDown
 
 "st"
     Mod4+Return
@@ -54,5 +46,5 @@
 "dmenu-pass"
     Mod4+p
 
-"i3lock -n -c 282828 --inside-color 282828 --keylayout 1"
+"xset s activate"
     Mod4+Shift+s

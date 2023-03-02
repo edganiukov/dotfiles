@@ -7,9 +7,6 @@ export LC_COLLATE=C
 export SVDIR=$HOME/.service
 
 export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
-# export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 export GOPATH=$HOME/.go
 
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"

@@ -13,12 +13,14 @@ xset r rate 220 25
 setxkbmap -layout us,ru -option "grp:caps_toggle"
 syndaemon -i 0.5 -t -K -R -d
 
-gpgconf --launch gpg-agent
+# gpgconf --launch gpg-agent
 
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
-[ -n "$(pidof xautolock)" ] || xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828 --inside-color 282828 --keylayout 1' &
+xset s 900 5
+[ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
+
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
 [ -n "$(pidof dunst)" ] || dunst &
@@ -29,5 +31,5 @@ export XDG_DOWNLOAD_DIR="$HOME/tmp"
 
 # Start WM
 exec pipewire-pulse &
-exec ~/.local/bin/dwm-status &
+# exec ~/.local/bin/dwm-status &
 exec dbus-launch --exit-with-session /usr/local/bin/dwm

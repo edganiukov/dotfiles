@@ -10,7 +10,7 @@ config.load_autoconfig()
 c.qt.highdpi = True
 
 # Which Chromium process model to use.
-c.qt.process_model = "process-per-site"
+c.qt.chromium.process_model = "process-per-site"
 
 # Additional arguments to pass to Qt, without leading --.
 c.qt.args = [

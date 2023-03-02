@@ -82,6 +82,11 @@ alias notes="vim -c ':lcd ~/misc/notes'"
 alias xq="sudo xbps-query"
 alias xr="sudo xbps-remove"
 
+# work
+alias k="nsdev kubectl"
+alias nsc="nsdev cluster"
+alias ns="nsdev"
+
 ## Prompt
 #########
 autoload -Uz vcs_info
