@@ -18,7 +18,8 @@ gpgconf --launch gpg-agent
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
-[ -n "$(pidof xautolock)" ] || xautolock -time 10 -corners 00-- -locker 'i3lock -n -c 282828 --inside-color 282828 --keylayout 1' &
+xset s 900 5
+[ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
 [ -n "$(pidof dunst)" ] || dunst &
