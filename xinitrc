@@ -18,7 +18,7 @@ gpgconf --launch gpg-agent
 feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 
 # autostart
-xset s 900 5
+xset s 300 5
 [ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
