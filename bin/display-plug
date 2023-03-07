@@ -18,14 +18,12 @@ function disconnect() {
 
 main() {
 	# list of all different HDMI ports on docking stations etc.
-	for disp in "DP-1" "HDMI-1"; do
-		if xrandr --query | grep -e "^$disp connected" &> /dev/null; then
-			connect $disp
-			break
-		else
-			disconnect $disp
-		fi
-	done
+	disp=$(xrandr -q | grep -E '^(DP|HDMI)[1-9\-]*\sconnected' | head -1 | cut -d' ' -f1)
+	if [ -z "$disp" ]; then
+		disconnect $disp
+	else
+		connect $disp
+	fi
 }
 
 # start it forked so the monitor is active
