@@ -424,7 +424,11 @@ var cls = {
 	name: 'ccls',
 	cmd: (server_info) => ['ccls'],
 	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json'])
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), [
+			'.ccls',
+			'compile_commands.json',
+			'.clang-format'
+		])
 	),
 	initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
 	allowlist: ['c', 'cpp'],
@@ -482,13 +486,15 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-autocmd FileType go,rust,python
-	\ autocmd BufWritePre <buffer> :LspDocumentFormatSync
+autocmd FileType go,rust,python autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
-autocmd FileType go,rust,python
-	\ autocmd BufWritePre <buffer>
+autocmd FileType go autocmd BufWritePre <buffer>
 	\ call execute('LspCodeActionSync source.organizeImports')
 
+# Custome autoformat
+autocmd FileType proto autocmd BufWritePre <buffer>
+	\ silent :%!clang-format %
+	# \ silent :%!buf format %
 
 # Plug 'sebdah/vim-delve'
 #
