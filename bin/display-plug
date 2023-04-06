@@ -3,25 +3,33 @@
 set -o pipefail
 
 export HOME=/home/ed
+export CACHE_FILE=$HOME/.cache/.external-monitor
 export DISPLAY=:0.0
 export XAUTHORITY=$HOME/.Xauthority
 
 function connect() {
-	echo "connect"
+	echo -e "Connect ${1}\n"
 	xrandr --dpi 160 --output $1 --auto --primary --output eDP-1 --off
 }
 
 function disconnect() {
-	echo "disconnect"
-	xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary --output $1 --off
+	echo -e "Disconnect ${1}\n"
+	extra=""
+	if [ ! -z "$1" ]; then
+		extra="--output $1 --off"
+	fi
+	xrandr --dpi 128 --output eDP-1 --mode 1920x1080 --primary $extra
 }
 
 main() {
 	# list of all different HDMI ports on docking stations etc.
 	disp=$(xrandr -q | grep -E '^(DP|HDMI)[1-9\-]*\sconnected' | head -1 | cut -d' ' -f1)
 	if [ -z "$disp" ]; then
+		disp="$(cat $CACHE_FILE)"
 		disconnect $disp
+		truncate -s0 $CACHE_FILE
 	else
+		echo "$disp" > $CACHE_FILE
 		connect $disp
 	fi
 }

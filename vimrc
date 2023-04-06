@@ -127,13 +127,13 @@ enddef
 
 set statusline=
 set statusline+=%#Comment#[%n]%*
-set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*  # mode and paste indicator
-set statusline+=\ %.50f\ %m\ %r  # filepath and modified flag
+set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*	# mode and paste indicator
+set statusline+=\ %.50f\ %m\ %r	# filepath and modified flag
 
 set statusline+=%=
-set statusline+=%{&ff}  # file format
-set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}  # file enconding
-set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}  # file type
+set statusline+=%{&ff}	# file format
+set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}	# file enconding
+set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}	# file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
 # Fix cursor in INSERT mode.
@@ -162,8 +162,8 @@ autocmd filetype netrw call NetrwMapping()
 au FileType netrw setlocal statusline=%F
 
 autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
-  | quit
-  | endif
+	| quit
+	| endif
 
 # Plug 'preservim/nerdtree'
 #
@@ -188,8 +188,8 @@ g:NERDTreeIgnore = [
 map <F3> :NERDTreeToggle<CR>
 
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
-  | quit
-  | endif
+	| quit
+	| endif
 
 
 # Abbreviations.
@@ -332,19 +332,19 @@ g:fzf_preview_window = ''
 
 # match vim colorscheme
 g:fzf_colors = {
-	'fg':	  ['fg', 'Normal'],
-	'bg':	  ['bg', 'Normal'],
-	'hl':	  ['fg', 'PreProc'],
+	'fg':		['fg', 'Normal'],
+	'bg':		['bg', 'Normal'],
+	'hl':		['fg', 'PreProc'],
 	'fg+':	 ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
 	'bg+':	 ['bg', 'CursorLine', 'CursorColumn'],
 	'hl+':	 ['fg', 'Statement'],
 	'info':	['fg', 'PreProc'],
-	'border':  ['fg', 'Ignore'],
-	'prompt':  ['fg', 'Conditional'],
+	'border':	['fg', 'Ignore'],
+	'prompt':	['fg', 'Conditional'],
 	'pointer': ['fg', 'Exception'],
-	'marker':  ['fg', 'Keyword'],
+	'marker':	['fg', 'Keyword'],
 	'spinner': ['fg', 'Label'],
-	'header':  ['fg', 'Comment']
+	'header':	['fg', 'Comment']
 }
 
 nnoremap <leader>b :Buffers<CR>
@@ -353,9 +353,9 @@ nnoremap <leader>h :Hist<CR>
 
 nnoremap <leader>s :Rg<CR>
 command! -bang -nargs=* Rg legacy call fzf#vim#grep(
-  \ 'rg --column --line-number --no-heading --color=always
+	\ 'rg --column --line-number --no-heading --color=always
 	\ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-  \ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
+	\ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
 
 
 # Plug 'lifepillar/vim-mucomplete'
@@ -492,9 +492,9 @@ autocmd FileType go autocmd BufWritePre <buffer>
 	\ call execute('LspCodeActionSync source.organizeImports')
 
 # Custome autoformat
-autocmd FileType proto autocmd BufWritePre <buffer>
-	\ silent :%!clang-format %
-	# \ silent :%!buf format %
+# autocmd FileType proto autocmd BufWritePre <buffer>
+# 	\ silent :%!clang-format %
+# 	\ silent :%!buf format %
 
 # Plug 'sebdah/vim-delve'
 #
@@ -512,20 +512,20 @@ nnoremap <silent> dtt :DlvToggleTracepoint<CR>
 
 # Filetype config.
 augroup filetypedetect
-  au FileType python setlocal et sts=4 tw=80 cc=80
-  au FileType yaml setlocal et sw=2 sts=2 ts=2
-  au FileType proto setlocal et sts=4
+	au FileType python setlocal et sts=4 tw=80 cc=80
+	au FileType yaml setlocal et sw=2 sts=2 ts=2
+	au FileType proto setlocal et sts=4
 
-  au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
-  au FileType mail setlocal tw=72 cc=72 spell
-  au FileType gitcommit setlocal tw=72 cc=72 spell
+	au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
+	au FileType mail setlocal tw=72 cc=72 spell
+	au FileType gitcommit setlocal tw=72 cc=72 spell
 augroup END
 
 ## Custom functions.
 # Print highlight group under the cursor.
 def g:SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+	if !exists("*synstack")
+		return
+	endif
+	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 enddef
