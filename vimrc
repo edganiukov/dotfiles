@@ -275,7 +275,6 @@ hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
-
 # Plug 'mhinz/vim-signify'
 #
 g:signify_vcs_list = ['git']
@@ -364,8 +363,10 @@ g:mucomplete#enable_auto_at_startup = 1
 g:mucomplete#completion_delay = 100
 g:mucomplete#reopen_immediately = 1
 
-g:mucomplete#chains = {}
-g:mucomplete#chains.default = ['omni']
+g:mucomplete#chains = {
+	default: ['omni'],
+	sql: ['file'],
+}
 g:mucomplete#can_complete = {
 	default: {
 		omni: (t) => strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|->\|::\|\.\)$',
