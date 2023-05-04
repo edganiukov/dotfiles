@@ -17,7 +17,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 
-Plug 'preservim/vim-markdown'
 Plug 'jjo/vim-cue'
 Plug 'edganiukov/vim-gol'
 Plug 'sebdah/vim-delve'
@@ -302,24 +301,6 @@ nnoremap vm :Magit<CR>
 #
 nmap <F4> :TagbarToggle<CR>
 g:tagbar_sort = 0
-
-
-# Plug 'tpope/vim-markdown'
-#
-g:vim_markdown_fenced_languages = [
-	'go',
-	'python',
-	'rust',
-	'c',
-	'cpp',
-	'bash=sh',
-	'yaml=yml',
-]
-
-g:vim_markdown_conceal = 0
-g:vim_markdown_conceal_code_blocks = 0
-g:vim_markdown_math = 1
-g:vim_markdown_new_list_item_indent = 2
 
 
 # Plug 'junegunn/fzf.vim'
