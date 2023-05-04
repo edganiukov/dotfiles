@@ -316,8 +316,8 @@ g:vim_markdown_fenced_languages = [
 	'yaml=yml',
 ]
 
-g:vim_markdown_conceal = 1
-g:vim_markdown_conceal_code_blocks = 1
+g:vim_markdown_conceal = 0
+g:vim_markdown_conceal_code_blocks = 0
 g:vim_markdown_math = 1
 g:vim_markdown_new_list_item_indent = 2
 
@@ -374,7 +374,7 @@ g:mucomplete#can_complete = {
 }
 
 # mucomplete + vim-lsp
-autocmd FileType go,rust,c,cpp,python setlocal omnifunc=lsp#complete
+autocmd FileType go,rust,c,cpp,python,zig setlocal omnifunc=lsp#complete
 inoremap <leader>c <C-x><C-o>
 
 
@@ -450,6 +450,16 @@ var pyls = {
 }
 au User lsp_setup call lsp#register_server(pyls)
 
+var zls = {
+	name: 'zls',
+	cmd: (server_info) => ['zls'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
+	),
+	allowlist: ['zig'],
+}
+au User lsp_setup call lsp#register_server(zls)
+
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
 g:lsp_semantic_enabled = 0
@@ -487,7 +497,7 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-autocmd FileType go,rust,python autocmd BufWritePre <buffer> :LspDocumentFormatSync
+autocmd FileType rust,python,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
 
 autocmd FileType go autocmd BufWritePre <buffer>
 	\ call execute('LspCodeActionSync source.organizeImports')
