@@ -73,8 +73,8 @@ set scrolljump=1
 set scrolloff=4
 set backspace=2
 
-set nofoldenable
 set conceallevel=0
+set nofoldenable
 
 set number
 set signcolumn=yes
@@ -508,7 +508,7 @@ augroup filetypedetect
 	au FileType yaml setlocal et sw=2 sts=2 ts=2
 	au FileType proto setlocal et sts=4
 
-	au FileType rst,markdown,text setlocal tw=80 cc=80 cole=2 spell
+	au FileType rst,markdown,text setlocal tw=80 cc=80 spell
 	au FileType mail setlocal tw=72 cc=72 spell
 	au FileType gitcommit setlocal tw=72 cc=72 spell
 augroup END
