@@ -82,6 +82,7 @@ set pumheight=20
 set textwidth=120
 set colorcolumn=120
 set cursorline
+set cursorcolumn
 
 set pastetoggle=<F2>
 set nopaste
