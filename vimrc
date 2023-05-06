@@ -10,7 +10,6 @@ Plug 'edganiukov/vim-colors-off'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
-Plug 'preservim/tagbar'
 Plug 'preservim/nerdtree'
 
 Plug 'tpope/vim-fugitive'
@@ -296,12 +295,6 @@ hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 #
 g:magit_commit_title_limit = 72
 nnoremap vm :Magit<CR>
-
-
-# Plug 'majutsushi/tagbar'
-#
-nmap <F4> :TagbarToggle<CR>
-g:tagbar_sort = 0
 
 
 # Plug 'junegunn/fzf.vim'
