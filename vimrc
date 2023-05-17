@@ -155,7 +155,7 @@ def NetrwMapping()
 	nmap <buffer> <Space> <CR>
 	nmap <buffer> . gh
 enddef
-autocmd filetype netrw call NetrwMapping()
+autocmd filetype netrw NetrwMapping()
 
 # No statusline in netrw window.
 au FileType netrw setlocal statusline=%F
@@ -374,7 +374,7 @@ var gols = {
 	allowlist: ['go'],
 	languageId: (server_info) => 'filetype',
 }
-au User lsp_setup call lsp#register_server(gols)
+au User lsp_setup lsp#register_server(gols)
 
 # https://github.com/rust-lang/rust-analyzer
 var rls = {
@@ -393,7 +393,7 @@ var rls = {
 	},
 	allowlist: ['rust'],
 }
-au User lsp_setup call lsp#register_server(rls)
+au User lsp_setup lsp#register_server(rls)
 
 # https://github.com/MaskRay/ccls
 var cls = {
@@ -409,7 +409,7 @@ var cls = {
 	initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
 	allowlist: ['c', 'cpp'],
 }
-au User lsp_setup call lsp#register_server(cls)
+au User lsp_setup lsp#register_server(cls)
 
 # https://github.com/python-lsp/python-lsp-server
 var pyls = {
@@ -423,7 +423,7 @@ var pyls = {
 	}},
 	allowlist: ['python'],
 }
-au User lsp_setup call lsp#register_server(pyls)
+au User lsp_setup lsp#register_server(pyls)
 
 var zls = {
 	name: 'zls',
@@ -433,7 +433,7 @@ var zls = {
 	),
 	allowlist: ['zig'],
 }
-au User lsp_setup call lsp#register_server(zls)
+au User lsp_setup lsp#register_server(zls)
 
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
@@ -475,10 +475,10 @@ nnoremap <silent> gth :LspTypeHierarchy<CR>
 augroup autoformat
 	autocmd FileType go,rust,python,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
 	autocmd FileType go autocmd BufWritePre <buffer>
-		\ call execute('LspCodeActionSync source.organizeImports')
+		\ execute('LspCodeActionSync source.organizeImports')
 
 	#Custom autoformat
-	autocmd FileType proto autocmd BufWritePre <buffer> call g:Format('clang-format -assume-filename=foobar.proto')
+	autocmd FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
 augroup END
 
 def g:Format(formatter: string)
@@ -486,9 +486,14 @@ def g:Format(formatter: string)
 
 	var content = join(getbufline('%', 1, '$'), "\n")
 	var formatted = systemlist(formatter, content)
-	setbufline('%', 1, formatted)
+	if v:shell_error == 0
+		deletebufline('.', 1, '$')
+		setbufline('%', 1, formatted)
+	else
+		echoerr printf('Formatting failed: %s', formatted)
+	endif
 
-	call setpos('.', cursor_pos)
+	setpos('.', cursor_pos)
 enddef
 
 # Plug 'sebdah/vim-delve'
