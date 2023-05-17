@@ -472,15 +472,24 @@ nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
-autocmd FileType go,rust,python,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
+augroup autoformat
+	autocmd FileType go,rust,python,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	autocmd FileType go autocmd BufWritePre <buffer>
+		\ call execute('LspCodeActionSync source.organizeImports')
 
-autocmd FileType go autocmd BufWritePre <buffer>
-	\ call execute('LspCodeActionSync source.organizeImports')
+	#Custom autoformat
+	autocmd FileType proto autocmd BufWritePre <buffer> call g:Format('clang-format -assume-filename=foobar.proto')
+augroup END
 
-# Custome autoformat
-# autocmd FileType proto autocmd BufWritePre <buffer>
-# 	\ silent :%!clang-format %
-# 	\ silent :%!buf format %
+def g:Format(formatter: string)
+	var cursor_pos = getpos('.')
+
+	var content = join(getbufline('%', 1, '$'), "\n")
+	var formatted = systemlist(formatter, content)
+	setbufline('%', 1, formatted)
+
+	call setpos('.', cursor_pos)
+enddef
 
 # Plug 'sebdah/vim-delve'
 #
@@ -510,7 +519,7 @@ augroup END
 ## Custom functions.
 # Print highlight group under the cursor.
 def g:SynStack()
-	if !exists("*synstack")
+	if !exists('*synstack')
 		return
 	endif
 	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
