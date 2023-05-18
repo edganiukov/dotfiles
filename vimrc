@@ -482,18 +482,18 @@ augroup autoformat
 augroup END
 
 def g:Format(formatter: string)
-	var cursor_pos = getpos('.')
+	var winview = winsaveview()
 
 	var content = join(getbufline('%', 1, '$'), "\n")
 	var formatted = systemlist(formatter, content)
 	if v:shell_error == 0
-		deletebufline('.', 1, '$')
+		setline(1, [])
 		setbufline('%', 1, formatted)
 	else
 		echoerr printf('Formatting failed: %s', formatted)
 	endif
 
-	setpos('.', cursor_pos)
+	winrestview(winview)
 enddef
 
 # Plug 'sebdah/vim-delve'
