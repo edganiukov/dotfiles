@@ -56,3 +56,6 @@
 
 "xset s activate"
     Mod4+Shift+s
+
+"display-plug"
+    Mod4+Shift+d

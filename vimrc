@@ -496,6 +496,8 @@ def g:Format(formatter: string)
 	winrestview(winview)
 enddef
 
+command! -bang -nargs=* LspStartServer lsp#activate()
+
 # Plug 'sebdah/vim-delve'
 #
 hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black

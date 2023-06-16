@@ -29,6 +29,8 @@ export XDG_DESKTOP_DIR="$HOME"
 export XDG_DOWNLOAD_DIR="$HOME/tmp"
 
 # Start WM
+exec pipewire &
+exec wireplumber &
 exec pipewire-pulse &
 exec ~/.local/bin/dwm-status &
 exec dbus-launch --exit-with-session /usr/local/bin/dwm
