@@ -9,7 +9,7 @@ export XAUTHORITY=$HOME/.Xauthority
 
 function connect() {
 	echo -e "Connect ${1}\n"
-	sed -i 's/^Xft.dpi\: [0-9]*$/Xft.dpi: 160/g' $HOME/.Xresources
+	sed -i 's/^[! ]*Xft.dpi\: [0-9]*$/Xft.dpi: 160/g' $HOME/.Xresources
 	# sed -i 's/^Xcursor.size\: [0-9]*$/Xcursor.size: 24/g' $HOME/.Xresources
 	xrdb -merge $HOME/.Xresources
 	xrandr --output $1 --auto --primary --output eDP-1 --off
@@ -21,9 +21,9 @@ function disconnect() {
 	if [ ! -z "$1" ]; then
 		extra="--output $1 --off"
 	fi
-	sed -i 's/^Xft.dpi\: [0-9]*$/Xft.dpi: 128/g' $HOME/.Xresources
+	sed -i 's/^[! ]*Xft.dpi\: [0-9]*$/Xft.dpi: 128/g' $HOME/.Xresources
 	xrdb -merge $HOME/.Xresources
-	xrandr -output eDP-1 --mode 1920x1080 --primary $extra
+	xrandr --output eDP-1 --mode 1920x1080 --primary $extra
 }
 
 main() {
