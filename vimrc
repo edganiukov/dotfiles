@@ -4,7 +4,7 @@ plug#begin('~/.vim/plugged')
 
 # Plugins
 # https://github.com/junegunn/vim-plug
-Plug 'edganiukov/vim-colors-off'
+Plug 'https://git.sr.ht/~gnkv/vim-colors-off'
 
 # Basic
 Plug 'jlanzarotta/bufexplorer'
@@ -17,7 +17,7 @@ Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 
 Plug 'jjo/vim-cue'
-Plug 'edganiukov/vim-gol'
+Plug 'https://git.sr.ht/~gnkv/vim-gol'
 Plug 'sebdah/vim-delve'
 
 # LSP
@@ -425,6 +425,7 @@ var pyls = {
 }
 au User lsp_setup lsp#register_server(pyls)
 
+# https://github.com/zigtools/zls
 var zls = {
 	name: 'zls',
 	cmd: (server_info) => ['zls'],
