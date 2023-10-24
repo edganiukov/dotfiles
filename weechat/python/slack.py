@@ -3486,6 +3486,12 @@ class SlackMessage(object):
                 return name
             else:
                 return "{} :]".format(name)
+        elif "bot_profile" in self.message_json:
+            name = self.message_json["bot_profile"].get("name")
+            if plain:
+                return name
+            else:
+                return "{} :]".format(name)
         return self.user_identifier or self.message_json.get("bot_id") or ""
 
     @property
@@ -4590,14 +4596,9 @@ def unfurl_blocks(blocks):
                         if "url" in element:
                             elements.append(element["url"])
                     else:
-                        elements.append(
-                            colorize_string(
-                                config.color_deleted,
-                                '<<Unsupported block action type "{}">>'.format(
-                                    element["type"]
-                                ),
-                            )
-                        )
+                        dbg('Unsupported block action type: "{}"'.format(
+                            json.dumps(element[type])), level=4,
+                         )
                 block_text.append(" | ".join(elements))
             elif block["type"] == "call":
                 block_text.append("Join via " + block["call"]["v1"]["join_url"])
@@ -4654,12 +4655,6 @@ def unfurl_blocks(blocks):
                             level=4,
                         )
             else:
-                block_text.append(
-                    colorize_string(
-                        config.color_deleted,
-                        '<<Unsupported block type "{}">>'.format(block["type"]),
-                    )
-                )
                 dbg("Unsupported block: '{}'".format(json.dumps(block)), level=4)
         except Exception as e:
             dbg(
@@ -4825,7 +4820,7 @@ def unfurl_link(url, text):
     elif url_matches_desc and config.unfurl_auto_link_display == "url":
         return url
     else:
-        return "{} ({})".format(url, text)
+        return "{} ({})".format(text, url)
 
 
 def unfurl_refs(text):
