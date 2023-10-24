@@ -3402,7 +3402,7 @@ class SlackMessage(object):
         if blocks_rendered:
             text = blocks_rendered
         else:
-            text = self.message_json.get("text", "")
+            text = unhtmlescape(unfurl_refs(self.message_json.get("text", "")))
 
         if self.message_json.get("mrkdwn", True):
             text = render_formatting(text)
@@ -3412,9 +3412,7 @@ class SlackMessage(object):
             "group_join",
         ) and self.message_json.get("inviter"):
             inviter_id = self.message_json.get("inviter")
-            text += " by invitation from <@{}>".format(inviter_id)
-
-        text = unfurl_refs(text)
+            text += unfurl_refs(" by invitation from <@{}>".format(inviter_id))
 
         if self.subtype == "me_message" and not self.message_json["text"].startswith(
             self.sender
@@ -3424,10 +3422,10 @@ class SlackMessage(object):
         if "edited" in self.message_json:
             text += " " + colorize_string(config.color_edited_suffix, "(edited)")
 
-        text += unfurl_refs(unwrap_attachments(self, text))
-        text += unfurl_refs(unwrap_files(self, self.message_json, text))
-        text += unfurl_refs(unwrap_huddle(self, self.message_json, text))
-        text = unhtmlescape(text.lstrip().replace("\t", "    "))
+        text += unwrap_attachments(self, text)
+        text += unhtmlescape(unfurl_refs(unwrap_files(self, self.message_json, text)))
+        text += unwrap_huddle(self, self.message_json, text)
+        text = text.lstrip().replace("\t", "    ")
 
         text += create_reactions_string(
             self.message_json.get("reactions", ""), self.team.myidentifier
@@ -3484,12 +3482,6 @@ class SlackMessage(object):
         elif self.message_json.get("bot_id") in self.team.bots:
             bot = self.team.bots[self.message_json["bot_id"]]
             name = bot.formatted_name(enable_color=not plain)
-            if plain:
-                return name
-            else:
-                return "{} :]".format(name)
-        elif "bot_profile" in self.message_json:
-            name = self.message_json["bot_profile"].get("name")
             if plain:
                 return name
             else:
@@ -3559,7 +3551,7 @@ class SlackMessage(object):
 
         self.last_notify = max(message.ts, SlackTS())
 
-        if config.auto_open_threads:
+        if config.auto_open_threads and self.subscribed:
             self.open_thread()
 
         if message.user_identifier != self.team.myidentifier and (
@@ -4598,9 +4590,14 @@ def unfurl_blocks(blocks):
                         if "url" in element:
                             elements.append(element["url"])
                     else:
-                        dbg('Unsupported block action type: "{}"'.format(
-                            json.dumps(element[type])), level=4,
-                         )
+                        elements.append(
+                            colorize_string(
+                                config.color_deleted,
+                                '<<Unsupported block action type "{}">>'.format(
+                                    element["type"]
+                                ),
+                            )
+                        )
                 block_text.append(" | ".join(elements))
             elif block["type"] == "call":
                 block_text.append("Join via " + block["call"]["v1"]["join_url"])
@@ -4657,6 +4654,12 @@ def unfurl_blocks(blocks):
                             level=4,
                         )
             else:
+                block_text.append(
+                    colorize_string(
+                        config.color_deleted,
+                        '<<Unsupported block type "{}">>'.format(block["type"]),
+                    )
+                )
                 dbg("Unsupported block: '{}'".format(json.dumps(block)), level=4)
         except Exception as e:
             dbg(
@@ -4724,35 +4727,29 @@ def unfurl_rich_text_section(block):
         colors_remove = []
         characters_apply = []
         characters_remove = []
-        if element.get("style", {}).get("bold") != prev_element.get("style", {}).get(
-            "bold"
-        ):
-            if element.get("style", {}).get("bold"):
+        prev_style = prev_element.get("style", {})
+        cur_style = element.get("style", {})
+        if cur_style.get("bold", False) != prev_style.get("bold", False):
+            if cur_style.get("bold"):
                 colors_apply.append(w.color(config.render_bold_as))
                 characters_apply.append("*")
             else:
                 colors_remove.append(w.color("-" + config.render_bold_as))
                 characters_remove.append("*")
-        if element.get("style", {}).get("italic") != prev_element.get("style", {}).get(
-            "italic"
-        ):
-            if element.get("style", {}).get("italic"):
+        if cur_style.get("italic", False) != prev_style.get("italic", False):
+            if cur_style.get("italic"):
                 colors_apply.append(w.color(config.render_italic_as))
                 characters_apply.append("_")
             else:
                 colors_remove.append(w.color("-" + config.render_italic_as))
                 characters_remove.append("_")
-        if element.get("style", {}).get("strike") != prev_element.get("style", {}).get(
-            "strike"
-        ):
-            if element.get("style", {}).get("strike"):
+        if cur_style.get("strike", False) != prev_style.get("strike", False):
+            if cur_style.get("strike"):
                 characters_apply.append("~")
             else:
                 characters_remove.append("~")
-        if element.get("style", {}).get("code") != prev_element.get("style", {}).get(
-            "code"
-        ):
-            if element.get("style", {}).get("code"):
+        if cur_style.get("code", False) != prev_style.get("code", False):
+            if cur_style.get("code"):
                 characters_apply.append("`")
             else:
                 characters_remove.append("`")
@@ -4774,7 +4771,7 @@ def unfurl_rich_text_section(block):
 
 def unfurl_block_rich_text_element(element):
     if element["type"] == "text":
-        return htmlescape(element["text"])
+        return element["text"]
     elif element["type"] == "link":
         text = element.get("text")
         if text and text != element["url"]:
@@ -4804,9 +4801,9 @@ def unfurl_block_rich_text_element(element):
 
 def unfurl_block_element(element):
     if element["type"] == "mrkdwn":
-        return render_formatting(element["text"])
+        return render_formatting(unhtmlescape(unfurl_refs(element["text"])))
     elif element["type"] == "plain_text":
-        return element["text"]
+        return unhtmlescape(unfurl_refs(element["text"]))
     elif element["type"] == "image":
         if element.get("alt_text"):
             return "{} ({})".format(element["image_url"], element["alt_text"])
@@ -4828,7 +4825,7 @@ def unfurl_link(url, text):
     elif url_matches_desc and config.unfurl_auto_link_display == "url":
         return url
     else:
-        return "{} ({})".format(text, url)
+        return "{} ({})".format(url, text)
 
 
 def unfurl_refs(text):
@@ -4876,7 +4873,6 @@ def unhtmlescape(text):
 
 
 def unwrap_attachments(message, text_before):
-    text_before_unescaped = unhtmlescape(text_before)
     attachment_texts = []
     a = message.message_json.get("attachments")
     if a:
@@ -4902,9 +4898,7 @@ def unwrap_attachments(message, text_before):
             link_shown = False
             title = attachment.get("title")
             title_link = attachment.get("title_link", "")
-            if title_link and (
-                title_link in text_before or title_link in text_before_unescaped
-            ):
+            if title_link and title_link in text_before:
                 title_link = ""
                 link_shown = True
             if title and title_link:
@@ -4913,7 +4907,7 @@ def unwrap_attachments(message, text_before):
                     % (
                         prepend_title_text,
                         title,
-                        title_link,
+                        htmlescape(title_link),
                     )
                 )
                 prepend_title_text = ""
@@ -4927,12 +4921,8 @@ def unwrap_attachments(message, text_before):
                 )
                 prepend_title_text = ""
             from_url = attachment.get("from_url", "")
-            if (
-                from_url not in text_before
-                and from_url not in text_before_unescaped
-                and from_url != title_link
-            ):
-                t.append(from_url)
+            if from_url not in text_before and from_url != title_link:
+                t.append(htmlescape(from_url))
             elif from_url:
                 link_shown = True
 
@@ -4942,17 +4932,13 @@ def unwrap_attachments(message, text_before):
                 t.append(prepend_title_text + tx)
                 prepend_title_text = ""
 
-            blocks = attachment.get("blocks", [])
-            t.extend(unfurl_blocks(blocks))
-
             image_url = attachment.get("image_url", "")
             if (
                 image_url not in text_before
-                and image_url not in text_before_unescaped
                 and image_url != from_url
                 and image_url != title_link
             ):
-                t.append(image_url)
+                t.append(htmlescape(image_url))
             elif image_url:
                 link_shown = True
 
@@ -4965,6 +4951,11 @@ def unwrap_attachments(message, text_before):
             files = unwrap_files(message, attachment, None)
             if files:
                 t.append(files)
+
+            t = [unhtmlescape(unfurl_refs(x)) for x in t]
+
+            blocks = attachment.get("blocks", [])
+            t.extend(unfurl_blocks(blocks))
 
             if attachment.get("is_msg_unfurl"):
                 channel_name = resolve_ref("#{}".format(attachment["channel_id"]))
@@ -4979,6 +4970,11 @@ def unwrap_attachments(message, text_before):
                 ts = attachment.get("ts")
                 if ts:
                     ts_int = ts if isinstance(ts, int) else SlackTS(ts).major
+                    if ts_int > 100000000000:
+                        # The Slack web interface interprets very large timestamps
+                        # as milliseconds after the epoch instead of regular Unix
+                        # timestamps. We use the same heuristic here.
+                        ts_int = ts_int // 1000
                     time_string = ""
                     if date.today() - date.fromtimestamp(ts_int) <= timedelta(days=1):
                         time_string = " at {time}"
@@ -4986,7 +4982,7 @@ def unwrap_attachments(message, text_before):
                         "!date^{}^{{date_short_pretty}}{}".format(ts_int, time_string)
                     ).capitalize()
                     footer += " | {}".format(timestamp_formatted)
-                t.append(footer)
+                t.append(unhtmlescape(unfurl_refs(footer)))
 
             fallback = attachment.get("fallback")
             if t == [] and fallback and not link_shown:
@@ -6617,6 +6613,7 @@ def setup_hooks():
     w.hook_command_run(
         "/input set_unread_current_buffer", "set_unread_current_buffer_cb", ""
     )
+    w.hook_command_run("/buffer set unread", "set_unread_current_buffer_cb", "")
     w.hook_command_run("/away", "away_command_cb", "")
     w.hook_command_run("/whois", "whois_command_cb", "")
 
