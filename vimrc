@@ -94,6 +94,8 @@ set list
 set wrap
 set formatoptions=qrn1j
 
+set autoread
+
 set autoindent
 set smartindent
 set noexpandtab
@@ -369,6 +371,7 @@ var gols = {
 			linksInHover: v:false,
 			experimentalWorkspaceModule: v:true,
 			formatting: {gofumpt: v:true},
+			staticcheck: v:true,
 		},
 	},
 	allowlist: ['go'],
@@ -488,6 +491,7 @@ def g:Format(formatter: string)
 	var content = join(getbufline('%', 1, '$'), "\n")
 	var formatted = systemlist(formatter, content)
 	if v:shell_error == 0
+		deletebufline('%', 1, '$')
 		setline(1, [])
 		setbufline('%', 1, formatted)
 	else
