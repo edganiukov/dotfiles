@@ -1,5 +1,6 @@
-.PHONY: nvim vim tmux git zsh x redshift bin dunst mutt isync
+.PHONY: nvim vim tmux git zsh x gtk redshift bin dunst mutt himalaya
 .PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat
+.PHONY: system76
 
 CWD=$(shell pwd)
 
@@ -95,3 +96,6 @@ weechat:
 
 grobi:
 	ln -sf $(CWD)/grobi.conf $(HOME)/.config/grobi.conf
+
+system76:
+	sudo cp $(CWD)/system76/system76-power.service /etc/systemd/system
