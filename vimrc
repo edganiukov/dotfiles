@@ -351,7 +351,7 @@ g:mucomplete#can_complete = {
 }
 
 # mucomplete + vim-lsp
-autocmd FileType go,rust,c,cpp,python,zig setlocal omnifunc=lsp#complete
+autocmd FileType go,zig setlocal omnifunc=lsp#complete
 inoremap <leader>c <C-x><C-o>
 
 
@@ -396,7 +396,7 @@ var rls = {
 	},
 	allowlist: ['rust'],
 }
-au User lsp_setup lsp#register_server(rls)
+# au User lsp_setup lsp#register_server(rls)
 
 # https://github.com/MaskRay/ccls
 var cls = {
@@ -412,7 +412,7 @@ var cls = {
 	initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
 	allowlist: ['c', 'cpp'],
 }
-au User lsp_setup lsp#register_server(cls)
+# au User lsp_setup lsp#register_server(cls)
 
 # https://github.com/python-lsp/python-lsp-server
 var pyls = {
@@ -426,7 +426,7 @@ var pyls = {
 	}},
 	allowlist: ['python'],
 }
-au User lsp_setup lsp#register_server(pyls)
+# au User lsp_setup lsp#register_server(pyls)
 
 # https://github.com/zigtools/zls
 var zls = {
