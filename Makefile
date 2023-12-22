@@ -5,86 +5,85 @@ CWD=$(shell pwd)
 
 nvim:
 	mkdir -p ~/.config/nvim
-	ln -s $(CWD)/nvim/init.lua $(HOME)/.config/nvim/init.lua
-	ln -s $(CWD)/nvim/lua $(HOME)/.config/nvim/lua
+	ln -sf $(CWD)/nvim/init.lua $(HOME)/.config/nvim/init.lua
+	ln -sf $(CWD)/nvim/lua $(HOME)/.config/nvim/lua
 
 vim:
 	mkdir -p $(HOME)/.vim
-	ln -s $(CWD)/vimrc $(HOME)/.vimrc
+	ln -sf $(CWD)/vimrc $(HOME)/.vimrc
 	curl -sfLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 tmux:
-	ln -s $(CWD)/tmux.conf $(HOME)/.tmux.conf
+	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	mkdir -p $(HOME)/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
-	# ln -s $(CWD)/tmuxp $(HOME)/.tmuxp
 
 git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
 
 zsh:
-	ln -s $(CWD)/dir_colors $(HOME)/.dir_colors
+	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
 	mkdir $(HOME)/.zsh
-	ln -s $(CWD)/zsh/zshrc $(HOME)/.zshrc
-	ln -s $(CWD)/zsh/zshenv $(HOME)/.zshenv
-	ln -s $(CWD)/zsh/zlogin $(HOME)/.zlogin
-	ln -s $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
-	ln -s $(CWD)/zsh/func.zsh $(HOME)/.zsh/func.zsh
+	ln -sf $(CWD)/zsh/zshrc $(HOME)/.zshrc
+	ln -sf $(CWD)/zsh/zshenv $(HOME)/.zshenv
+	ln -sf $(CWD)/zsh/zlogin $(HOME)/.zlogin
+	ln -sf $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
+	ln -sf $(CWD)/zsh/func.zsh $(HOME)/.zsh/func.zsh
 
 x:
-	ln -s $(CWD)/Xresources $(HOME)/.Xresources
-	ln -s $(CWD)/xinitrc $(HOME)/.xinitrc
-	ln -s $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
-	ln -s $(CWD)/urlview $(HOME)/.urlview
+	ln -sf $(CWD)/Xresources $(HOME)/.Xresources
+	ln -sf $(CWD)/xinitrc $(HOME)/.xinitrc
+	ln -sf $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
+	ln -sf $(CWD)/urlview $(HOME)/.urlview
 
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
-	ln -s $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
+	ln -sf $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
 
 bin:
 	mkdir -p $(HOME)/.local/bin
-	ln -s $(CWD)/bin/dwm-status $(HOME)/.local/bin/
+	ln -sf $(CWD)/bin/dwm-status $(HOME)/.local/bin/
 
 redshift:
 	mkdir -p $(HOME)/.config/redshift
-	ln -s $(CWD)/redshift.conf $(HOME)/.config/redshift/redshift.conf
+	ln -sf $(CWD)/redshift.conf $(HOME)/.config/redshift/redshift.conf
 
 dunst:
 	mkdir -p $(HOME)/.config/dunst
-	ln -s $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
+	ln -sf $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
 # email
 mutt:
 	mkdir -p $(HOME)/.mutt
-	ln -s $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
-	ln -s $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
-	ln -s $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
+	ln -sf $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
+	ln -sf $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
+	ln -sf $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
 
-isync:
-	ln -s $(CWD)/mbsync/mbsyncrc $(HOME)/.mbsyncrc
-	#ln -s $(CWD)/mbsync/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
-	#ln -s $(CWD)/mbsync/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
+himalaya:
+	mkdir -p ~/.config/himalaya
+	ln -sf $(CWD)/himalaya.toml ~/.config/himalaya/config.toml
+	ln -sf $(CWD)/mbsyncrc $(HOME)/.mbsyncrc
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
-	ln -s $(CWD)/mpv.conf $(HOME)/.config/mpv/mpv.conf
-	ln -s $(CWD)/mpv-input.conf $(HOME)/.config/mpv/input.conf
+	ln -sf $(CWD)/mpv.conf $(HOME)/.config/mpv/mpv.conf
+	ln -sf $(CWD)/mpv-input.conf $(HOME)/.config/mpv/input.conf
 
 rtorrent:
 	mkdir -p $(HOME)/.rtorrent
-	ln -s $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
+	ln -sf $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
 
 sxiv:
-	ln -s $(CWD)/sxiv $(HOME)/.config/sxiv
+	ln -sf $(CWD)/sxiv $(HOME)/.config/sxiv
 
 zathura:
 	mkdir -p $(HOME)/.config/zathura
-	ln -s $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
+	ln -sf $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
 
 ncspot:
 	mkdir -p $(HOME)/.config/ncspot
-	ln -s $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
+	ln -sf $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
 
 weechat:
-	ln -s $(CWD)/weechat $(HOME)/.weechat
+	ln -sf $(CWD)/weechat $(HOME)/.weechat

@@ -2,13 +2,10 @@
 go
 delve
 gopls
-gotags
-ctags
-rustup
 git
 github-cli
-
-# C
+zig
+zls
 gdb
 ccls
 # clang
@@ -44,6 +41,6 @@ perl-pod-parser
 
 # gui
 dunst
-sxiv
+nsxiv
 mpv
 zathura
