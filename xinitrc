@@ -22,6 +22,7 @@ xset s 600 30
 [ -n "$(pidof redshift)" ] || redshift &
 [ -n "$(pidof dunst)" ] || dunst &
 
+systemctl --user import-environment DISPLAY PATH
 export XDG_DESKTOP_DIR="$HOME"
 export XDG_DOWNLOAD_DIR="$HOME/tmp"
 

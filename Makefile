@@ -37,6 +37,10 @@ x:
 	ln -sf $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
 
+gtk:
+	mkdir -p ~/.config/gtk-3.0
+	ln -sf $(CWD)/settings.ini $(HOME)/.config/gtk-3.0/settings.ini
+
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -sf $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
@@ -87,3 +91,7 @@ ncspot:
 
 weechat:
 	ln -sf $(CWD)/weechat $(HOME)/.weechat
+
+
+grobi:
+	ln -sf $(CWD)/grobi.conf $(HOME)/.config/grobi.conf
