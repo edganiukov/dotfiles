@@ -22,13 +22,6 @@
 "pactl set-sink-mute @DEFAULT_SINK@ toggle"
     XF86AudioMute
 
-# XRandr
-"autorandr -c internal"
-    XF86LaunchA
-
-"autorandr -c external"
-    XF86LaunchB
-
 # Brighten screen
 "brightnessctl --device=acpi_video0 set 5%+"
     XF86MonBrightnessUp

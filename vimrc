@@ -181,9 +181,8 @@ g:NERDTreeDirArrowCollapsible = '-'
 
 g:NERDTreeIgnore = [
 	'^\.git$',
-	'\.test$',
-	'\.pyc$',
 	'^bazel-.*$',
+	'^zig-.*$',
 ]
 
 map <F3> :NERDTreeToggle<CR>
