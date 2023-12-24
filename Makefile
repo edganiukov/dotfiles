@@ -67,8 +67,8 @@ mutt:
 
 himalaya:
 	mkdir -p ~/.config/himalaya
-	ln -sf $(CWD)/himalaya.toml ~/.config/himalaya/config.toml
-	ln -sf $(CWD)/mbsyncrc $(HOME)/.mbsyncrc
+	ln -sf $(CWD)/himalaya/config.toml ~/.config/himalaya/config.toml
+	ln -sf $(CWD)/himalaya/mbsyncrc $(HOME)/.mbsyncrc
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
