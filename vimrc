@@ -434,6 +434,10 @@ var zls = {
 	root_uri: (server_info) => lsp#utils#path_to_uri(
 		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
 	),
+	workspace_config: {
+		enable_autofix: v:false,
+		warn_style: v:true,
+	},
 	allowlist: ['zig'],
 }
 au User lsp_setup lsp#register_server(zls)

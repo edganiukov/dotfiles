@@ -18,6 +18,7 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 # autostart
 xset s 600 30
 [ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
+
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 [ -n "$(pidof redshift)" ] || redshift &
 [ -n "$(pidof dunst)" ] || dunst &
@@ -28,4 +29,4 @@ export XDG_DOWNLOAD_DIR="$HOME/tmp"
 
 # Start WM
 exec ~/.local/bin/dwm-status &
-exec dbus-launch --exit-with-session /usr/local/bin/dwm
+exec /usr/local/bin/dwm
