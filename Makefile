@@ -69,6 +69,7 @@ himalaya:
 	mkdir -p ~/.config/himalaya
 	ln -sf $(CWD)/himalaya/config.toml ~/.config/himalaya/config.toml
 	ln -sf $(CWD)/himalaya/mbsyncrc $(HOME)/.mbsyncrc
+	cp $(CWD)/himalaya/himalaya.service $(HOME)/.config/systemd/user/himalaya.service
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv

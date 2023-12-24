@@ -1,0 +1,11 @@
+[Unit]
+Description=Himalaya email service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/himalaya watch
+Restart=always
+RestartSec=2s
+
+[Install]
+WantedBy=default.target
