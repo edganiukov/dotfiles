@@ -4,11 +4,7 @@ export EDITOR=vim
 export CLICOLOR=YES
 export SHELL=/bin/zsh
 export LC_COLLATE=C
-export SVDIR=$HOME/.service
-
 export GPG_TTY=$(tty)
-# export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
 export GOPATH=$HOME/.go
 
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
