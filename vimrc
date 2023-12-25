@@ -307,19 +307,19 @@ g:fzf_preview_window = ''
 
 # match vim colorscheme
 g:fzf_colors = {
-	'fg':		['fg', 'Normal'],
-	'bg':		['bg', 'Normal'],
-	'hl':		['fg', 'PreProc'],
-	'fg+':	 ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-	'bg+':	 ['bg', 'CursorLine', 'CursorColumn'],
-	'hl+':	 ['fg', 'Statement'],
-	'info':	['fg', 'PreProc'],
-	'border':	['fg', 'Ignore'],
-	'prompt':	['fg', 'Conditional'],
+	'fg': ['fg', 'Normal'],
+	'bg': ['bg', 'Normal'],
+	'hl': ['fg', 'PreProc'],
+	'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+	'bg+': ['bg', 'CursorLine', 'CursorColumn'],
+	'hl+': ['fg', 'Statement'],
+	'info': ['fg', 'PreProc'],
+	'border': ['fg', 'Ignore'],
+	'prompt': ['fg', 'Conditional'],
 	'pointer': ['fg', 'Exception'],
-	'marker':	['fg', 'Keyword'],
+	'marker': ['fg', 'Keyword'],
 	'spinner': ['fg', 'Label'],
-	'header':	['fg', 'Comment']
+	'header': ['fg', 'Comment']
 }
 
 nnoremap <leader>b :Buffers<CR>
