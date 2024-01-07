@@ -16,7 +16,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 Plug 'jreybert/vimagit'
 
-Plug 'jjo/vim-cue'
 Plug 'https://git.sr.ht/~gnkv/vim-gol'
 Plug 'sebdah/vim-delve'
 
@@ -361,7 +360,7 @@ var gols = {
 	name: 'gopls',
 	cmd: (server_info) => ['gopls', 'serve'],
 	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.work', 'go.mod'])
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', 'go.work'])
 	),
 	workspace_config: {
 		gopls: {
@@ -395,7 +394,7 @@ var rls = {
 	},
 	allowlist: ['rust'],
 }
-# au User lsp_setup lsp#register_server(rls)
+au User lsp_setup lsp#register_server(rls)
 
 # https://github.com/MaskRay/ccls
 var cls = {
@@ -432,7 +431,7 @@ var zls = {
 	name: 'zls',
 	cmd: (server_info) => ['zls'],
 	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['build.zig'])
 	),
 	workspace_config: {
 		enable_autofix: v:false,
@@ -484,7 +483,6 @@ augroup autoformat
 	autocmd FileType go autocmd BufWritePre <buffer>
 		\ execute('LspCodeActionSync source.organizeImports')
 
-	#Custom autoformat
 	autocmd FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
 augroup END
 
