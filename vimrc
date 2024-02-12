@@ -367,8 +367,6 @@ var gols = {
 			codelenses: {generate: v:false, gc_details: v:true},
 			hoverKind: 'FullDocumentation',
 			linksInHover: v:false,
-			experimentalWorkspaceModule: v:true,
-			formatting: {gofumpt: v:true},
 			staticcheck: v:true,
 		},
 	},
