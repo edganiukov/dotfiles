@@ -1,0 +1,17 @@
+# vim: ft=conf
+#
+font-family = monospace
+font-size = 12
+
+window-decoration = false
+confirm-close-surface = false
+
+cursor-style-blink = false
+shell-integration = none
+
+theme = GruvboxDarkHard
+background = 1d2021
+foreground= e5e5e5
+
+window-padding-x = 0
+window-padding-y = 0

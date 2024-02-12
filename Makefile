@@ -1,4 +1,4 @@
-.PHONY: nvim vim tmux git zsh x gtk redshift bin dunst mutt himalaya
+.PHONY: nvim vim tmux git zsh x gtk redshift bin dunst mutt himalaya ghostty
 .PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat
 .PHONY: system76
 
@@ -19,6 +19,11 @@ tmux:
 	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	mkdir -p $(HOME)/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+
+ghostty:
+	mkdir -p $(HOME)/.config
+	ln -sf $(CWD)/ghostty $(HOME)/.config/
+
 
 git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
