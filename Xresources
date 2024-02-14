@@ -5,4 +5,4 @@ Xft.hintstyle: hintfull
 Xft.hinting: true
 Xft.antialias: 1
 Xft.rgb: rgb
-Xcursor.theme: Adwaita
+Xcursor.size: 24
