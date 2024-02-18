@@ -76,7 +76,7 @@ except ImportError:
 
 SCRIPT_NAME = "slack"
 SCRIPT_AUTHOR = "Trygve Aaberge <trygveaa@gmail.com>"
-SCRIPT_VERSION = "2.10.1"
+SCRIPT_VERSION = "2.10.2"
 SCRIPT_LICENSE = "MIT"
 SCRIPT_DESC = "Extends WeeChat for typing notification/search/etc on slack.com"
 REPO_URL = "https://github.com/wee-slack/wee-slack"
@@ -1595,7 +1595,7 @@ class SlackTeam(object):
         users,
         bots,
         channels,
-        **kwargs
+        **kwargs,
     ):
         self.slack_api_translator = copy.deepcopy(SLACK_API_TRANSLATOR)
         self.identifier = team_info["id"]
@@ -3486,12 +3486,6 @@ class SlackMessage(object):
                 return name
             else:
                 return "{} :]".format(name)
-        elif "bot_profile" in self.message_json:
-            name = self.message_json["bot_profile"].get("name")
-            if plain:
-                return name
-            else:
-                return "{} :]".format(name)
         return self.user_identifier or self.message_json.get("bot_id") or ""
 
     @property
@@ -3511,17 +3505,19 @@ class SlackMessage(object):
     def add_reaction(self, reaction_name, user):
         reaction = self.get_reaction(reaction_name)
         if reaction:
+            reaction["count"] += 1
             if user not in reaction["users"]:
                 reaction["users"].append(user)
         else:
             if "reactions" not in self.message_json:
                 self.message_json["reactions"] = []
             self.message_json["reactions"].append(
-                {"name": reaction_name, "users": [user]}
+                {"name": reaction_name, "count": 1, "users": [user]}
             )
 
     def remove_reaction(self, reaction_name, user):
         reaction = self.get_reaction(reaction_name)
+        reaction["count"] -= 1
         if user in reaction["users"]:
             reaction["users"].remove(user)
 
@@ -3587,6 +3583,9 @@ class SlackThreadMessage(SlackMessage):
     @property
     def parent_message(self):
         return self.parent_channel.messages.get(self.thread_ts)
+
+    def open_thread(self, switch=False):
+        self.parent_message.open_thread(switch)
 
 
 class Hdata(object):
@@ -4596,9 +4595,14 @@ def unfurl_blocks(blocks):
                         if "url" in element:
                             elements.append(element["url"])
                     else:
-                        dbg('Unsupported block action type: "{}"'.format(
-                            json.dumps(element[type])), level=4,
-                         )
+                        elements.append(
+                            colorize_string(
+                                config.color_deleted,
+                                '<<Unsupported block action type "{}">>'.format(
+                                    element["type"]
+                                ),
+                            )
+                        )
                 block_text.append(" | ".join(elements))
             elif block["type"] == "call":
                 block_text.append("Join via " + block["call"]["v1"]["join_url"])
@@ -4655,6 +4659,12 @@ def unfurl_blocks(blocks):
                             level=4,
                         )
             else:
+                block_text.append(
+                    colorize_string(
+                        config.color_deleted,
+                        '<<Unsupported block type "{}">>'.format(block["type"]),
+                    )
+                )
                 dbg("Unsupported block: '{}'".format(json.dumps(block)), level=4)
         except Exception as e:
             dbg(
@@ -4778,6 +4788,10 @@ def unfurl_block_rich_text_element(element):
             return element["url"]
     elif element["type"] == "emoji":
         return replace_string_with_emoji(":{}:".format(element["name"]))
+    elif element["type"] == "color":
+        rgb_int = int(element["value"].lstrip("#"), 16)
+        weechat_color = w.info_get("color_rgb2term", str(rgb_int))
+        return "{} {}".format(element["value"], colorize_string(weechat_color, "■"))
     elif element["type"] == "user":
         return resolve_ref("@{}".format(element["user_id"]))
     elif element["type"] == "usergroup":
@@ -4820,7 +4834,7 @@ def unfurl_link(url, text):
     elif url_matches_desc and config.unfurl_auto_link_display == "url":
         return url
     else:
-        return "{} ({})".format(text, url)
+        return "{} ({})".format(url, text)
 
 
 def unfurl_refs(text):
@@ -5130,9 +5144,12 @@ def create_user_status_string(profile):
 def create_reaction_string(reaction, myidentifier):
     if config.show_reaction_nicks:
         nicks = [resolve_ref("@{}".format(user)) for user in reaction["users"]]
-        users = "({})".format(", ".join(nicks))
+        nicks_extra = (
+            ["and others"] if len(reaction["users"]) < reaction["count"] else []
+        )
+        users = "({})".format(", ".join(nicks + nicks_extra))
     else:
-        users = len(reaction["users"])
+        users = reaction["count"]
     reaction_string = ":{}:{}".format(reaction["name"], users)
     if myidentifier in reaction["users"]:
         return colorize_string(
@@ -5145,7 +5162,7 @@ def create_reaction_string(reaction, myidentifier):
 
 
 def create_reactions_string(reactions, myidentifier):
-    reactions_with_users = [r for r in reactions if len(r["users"]) > 0]
+    reactions_with_users = [r for r in reactions if r["count"] > 0]
     reactions_string = " ".join(
         create_reaction_string(r, myidentifier) for r in reactions_with_users
     )
