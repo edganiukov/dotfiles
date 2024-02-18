@@ -41,7 +41,7 @@ set encoding=utf-8
 
 set wildmenu
 set wildoptions-=pum
-set completeopt=menuone,noselect
+set completeopt=menuone,popup,noselect
 
 set nospell
 set hidden
