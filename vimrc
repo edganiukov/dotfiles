@@ -165,32 +165,6 @@ autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype
 	| quit
 	| endif
 
-# Plug 'preservim/nerdtree'
-#
-g:NERDTreeDirArrows = 1
-g:NERDTreeMinimalUI = 1
-g:NERDTreeShowHidden = 1
-g:NERDTreeMinimalMenu = 1
-
-g:NERDTreeMapActivateNode = '<Space>'
-g:NERDTreeWinSize = 35
-
-g:NERDTreeDirArrowExpandable = '+'
-g:NERDTreeDirArrowCollapsible = '-'
-
-g:NERDTreeIgnore = [
-	'^\.git$',
-	'^bazel-.*$',
-	'^zig-.*$',
-]
-
-map <F3> :NERDTreeToggle<CR>
-
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
-	| quit
-	| endif
-
-
 # Abbreviations.
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
@@ -267,12 +241,40 @@ inoremap {<CR> {<CR>}<Esc>O
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+nnoremap <leader>t  :ter<CR>
+
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 # trailing whitespaces
 match ErrorMsg '\s\+$'
+
+# Plug 'preservim/nerdtree'
+#
+g:NERDTreeDirArrows = 1
+g:NERDTreeMinimalUI = 1
+g:NERDTreeShowHidden = 1
+g:NERDTreeMinimalMenu = 1
+
+g:NERDTreeMapActivateNode = '<Space>'
+g:NERDTreeWinSize = 35
+
+g:NERDTreeDirArrowExpandable = '+'
+g:NERDTreeDirArrowCollapsible = '-'
+
+g:NERDTreeIgnore = [
+	'^\.git$',
+	'^bazel-.*$',
+	'^zig-.*$',
+]
+
+map <F3> :NERDTreeToggle<CR>
+
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
+	| quit
+	| endif
+
 
 # Plug 'mhinz/vim-signify'
 #
