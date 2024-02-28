@@ -242,6 +242,7 @@ nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 nnoremap <leader>t  :ter<CR>
+nnoremap <leader>e  :Explore<CR>
 
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
