@@ -19,8 +19,6 @@ xset s 600 30
 [ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
 
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
-[ -n "$(pidof redshift)" ] || redshift &
-[ -n "$(pidof dunst)" ] || dunst &
 
 systemctl --user import-environment DISPLAY PATH
 export XDG_DESKTOP_DIR="$HOME"
