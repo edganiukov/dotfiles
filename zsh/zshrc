@@ -78,10 +78,6 @@ alias nsxivd="nsxiv -r -t -s d"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 
-# void linux
-alias xq="sudo xbps-query"
-alias xr="sudo xbps-remove"
-
 ## Prompt
 #########
 autoload -Uz vcs_info

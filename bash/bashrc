@@ -1,0 +1,130 @@
+# Prompt
+function __setprompt {
+	local GREEN="\[\033[0;92m\]"
+	local YELLOW="\[\033[0;93m\]"
+	local MAGENTA="\[\033[0;95m\]"
+	local NO_COLOUR="\[\033[0m\]"
+
+	local GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+	PS1="${GREEN}# \u@\h: ${YELLOW}\W ${MAGENTA}[${GIT_BRANCH}] ${NO_COLOUR}\$ "
+	PS2="${GREEN}>${NO_COLOUR} "
+}
+
+__setprompt
+
+# Env vars
+# Do not save identical commands, and commands that start with a space:
+
+export LANG=en_US.UTF-8
+export EDITOR=vim
+export CLICOLOR=YES
+export SHELL=/bin/bash
+export LC_COLLATE=C
+export GPG_TTY=$(tty)
+export GOPATH=$HOME/.go
+export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+
+# Bash config
+export HISTCONTROL="erasedups:ignorespace"
+
+complete -c man which
+complete -cf sudo
+
+# History completion
+bind '"\e[A": history-substring-search-backward'
+bind '"\e[B": history-substring-search-forward'
+
+# Alias
+alias ..="cd .."
+alias ls='ls --color'
+alias ll='ls --color -hl'
+alias grep="grep --colour"
+alias curl="curl -s"
+alias diff="diff -u --color"
+alias nsxivd="nsxiv -r -t -s d"
+alias magit="vim -c :MagitOnly"
+alias notes="vim -c ':lcd ~/misc/notes'"
+
+# Plugins
+# https://github.com/junegunn/fzf
+[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
+[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
+
+# Functions
+# nnn
+n() {
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # Unmask ^Q (if required, see `stty -a`) to Quit nnn
+    stty start undef
+    stty stop undef
+    stty lnext undef
+
+    NNN_CTXMAX=1 \
+    NNN_BMS="h:~;t:~/tmp" \
+    NNN_TRASH=1 \
+    NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgview" \
+    NNN_USE_EDITOR=1 \
+    NNN_COLORS="4444" \
+    NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i" \
+    NNN_FIFO="/tmp/nnn.fifo" \
+    nnn -e -x -o -C "$@"
+}
+
+# tm - creates new tmux session, or switch to existing one.
+tm() {
+    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+    if [ $1 ]; then
+      tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+    fi
+    session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+gitsync() {
+    local remote=${1:-"upstream"}
+    local branch=${2:-"master"}
+    echo "[INFO] Sync ${remote}/${branch} to origin/${branch}"
+    read -s -k "?[INFO] Press any key to continue"
+    echo "\n[INFO] syncing ... "
+
+    local cbranch=$(git branch --show-current)
+
+    git checkout ${branch}
+    git fetch ${remote}
+    git rebase ${remote}/${branch}
+    git push origin ${branch}
+
+    git checkout ${cbranch}
+}
+
+# fzf list branches
+fbr() {
+    local action=${1:-"co"}
+    case $action in
+    "del")
+        git branch --no-color --sort=-committerdate --format='%(refname:short)' |
+            fzf --header "git branch -D" --multi --ansi --tabstop=4 --preview-window 'right:60%' --preview="git lg {} --" |
+            xargs --no-run-if-empty git branch --delete --force
+        ;;
+    "co")
+        git branch --no-color --sort=-committerdate --format='%(refname:short)' |
+            fzf --header "git checkout" --ansi --tabstop=4 --preview-window 'right:60%' --preview="git lg {} --" |
+            xargs --no-run-if-empty git checkout
+        ;;
+    esac
+}
+
+# fzf list Github PRs
+fpr() {
+    local lim=${1:-"30"}
+    gh pr list -L $lim | fzf --header "gh pr checkout" --tabstop=4 |
+        awk '{print $1}' | xargs --no-run-if-empty gh pr checkout
+}

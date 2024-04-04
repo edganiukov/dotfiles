@@ -1,5 +1,5 @@
-.PHONY: nvim vim tmux git zsh x gtk redshift bin dunst mutt himalaya ghostty
-.PHONY: fonts mpv rtorrent sxiv zathura ncspot weechat
+.PHONY: bash zsh nvim vim tmux git x fonts gtk bin redshift dunst
+.PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
 .PHONY: system76
 
 CWD=$(shell pwd)
@@ -36,6 +36,12 @@ zsh:
 	ln -sf $(CWD)/zsh/zlogin $(HOME)/.zlogin
 	ln -sf $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
 	ln -sf $(CWD)/zsh/func.zsh $(HOME)/.zsh/func.zsh
+
+bash:
+	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
+	ln -sf $(CWD)/bash/bashrc $(HOME)/.bashrc
+	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
+	ln -sf $(CWD)/bash/bash_logout $(HOME)/.bash_logout
 
 x:
 	ln -sf $(CWD)/Xresources $(HOME)/.Xresources
