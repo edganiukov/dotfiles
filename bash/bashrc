@@ -23,8 +23,8 @@ complete -c man which
 complete -cf sudo
 
 # History completion
-bind '"\e[A": history-substring-search-backward'
-bind '"\e[B": history-substring-search-forward'
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
 
 # Alias
 alias ..="cd .."
@@ -77,23 +77,6 @@ tm() {
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-gitsync() {
-    local remote=${1:-"upstream"}
-    local branch=${2:-"master"}
-    echo "[INFO] Sync ${remote}/${branch} to origin/${branch}"
-    read -s -k "?[INFO] Press any key to continue"
-    echo "\n[INFO] syncing ... "
-
-    local cbranch=$(git branch --show-current)
-
-    git checkout ${branch}
-    git fetch ${remote}
-    git rebase ${remote}/${branch}
-    git push origin ${branch}
-
-    git checkout ${cbranch}
-}
-
 # fzf list branches
 fbr() {
     local action=${1:-"co"}
@@ -109,11 +92,4 @@ fbr() {
             xargs --no-run-if-empty git checkout
         ;;
     esac
-}
-
-# fzf list Github PRs
-fpr() {
-    local lim=${1:-"30"}
-    gh pr list -L $lim | fzf --header "gh pr checkout" --tabstop=4 |
-        awk '{print $1}' | xargs --no-run-if-empty gh pr checkout
 }
