@@ -1,17 +1,5 @@
 # Prompt
-function __setprompt {
-	local GREEN="\[\033[0;92m\]"
-	local YELLOW="\[\033[0;93m\]"
-	local MAGENTA="\[\033[0;95m\]"
-	local NO_COLOUR="\[\033[0m\]"
-
-	local GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-
-	PS1="${GREEN}# \u@\h: ${YELLOW}\W ${MAGENTA}[${GIT_BRANCH}] ${NO_COLOUR}\$ "
-	PS2="${GREEN}>${NO_COLOUR} "
-}
-
-__setprompt
+PROMPT_COMMAND='GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)'; PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '; PS2='\[\033[0;92m\]>\[\033[0m\] '
 
 # Env vars
 # Do not save identical commands, and commands that start with a space:
@@ -45,7 +33,8 @@ alias ll='ls --color -hl'
 alias grep="grep --colour"
 alias curl="curl -s"
 alias diff="diff -u --color"
-alias nsxivd="nsxiv -r -t -s d"
+alias sxivd="nsxiv -r -t -s d"
+alias sxivd="nsxiv"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 

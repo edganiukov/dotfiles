@@ -41,7 +41,6 @@ bash:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
 	ln -sf $(CWD)/bash/bashrc $(HOME)/.bashrc
 	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
-	ln -sf $(CWD)/bash/bash_logout $(HOME)/.bash_logout
 
 x:
 	ln -sf $(CWD)/Xresources $(HOME)/.Xresources
