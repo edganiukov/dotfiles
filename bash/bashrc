@@ -5,16 +5,31 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Always start prompt on new line.
+__prompt() {
+	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+	local CURPOS
+	stty -echo
+	echo -en '\033[6n'
+	IFS=';' read -d R -a CURPOS
+	stty echo
+	(( CURPOS[1] > 1 )) && echo -e '\E[1m\E[41m\E[33m%\E[0m'
+}
+
 # Prompt
-PROMPT_COMMAND='GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)'; PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '; PS2='\[\033[0;92m\]>\[\033[0m\] '
+PROMPT_COMMAND=__prompt
+PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '
+PS2='\[\033[0;92m\]>\[\033[0m\] '
+# Do not save identical commands, and commands that start with a space:
+HISTCONTROL="erasedups:ignorespace"
 
 # Env vars
 export LANG=en_US.UTF-8
 export EDITOR=vim
 export CLICOLOR=YES
-export SHELL=/bin/bash
 export LC_COLLATE=C
 export GPG_TTY=$(tty)
+
 export GOPATH=$HOME/.go
 export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 
@@ -22,9 +37,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
-# Bash config
-# Do not save identical commands, and commands that start with a space:
-export HISTCONTROL="erasedups:ignorespace"
 
 complete -c man which
 complete -cf sudo
