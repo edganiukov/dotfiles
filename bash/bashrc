@@ -33,12 +33,17 @@ __prompt_cmd() {
 PROMPT_COMMAND=__prompt_cmd
 PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '
 PS2='\[\033[0;92m\]>\[\033[0m\] '
+
 # History config.
 HISTCONTROL="ignoreboth:erasedups"
 HISTSIZE=100000
 HISTFILESIZE=2000000
+HISTIGNORE="&:clear:ls:cd:[bf]g:exit:[ t\]*"
+shopt -s histappend
 
-# Env vars
+shopt -s checkwinsize
+
+# Vars.
 LANG=en_US.UTF-8
 EDITOR=vim
 CLICOLOR=YES
