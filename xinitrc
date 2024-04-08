@@ -17,7 +17,6 @@ feh --bg-scale ~/dev/dotfiles/walls/wall_f1.webp
 # autostart
 xset s 600 30
 [ -n "$(pidof xss-lock)" ] || xss-lock -n /usr/libexec/xsecurelock/dimmer -l -- xsecurelock &
-
 [ -n "$(pidof xbindkeys)" ] || xbindkeys
 
 systemctl --user import-environment DISPLAY PATH

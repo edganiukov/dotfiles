@@ -2,12 +2,20 @@
 # ~/.bashrc
 #
 
-# If not running interactively, don't do anything
+# If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
-# Always start prompt on new line.
-__prompt() {
+# History completion.
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+complete -c man which
+complete -cf sudo
+
+__prompt_cmd() {
 	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+	# Always start prompt on new line.
 	local CURPOS
 	stty -echo
 	echo -en '\033[6n'
@@ -17,33 +25,20 @@ __prompt() {
 }
 
 # Prompt
-PROMPT_COMMAND=__prompt
+PROMPT_COMMAND=__prompt_cmd
 PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '
 PS2='\[\033[0;92m\]>\[\033[0m\] '
 # Do not save identical commands, and commands that start with a space:
 HISTCONTROL="erasedups:ignorespace"
 
 # Env vars
-export LANG=en_US.UTF-8
-export EDITOR=vim
-export CLICOLOR=YES
-export LC_COLLATE=C
-export GPG_TTY=$(tty)
+LANG=en_US.UTF-8
+EDITOR=vim
+CLICOLOR=YES
+GPG_TTY=$(tty)
 
-export GOPATH=$HOME/.go
-export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
-
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
-
-
-complete -c man which
-complete -cf sudo
-
-# History completion
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+GOPATH=$HOME/.go
+PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 
 # Alias
 alias ..="cd .."
@@ -59,11 +54,16 @@ alias notes="vim -c ':lcd ~/misc/notes'"
 
 # Plugins
 # https://github.com/junegunn/fzf
+FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
 [ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
 
+# dircolors
+[ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+
 # Functions
-# nnn
+# n - start nnn file manager.
 n() {
 	# Block nesting of nnn in subshells
 	if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
@@ -96,7 +96,7 @@ tm() {
 	session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# fzf list branches
+# fzf - list git branches.
 fbr() {
 	local action=${1:-"co"}
 	case $action in

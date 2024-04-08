@@ -2,8 +2,5 @@
 # ~/.bash_profile
 #
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-
-if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-	startx
-fi
+[[ -f ~/.bashrc ]] && source ~/.bashrc
+[[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]] && startx
