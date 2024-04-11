@@ -59,8 +59,8 @@ alias ll='ls --color -hl'
 alias grep="grep --colour"
 alias curl="curl -s"
 alias diff="diff -u --color"
-alias sxivd="nsxiv -r -t -s d"
-alias sxivd="nsxiv"
+alias viewd="nsxiv -r -t -s d"
+alias view="nsxiv"
 alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 
