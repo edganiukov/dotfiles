@@ -480,7 +480,7 @@ nnoremap <silent> gs :LspWorkspaceSymbol<CR>
 nnoremap <silent> gth :LspTypeHierarchy<CR>
 
 augroup autoformat
-	autocmd FileType go,rust,python,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	autocmd FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
 	autocmd FileType go autocmd BufWritePre <buffer>
 		\ execute('LspCodeActionSync source.organizeImports')
 
