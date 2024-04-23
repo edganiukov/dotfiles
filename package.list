@@ -4,6 +4,7 @@ delve
 gopls
 git
 github-cli
+rustup
 zig
 zls
 gdb
@@ -11,7 +12,7 @@ ccls
 # clang
 
 # tools
-zsh
+bash-completion
 tmux
 jq
 fzf

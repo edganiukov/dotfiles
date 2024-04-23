@@ -40,10 +40,9 @@ HISTSIZE=100000
 HISTFILESIZE=2000000
 HISTIGNORE="&:clear:ls:cd:[bf]g:exit:[ t\]*"
 shopt -s histappend
-
 shopt -s checkwinsize
 
-# Vars.
+# ENV
 LANG=en_US.UTF-8
 EDITOR=vim
 CLICOLOR=YES
@@ -72,7 +71,7 @@ FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 [ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
 
 # https://github.com/scop/bash-completion
-[[ -f /usr/share/bash-completion/bash_completion ]] && source /usr/share/bash-completion/bash_completion
+[ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
 # dircolors
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
