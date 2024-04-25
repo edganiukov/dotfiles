@@ -43,13 +43,13 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # ENV
-LANG=en_US.UTF-8
-EDITOR=vim
-CLICOLOR=YES
-GPG_TTY=$(tty)
+export LANG=en_US.UTF-8
+export EDITOR=vim
+export CLICOLOR=YES
+export GPG_TTY=$(tty)
 
-GOPATH=$HOME/.go
-PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
+export GOPATH=$HOME/.go
+export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 
 # Alias
 alias ..="cd .."
