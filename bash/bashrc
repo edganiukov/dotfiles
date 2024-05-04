@@ -13,10 +13,8 @@ complete -c man which
 complete -cf sudo
 
 __prompt_cmd() {
-	# Save and reload history.
+	# Append history.
 	history -a
-	history -c
-	history -r
 	# Resolve git branch.
 	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 

@@ -251,6 +251,13 @@ hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
+
+# Plug 'tpope/vim-commentary'
+#
+augroup commentstring
+	autocmd FileType c,h setlocal commentstring=//\ %s
+augroup END
+
 # Plug 'preservim/nerdtree'
 #
 g:NERDTreeDirArrows = 1
@@ -485,6 +492,7 @@ augroup autoformat
 		\ execute('LspCodeActionSync source.organizeImports')
 
 	autocmd FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
+	autocmd FileType c,h autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
 
 def g:Format(formatter: string)
