@@ -349,8 +349,7 @@ g:mucomplete#completion_delay = 100
 g:mucomplete#reopen_immediately = 1
 
 g:mucomplete#chains = {
-	default: ['omni'],
-	sql: ['file'],
+	default: ['omni', 'keyn'],
 }
 g:mucomplete#can_complete = {
 	default: {
