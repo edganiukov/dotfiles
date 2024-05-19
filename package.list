@@ -8,8 +8,8 @@ rustup
 zig
 zls
 gdb
-ccls
 # clang
+# ccls
 
 # tools
 bash-completion

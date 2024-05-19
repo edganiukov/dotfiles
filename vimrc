@@ -168,6 +168,7 @@ autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype
 # Abbreviations.
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
+cnoreabbrev sh ter
 
 # Non-plugin Keybindings:
 # yank to the EOL
@@ -237,12 +238,11 @@ inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
 # expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
-# open/reload vimrc
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+# reload vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
-
 nnoremap <leader>t  :ter<CR>
-nnoremap <leader>e  :Explore<CR>
+# nnoremap <leader>e  :Explore<CR>
+nnoremap <leader>e  :ter 
 
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
