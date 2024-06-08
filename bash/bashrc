@@ -15,8 +15,7 @@ complete -cf sudo
 __prompt_cmd() {
 	# Append history.
 	history -a
-	# Resolve git branch.
-	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+	# Resolve git branch.  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
 	# Always start prompt on new line.
 	local CURPOS
@@ -88,14 +87,14 @@ n() {
 	stty stop undef
 	stty lnext undef
 
-	local NNN_CTXMAX=1
-	local NNN_BMS="h:~;t:~/tmp"
-	local NNN_TRASH=1
-	local NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgview"
-	local NNN_USE_EDITOR=1
-	local NNN_COLORS="4444"
-	local NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i"
-	local NNN_FIFO="/tmp/nnn.fifo"
+	NNN_CTXMAX=1 \
+	NNN_BMS="h:~;t:~/tmp"  \
+	NNN_TRASH=1 \
+	NNN_PLUG="d:diffs;m:nmount;n:notes;v:imgview" \
+	NNN_USE_EDITOR=1 \
+	NNN_COLORS="4444" \
+	NNN_COPIER="xargs -0 < \"$SELECTION\" | xclip -selection clipboard -i" \
+	NNN_FIFO="/tmp/nnn.fifo" \
 	nnn -e -x -o -C "$@"
 }
 
