@@ -24,5 +24,5 @@ export XDG_DESKTOP_DIR="$HOME"
 export XDG_DOWNLOAD_DIR="$HOME/tmp"
 
 # Start WM
-exec ~/.local/bin/dwm-status &
+exec /usr/local/bin/slstatus &
 exec /usr/local/bin/dwm

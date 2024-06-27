@@ -350,6 +350,7 @@ g:mucomplete#reopen_immediately = 1
 
 g:mucomplete#chains = {
 	default: ['omni', 'keyn'],
+	sql: ['keyn']
 }
 g:mucomplete#can_complete = {
 	default: {
@@ -491,7 +492,7 @@ augroup autoformat
 		\ execute('LspCodeActionSync source.organizeImports')
 
 	autocmd FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
-	autocmd FileType c,h autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
+	# autocmd FileType c,h autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
 
 def g:Format(formatter: string)

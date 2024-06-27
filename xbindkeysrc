@@ -38,7 +38,7 @@
 "brightnessctl --device=smc::kbd_backlight set 5%+"
     XF86KbdBrightnessDown
 
-"ghostty"
+"st"
     Mod4+Return
 
 "dmenu-run-recent"

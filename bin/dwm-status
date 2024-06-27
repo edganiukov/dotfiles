@@ -68,6 +68,6 @@ new_emails() {
 }
 
 while true; do
-	xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < vpn: $(vpn) < net: $(wifi) < $(datetime) <"
+	xsetroot -name "< $(xkb_layout) < @ $(new_emails) < # $(pa_volume) < $(battery) < net: $(wifi) < $(datetime) <"
 	sleep 1
 done

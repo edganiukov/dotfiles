@@ -15,7 +15,8 @@ complete -cf sudo
 __prompt_cmd() {
 	# Append history.
 	history -a
-	# Resolve git branch.  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+	# Resolve git branch.
+	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
 	# Always start prompt on new line.
 	local CURPOS
@@ -100,11 +101,7 @@ n() {
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
-	local name="${1:-`basename $PWD`}"
-	if tmux has-session -t $name 2> /dev/null
-	then
-		tmux -2 attach-session -t $name
-	else
-		tmux -2 new-session -s $name
-	fi
+	[[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+	name="${1:-`basename $PWD`}"
+	tmux has-session -t $name 2>/dev/null && tmux $change -t "$name" || (tmux new-session -d -s $name && tmux $change -t "$name")
 }
