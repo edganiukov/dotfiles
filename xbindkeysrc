@@ -37,18 +37,3 @@
 # Dim keyboard
 "brightnessctl --device=smc::kbd_backlight set 5%+"
     XF86KbdBrightnessDown
-
-"st"
-    Mod4+Return
-
-"dmenu-run-recent"
-    Mod4+r
-
-"dmenu-pass"
-    Mod4+p
-
-"xset s activate"
-    Mod4+Shift+s
-
-"display-plug"
-    Mod4+Shift+d
