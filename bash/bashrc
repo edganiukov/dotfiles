@@ -42,10 +42,7 @@ shopt -s checkwinsize
 
 # ENV
 export LANG=en_US.UTF-8
-<<<<<<< Updated upstream
-=======
 export LC_ALL=C.UTF-8
->>>>>>> Stashed changes
 export EDITOR=vim
 export CLICOLOR=YES
 export GPG_TTY=$(tty)
