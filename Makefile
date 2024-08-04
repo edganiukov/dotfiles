@@ -1,6 +1,6 @@
 .PHONY: bash zsh nvim vim tmux git x fonts gtk bin redshift dunst
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
-.PHONY: system76
+.PHONY: system76 qutebrowser
 
 CWD=$(shell pwd)
 
@@ -31,11 +31,11 @@ git:
 zsh:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
 	mkdir $(HOME)/.zsh
-	ln -sf $(CWD)/zsh/zshrc $(HOME)/.zshrc
-	ln -sf $(CWD)/zsh/zshenv $(HOME)/.zshenv
-	ln -sf $(CWD)/zsh/zlogin $(HOME)/.zlogin
-	ln -sf $(CWD)/zsh/plugins $(HOME)/.zsh/plugins
-	ln -sf $(CWD)/zsh/func.zsh $(HOME)/.zsh/func.zsh
+	ln -sf $(CWD)/archive/zsh/zshrc $(HOME)/.zshrc
+	ln -sf $(CWD)/archive/zsh/zshenv $(HOME)/.zshenv
+	ln -sf $(CWD)/archive/zsh/zlogin $(HOME)/.zlogin
+	ln -sf $(CWD)/archive/zsh/plugins $(HOME)/.zsh/plugins
+	ln -sf $(CWD)/archive/zsh/func.zsh $(HOME)/.zsh/func.zsh
 
 bash:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
