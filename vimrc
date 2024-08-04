@@ -11,6 +11,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
+Plug 'preservim/tagbar'
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
@@ -284,6 +285,11 @@ autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
 	| endif
 
 
+# Plug 'preservim/tagbar'
+#
+nmap <F4> :TagbarToggle<CR>
+
+
 # Plug 'mhinz/vim-signify'
 #
 g:signify_vcs_list = ['git']
@@ -359,7 +365,7 @@ g:mucomplete#can_complete = {
 }
 
 # mucomplete + vim-lsp
-autocmd FileType go,zig setlocal omnifunc=lsp#complete
+autocmd FileType go,rust setlocal omnifunc=lsp#complete
 inoremap <leader>c <C-x><C-o>
 
 
