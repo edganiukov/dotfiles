@@ -447,7 +447,7 @@ var zls = {
 	},
 	allowlist: ['zig'],
 }
-au User lsp_setup lsp#register_server(zls)
+# au User lsp_setup lsp#register_server(zls)
 
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
