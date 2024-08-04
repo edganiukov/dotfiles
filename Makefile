@@ -1,6 +1,6 @@
-.PHONY: bash zsh nvim vim tmux git x fonts gtk bin redshift dunst
+.PHONY: bash vim tmux git x fonts gtk redshift dunst grobi
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
-.PHONY: system76 qutebrowser
+.PHONY: system76
 
 CWD=$(shell pwd)
 
@@ -24,18 +24,8 @@ ghostty:
 	mkdir -p $(HOME)/.config
 	ln -sf $(CWD)/ghostty $(HOME)/.config/
 
-
 git:
 	cp $(CWD)/gitconfig $(HOME)/.gitconfig
-
-zsh:
-	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
-	mkdir $(HOME)/.zsh
-	ln -sf $(CWD)/archive/zsh/zshrc $(HOME)/.zshrc
-	ln -sf $(CWD)/archive/zsh/zshenv $(HOME)/.zshenv
-	ln -sf $(CWD)/archive/zsh/zlogin $(HOME)/.zlogin
-	ln -sf $(CWD)/archive/zsh/plugins $(HOME)/.zsh/plugins
-	ln -sf $(CWD)/archive/zsh/func.zsh $(HOME)/.zsh/func.zsh
 
 bash:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
@@ -50,15 +40,11 @@ x:
 
 gtk:
 	mkdir -p ~/.config/gtk-3.0
-	ln -sf $(CWD)/settings.ini $(HOME)/.config/gtk-3.0/settings.ini
+	ln -sf $(CWD)/gtk3-settings.ini $(HOME)/.config/gtk-3.0/settings.ini
 
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -sf $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
-
-bin:
-	mkdir -p $(HOME)/.local/bin
-	ln -sf $(CWD)/bin/dwm-status $(HOME)/.local/bin/
 
 redshift:
 	mkdir -p $(HOME)/.config/redshift
