@@ -1,0 +1,47 @@
+diff --git a/weechat/python/slack.py b/weechat/python/slack.py
+index 79a9ee7..3b13e45 100644
+--- a/weechat/python/slack.py
++++ b/weechat/python/slack.py
+@@ -1436,11 +1436,10 @@ class SlackMessage:
+                             if "url" in element:
+                                 items.append(format_url(element["url"]))
+                         else:
+-                            text = (
+-                                f'<Unsupported block action type "{element["type"]}">'
+-                            )
+-                            items.append(
+-                                with_color(shared.config.color.render_error.value, text)
++                            log(
++                                LogLevel.DEBUG,
++                                DebugMessageType.LOG,
++                                f'Unsupported block action type "{element["type"]}"'
+                             )
+                     block_lines.append(intersperse(items, " | "))
+                 elif block["type"] == "call":
+@@ -1499,18 +1498,16 @@ class SlackMessage:
+                             if texts:
+                                 block_lines.append([f"```\n{''.join(texts)}\n```"])
+                         else:
+-                            text = f'<Unsupported rich text type "{element["type"]}">'
+-                            block_lines.append(
+-                                [
+-                                    with_color(
+-                                        shared.config.color.render_error.value, text
+-                                    )
+-                                ]
++                            log(
++                                LogLevel.DEBUG,
++                                DebugMessageType.LOG,
++                                f'Unsupported rich text type "{element["type"]}"'
+                             )
+                 else:
+-                    text = f'<Unsupported block type "{block["type"]}">'
+-                    block_lines.append(
+-                        [with_color(shared.config.color.render_error.value, text)]
++                    log(
++                        LogLevel.DEBUG,
++                        DebugMessageType.LOG,
++                        f'Unsupported block type "{block["type"]}"'
+                     )
+             except Exception as e:
+                 uncaught_error = UncaughtError(e)
