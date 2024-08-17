@@ -5,9 +5,8 @@ gopls
 git
 github-cli
 rustup
-zig
-zls
 gdb
+ctags
 # clang
 # ccls
 
@@ -38,7 +37,6 @@ htop
 rtorrent
 mutt
 weechat
-perl-pod-parser
 
 # gui
 dunst
