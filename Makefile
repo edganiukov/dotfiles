@@ -17,8 +17,7 @@ vim:
 
 tmux:
 	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
-	mkdir -p $(HOME)/.tmux/plugins
-	git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm
+	ln -sf $(CWD)/tmux $(HOME)/.tmux
 
 ghostty:
 	mkdir -p $(HOME)/.config
