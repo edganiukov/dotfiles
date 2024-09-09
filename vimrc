@@ -276,6 +276,7 @@ g:NERDTreeIgnore = [
 	'^\.git$',
 	'^bazel-.*$',
 	'^zig-.*$',
+	'^target$',
 ]
 
 map <F3> :NERDTreeToggle<CR>
@@ -400,7 +401,9 @@ var rls = {
 	),
 	initialization_options: {
 		cargo: {
-			loadOutDirsFromCheck: v:true,
+			buildScripts: {
+				enable: v:true,
+			},
 		},
 		procMacro: {
 			enable: v:true,

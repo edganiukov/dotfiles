@@ -50,6 +50,8 @@ export GPG_TTY=$(tty)
 export GOPATH=$HOME/.go
 export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 
+export RUSTUP_TOOLCHAIN=stable
+
 # Alias
 alias ..="cd .."
 alias ls='ls --color'
