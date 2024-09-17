@@ -318,6 +318,7 @@ nnoremap vm :Magit<CR>
 #
 g:ctrlp_working_path_mode = 'ra'
 g:ctrlp_types = ['fil', 'buf']
+# fd --type f --strip-cwd-prefix --hidden --follow --exclude .git
 g:ctrlp_user_command = 'rg --files --sort=none'
 g:ctrlp_use_caching = 0
 g:ctrlp_switch_buffer = 'et'

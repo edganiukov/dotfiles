@@ -65,12 +65,6 @@ alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 
 # Plugins
-# https://github.com/junegunn/fzf
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
-[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
-
 # https://github.com/scop/bash-completion
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
