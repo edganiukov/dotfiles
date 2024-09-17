@@ -9,7 +9,7 @@ Plug 'https://git.sr.ht/~gnkv/vim-colors-off'
 # Basic
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'junegunn/fzf.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 
@@ -43,6 +43,7 @@ set encoding=utf-8
 set wildmenu
 set wildoptions-=pum
 set completeopt=menuone,popup,noselect
+set wildignore+=*/.git/*,*/tmp/*
 
 set nospell
 set hidden
@@ -313,40 +314,28 @@ hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 g:magit_commit_title_limit = 72
 nnoremap vm :Magit<CR>
 
-
-# Plug 'junegunn/fzf.vim'
+# Plug 'ctrlpvim/ctrlp.vim'
 #
-set rtp+=/usr/local/opt/fzf
-g:fzf_layout = { 'down': '~40%' }
-# disable preview window
-g:fzf_preview_window = ''
+g:ctrlp_working_path_mode = 'ra'
+g:ctrlp_types = ['fil', 'buf']
+g:ctrlp_user_command = 'rg --files --sort=none'
+g:ctrlp_use_caching = 0
+g:ctrlp_switch_buffer = 'et'
 
-# match vim colorscheme
-g:fzf_colors = {
-	'fg': ['fg', 'Normal'],
-	'bg': ['bg', 'Normal'],
-	'hl': ['fg', 'PreProc'],
-	'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-	'bg+': ['bg', 'CursorLine', 'CursorColumn'],
-	'hl+': ['fg', 'Statement'],
-	'info': ['fg', 'PreProc'],
-	'border': ['fg', 'Ignore'],
-	'prompt': ['fg', 'Conditional'],
-	'pointer': ['fg', 'Exception'],
-	'marker': ['fg', 'Keyword'],
-	'spinner': ['fg', 'Label'],
-	'header': ['fg', 'Comment']
-}
+# ripgrep
+set grepprg=rg\ --vimgrep\ --no-heading
+set grepformat=%f:%l:%c:%m,%f:%l:%m
 
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>h :Hist<CR>
+def g:Rg(...args: list<any>): string
+	g:grepcmd = join([&grepprg] + [join(map(args, 'expand(v:val)'), ' ')], ' ')
+	return system(g:grepcmd)
+enddef
 
-nnoremap <leader>s :Rg<CR>
-command! -bang -nargs=* Rg legacy call fzf#vim#grep(
-	\ 'rg --column --line-number --no-heading --color=always
-	\ --colors "path:fg:190,220,255" --colors "line:fg:128,128,128" --smart-case '.shellescape(<q-args>),
-	\ 1, {'options': '--color hl:72,hl+:167 --nth 2..'}, 0)
+command! -nargs=+ -complete=file_in_path -bar Rg  cgetexpr g:Rg(<f-args>)
+augroup quickfix
+    autocmd!
+    autocmd QuickFixCmdPost cgetexpr cwindow | call setqflist([], 'a', {'title': g:grepcmd})
+augroup END
 
 
 # Plug 'lifepillar/vim-mucomplete'
