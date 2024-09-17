@@ -324,8 +324,7 @@ g:ctrlp_use_caching = 0
 g:ctrlp_switch_buffer = 'et'
 
 # ripgrep
-set grepprg=rg\ --vimgrep\ --no-heading
-set grepformat=%f:%l:%c:%m,%f:%l:%m
+set grepprg=rg\ --vimgrep
 
 def g:Rg(...args: list<any>): string
 	g:grepcmd = join([&grepprg] + [join(map(args, 'expand(v:val)'), ' ')], ' ')
