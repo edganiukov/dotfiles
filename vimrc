@@ -318,9 +318,7 @@ nnoremap vm :Magit<CR>
 #
 g:ctrlp_working_path_mode = 'ra'
 g:ctrlp_types = ['fil', 'buf']
-# fd --type f --strip-cwd-prefix --hidden --follow --exclude .git
 g:ctrlp_user_command = 'rg --files --sort=none'
-g:ctrlp_use_caching = 0
 g:ctrlp_switch_buffer = 'et'
 
 # ripgrep
@@ -534,6 +532,8 @@ augroup filetypedetect
 	au FileType rst,markdown,text setlocal tw=80 cc=80 spell
 	au FileType mail setlocal tw=72 cc=72 spell
 	au FileType gitcommit setlocal tw=72 cc=72 spell
+	# Resize quickfix
+	au FileType qf resize 20
 augroup END
 
 ## Custom functions.

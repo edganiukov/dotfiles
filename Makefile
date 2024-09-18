@@ -1,4 +1,4 @@
-.PHONY: bash vim tmux git x fonts gtk redshift dunst grobi
+.PHONY: bash vim tmux git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
 .PHONY: system76
 
@@ -92,6 +92,9 @@ weechat:
 
 grobi:
 	ln -sf $(CWD)/grobi.conf $(HOME)/.config/grobi.conf
+
+ripgrep:
+	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
 
 system76:
 	sudo cp $(CWD)/system76/system76-power.service /etc/systemd/system

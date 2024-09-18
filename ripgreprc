@@ -1,0 +1,7 @@
+--max-columns=150
+--hidden
+--smart-case
+
+--glob
+!.git/*
+!.direnv/*
