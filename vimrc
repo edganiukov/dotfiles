@@ -320,6 +320,7 @@ g:ctrlp_working_path_mode = 'ra'
 g:ctrlp_types = ['fil', 'buf']
 g:ctrlp_user_command = 'rg --files --sort=none'
 g:ctrlp_switch_buffer = 'et'
+g:ctrlp_max_height = 30
 
 # ripgrep
 set grepprg=rg\ --vimgrep
