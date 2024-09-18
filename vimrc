@@ -207,6 +207,8 @@ nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <silent>qp :call popup_clear()<CR>
 # quickfix close
 nnoremap <silent>qc :cclose<CR>
+nnoremap <silent>qf :copen<CR>
+
 # quickfix switch
 nnoremap <Down> :cn!<CR>
 nnoremap <Up> :cp!<CR>
@@ -320,20 +322,16 @@ g:ctrlp_working_path_mode = 'ra'
 g:ctrlp_types = ['fil', 'buf']
 g:ctrlp_user_command = 'rg --files --sort=none'
 g:ctrlp_switch_buffer = 'et'
-g:ctrlp_max_height = 30
+g:ctrlp_max_height = 20
 
 # ripgrep
 set grepprg=rg\ --vimgrep
-
-def g:Rg(...args: list<any>): string
-	g:grepcmd = join([&grepprg] + [join(map(args, 'expand(v:val)'), ' ')], ' ')
-	return system(g:grepcmd)
-enddef
+# set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m:
 
 command! -nargs=+ -complete=file_in_path -bar Rg  cgetexpr g:Rg(<f-args>)
 augroup quickfix
     autocmd!
-    autocmd QuickFixCmdPost cgetexpr cwindow | call setqflist([], 'a', {'title': g:grepcmd})
+    autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
 augroup END
 
 
