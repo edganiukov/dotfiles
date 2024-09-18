@@ -326,12 +326,14 @@ g:ctrlp_max_height = 20
 
 # ripgrep
 set grepprg=rg\ --vimgrep
-# set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m:
+set grepformat=%f:%l:%c:%m,%f:%l:%m
+cnoreabbrev <expr> grep 'silent grep'
+cnoreabbrev <expr> lgrep 'silent lgrep'
 
-command! -nargs=+ -complete=file_in_path -bar Rg  cgetexpr g:Rg(<f-args>)
 augroup quickfix
-    autocmd!
-    autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
+	autocmd!
+	autocmd QuickFixCmdPost [^l]* cwindow
+	autocmd QuickFixCmdPost [l]* lwindow
 augroup END
 
 
