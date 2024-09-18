@@ -330,6 +330,8 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 cnoreabbrev <expr> grep 'silent grep'
 cnoreabbrev <expr> lgrep 'silent lgrep'
 
+nnoremap <leader>g  :silent grep 
+
 augroup quickfix
 	autocmd!
 	autocmd QuickFixCmdPost [^l]* cwindow
