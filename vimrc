@@ -314,7 +314,7 @@ hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 # Plug 'jreybert/vimagit'
 #
 g:magit_commit_title_limit = 72
-nnoremap vm :Magit<CR>
+nnoremap gm :Magit<CR>
 
 # Plug 'ctrlpvim/ctrlp.vim'
 #
