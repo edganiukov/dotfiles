@@ -324,13 +324,15 @@ g:ctrlp_user_command = 'rg --files --sort=none'
 g:ctrlp_switch_buffer = 'et'
 g:ctrlp_max_height = 20
 
+nnoremap <leader>f :CtrlP<CR>
+
 # ripgrep
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 cnoreabbrev <expr> grep 'silent grep'
 cnoreabbrev <expr> lgrep 'silent lgrep'
 
-nnoremap <leader>g  :silent grep 
+nnoremap <leader>s :silent grep 
 
 augroup quickfix
 	autocmd!
