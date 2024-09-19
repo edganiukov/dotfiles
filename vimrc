@@ -334,8 +334,8 @@ nnoremap <leader>g  :silent grep
 
 augroup quickfix
 	autocmd!
-	autocmd QuickFixCmdPost [^l]* cwindow
-	autocmd QuickFixCmdPost [l]* lwindow
+	autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
+	autocmd QuickFixCmdPost [l]* lwindow | call setqflist([], 'a')
 augroup END
 
 
