@@ -316,7 +316,6 @@ g:ctrlp_types = ['fil', 'buf']
 g:ctrlp_user_command = 'rg --files --sort=none'
 g:ctrlp_switch_buffer = 'e'
 g:ctrlp_max_height = 20
-g:ctrlp_by_filename = 1
 
 # ripgrep
 set grepprg=rg\ --vimgrep
