@@ -42,8 +42,8 @@ set encoding=utf-8
 
 set wildmenu
 set wildoptions-=pum
+set wildignore+=*/.git/*,*/.direnv/*
 set completeopt=menuone,popup,noselect
-set wildignore+=*/.git/*,*/tmp/*
 
 set nospell
 set hidden
@@ -146,7 +146,7 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 g:netrw_keepdir = 0
 g:netrw_winsize = -35
 g:netrw_banner = 0
-g:netrw_list_hide = '^.git/$,^bazel-.*$'
+g:netrw_list_hide = '^.git/$,^.direnv/$'
 g:netrw_liststyle = 3
 
 hi! link netrwMarkFile Search
@@ -170,7 +170,6 @@ autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype
 # Abbreviations.
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
-cnoreabbrev sh ter
 
 # Non-plugin Keybindings:
 # yank to the EOL
@@ -203,8 +202,6 @@ nnoremap <F5> :set list!<CR>
 inoremap <F5> <Esc>:set list!<CR>a
 nnoremap <leader><space> :nohlsearch<CR>
 
-# pop-up close
-nnoremap <silent>qp :call popup_clear()<CR>
 # quickfix close
 nnoremap <silent>qc :cclose<CR>
 nnoremap <silent>qf :copen<CR>
@@ -212,6 +209,8 @@ nnoremap <silent>qf :copen<CR>
 # quickfix switch
 nnoremap <Down> :cn!<CR>
 nnoremap <Up> :cp!<CR>
+nnoremap qn :cn!<CR>
+nnoremap qp :cp!<CR>
 
 # buffers switch
 nnoremap fn :bn!<CR>
@@ -235,10 +234,6 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
-# insert current date
-nnoremap <leader>id "=strftime("<%Y-%m-%d %a>")<CR>P
-inoremap <leader>id <C-R>=strftime("<%Y-%m-%d %a>")<CR>
-
 # expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
@@ -246,7 +241,6 @@ inoremap {<CR> {<CR>}<Esc>O
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>t  :ter<CR>
 # nnoremap <leader>e  :Explore<CR>
-nnoremap <leader>e  :ter 
 
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
@@ -270,13 +264,14 @@ g:NERDTreeShowHidden = 1
 g:NERDTreeMinimalMenu = 1
 
 g:NERDTreeMapActivateNode = '<Space>'
-g:NERDTreeWinSize = 35
+g:NERDTreeWinSize = 40
 
 g:NERDTreeDirArrowExpandable = '+'
 g:NERDTreeDirArrowCollapsible = '-'
 
 g:NERDTreeIgnore = [
 	'^\.git$',
+	'^\.direnv$',
 	'^bazel-.*$',
 	'^zig-.*$',
 	'^target$',
@@ -284,9 +279,7 @@ g:NERDTreeIgnore = [
 
 map <F3> :NERDTreeToggle<CR>
 
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree')
-	| quit
-	| endif
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
 
 
 # Plug 'preservim/tagbar'
