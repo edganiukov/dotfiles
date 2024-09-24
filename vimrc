@@ -437,12 +437,3 @@ augroup filetypedetect
 	# Resize quickfix
 	au FileType qf resize 20
 augroup END
-
-## Custom functions.
-# Print highlight group under the cursor.
-def g:SynStack()
-	if !exists('*synstack')
-		return
-	endif
-	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-enddef
