@@ -178,15 +178,6 @@ vnoremap <leader>d "_d
 # replace selected text without yanking
 vnoremap <leader>p "_dP"
 
-# quotes
-vnoremap <Leader>q" di""<Esc>P
-vnoremap <Leader>q' di''<Esc>P
-vnoremap <Leader>q` di``<Esc>P
-vnoremap <Leader>q( di()<Esc>P
-vnoremap <Leader>q[ di[]<Esc>P
-vnoremap <Leader>q{ di{}<Esc>P
-vnoremap <Leader>q< di<><Esc>P
-
 noremap j gj
 noremap k gk
 
@@ -270,8 +261,6 @@ g:NERDTreeDirArrowCollapsible = '-'
 g:NERDTreeIgnore = [
 	'^\.git$',
 	'^\.direnv$',
-	'^bazel-.*$',
-	'^zig-.*$',
 	'^target$',
 ]
 
