@@ -11,11 +11,9 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'preservim/nerdtree'
-Plug 'preservim/tagbar'
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
-Plug 'jreybert/vimagit'
 
 Plug 'https://git.sr.ht/~gnkv/vim-gol'
 Plug 'sebdah/vim-delve'
@@ -282,11 +280,6 @@ map <F3> :NERDTreeToggle<CR>
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
 
 
-# Plug 'preservim/tagbar'
-#
-nmap <F4> :TagbarToggle<CR>
-
-
 # Plug 'mhinz/vim-signify'
 #
 g:signify_vcs_list = ['git']
@@ -303,11 +296,6 @@ hi SignifySignAdd ctermbg=NONE guibg=NONE ctermfg=green guifg=green
 hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
 hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
-
-# Plug 'jreybert/vimagit'
-#
-g:magit_commit_title_limit = 72
-nnoremap gm :Magit<CR>
 
 # Plug 'ctrlpvim/ctrlp.vim'
 #
