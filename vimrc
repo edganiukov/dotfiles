@@ -140,35 +140,6 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
-# netrw
-g:netrw_keepdir = 0
-g:netrw_winsize = -35
-g:netrw_banner = 0
-g:netrw_list_hide = '^.git/$,^.direnv/$'
-g:netrw_liststyle = 3
-
-hi! link netrwMarkFile Search
-hi! link netrwTreeBar Comment
-
-def NetrwMapping()
-	nmap <buffer> H u
-	nmap <buffer> h -^
-	nmap <buffer> <Space> <CR>
-	nmap <buffer> . gh
-enddef
-autocmd filetype netrw NetrwMapping()
-
-# No statusline in netrw window.
-au FileType netrw setlocal statusline=%F
-
-autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
-	| quit
-	| endif
-
-# Abbreviations.
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-
 # Non-plugin Keybindings:
 # yank to the EOL
 nnoremap Y y$
@@ -229,7 +200,10 @@ inoremap {<CR> {<CR>}<Esc>O
 # reload vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>t  :ter<CR>
-# nnoremap <leader>e  :Explore<CR>
+
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+
 
 hi SignColumn ctermbg=NONE guibg=NONE
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
