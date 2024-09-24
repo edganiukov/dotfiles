@@ -347,51 +347,6 @@ var rls = {
 }
 au User lsp_setup lsp#register_server(rls)
 
-# https://github.com/MaskRay/ccls
-var cls = {
-	name: 'ccls',
-	cmd: (server_info) => ['ccls'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), [
-			'.ccls',
-			'compile_commands.json',
-			'.clang-format'
-		])
-	),
-	initialization_options: {cache: {directory: expand('~/.cache/ccls')}},
-	allowlist: ['c', 'cpp'],
-}
-# au User lsp_setup lsp#register_server(cls)
-
-# https://github.com/python-lsp/python-lsp-server
-var pyls = {
-	name: 'pylsp',
-	cmd: (server_info) => ['pylsp'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
-	),
-	workspace_config: {pyls: {
-		configurationSources: ['flake8'],
-	}},
-	allowlist: ['python'],
-}
-# au User lsp_setup lsp#register_server(pyls)
-
-# https://github.com/zigtools/zls
-var zls = {
-	name: 'zls',
-	cmd: (server_info) => ['zls'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['build.zig'])
-	),
-	workspace_config: {
-		enable_autofix: v:false,
-		warn_style: v:true,
-	},
-	allowlist: ['zig'],
-}
-# au User lsp_setup lsp#register_server(zls)
-
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
 g:lsp_semantic_enabled = 0
