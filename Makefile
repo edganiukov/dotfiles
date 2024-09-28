@@ -11,7 +11,8 @@ nvim:
 
 vim:
 	mkdir -p $(HOME)/.vim
-	ln -sf $(CWD)/vimrc $(HOME)/.vimrc
+	ln -sf $(CWD)/vim/vimrc $(HOME)/.vimrc
+	ln -sf $(CWD)/vim/colors $(HOME)/.vim/colors
 	curl -sfLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 

@@ -4,7 +4,6 @@ plug#begin('~/.vim/plugged')
 
 # Plugins
 # https://github.com/junegunn/vim-plug
-Plug 'https://git.sr.ht/~gnkv/vim-colors-off'
 
 # Basic
 Plug 'jlanzarotta/bufexplorer'
@@ -203,11 +202,6 @@ nnoremap <leader>t  :ter<CR>
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
 
-
-hi SignColumn ctermbg=NONE guibg=NONE
-hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
-hi Todo ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
-hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
@@ -223,8 +217,6 @@ hi! link netrwMarkFile Search
 hi! link netrwTreeBar Comment
 
 def NetrwMapping()
-	nmap <buffer> H u
-	nmap <buffer> h -^
 	nmap <buffer> <Space> <CR>
 	nmap <buffer> . gh
 enddef
@@ -235,6 +227,7 @@ autocmd filetype netrw NetrwMapping()
 autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
 
 nnoremap <F3> :Lexplore<CR>
+nnoremap <leader>e  :Explore<CR>
 
 
 # Plug 'tpope/vim-commentary'
