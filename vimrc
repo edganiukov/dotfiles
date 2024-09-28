@@ -10,7 +10,6 @@ Plug 'https://git.sr.ht/~gnkv/vim-colors-off'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'preservim/nerdtree'
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
@@ -212,35 +211,37 @@ hi Error ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
+## netrw
+g:netrw_keepdir = 0
+g:netrw_winsize = -40
+g:netrw_banner = 0
+g:netrw_list_hide = '^.git/$,^.direnv/$'
+g:netrw_liststyle = 3
+g:netrw_localcopydircmd = 'cp -r'
+
+hi! link netrwMarkFile Search
+hi! link netrwTreeBar Comment
+
+def NetrwMapping()
+	nmap <buffer> H u
+	nmap <buffer> h -^
+	nmap <buffer> <Space> <CR>
+	nmap <buffer> . gh
+enddef
+
+# No statusline in netrw window.
+au FileType netrw setlocal statusline=%F
+autocmd filetype netrw NetrwMapping()
+autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
+
+nnoremap <F3> :Lexplore<CR>
+
 
 # Plug 'tpope/vim-commentary'
 #
 augroup commentstring
 	autocmd FileType c,h setlocal commentstring=//\ %s
 augroup END
-
-# Plug 'preservim/nerdtree'
-#
-g:NERDTreeDirArrows = 1
-g:NERDTreeMinimalUI = 1
-g:NERDTreeShowHidden = 1
-g:NERDTreeMinimalMenu = 1
-
-g:NERDTreeMapActivateNode = '<Space>'
-g:NERDTreeWinSize = 40
-
-g:NERDTreeDirArrowExpandable = '+'
-g:NERDTreeDirArrowCollapsible = '-'
-
-g:NERDTreeIgnore = [
-	'^\.git$',
-	'^\.direnv$',
-	'^target$',
-]
-
-map <F3> :NERDTreeToggle<CR>
-
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
 
 
 # Plug 'mhinz/vim-signify'
@@ -315,7 +316,6 @@ var gols = {
 	),
 	workspace_config: {
 		gopls: {
-			codelenses: {generate: v:false, gc_details: v:true},
 			hoverKind: 'FullDocumentation',
 			linksInHover: v:false,
 			staticcheck: v:true,
@@ -334,14 +334,8 @@ var rls = {
 		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
 	),
 	initialization_options: {
-		cargo: {
-			buildScripts: {
-				enable: v:true,
-			},
-		},
-		procMacro: {
-			enable: v:true,
-		},
+		cargo: {buildScripts: {enable: v:true}},
+		procMacro: {enable: v:true},
 	},
 	allowlist: ['rust'],
 }
@@ -368,21 +362,16 @@ g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
-nnoremap <silent> gdv :vsp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
 nnoremap <silent> gdc :LspDeclaration<cr>
 nnoremap <silent> gi :LspImplementation<cr>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gf :LspDocumentFormat<CR>
 nnoremap <silent> grf :LspDocumentRangeFormat<CR>
-nnoremap <silent> ga :LspCodeAction --ui=float<CR>
-nnoremap <silent> gl :LspCodeLens<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
-nnoremap <silent> gs :LspWorkspaceSymbol<CR>
-nnoremap <silent> gth :LspTypeHierarchy<CR>
 
 augroup autoformat
 	autocmd FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
