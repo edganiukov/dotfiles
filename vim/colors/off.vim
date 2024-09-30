@@ -1,7 +1,3 @@
-" Name:       off.vim
-" License:    The MIT License (MIT)
-"
-"""
 hi clear
 
 if exists('syntax on')
@@ -150,14 +146,12 @@ call s:h("htmlH4",        {"bg": s:bg, "fg": s:fg})
 call s:h("htmlH5",        {"bg": s:bg, "fg": s:fg})
 call s:h("htmlH6",        {"bg": s:bg, "fg": s:fg})
 
-hi link diffRemoved       DiffDelete
-hi link diffAdded         DiffAdd
+hi SignifySignAdd    ctermbg=NONE guibg=NONE ctermfg=green  guifg=green
+hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
+hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red    guifg=red
 
-hi link SignifySignAdd    LineNr
-hi link SignifySignDelete LineNr
-hi link SignifySignChange LineNr
+hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 
 hi SignColumn ctermbg=NONE guibg=NONE
-hi SpellBad   cterm=undercurl ctermbg=NONE guibg=NONE
 hi Todo       ctermbg=NONE guibg=NONE cterm=NONE gui=NONE
 hi Error      ctermbg=NONE guibg=NONE cterm=NONE gui=NONE

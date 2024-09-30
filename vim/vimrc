@@ -38,7 +38,7 @@ set encoding=utf-8
 
 set wildmenu
 set wildoptions-=pum
-set wildignore+=*/.git/*,*/.direnv/*
+set wildignore+=.git,.direnv
 set completeopt=menuone,popup,noselect
 
 set nospell
@@ -175,12 +175,6 @@ nnoremap fn :bn!<CR>
 nnoremap fp :bp!<CR>
 nnoremap fd :bd<cr>
 
-# window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
 # disable arrows
 # noremap <Up> <NOP>
 # noremap <Down> <NOP>
@@ -209,7 +203,7 @@ match ErrorMsg '\s\+$'
 g:netrw_keepdir = 0
 g:netrw_winsize = -40
 g:netrw_banner = 0
-g:netrw_list_hide = '^.git/$,^.direnv/$'
+g:netrw_list_hide = &wildignore
 g:netrw_liststyle = 3
 g:netrw_localcopydircmd = 'cp -r'
 
@@ -222,7 +216,8 @@ def NetrwMapping()
 enddef
 
 # No statusline in netrw window.
-au FileType netrw setlocal statusline=%F
+autocmd FileType netrw setlocal statusline=%F
+autocmd FileType netrw nnoremap q :bd<CR>
 autocmd filetype netrw NetrwMapping()
 autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
 
@@ -248,10 +243,6 @@ g:signify_sign_delete = '_'
 g:signify_sign_delete_first_line = '‾'
 g:signify_sign_change = '~'
 g:signify_sign_changedelete = g:signify_sign_change
-
-hi SignifySignAdd ctermbg=NONE guibg=NONE ctermfg=green guifg=green
-hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
-hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red guifg=red
 
 
 # Plug 'ctrlpvim/ctrlp.vim'
@@ -416,6 +407,7 @@ augroup filetypedetect
 	au FileType rst,markdown,text setlocal tw=80 cc=80 spell
 	au FileType mail setlocal tw=72 cc=72 spell
 	au FileType gitcommit setlocal tw=72 cc=72 spell
+
 	# Resize quickfix
 	au FileType qf resize 20
 augroup END
