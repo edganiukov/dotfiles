@@ -110,13 +110,13 @@ n() {
 
 # tm - creates new tmux session, or switch to existing one.
 tm() {
-	[[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-	name="${1:-$(basename $PWD)}"
-	tmux has-session -t $name 2>/dev/null && tmux $change -t "$name" || (tmux new-session -d -s $name && tmux $change -t "$name")
+	[[ -n "$TMUX" ]] && CHANGE="switch-client" || CHANGE="attach-session"
+	NAME="${1:-$(basename $PWD)}"
+	tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
 }
 
 p() {
-	local pass_store=${PASSWORD_STORE_DIR:-~/.password-store/}
-	fd ".*.gpg" ${pass_store} -c never -x echo {.} | sed -e "s#${pass_store}##g" \
+	local PASS_STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store/}"
+	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" \
 		| fzy --lines=20 --prompt="pass show > " | xargs --no-run-if-empty pass show
 }
