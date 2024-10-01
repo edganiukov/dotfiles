@@ -32,6 +32,17 @@ PROMPT_COMMAND=__prompt_cmd
 PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '
 PS2='\[\033[0;92m\]>\[\033[0m\] '
 
+bind -x '"\C-r": __history_fzy'
+__history_fzy() {
+	READLINE_LINE=$(
+		HISTTIMEFORMAT=
+		history | sort -rn \
+			| awk '{ $1="" ; if (!x[$0]++) print substr($0,2) }' \
+			| fzy -l 20 -q "$READLINE_LINE")
+	READLINE_POINT=0x7FFFFFFF
+}
+
+
 # History config.
 HISTCONTROL="ignoreboth:erasedups"
 HISTSIZE=100000
