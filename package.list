@@ -6,7 +6,6 @@ git
 github-cli
 rustup
 gdb
-ctags
 # clang
 # ccls
 
@@ -15,7 +14,7 @@ bash-completion
 tmux
 jq
 ripgrep
-fd
+fzy
 tree
 direnv
 curl

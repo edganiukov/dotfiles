@@ -107,5 +107,5 @@ tm() {
 p() {
 	local pass_store=${PASSWORD_STORE_DIR:-~/.password-store/}
 	fd ".*.gpg" ${pass_store} -c never -x echo {.} | sed -e "s#${pass_store}##g" \
-		| fzf --header "pass show" --tabstop=4 --ansi --height 40% | xargs --no-run-if-empty pass show
+		| fzy --lines=20 --prompt="pass show > " | xargs --no-run-if-empty pass show
 }

@@ -8,11 +8,12 @@ plug#begin('~/.vim/plugged')
 # Basic
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-Plug 'ctrlpvim/ctrlp.vim'
 
+# Git
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
+# Go
 Plug 'https://git.sr.ht/~gnkv/vim-gol'
 Plug 'sebdah/vim-delve'
 
@@ -224,6 +225,39 @@ autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype
 nnoremap <F3> :Lexplore<CR>
 nnoremap <leader>e  :Explore<CR>
 
+## fuzzyfinder
+def g:Fzy(choice_command: string, vim_command: string)
+	var output = '>'
+	try
+		output = system(choice_command .. " | fzy --lines=20")
+	catch /Vim:Interrupt/
+    # Swallow errors from ^C, allow redraw! below
+	endtry
+	redraw!
+	if v:shell_error == 0 && !empty(output)
+		exec vim_command .. ' ' .. output
+	endif
+enddef
+
+nnoremap <leader>f :call g:Fzy("rg --files", ":e")<CR>
+
+## grep
+set grepprg=rg\ --vimgrep
+set grepformat=%f:%l:%c:%m
+cnoreabbrev <expr> grep 'silent grep'
+cnoreabbrev <expr> lgrep 'silent lgrep'
+
+nnoremap <leader>s :silent grep! <C-R><C-W><CR>
+nnoremap <Leader>g :silent grep<Space>
+
+command! -nargs=+ -complete=file_in_path -bar Rg execute 'silent grep!' <q-args>
+
+augroup quickfix
+	autocmd!
+	autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
+	autocmd QuickFixCmdPost [l]* lwindow | call setqflist([], 'a')
+augroup END
+
 
 # Plug 'tpope/vim-commentary'
 #
@@ -243,29 +277,6 @@ g:signify_sign_delete = '_'
 g:signify_sign_delete_first_line = '‾'
 g:signify_sign_change = '~'
 g:signify_sign_changedelete = g:signify_sign_change
-
-
-# Plug 'ctrlpvim/ctrlp.vim'
-#
-g:ctrlp_working_path_mode = 'ra'
-g:ctrlp_types = ['fil', 'buf']
-g:ctrlp_user_command = 'rg --files --sort=none'
-g:ctrlp_switch_buffer = 'e'
-g:ctrlp_max_height = 20
-
-# ripgrep
-set grepprg=rg\ --vimgrep
-set grepformat=%f:%l:%c:%m,%f:%l:%m
-cnoreabbrev <expr> grep 'silent grep'
-cnoreabbrev <expr> lgrep 'silent lgrep'
-
-nnoremap <leader>g :silent grep! <C-R><C-W><CR>
-
-augroup quickfix
-	autocmd!
-	autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
-	autocmd QuickFixCmdPost [l]* lwindow | call setqflist([], 'a')
-augroup END
 
 
 # Plug 'lifepillar/vim-mucomplete'
