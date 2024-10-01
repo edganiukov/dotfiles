@@ -13,17 +13,12 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
-# Go
-Plug 'https://git.sr.ht/~gnkv/vim-gol'
-Plug 'sebdah/vim-delve'
-
 # LSP
 Plug 'prabirshrestha/vim-lsp'
 Plug 'lifepillar/vim-mucomplete'
 
 plug#end()
 
-# Standard VIM TUI Settings
 set nocompatible
 filetype off
 
@@ -88,7 +83,6 @@ set clipboard=unnamedplus
 set listchars=tab:>\ ,nbsp:.,trail:.
 set list
 
-# Formatting options.
 set wrap
 set formatoptions=qrn1j
 
@@ -139,7 +133,6 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
-# Non-plugin Keybindings:
 # yank to the EOL
 nnoremap Y y$
 # delete without yanking
@@ -217,7 +210,7 @@ def NetrwMapping()
 enddef
 
 augroup netrw
-# No statusline in netrw window.
+	# no statusline in netrw window
 	au FileType netrw setlocal statusline=%F
 	au FileType netrw nnoremap q :bd<CR>
 	au filetype netrw NetrwMapping()
@@ -227,13 +220,14 @@ augroup END
 nnoremap <F3> :Lexplore<CR>
 nnoremap <leader>e  :Explore<CR>
 
-## fuzzyfinder
+# fuzzy finder
+#
 def g:Fzy(choice_cmd: string, vim_cmd: string)
 	var output = '.'
 	try
 		output = system(choice_cmd .. " | fzy --lines=20")
 	catch /Vim:Interrupt/
-    # Swallow errors from ^C, allow redraw! below
+		# do not fail on errors from ^C, allow redraw! below
 	endtry
 	redraw!
 	if v:shell_error == 0 && !empty(output)
@@ -243,7 +237,8 @@ enddef
 
 nnoremap <leader>f :call g:Fzy("rg --files", ":e")<CR>
 
-## grep
+# grep
+#
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 cnoreabbrev <expr> grep 'silent grep'
@@ -257,7 +252,6 @@ augroup quickfix
 	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
 	au FileType qf resize 20
 augroup END
-
 
 
 # Plug 'tpope/vim-commentary'
@@ -348,13 +342,11 @@ g:lsp_diagnostics_signs_error = {'text': 'x'}
 g:lsp_diagnostics_signs_warning = {'text': 'w'}
 g:lsp_diagnostics_signs_information = {'text': '@'}
 g:lsp_diagnostics_signs_hint = {'text': '*'}
-
 g:lsp_document_code_action_signs_hint = {'text': '>'}
 
 g:lsp_format_sync_timeout = 1000
 
 g:lsp_show_message_log_level = 'none'
-g:lsp_log_file = expand('/tmp/lsp.log')
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
@@ -396,21 +388,6 @@ enddef
 
 command! -bang -nargs=* LspStartServer lsp#activate()
 
-# Plug 'sebdah/vim-delve'
-#
-hi DlvPoint term=standout ctermbg=117 ctermfg=0 guibg=#BAD4F5 guifg=Black
-g:delve_breakpoint_sign_highlight = 'DlvPoint'
-g:delve_tracepoint_sign_highlight = 'DlvPoint'
-g:delve_breakpoint_sign = '>>'
-g:delve_tracepoint_sign = '||'
-
-nnoremap <silent> drt :DlvTest<CR>
-nnoremap <silent> drd :DlvDebug<CR>
-nnoremap <silent> dtb :DlvToggleBreakpoint<CR>
-nnoremap <silent> dtt :DlvToggleTracepoint<CR>
-
-
-# Filetype config.
 augroup filetypedetect
 	au FileType python setlocal et sts=4 tw=80 cc=80
 	au FileType yaml setlocal et sw=2 sts=2 ts=2
