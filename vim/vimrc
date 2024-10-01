@@ -216,26 +216,28 @@ def NetrwMapping()
 	nmap <buffer> . gh
 enddef
 
+augroup netrw
 # No statusline in netrw window.
-autocmd FileType netrw setlocal statusline=%F
-autocmd FileType netrw nnoremap q :bd<CR>
-autocmd filetype netrw NetrwMapping()
-autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
+	au FileType netrw setlocal statusline=%F
+	au FileType netrw nnoremap q :bd<CR>
+	au filetype netrw NetrwMapping()
+	au BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
+augroup END
 
 nnoremap <F3> :Lexplore<CR>
 nnoremap <leader>e  :Explore<CR>
 
 ## fuzzyfinder
-def g:Fzy(choice_command: string, vim_command: string)
-	var output = '>'
+def g:Fzy(choice_cmd: string, vim_cmd: string)
+	var output = '.'
 	try
-		output = system(choice_command .. " | fzy --lines=20")
+		output = system(choice_cmd .. " | fzy --lines=20")
 	catch /Vim:Interrupt/
     # Swallow errors from ^C, allow redraw! below
 	endtry
 	redraw!
 	if v:shell_error == 0 && !empty(output)
-		exec vim_command .. ' ' .. output
+		exec vim_cmd .. ' ' .. output
 	endif
 enddef
 
@@ -245,7 +247,6 @@ nnoremap <leader>f :call g:Fzy("rg --files", ":e")<CR>
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 cnoreabbrev <expr> grep 'silent grep'
-cnoreabbrev <expr> lgrep 'silent lgrep'
 
 nnoremap <leader>s :silent grep! <C-R><C-W><CR>
 nnoremap <Leader>g :silent grep<Space>
@@ -253,10 +254,10 @@ nnoremap <Leader>g :silent grep<Space>
 command! -nargs=+ -complete=file_in_path -bar Rg execute 'silent grep!' <q-args>
 
 augroup quickfix
-	autocmd!
-	autocmd QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
-	autocmd QuickFixCmdPost [l]* lwindow | call setqflist([], 'a')
+	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
+	au FileType qf resize 20
 augroup END
+
 
 
 # Plug 'tpope/vim-commentary'
@@ -369,11 +370,11 @@ nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 
 augroup autoformat
-	autocmd FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
-	autocmd FileType go autocmd BufWritePre <buffer>
+	au FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	au FileType go autocmd BufWritePre <buffer>
 		\ execute('LspCodeActionSync source.organizeImports')
 
-	autocmd FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
+	au FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
 	# autocmd FileType c,h autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
 
@@ -418,7 +419,4 @@ augroup filetypedetect
 	au FileType rst,markdown,text setlocal tw=80 cc=80 spell
 	au FileType mail setlocal tw=72 cc=72 spell
 	au FileType gitcommit setlocal tw=72 cc=72 spell
-
-	# Resize quickfix
-	au FileType qf resize 20
 augroup END
