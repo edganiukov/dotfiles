@@ -351,11 +351,8 @@ g:lsp_show_message_log_level = 'none'
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
-nnoremap <silent> gdc :LspDeclaration<cr>
 nnoremap <silent> gi :LspImplementation<cr>
 nnoremap <silent> gr :LspRename<CR>
-nnoremap <silent> gf :LspDocumentFormat<CR>
-nnoremap <silent> grf :LspDocumentRangeFormat<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
