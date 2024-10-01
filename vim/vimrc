@@ -34,7 +34,7 @@ set encoding=utf-8
 
 set wildmenu
 set wildoptions-=pum
-set wildignore+=.git,.direnv
+set wildignore+=.git/,.direnv/
 set completeopt=menuone,popup,noselect
 
 set nospell
