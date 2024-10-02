@@ -11,7 +11,7 @@ Plug 'tpope/vim-commentary'
 
 # Git
 Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 
 # LSP
 Plug 'prabirshrestha/vim-lsp'
@@ -118,10 +118,16 @@ def g:StatusLineMode(): string
 	return get(modes, mode(), '[NONE]')
 enddef
 
+def g:GitStatus(): string
+  var [a,m,r] = g:GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+enddef
+
 set statusline=
 set statusline+=%#Comment#[%n]%*
 set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*	# mode and paste indicator
 set statusline+=\ %.50f\ %m\ %r	# filepath and modified flag
+set statusline+=%{g:GitStatus()}
 
 set statusline+=%=
 set statusline+=%{&ff}	# file format
@@ -260,19 +266,11 @@ augroup commentstring
 	autocmd FileType c,h setlocal commentstring=//\ %s
 augroup END
 
-
-# Plug 'mhinz/vim-signify'
+# Plug 'airblade/vim-gitgutter'
 #
-g:signify_vcs_list = ['git']
-g:signify_realtime = 1
-g:signify_sign_show_count = 0
+g:gitgutter_grep = 'rg'
 
-g:signify_sign_add = '+'
-g:signify_sign_delete = '_'
-g:signify_sign_delete_first_line = '‾'
-g:signify_sign_change = '~'
-g:signify_sign_changedelete = g:signify_sign_change
-
+autocmd BufWritePost * GitGutter
 
 # Plug 'lifepillar/vim-mucomplete'
 #

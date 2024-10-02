@@ -146,10 +146,6 @@ call s:h("htmlH4",        {"bg": s:bg, "fg": s:fg})
 call s:h("htmlH5",        {"bg": s:bg, "fg": s:fg})
 call s:h("htmlH6",        {"bg": s:bg, "fg": s:fg})
 
-hi SignifySignAdd    ctermbg=NONE guibg=NONE ctermfg=green  guifg=green
-hi SignifySignChange ctermbg=NONE guibg=NONE ctermfg=yellow guifg=yellow
-hi SignifySignDelete ctermbg=NONE guibg=NONE ctermfg=red    guifg=red
-
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 
 hi SignColumn ctermbg=NONE guibg=NONE
