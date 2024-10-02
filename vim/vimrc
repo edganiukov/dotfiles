@@ -223,7 +223,7 @@ nnoremap <leader>e  :Explore<CR>
 # fuzzy finder
 #
 def g:Fzy(choice_cmd: string, vim_cmd: string)
-	var output = '.'
+	var output = ''
 	try
 		output = system(choice_cmd .. " | fzy --lines=20")
 	catch /Vim:Interrupt/
@@ -359,7 +359,7 @@ nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 
 augroup autoformat
-	au FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	au FileType go,rust autocmd BufWritePre <buffer> :LspDocumentFormatSync
 	au FileType go autocmd BufWritePre <buffer>
 		\ execute('LspCodeActionSync source.organizeImports')
 

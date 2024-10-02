@@ -38,7 +38,8 @@ __history_fzy() {
 		HISTTIMEFORMAT=
 		history | sort -rn \
 			| awk '{ $1="" ; if (!x[$0]++) print substr($0,2) }' \
-			| fzy -l 20 -q "$READLINE_LINE")
+			| fzy -l 20 -q "$READLINE_LINE"
+	)
 	READLINE_POINT=0x7FFFFFFF
 }
 
@@ -118,5 +119,6 @@ tm() {
 p() {
 	local PASS_STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store/}"
 	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" \
-		| fzy --lines=20 --prompt="pass show > " | xargs --no-run-if-empty pass show
+		| fzy --lines=20 --prompt="pass show > " \
+		| xargs --no-run-if-empty pass show
 }

@@ -1,13 +1,10 @@
 # dev
 go
-delve
 gopls
 git
-github-cli
 rustup
 gdb
 # clang
-# ccls
 
 # tools
 bash-completion
