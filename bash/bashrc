@@ -2,7 +2,7 @@
 # ~/.bashrc
 #
 
-# If not running interactively, don't do anything.
+# if not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 # History completion.
@@ -13,12 +13,12 @@ complete -c man which
 complete -cf sudo
 
 __prompt_cmd() {
-	# Append history.
+	# append history
 	history -a
-	# Resolve git branch.
+	# resolve git branch
 	GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
-	# Always start prompt on new line.
+	# always start prompt on new line
 	local CURPOS
 	stty -echo
 	echo -en '\033[6n'
@@ -43,8 +43,7 @@ __history_fzy() {
 	READLINE_POINT=0x7FFFFFFF
 }
 
-
-# History config.
+# history config
 HISTCONTROL="ignoreboth:erasedups"
 HISTSIZE=100000
 HISTFILESIZE=2000000
@@ -52,7 +51,7 @@ HISTIGNORE="&:clear:ls:cd:[bf]g:exit:[ t\]*"
 shopt -s histappend
 shopt -s checkwinsize
 
-# ENV
+# env
 export LANG=en_US.UTF-8
 export LC_ALL=C.UTF-8
 export EDITOR=vim
@@ -65,7 +64,7 @@ export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 export RUSTUP_TOOLCHAIN=stable
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-# Alias
+# alias
 alias ..="cd .."
 alias ls='ls --color'
 alias ll='ls --color -hl'
@@ -74,26 +73,25 @@ alias curl="curl -s"
 alias diff="diff -u --color"
 alias sxivd="nsxiv -r -t -s d"
 alias sxiv="nsxiv"
-alias magit="vim -c :MagitOnly"
 alias notes="vim -c ':lcd ~/misc/notes'"
 
-# Plugins
+# plugins
 # https://github.com/scop/bash-completion
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
 # dircolors
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
-# Functions
-# n - start nnn file manager.
+# functions
+# n - start nnn file manager
 n() {
-	# Block nesting of nnn in subshells
+	# block nesting of nnn in subshells
 	if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
 		echo "nnn is already running"
 		return
 	fi
 
-	# Unmask ^Q (if required, see `stty -a`) to Quit nnn
+	# unmask ^Q (if required, see `stty -a`) to quit nnn
 	stty start undef
 	stty stop undef
 	stty lnext undef
@@ -109,11 +107,15 @@ n() {
 	nnn -e -x -o -C "$@"
 }
 
-# tm - creates new tmux session, or switch to existing one.
-tm() {
+# t - creates new tmux session, or switch to existing one
+t() {
 	[[ -n "$TMUX" ]] && CHANGE="switch-client" || CHANGE="attach-session"
-	NAME="${1:-$(basename $PWD)}"
-	tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
+	if [ $1 ]; then
+		NAME="${1:-$(basename $PWD)}"
+		tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
+		return
+	fi
+	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzy) &&  tmux $CHANGE -t "$SESSION" || echo "No sessions found."
 }
 
 p() {
@@ -121,4 +123,8 @@ p() {
 	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" \
 		| fzy --lines=20 --prompt="pass show > " \
 		| xargs --no-run-if-empty pass show
+}
+
+f() {
+	vim $(rg --files | fzy)
 }

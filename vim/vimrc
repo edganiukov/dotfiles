@@ -8,11 +8,9 @@ plug#begin('~/.vim/plugged')
 # Basic
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
-
 # Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-
 # LSP
 Plug 'prabirshrestha/vim-lsp'
 Plug 'lifepillar/vim-mucomplete'
@@ -356,6 +354,8 @@ nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gx :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
 
+command! -bang -nargs=* LspStartServer lsp#activate()
+
 augroup autoformat
 	au FileType go,rust autocmd BufWritePre <buffer> :LspDocumentFormatSync
 	au FileType go autocmd BufWritePre <buffer>
@@ -380,8 +380,6 @@ def g:Format(formatter: string)
 
 	winrestview(winview)
 enddef
-
-command! -bang -nargs=* LspStartServer lsp#activate()
 
 augroup filetypedetect
 	au FileType python setlocal et sts=4 tw=80 cc=80
