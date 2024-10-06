@@ -126,5 +126,5 @@ p() {
 }
 
 f() {
-	vim $(rg --files | fzy)
+	vim $(rg --files | fzy --lines=20)
 }

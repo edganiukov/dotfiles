@@ -56,7 +56,6 @@ set noshowmode
 set showmatch
 set matchtime=2
 set showcmd
-set lazyredraw
 set autoread
 
 set scrolljump=1
@@ -123,7 +122,7 @@ enddef
 
 set statusline=
 set statusline+=%#Comment#[%n]%*
-set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?":PASTE":""}\ %*	# mode and paste indicator
+set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?':PASTE':''}\ %*	# mode and paste indicator
 set statusline+=\ %.50f\ %m\ %r	# filepath and modified flag
 set statusline+=%{g:GitStatus()}
 
@@ -188,7 +187,7 @@ inoremap <Right> <NOP>
 inoremap {<CR> {<CR>}<Esc>O
 
 # reload vimrc
-nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>t  :ter<CR>
 
 cnoreabbrev Wq wq
@@ -218,7 +217,7 @@ augroup netrw
 	au FileType netrw setlocal statusline=%F
 	au FileType netrw nnoremap q :bd<CR>
 	au filetype netrw NetrwMapping()
-	au BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" | quit | endif
+	au BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') == 'netrw' | quit | endif
 augroup END
 
 nnoremap <F3> :Lexplore<CR>
@@ -229,7 +228,7 @@ nnoremap <leader>e  :Explore<CR>
 def g:Fzy(choice_cmd: string, vim_cmd: string)
 	var output = ''
 	try
-		output = system(choice_cmd .. " | fzy --lines=20")
+		output = system(choice_cmd .. ' | fzy --lines=20')
 	catch /Vim:Interrupt/
 		# do not fail on errors from ^C, allow redraw! below
 	endtry
@@ -240,6 +239,10 @@ def g:Fzy(choice_cmd: string, vim_cmd: string)
 enddef
 
 nnoremap <leader>f :call g:Fzy("rg --files", ":e")<CR>
+
+# buffers
+#
+nnoremap <leader>bb :ls<CR>:b<Space>
 
 # grep
 #
