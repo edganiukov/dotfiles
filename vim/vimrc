@@ -201,7 +201,6 @@ g:netrw_keepdir = 0
 g:netrw_winsize = -40
 g:netrw_banner = 0
 g:netrw_list_hide = &wildignore
-g:netrw_liststyle = 3
 g:netrw_localcopydircmd = 'cp -r'
 
 hi! link netrwMarkFile Search
@@ -220,8 +219,8 @@ augroup netrw
 	au BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') == 'netrw' | quit | endif
 augroup END
 
-nnoremap <F3> :Lexplore<CR>
-nnoremap <leader>e  :Explore<CR>
+nnoremap <F3> :let g:netrw_liststyle=3 <Bar> :Lexplore <CR>
+nnoremap <leader>e :let g:netrw_liststyle=0 <Bar> :Explore <CR>
 
 # fuzzy finder
 #
@@ -251,7 +250,7 @@ set grepformat=%f:%l:%c:%m
 cnoreabbrev <expr> grep 'silent grep'
 
 nnoremap <leader>s :silent grep! <C-R><C-W><CR>
-nnoremap <Leader>g :silent grep<Space>
+nnoremap <leader>g :silent grep<Space>
 
 command! -nargs=+ -complete=file_in_path -bar Rg execute 'silent grep!' <q-args>
 
