@@ -237,7 +237,7 @@ def g:Fzy(choice_cmd: string, vim_cmd: string)
 	endif
 enddef
 
-nnoremap <leader>f :call g:Fzy("rg --files", ":e")<CR>
+nnoremap <leader>f :call g:Fzy('rg --files', ':e')<CR>
 
 # buffers
 #
@@ -250,15 +250,27 @@ set grepformat=%f:%l:%c:%m
 cnoreabbrev <expr> grep 'silent grep'
 
 nnoremap <leader>s :silent grep! <C-R><C-W><CR>
-nnoremap <leader>g :silent grep<Space>
-
-command! -nargs=+ -complete=file_in_path -bar Rg execute 'silent grep!' <q-args>
 
 augroup quickfix
 	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a')
 	au FileType qf resize 20
 augroup END
 
+def g:FzyGrep(grep_cmd: string, vim_cmd: string)
+	var output = ''
+	try
+		output = system(grep_cmd .. ' | fzy --lines=20')
+	catch /Vim:Interrupt/
+		# do not fail on errors from ^C, allow redraw! below
+	endtry
+	redraw!
+	if v:shell_error == 0 && !empty(output)
+		var args = split(output, ":")
+		exec vim_cmd .. ' +' .. args[1] .. '|normal!' .. args[2] .. '| ' .. args[0]
+	endif
+enddef
+
+nnoremap <leader>g :call g:FzyGrep('rg --column --line-number --smart-case ""', ':e')<CR>
 
 # Plug 'tpope/vim-commentary'
 #
