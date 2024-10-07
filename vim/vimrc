@@ -187,10 +187,6 @@ inoremap <Right> <NOP>
 # expand opening-brace
 inoremap {<CR> {<CR>}<Esc>O
 
-# reload vimrc
-nnoremap <leader>v :source $MYVIMRC<CR>
-nnoremap <leader>t  :ter<CR>
-
 # move lines up and down with <Alt-down> & <Alt-up> keys
 nnoremap <A-down> :m+<CR>=gv
 nnoremap <A-up> :m-2<CR>=gv
@@ -202,6 +198,8 @@ cnoreabbrev Wa wa
 
 # trailing whitespaces
 match ErrorMsg '\s\+$'
+
+nnoremap <leader>t  :ter<CR>
 
 ## netrw
 g:netrw_keepdir = 0
