@@ -1,10 +1,10 @@
 # dev
 go
 gopls
-git
 rustup
+clang
 gdb
-# clang
+git
 
 # tools
 bash-completion

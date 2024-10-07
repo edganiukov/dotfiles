@@ -248,7 +248,13 @@ nnoremap <leader>f :call g:Fzy('rg --files', ':e')<CR>
 
 # buffers
 #
-nnoremap <leader>bb :ls<CR>:b<Space>
+def g:FzyBuffer()
+  var bufnrs: list<number> = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  var buffers = mapnew(bufnrs, 'bufname(v:val)')
+  call g:Fzy('echo "' .. join(buffers, "\n") .. '"', ':b')
+enddef
+
+nnoremap <leader>bb :call g:FzyBuffer()<CR>
 
 # grep
 #
