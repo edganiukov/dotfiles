@@ -157,11 +157,12 @@ nnoremap <F5> :set list!<CR>
 inoremap <F5> <Esc>:set list!<CR>a
 nnoremap <leader><space> :nohlsearch<CR>
 
-# quickfix close
+# quickfix
+# close
 nnoremap <silent>qc :cclose<CR>
 nnoremap <silent>qf :copen<CR>
 
-# quickfix switch
+# switch
 nnoremap <Down> :cn!<CR>
 nnoremap <Up> :cp!<CR>
 nnoremap qn :cn!<CR>
@@ -170,7 +171,7 @@ nnoremap qp :cp!<CR>
 # buffers switch
 nnoremap fn :bn!<CR>
 nnoremap fp :bp!<CR>
-nnoremap fd :bd<cr>
+nnoremap fd :bd<CR>
 
 # disable arrows
 # noremap <Up> <NOP>
@@ -351,9 +352,9 @@ g:lsp_format_sync_timeout = 1000
 g:lsp_show_message_log_level = 'none'
 
 nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gds :sp<cr>:LspDefinition<cr>
+nnoremap <silent> gds :sp<cr>:LspDefinition<CR>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
-nnoremap <silent> gi :LspImplementation<cr>
+nnoremap <silent> gi :LspImplementation<CR>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
