@@ -190,6 +190,12 @@ inoremap {<CR> {<CR>}<Esc>O
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>t  :ter<CR>
 
+# move lines up and down with <Alt-down> & <Alt-up> keys
+nnoremap <A-down> :m+<CR>=gv
+nnoremap <A-up> :m-2<CR>=gv
+vnoremap <A-down> :m'>+<CR>gv=gv
+vnoremap <A-up> :m-2<CR>gv=gv
+
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
 
