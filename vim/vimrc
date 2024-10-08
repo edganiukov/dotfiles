@@ -132,7 +132,7 @@ set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}	# file enconding
 set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}	# file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
-# Fix cursor in INSERT mode.
+# fix cursor in INSERT mode
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
@@ -259,10 +259,10 @@ nnoremap <leader>bb :call g:FzyBuffer()<CR>
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
-command! -nargs=+ F execute 'silent grep!' <q-args>
+command! -nargs=+ G execute 'silent grep!' <q-args>
 
 cnoreabbrev <expr> grep 'silent grep'
-nnoremap <leader>s :silent grep! <C-R><C-W><CR>
+nnoremap <leader>g :silent grep! <C-R><C-W><CR>
 
 augroup quickfix
 	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a') | redraw!
