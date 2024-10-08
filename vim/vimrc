@@ -214,6 +214,18 @@ hi! link netrwTreeBar Comment
 def NetrwMapping()
 	nmap <buffer> <Space> <CR>
 	nmap <buffer> . gh
+
+	nmap <buffer> fm mf
+	nmap <buffer> fu mF
+	nmap <buffer> fU mu
+
+	nmap <buffer> ff %:w<CR>:buffer #<CR>
+	nmap <buffer> fr R
+	nmap <buffer> fc mc
+	nmap <buffer> fc mtmc
+	nmap <buffer> fv mtmm
+	nmap <buffer> fV mm
+	nmap <buffer> f; mx
 enddef
 
 augroup netrw
