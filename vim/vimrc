@@ -6,6 +6,7 @@ plug#begin('~/.vim/plugged')
 # https://github.com/junegunn/vim-plug
 
 # Basic
+Plug 'preservim/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-commentary'
 # Git
@@ -201,44 +202,6 @@ match ErrorMsg '\s\+$'
 
 nnoremap <leader>t  :ter<CR>
 
-## netrw
-g:netrw_keepdir = 0
-g:netrw_winsize = -40
-g:netrw_banner = 0
-g:netrw_list_hide = &wildignore
-g:netrw_localcopydircmd = 'cp -r'
-
-hi! link netrwMarkFile Search
-hi! link netrwTreeBar Comment
-
-def NetrwMapping()
-	nmap <buffer> <Space> <CR>
-	nmap <buffer> . gh
-
-	nmap <buffer> fm mf
-	nmap <buffer> fu mF
-	nmap <buffer> fU mu
-
-	nmap <buffer> ff %:w<CR>:buffer #<CR>
-	nmap <buffer> fr R
-	nmap <buffer> fc mc
-	nmap <buffer> fc mtmc
-	nmap <buffer> fv mtmm
-	nmap <buffer> fV mm
-	nmap <buffer> f; mx
-enddef
-
-augroup netrw
-	# no statusline in netrw window
-	au FileType netrw setlocal statusline=%F
-	au FileType netrw nnoremap q :bd<CR>
-	au filetype netrw NetrwMapping()
-	au BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') == 'netrw' | quit | endif
-augroup END
-
-nnoremap <F3> :let g:netrw_liststyle=3 <Bar> :Lexplore <CR>
-nnoremap <leader>e :let g:netrw_liststyle=0 <Bar> :Explore <CR>
-
 # fuzzy finder
 #
 def g:Fzy(choice_cmd: string, vim_cmd: string)
@@ -280,6 +243,26 @@ augroup quickfix
 	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a') | redraw!
 	au FileType qf resize 20
 augroup END
+
+
+# Plug 'preservim/nerdtree'
+#
+g:NERDTreeDirArrows = 1
+g:NERDTreeMinimalUI = 1
+g:NERDTreeShowHidden = 1
+g:NERDTreeMinimalMenu = 1
+g:NERDTreeMapActivateNode = '<Space>'
+g:NERDTreeWinSize = 40
+g:NERDTreeDirArrowExpandable = '+'
+g:NERDTreeDirArrowCollapsible = '-'
+g:NERDTreeIgnore = [
+	'^\.git$',
+	'^\.direnv$',
+]
+
+map <F3> :NERDTreeToggle<CR>
+map <leader>e :NERDTreeExplore<CR>
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
 
 # Plug 'tpope/vim-commentary'
 #
