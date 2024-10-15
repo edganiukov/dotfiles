@@ -120,7 +120,7 @@ t() {
 
 p() {
 	local PASS_STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store/}"
-	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" \
+	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" -e "s#.gpg##g" \
 		| fzy --lines=20 --prompt="pass show > " \
 		| xargs --no-run-if-empty pass show
 }
