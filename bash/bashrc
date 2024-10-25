@@ -38,7 +38,7 @@ __history_fzy() {
 		HISTTIMEFORMAT=
 		history | sort -rn \
 			| awk '{ $1="" ; if (!x[$0]++) print substr($0,2) }' \
-			| fzy -l 20 -q "$READLINE_LINE"
+			| fzy -l 20 -m reverse -q "$READLINE_LINE"
 	)
 	READLINE_POINT=0x7FFFFFFF
 }
