@@ -32,8 +32,8 @@ PROMPT_COMMAND=__prompt_cmd
 PS1='\[\033[0;92m\]# \u@\h: \[\033[0;93m\]\W \[\033[0;95m\][${GIT_BRANCH}] \[\033[0m\]\$ '
 PS2='\[\033[0;92m\]>\[\033[0m\] '
 
-bind -x '"\C-r": __history_fzy'
-__history_fzy() {
+bind -x '"\C-r": __history_fzf'
+__history_fzf() {
 	READLINE_LINE=$(
 		HISTTIMEFORMAT=
 		history | sort -rn \
@@ -116,16 +116,16 @@ t() {
 		tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
 		return
 	fi
-	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzy) &&  tmux $CHANGE -t "$SESSION" || echo "No sessions found."
+	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf) &&  tmux $CHANGE -t "$SESSION" || echo "No sessions found."
 }
 
 p() {
 	local PASS_STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store/}"
 	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" -e "s#.gpg##g" \
-		| fzy --lines=20 --prompt="pass show > " \
+		| fzf --height=~40% --prompt="pass show > " \
 		| xargs --no-run-if-empty pass show
 }
 
 f() {
-	vim $(rg --files | fzy --lines=20)
+	rg --files | fzf --prompt="vim > " --height=~40% | xargs --no-run-if-empty -o vim
 }
