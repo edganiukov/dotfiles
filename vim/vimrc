@@ -204,10 +204,11 @@ nnoremap <leader>t  :ter<CR>
 
 # fuzzy finder
 #
-def g:Fzy(choice_cmd: string, vim_cmd: string)
+def g:Fzf(choice_cmd: string, vim_cmd: string)
 	var output = ''
 	try
-		output = system(choice_cmd .. ' | fzy --lines=20')
+		# output = system(choice_cmd .. ' | fzy --lines=20')
+		output = system(choice_cmd .. ' | fzf --height=40%')
 	catch /Vim:Interrupt/
 		# do not fail on errors from ^C, allow redraw! below
 	endtry
@@ -217,17 +218,17 @@ def g:Fzy(choice_cmd: string, vim_cmd: string)
 	endif
 enddef
 
-nnoremap <leader>f :call g:Fzy('rg --files', ':e')<CR>
+nnoremap <leader>f :call g:Fzf('rg --files', ':e')<CR>
 
 # buffers
 #
-def g:FzyBuffer()
+def g:FzfBuffer()
   var bufnrs: list<number> = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   var buffers = mapnew(bufnrs, 'bufname(v:val)')
-  call g:Fzy('echo "' .. join(buffers, "\n") .. '"', ':b')
+  call g:Fzf('echo "' .. join(buffers, "\n") .. '"', ':b')
 enddef
 
-nnoremap <leader>bb :call g:FzyBuffer()<CR>
+nnoremap <leader>bb :call g:FzfBuffer()<CR>
 
 # grep
 #
