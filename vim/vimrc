@@ -207,7 +207,6 @@ nnoremap <leader>t  :ter<CR>
 def g:Fzf(choice_cmd: string, vim_cmd: string)
 	var output = ''
 	try
-		# output = system(choice_cmd .. ' | fzy --lines=20')
 		output = system(choice_cmd .. ' | fzf --height=40%')
 	catch /Vim:Interrupt/
 		# do not fail on errors from ^C, allow redraw! below
@@ -236,8 +235,6 @@ set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
 command! -nargs=+ G execute 'silent grep!' <q-args>
-
-cnoreabbrev <expr> grep 'silent grep'
 nnoremap <leader>g :silent grep! <C-R><C-W><CR>
 
 augroup quickfix
