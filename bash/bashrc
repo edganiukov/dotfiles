@@ -39,7 +39,6 @@ __history_fzf() {
 		history | sort -rn \
 			| awk '{ $1="" ; if (!x[$0]++) print substr($0,2) }' \
 			| fzf --height=~40% -q "$READLINE_LINE"
-			# | tac | fzy -l 20 -m order -q "$READLINE_LINE"
 	)
 	READLINE_POINT=0x7FFFFFFF
 }
@@ -48,7 +47,7 @@ __history_fzf() {
 HISTCONTROL="ignoreboth:erasedups"
 HISTSIZE=100000
 HISTFILESIZE=2000000
-HISTIGNORE="&:clear:ls:cd:[bf]g:exit:[ t\]*"
+HISTIGNORE="&:clear:reset:ls:ll:cd:..:[bf]g:exit:[ t\]*"
 shopt -s histappend
 shopt -s checkwinsize
 
@@ -116,7 +115,8 @@ t() {
 		tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
 		return
 	fi
-	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf) &&  tmux $CHANGE -t "$SESSION" || echo "No sessions found."
+	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --height=~40% --prompt="tmux > ") && \
+		tmux $CHANGE -t "$SESSION" || echo "No sessions found."
 }
 
 p() {
