@@ -1,7 +1,10 @@
 /* Colors */
-#titlebar {
+#TabsToolbar {
     background-color: #282828 !important;
-    background-image: none !important;
+}
+
+#toolbar-menubar {
+    background-color: #282828 !important;
 }
 
 tab:not([selected="true"]) {
@@ -9,7 +12,7 @@ tab:not([selected="true"]) {
 }
 
 /* Menu items color */
-menubar>menu:not([open]) {
+menubar>menu {
     color: #EDEDED !important;
 }
 

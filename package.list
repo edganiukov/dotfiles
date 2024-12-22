@@ -11,7 +11,7 @@ bash-completion
 tmux
 jq
 ripgrep
-fzy
+fzf
 tree
 direnv
 curl
@@ -24,6 +24,9 @@ redshift
 feh
 isync
 xdg-utils
+entr
+bat
+nb
 
 # tui
 vim

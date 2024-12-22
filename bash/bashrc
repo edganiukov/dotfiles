@@ -73,7 +73,7 @@ alias curl="curl -s"
 alias diff="diff -u --color"
 alias sxivd="nsxiv -r -t -s d"
 alias sxiv="nsxiv"
-alias notes="vim -c ':lcd ~/misc/notes'"
+alias ussh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # plugins
 # https://github.com/scop/bash-completion
