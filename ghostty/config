@@ -12,6 +12,8 @@ gtk-titlebar = false
 window-padding-x = 0
 window-padding-y = 0
 window-decoration = false
+window-vsync = true
+resize-overlay = never
 
 confirm-close-surface = false
 shell-integration = none

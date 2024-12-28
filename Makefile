@@ -1,4 +1,4 @@
-.PHONY: bash vim tmux git x fonts gtk redshift dunst grobi ripgrep
+.PHONY: bash vim tmux screen git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
 .PHONY: system76
 
@@ -19,6 +19,9 @@ vim:
 tmux:
 	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	ln -sf $(CWD)/tmux $(HOME)/.tmux
+
+screen:
+	ln -sf $(CWD)/screenrc $(HOME)/.screenrc
 
 ghostty:
 	mkdir -p $(HOME)/.config

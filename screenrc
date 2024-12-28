@@ -1,0 +1,13 @@
+term screen-256color
+
+bind c screen 1
+bind ^c screen 1
+bind 0 select 10
+screen 1
+
+vbell off
+startup_message off
+
+truecolor on
+hardstatus off
+hardstatus alwayslastline '%{#00ff00}[%H] %{#ffffff}%{7}%?%-Lw%?%{1;0}%{1}(%{15}%n%f%t%?(%u)%?%{1;0}%{1})%{7}%?%+Lw%?%= < %{#00a5ff}%{6}%Y-%m-%d : %{#ffffff}%{7}%0c <'
