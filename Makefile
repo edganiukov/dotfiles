@@ -66,6 +66,8 @@ mutt:
 
 email:
 	ln -sf $(CWD)/email/mbsyncrc $(HOME)/.mbsyncrc
+	cp $(CWD)/email/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
+	cp $(CWD)/email/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
 	mkdir -p ~/.config/mirador
 	ln -sf $(CWD)/email/mirador.toml ~/.config/mirador/config.toml
 	cp $(CWD)/email/mirador.service $(HOME)/.config/systemd/user/mirador.service

@@ -12,5 +12,5 @@ backend.auth.type = "password"
 backend.auth.cmd = "pass show core/imap.fastmail.com"
 
 on-message-added.cmd = "mbsync -Va"
-on-message-added.notify.summary = "ed@gnkv.io: new message from {sender}"
+on-message-added.notify.summary = "{recipient}: new message from {sender}"
 on-message-added.notify.body = "{subject}"
