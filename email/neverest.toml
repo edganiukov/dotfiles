@@ -1,0 +1,17 @@
+[accounts.fastmail]
+folder.filters.exclude = []
+
+left.backend.type = "maildir"
+left.backend.root-dir = "~/.mail/default"
+
+right.backend.type = "imap"
+right.backend.host = "imap.gmail.com"
+right.backend.port = 993
+right.backend.login = "ed@gnkv.io"
+right.backend.auth.type = "password"
+right.backend.auth.cmd = "pass show core/imap.fastmail.com"
+
+right.folder.aliases.inbox = "Inbox"
+right.folder.aliases.sent = "Sent"
+right.folder.aliases.drafts = "Drafts"
+right.folder.aliases.trash = "Trash"

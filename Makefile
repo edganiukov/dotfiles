@@ -1,5 +1,5 @@
 .PHONY: bash vim tmux screen git x fonts gtk redshift dunst grobi ripgrep
-.PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt himalaya ghostty
+.PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
 .PHONY: system76
 
 CWD=$(shell pwd)
@@ -64,11 +64,13 @@ mutt:
 	ln -sf $(CWD)/mutt/conf.d $(HOME)/.mutt/conf.d
 	ln -sf $(CWD)/mutt/accounts $(HOME)/.mutt/accounts
 
-himalaya:
-	mkdir -p ~/.config/himalaya
-	ln -sf $(CWD)/himalaya/config.toml ~/.config/himalaya/config.toml
-	ln -sf $(CWD)/himalaya/mbsyncrc $(HOME)/.mbsyncrc
-	cp $(CWD)/himalaya/himalaya.service $(HOME)/.config/systemd/user/himalaya.service
+email:
+	ln -sf $(CWD)/email/mbsyncrc $(HOME)/.mbsyncrc
+	mkdir -p ~/.config/mirador
+	ln -sf $(CWD)/email/mirador.toml ~/.config/mirador/config.toml
+	cp $(CWD)/email/mirador.service $(HOME)/.config/systemd/user/mirador.service
+	# mkdir -p ~/.config/neverest
+	# ln -sf $(CWD)/email/neverest.toml ~/.config/neverest/config.toml
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv

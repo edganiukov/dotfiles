@@ -1,9 +1,9 @@
 [Unit]
-Description=Himalaya email service
+Description=Mirador email service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/himalaya watch
+ExecStart=/usr/bin/mirador watch
 Restart=always
 RestartSec=2s
 

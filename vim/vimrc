@@ -70,6 +70,7 @@ set number
 set signcolumn=yes
 set pumheight=20
 set textwidth=120
+set linebreak
 set colorcolumn=120
 set cursorline
 set cursorcolumn
@@ -349,7 +350,7 @@ g:lsp_format_sync_timeout = 1000
 g:lsp_show_message_log_level = 'none'
 
 nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gds :sp<cr>:LspDefinition<CR>
+nnoremap <silent> gds :sp<CR>:LspDefinition<CR>
 nnoremap <silent> gtd :LspTypeDefinition<CR>
 nnoremap <silent> gi :LspImplementation<CR>
 nnoremap <silent> gr :LspRename<CR>
@@ -366,7 +367,7 @@ augroup autoformat
 		\ execute('LspCodeActionSync source.organizeImports')
 
 	au FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
-	# autocmd FileType c,h autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
+	au FileType c,cpp,hpp autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
 
 def g:Format(formatter: string)
