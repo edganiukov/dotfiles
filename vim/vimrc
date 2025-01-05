@@ -83,7 +83,7 @@ set listchars=tab:>\ ,nbsp:.,trail:.
 set list
 
 set wrap
-set formatoptions=qrn1j
+set formatoptions=rq1
 
 set autoread
 
