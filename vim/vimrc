@@ -292,7 +292,7 @@ g:mucomplete#can_complete = {
 }
 
 # mucomplete + vim-lsp
-autocmd FileType go,rust setlocal omnifunc=lsp#complete
+autocmd FileType go,rust,zig setlocal omnifunc=lsp#complete
 inoremap <leader>c <C-x><C-o>
 
 
@@ -332,6 +332,17 @@ var rls = {
 }
 au User lsp_setup lsp#register_server(rls)
 
+# https://github.com/zigtools/zls
+var zls = {
+	name: 'zls',
+	cmd: (server_info) => ['zls'],
+	root_uri: (server_info) => lsp#utils#path_to_uri(
+		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
+	),
+	allowlist: ['zig'],
+}
+au User lsp_setup lsp#register_server(zls)
+
 g:lsp_fold_enabled = 0
 g:lsp_text_edit_enabled = 0
 g:lsp_semantic_enabled = 0
@@ -362,7 +373,7 @@ nnoremap <silent> gh :LspHover<CR>
 command! -bang -nargs=* LspStartServer lsp#activate()
 
 augroup autoformat
-	au FileType go,rust autocmd BufWritePre <buffer> :LspDocumentFormatSync
+	au FileType go,rust,zig autocmd BufWritePre <buffer> :LspDocumentFormatSync
 	au FileType go autocmd BufWritePre <buffer>
 		\ execute('LspCodeActionSync source.organizeImports')
 

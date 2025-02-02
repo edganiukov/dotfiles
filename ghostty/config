@@ -1,19 +1,19 @@
 # vim: ft=conf
 #
-font-family = monospace
-font-size = 12
+font-family=monospace
+font-size=12
 
-# theme = flexoki-dark
-background = #181818
+# theme=flexoki-dark
+background=#181818
 
-cursor-style-blink = false
+cursor-style-blink=false
 
-gtk-titlebar = false
-window-padding-x = 0
-window-padding-y = 0
-window-decoration = false
-window-vsync = true
-resize-overlay = never
+gtk-titlebar=false
+gtk-adwaita=false
+window-padding-x=0
+window-padding-y=0
+window-vsync=true
+resize-overlay=never
 
-confirm-close-surface = false
-shell-integration = none
+confirm-close-surface=false
+shell-integration=none
