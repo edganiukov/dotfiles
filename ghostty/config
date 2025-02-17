@@ -7,12 +7,7 @@ font-size=12
 background=#181818
 
 cursor-style-blink=false
-
-gtk-titlebar=false
-gtk-adwaita=false
-window-padding-x=0
-window-padding-y=0
-window-vsync=true
+window-decoration=none
 resize-overlay=never
 
 confirm-close-surface=false

@@ -3,3 +3,4 @@
 
 --glob=!.git/
 --glob=!.direnv/
+--glob=!.zig-*/
