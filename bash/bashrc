@@ -38,7 +38,7 @@ __history_fzf() {
 		HISTTIMEFORMAT=
 		history | sort -rn \
 			| awk '{ $1="" ; if (!x[$0]++) print substr($0,2) }' \
-			| fzf --height=~40% -q "$READLINE_LINE"
+			| fzf --height=~40% --layout reverse -q "$READLINE_LINE"
 	)
 	READLINE_POINT=0x7FFFFFFF
 }
@@ -64,7 +64,7 @@ export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 export RUSTUP_TOOLCHAIN=stable
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
+# export FZF_DEFAULT_OPTS=''
 
 # alias
 alias ..="cd .."
@@ -117,17 +117,17 @@ t() {
 		tmux has-session -t $NAME 2>/dev/null && tmux $CHANGE -t "$NAME" || (tmux new-session -d -s $NAME && tmux $CHANGE -t "$NAME")
 		return
 	fi
-	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --height=~40% --prompt="tmux > ") && \
+	SESSION=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --height=~40% --layout reverse --prompt="tmux > ") && \
 		tmux $CHANGE -t "$SESSION" || echo "No sessions found."
 }
 
 p() {
 	local PASS_STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store/}"
 	rg --files --glob="*.gpg" $PASS_STORE | sed -e "s#${PASS_STORE}##g" -e "s#.gpg##g" \
-		| fzf --height=~40% --prompt="pass show > " \
+		| fzf --height=~40% --layout reverse --prompt="pass show > " \
 		| xargs --no-run-if-empty pass show
 }
 
 f() {
-	rg --files | fzf --prompt="vim > " --height=~40% | xargs --no-run-if-empty -o vim
+	rg --files | fzf --height=~40% --layout reverse --prompt="vim > " | xargs --no-run-if-empty -o vim
 }
