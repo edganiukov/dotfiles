@@ -257,7 +257,7 @@ g:NERDTreeDirArrowCollapsible = '-'
 g:NERDTreeIgnore = [
 	'^\.git$',
 	'^\.direnv$',
-	'^\.zig-',
+	'^\.zig-*',
 ]
 
 map <F3> :NERDTreeToggle<CR>
@@ -374,8 +374,7 @@ nnoremap <silent> gh :LspHover<CR>
 command! -bang -nargs=* LspStartServer lsp#activate()
 
 augroup autoformat
-	au FileType go autocmd BufWritePre <buffer> execute('LspCodeActionSync source.organizeImports')
-
+	# au FileType go autocmd BufWritePre <buffer> execute('LspCodeActionSync source.organizeImports')
 	au FileType go autocmd BufWritePre <buffer> g:Format('gofmt')
 	au FileType zig autocmd BufWritePre <buffer> g:Format('zig fmt --stdin')
 	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt')
