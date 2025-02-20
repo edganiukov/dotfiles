@@ -10,14 +10,15 @@ let s:bg_light        = { "gui": "#545454", "cterm": "240" }
 let s:bg_subtle       = { "gui": "#46484A", "cterm": "238" }
 let s:bg_very_subtle  = { "gui": "#303030", "cterm": "236" }
 let s:bg_sel          = { "gui": "#005F00", "cterm": "022" }
-let s:fg              = { "gui": "#A9B7C6", "cterm": "251" }
+let s:fg              = { "gui": "#A9B7C6", "cterm": "250" }
 
 let s:comment         = { "gui": "#4E4E4E", "cterm": "241" }
 let s:string          = { "gui": "#79740E", "cterm": "100" }
 let s:number          = { "gui": "#8787AF", "cterm": "103" }
 let s:constant        = { "gui": "#8787AF", "cterm": "103" }
 let s:cursor          = { "gui": "#323232", "cterm": "236" }
-let s:keyword         = { "gui": "#778899", "cterm": "67" }
+let s:keyword         = { "gui": "#778899", "cterm": "245" }
+let s:title           = { "gui": "#778899", "cterm": "245" }
 
 let s:red             = { "gui": "#B16286", "cterm": "132" }
 let s:green           = { "gui": "#66800B", "cterm": "064" }
@@ -88,7 +89,7 @@ call s:h("Error",         {"fg": s:red})
 call s:h("Todo",          {"fg": s:white })
 call s:h("NonText",       {"fg": s:bg_subtle})
 call s:h("SpecialKey",    {"fg": s:bg_subtle})
-call s:h("Directory",     {"fg": s:blue})
+call s:h("Directory",     {"fg": s:title})
 call s:h("ErrorMsg",      {"fg": s:red})
 call s:h("IncSearch",     {"bg": s:yellow, "fg": s:bg})
 call s:h("Search",        {"bg": s:yellow, "fg": s:bg})
@@ -100,7 +101,7 @@ call s:h("Question",      {"fg": s:red})
 call s:h("StatusLine",    {"bg": s:bg_very_subtle})
 call s:h("StatusLineNC",  {"bg": s:bg_very_subtle, "fg": s:fg})
 call s:h("VertSplit",     {"bg": s:bg_very_subtle, "fg": s:bg_very_subtle})
-call s:h("Title",         {"fg": s:blue})
+call s:h("Title",         {"fg": s:title})
 call s:h("Visual",        {"bg": s:bg_sel})
 call s:h("VisualNOS",     {"bg": s:bg_sel})
 call s:h("WarningMsg",    {"fg": s:red})
