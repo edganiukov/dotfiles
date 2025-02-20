@@ -64,8 +64,6 @@ export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 export RUSTUP_TOOLCHAIN=stable
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-# export FZF_DEFAULT_OPTS=''
-
 # alias
 alias ..="cd .."
 alias ls='ls --color'
