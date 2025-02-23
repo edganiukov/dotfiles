@@ -368,13 +368,13 @@ nnoremap <silent> gi :LspImplementation<CR>
 nnoremap <silent> gr :LspRename<CR>
 nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
-nnoremap <silent> gx :LspReferences<CR>
+nnoremap <silent> gj :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
+nnoremap <silent> gk :execute('LspCodeActionSync source.organizeImports')<CR>
 
 command! -bang -nargs=* LspStartServer lsp#activate()
 
 augroup autoformat
-	# au FileType go autocmd BufWritePre <buffer> execute('LspCodeActionSync source.organizeImports')
 	au FileType go autocmd BufWritePre <buffer> g:Format('gofmt')
 	au FileType zig autocmd BufWritePre <buffer> g:Format('zig fmt --stdin')
 	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt')
