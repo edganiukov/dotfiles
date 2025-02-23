@@ -10,15 +10,15 @@ let s:bg_light        = { "gui": "#545454", "cterm": "240" }
 let s:bg_subtle       = { "gui": "#46484A", "cterm": "238" }
 let s:bg_very_subtle  = { "gui": "#303030", "cterm": "236" }
 let s:bg_sel          = { "gui": "#005F00", "cterm": "022" }
-let s:fg              = { "gui": "#A9B7C6", "cterm": "250" }
+let s:fg              = { "gui": "#C6C6C6", "cterm": "251" }
 
 let s:comment         = { "gui": "#4E4E4E", "cterm": "241" }
 let s:string          = { "gui": "#79740E", "cterm": "100" }
 let s:number          = { "gui": "#8787AF", "cterm": "103" }
 let s:constant        = { "gui": "#8787AF", "cterm": "103" }
 let s:cursor          = { "gui": "#323232", "cterm": "236" }
-let s:keyword         = { "gui": "#778899", "cterm": "008" }
-let s:title           = { "gui": "#778899", "cterm": "066" }
+let s:keyword         = { "gui": "#9E9E9E", "cterm": "247" }
+let s:title           = { "gui": "#5F8787", "cterm": "066" }
 
 let s:red             = { "gui": "#B16286", "cterm": "132" }
 let s:green           = { "gui": "#66800B", "cterm": "064" }
