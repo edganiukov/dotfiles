@@ -370,7 +370,7 @@ nnoremap <silent> gn :LspNextError<CR>
 nnoremap <silent> gp :LspPreviousError<CR>
 nnoremap <silent> gj :LspReferences<CR>
 nnoremap <silent> gh :LspHover<CR>
-nnoremap <silent> gk :execute('LspCodeActionSync source.organizeImports')<CR>
+nnoremap <silent> gm :execute('LspCodeActionSync source.organizeImports')<CR>
 
 command! -bang -nargs=* LspStartServer lsp#activate()
 
