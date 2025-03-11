@@ -18,7 +18,7 @@ let s:number          = { "gui": "#8787AF", "cterm": "103" }
 let s:constant        = { "gui": "#8787AF", "cterm": "103" }
 let s:cursor          = { "gui": "#323232", "cterm": "236" }
 let s:keyword         = { "gui": "#9E9E9E", "cterm": "247" }
-let s:title           = { "gui": "#5F8787", "cterm": "066" }
+let s:title           = { "gui": "#5F8787", "cterm": "067" }
 
 let s:red             = { "gui": "#B16286", "cterm": "132" }
 let s:green           = { "gui": "#66800B", "cterm": "064" }
