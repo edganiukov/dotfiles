@@ -187,7 +187,7 @@ inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
 # expand opening-brace
-inoremap {<CR> {<CR>}<Esc>O
+inoremap {<CR> {<CR>}<CR><Esc>kO
 
 # move lines up and down with <Alt-down> & <Alt-up> keys
 nnoremap <A-down> :m+<CR>=gv
@@ -201,7 +201,6 @@ cnoreabbrev Wa wa
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
-nnoremap <leader>t  :ter<CR>
 
 # fuzzy finder
 #
