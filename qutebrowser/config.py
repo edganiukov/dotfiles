@@ -10,13 +10,10 @@ config.load_autoconfig()
 c.qt.highdpi = True
 
 # Which Chromium process model to use.
-c.qt.process_model = "process-per-site"
+# c.qt.process_model = "process-per-site"
 
 # Additional arguments to pass to Qt, without leading --.
-c.qt.args = [
-    "enable-native-gpu-memory-buffers", "enable-gpu-rasterization",
-    "use-gl=egl", "ignore-gpu-blacklist", "num-raster-threads=4"
-]
+c.qt.args = []
 
 # Default zoom level.
 c.zoom.default = "100%"

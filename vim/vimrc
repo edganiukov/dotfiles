@@ -39,11 +39,10 @@ set completeopt=menuone,popup,noselect
 set nospell
 set hidden
 set noerrorbells
-set novisualbell
+set visualbell
 set t_vb=
 
-set modeline
-set modelines=1
+set modelines=0
 set mouse=a
 
 set ignorecase
@@ -87,8 +86,8 @@ set formatoptions=rq1
 
 set autoread
 
-set autoindent
-set smartindent
+# set autoindent
+# set smartindent
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
@@ -118,8 +117,8 @@ def g:StatusLineMode(): string
 enddef
 
 def g:GitStatus(): string
-  var [a,m,r] = g:GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
+	var [a,m,r] = g:GitGutterGetHunkSummary()
+	return printf('+%d ~%d -%d', a, m, r)
 enddef
 
 set statusline=
@@ -142,9 +141,9 @@ set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 nnoremap Y y$
 # delete without yanking
 nnoremap <leader>d "_d
-vnoremap <leader>d "_d
+vnoremap d "_d
 # replace selected text without yanking
-vnoremap <leader>p "_dP"
+vnoremap p "_dP
 
 noremap j gj
 noremap k gk
@@ -186,8 +185,7 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
-# expand opening-brace
-inoremap {<CR> {<CR>}<CR><Esc>kO
+inoremap {<CR> {}<LEFT><CR><ESC>O
 
 # move lines up and down with <Alt-down> & <Alt-up> keys
 nnoremap <A-down> :m+<CR>=gv

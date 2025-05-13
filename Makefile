@@ -1,6 +1,6 @@
 .PHONY: bash vim tmux screen git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
-.PHONY: system76
+.PHONY: system76 qutebrowser
 
 CWD=$(shell pwd)
 
@@ -106,3 +106,6 @@ ripgrep:
 
 system76:
 	sudo cp $(CWD)/system76/system76-power.service /etc/systemd/system
+
+qutebrowser:
+	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py
