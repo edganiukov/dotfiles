@@ -58,6 +58,8 @@ export EDITOR=vim
 export CLICOLOR=YES
 export GPG_TTY=$(tty)
 
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 export GOPATH=$HOME/.go
 export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 

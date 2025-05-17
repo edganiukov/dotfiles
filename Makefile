@@ -34,6 +34,7 @@ bash:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
 	ln -sf $(CWD)/bash/bashrc $(HOME)/.bashrc
 	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
+	cp $(CWD)/ssh-agent.service $(HOME)/.config/systemd/user/ssh-agent.service
 
 x:
 	ln -sf $(CWD)/Xresources $(HOME)/.Xresources
