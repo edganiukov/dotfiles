@@ -59,6 +59,8 @@ export CLICOLOR=YES
 export GPG_TTY=$(tty)
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export SSH_ASKPASS=dmenu_askpass
+export SSH_ASKPASS_REQUIRE=force
 
 export GOPATH=$HOME/.go
 export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
