@@ -52,14 +52,12 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # env
-export LANG=en_US.UTF-8
-export LC_ALL=C.UTF-8
 export EDITOR=vim
 export CLICOLOR=YES
 export GPG_TTY=$(tty)
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-export SSH_ASKPASS=dmenu_askpass
+export SSH_ASKPASS=dmenu-askpass
 export SSH_ASKPASS_REQUIRE=force
 
 export GOPATH=$HOME/.go
