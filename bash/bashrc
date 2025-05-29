@@ -19,8 +19,9 @@ __prompt_cmd() {
 	GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 	BRANCH=${GIT_BRANCH:+ (${GIT_BRANCH:0:20})}
 
-	HPWD=${PWD/$HOME/\~}
-	[[ "$HPWD" == "~" ]] && CWD="~" || CWD="$(echo ${HPWD%/*} | tr '/' '\n' | cut -c1 | tr '\n' '/')${HPWD##*/}"
+	H_PWD=${PWD/$HOME/\~}
+	BASE_PWD=${H_PWD%/*};
+	[[ "$H_PWD" == "~" ]] && CWD="~" || CWD="$(for d in ${BASE_PWD//\// }; do echo -n "${d:0:1}/"; done)${H_PWD##*/}"
 
 	# always start prompt on new line
 	local CURPOS
