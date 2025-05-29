@@ -17,7 +17,7 @@ __prompt_cmd() {
 	history -a
 	# resolve git branch
 	GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-	PWD=$(echo ${PWD/$HOME/\~} | awk -F/ '{for(i=1;i<NF;i++) printf "%s/", substr($i,1,1); printf "%s", $NF;}')
+	CWD="$(dirname ${PWD/$HOME/\~} | tr '/' '\n' | cut -c1 | tr '\n' '/')$(basename $PWD)"
 	BRANCH=${GIT_BRANCH:+ (${GIT_BRANCH:0:20})}
 
 	# always start prompt on new line
@@ -31,7 +31,7 @@ __prompt_cmd() {
 
 # Prompt
 PROMPT_COMMAND=__prompt_cmd
-PS1='\[\033[0;92m\]$PWD\[\033[0;95m\]${BRANCH} \[\033[0m\]\$ '
+PS1='\[\033[0;92m\]$CWD\[\033[0;95m\]${BRANCH} \[\033[0m\]\$ '
 PS2='\[\033[0;92m\]>\[\033[0m\] '
 
 bind -x '"\C-r": __history_fzf'
