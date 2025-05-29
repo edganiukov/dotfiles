@@ -17,8 +17,10 @@ __prompt_cmd() {
 	history -a
 	# resolve git branch
 	GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-	CWD="$(dirname ${PWD/$HOME/\~} | tr '/' '\n' | cut -c1 | tr '\n' '/')$(basename $PWD)"
 	BRANCH=${GIT_BRANCH:+ (${GIT_BRANCH:0:20})}
+
+	HPWD=${PWD/$HOME/\~}
+	[[ "$HPWD" == "~" ]] && CWD="~" || CWD="$(echo ${HPWD%/*} | tr '/' '\n' | cut -c1 | tr '\n' '/')${HPWD##*/}"
 
 	# always start prompt on new line
 	local CURPOS
