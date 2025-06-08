@@ -21,7 +21,7 @@ __prompt_cmd() {
 
 	H_PWD=${PWD/$HOME/\~}
 	BASE_PWD=${H_PWD%/*};
-	[[ "$H_PWD" == "~" ]] && CWD="~" || CWD="$(for d in ${BASE_PWD//\// }; do echo -n "${d:0:1}/"; done)${H_PWD##*/}"
+	[[ "$H_PWD" == "~" ]] && CWD="~" || CWD="$(for d in ${BASE_PWD//\// }; do [[ "${d:0:1}" == "." ]] && echo -n "${d:0:2}/" || echo -n "${d:0:1}/"; done)${H_PWD##*/}"
 
 	# always start prompt on new line
 	local CURPOS
