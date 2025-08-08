@@ -35,6 +35,8 @@ htop
 rtorrent
 mutt
 weechat
+aspell
+aspell-en
 
 # gui
 dunst

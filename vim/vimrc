@@ -56,7 +56,6 @@ set noshowmode
 set showmatch
 set matchtime=2
 set showcmd
-set autoread
 
 set scrolljump=1
 set scrolloff=4
@@ -87,9 +86,10 @@ set formatoptions=rq1
 set autoread
 
 # set autoindent
-# set smartindent
+set nosmartindent
 set noexpandtab
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set shiftround
 
@@ -133,17 +133,28 @@ set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}	# file enconding
 set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}	# file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
+set autoread
+set updatetime=100
+
+augroup autoreload
+  autocmd!
+  autocmd FocusGained,BufEnter * checktime
+  autocmd CursorHold,CursorHoldI * checktime
+augroup END
+au FileChangedShellPost *
+  \ echo "File has been changed. Buffer reloaded." |
+  \ echohl None
+
 # fix cursor in INSERT mode
 &t_SI = "\e[5 q"
 &t_EI = "\e[2 q"
 
 # yank to the EOL
 nnoremap Y y$
-# delete without yanking
-nnoremap <leader>d "_d
-vnoremap d "_d
 # replace selected text without yanking
 vnoremap p "_dP
+# delete without yanking
+nnoremap <leader>d "_d
 
 noremap j gj
 noremap k gk
@@ -376,7 +387,7 @@ augroup autoformat
 	au FileType zig autocmd BufWritePre <buffer> g:Format('zig fmt --stdin')
 	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt')
 	au FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
-	au FileType c,cpp,hpp autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
+	# au FileType c,cpp,hpp autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
 
 def g:Format(formatter: string)
