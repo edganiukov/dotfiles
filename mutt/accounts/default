@@ -4,7 +4,7 @@
 unmailboxes *
 
 # FastMail account
-# set pgp_default_key="0xDFDEB31D239D4196"
+set pgp_default_key="0x4746C20AEBD013FF"
 
 set my_user = `echo "ZWRAZ25rdi5pbwo=" | base64 -d`
 set my_realname = "Ed Ganiukov"
