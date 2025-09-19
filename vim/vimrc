@@ -319,6 +319,9 @@ var gols = {
 			hoverKind: 'FullDocumentation',
 			linksInHover: v:false,
 			staticcheck: v:true,
+            analyses: {
+                ST1003: false,
+            },
 		},
 	},
 	allowlist: ['go'],

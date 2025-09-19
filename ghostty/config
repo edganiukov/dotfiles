@@ -5,10 +5,13 @@ font-size=12
 
 # theme=flexoki-dark
 background=#181818
+foreground=#e5e5e5
 
 cursor-style-blink=false
 window-decoration=none
 resize-overlay=never
+window-padding-x=0
+window-padding-y=0
 
 confirm-close-surface=false
 shell-integration=none
