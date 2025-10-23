@@ -123,14 +123,14 @@ enddef
 
 set statusline=
 set statusline+=%#Comment#[%n]%*
-set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?':PASTE':''}\ %*	# mode and paste indicator
-set statusline+=\ %.50f\ %m\ %r	# filepath and modified flag
+set statusline+=%#PmenuSel#\ %{g:StatusLineMode()}%{&paste?':PASTE':''}\ %*  # mode and paste indicator
+set statusline+=\ %.50f\ %m\ %r  # filepath and modified flag
 set statusline+=%{g:GitStatus()}
 
 set statusline+=%=
-set statusline+=%{&ff}	# file format
-set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}	# file enconding
-set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}	# file type
+set statusline+=%{&ff}  # file format
+set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}  # file enconding
+set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}  # file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
 set autoread
@@ -218,7 +218,7 @@ def g:Fzf(choice_cmd: string, vim_cmd: string)
 	try
 		output = system(choice_cmd .. ' | fzf --height=40%')
 	catch /Vim:Interrupt/
-		# do not fail on errors from ^C, allow redraw! below
+	# do not fail on errors from ^C, allow redraw! below
 	endtry
 	redraw!
 	if v:shell_error == 0 && !empty(output)
@@ -288,11 +288,10 @@ autocmd BufWritePost * GitGutter
 #
 g:mucomplete#enable_auto_at_startup = 1
 g:mucomplete#completion_delay = 100
-g:mucomplete#reopen_immediately = 1
+g:mucomplete#reopen_immediately = 0
 
 g:mucomplete#chains = {
-	default: ['omni', 'keyn'],
-	sql: ['keyn']
+	default: ['c-n', 'path', 'omni'],
 }
 g:mucomplete#can_complete = {
 	default: {
@@ -311,9 +310,6 @@ inoremap <leader>c <C-x><C-o>
 var gols = {
 	name: 'gopls',
 	cmd: (server_info) => ['gopls', 'serve'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['go.mod', 'go.work'])
-	),
 	workspace_config: {
 		gopls: {
 			hoverKind: 'FullDocumentation',
@@ -333,9 +329,6 @@ au User lsp_setup lsp#register_server(gols)
 var rls = {
 	name: 'rls',
 	cmd: (server_info) => ['rust-analyzer'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['Cargo.toml'])
-	),
 	initialization_options: {
 		cargo: {buildScripts: {enable: v:true}},
 		procMacro: {enable: v:true},
@@ -348,9 +341,6 @@ au User lsp_setup lsp#register_server(rls)
 var zls = {
 	name: 'zls',
 	cmd: (server_info) => ['zls'],
-	root_uri: (server_info) => lsp#utils#path_to_uri(
-		lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), ['.git'])
-	),
 	allowlist: ['zig'],
 }
 au User lsp_setup lsp#register_server(zls)

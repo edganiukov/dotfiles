@@ -8,7 +8,7 @@
 xgamma -gamma 0.8
 
 # keyboard setting
-xset r rate 220 25
+xset r rate 256 32
 setxkbmap -layout us,ru -option "grp:caps_toggle"
 syndaemon -i 0.5 -t -K -R -d
 
