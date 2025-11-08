@@ -240,17 +240,31 @@ nnoremap <leader>bb :call g:FzfBuffer()<CR>
 
 # grep
 #
+def g:Rg()
+	var output = ''
+	try
+		output = system('fzf --height=40% --ansi --disabled --print-query --bind "change:reload:rg --line-number --no-heading --color=always {q} || true" | tail -1')
+	catch /Vim:Interrupt/
+	endtry
+
+	redraw!
+	if v:shell_error == 0 && !empty(output)
+		var parts = split(output, ':')
+		if len(parts) >= 2
+			exec ':e +' .. parts[1] .. ' ' .. parts[0]
+		endif
+	endif
+enddef
+
+nnoremap <leader>g :call g:Rg()<CR>
+
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m
-
 command! -nargs=+ G execute 'silent grep!' <q-args>
-nnoremap <leader>g :silent grep! <C-R><C-W><CR>
-
 augroup quickfix
 	au QuickFixCmdPost [^l]* cwindow | call setqflist([], 'a') | redraw!
 	au FileType qf resize 20
 augroup END
-
 
 # Plug 'preservim/nerdtree'
 #
@@ -314,10 +328,7 @@ var gols = {
 		gopls: {
 			hoverKind: 'FullDocumentation',
 			linksInHover: v:false,
-			staticcheck: v:true,
-            analyses: {
-                ST1003: false,
-            },
+			staticcheck: v:false,
 		},
 	},
 	allowlist: ['go'],
@@ -393,7 +404,7 @@ def g:Format(formatter: string)
 		setline(1, [])
 		setbufline('%', 1, formatted)
 	else
-		echoerr printf('Formatting failed: %s', formatted)
+		echo printf('Formatting failed...')
 	endif
 
 	winrestview(winview)

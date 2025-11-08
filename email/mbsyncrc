@@ -1,7 +1,7 @@
 IMAPAccount default
 Host imap.fastmail.com
 User ed@gnkv.io
-PassCmd "pass show core/imap.fastmail.com"
+PassCmd "pass show personal/imap.fastmail.com"
 SSLType IMAPS
 
 IMAPStore default-remote
