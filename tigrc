@@ -1,0 +1,31 @@
+# tig settings
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d %H:%M"
+
+# General colors
+color default           223 235
+color cursor            235 223
+color title-focus       223 235
+color title-blur        245 235
+color delimiter         245 235
+
+# Main view
+color date              142 235
+color author            109 235
+color main-commit       223 235
+color main-head         208 235 bold
+color main-ref          142 235
+
+# Status view
+color stat-staged       142 235
+color stat-unstaged     208 235
+color stat-untracked    167 235
+
+# Diff view
+color diff-header       223 235
+color diff-index        142 235
+color diff-chunk        109 235 bold
+color "diff --"         223 235
+color "@@"              109 235 bold
+color "+"               142 235
+color "-"               167 235

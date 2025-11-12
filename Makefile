@@ -28,7 +28,8 @@ ghostty:
 	ln -sf $(CWD)/ghostty $(HOME)/.config/
 
 git:
-	cp $(CWD)/gitconfig $(HOME)/.gitconfig
+	# cp $(CWD)/gitconfig $(HOME)/.gitconfig
+	ln -sf $(CWD)/tigrc $(HOME)/.tigrc
 
 bash:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
