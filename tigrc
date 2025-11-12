@@ -3,29 +3,31 @@ set main-view-date = custom
 set main-view-date-format = "%Y-%m-%d %H:%M"
 
 # General colors
-color default           223 235
-color cursor            235 223
-color title-focus       223 235
-color title-blur        245 235
-color delimiter         245 235
+# Using Flexoki-dark colors
+# background=#181818 foreground=#e5e5e5
+color default           white black
+color cursor            black white
+color title-focus       white black
+color title-blur        white black
+color delimiter         white black
 
 # Main view
-color date              142 235
-color author            109 235
-color main-commit       223 235
-color main-head         208 235 bold
-color main-ref          142 235
+color date              yellow black
+color author            blue black
+color main-commit       white black
+color main-head         red black bold
+color main-ref          yellow black
 
 # Status view
-color stat-staged       142 235
-color stat-unstaged     208 235
-color stat-untracked    167 235
+color stat-staged       green black
+color stat-unstaged     red black
+color stat-untracked    magenta black
 
 # Diff view
-color diff-header       223 235
-color diff-index        142 235
-color diff-chunk        109 235 bold
-color "diff --"         223 235
-color "@@"              109 235 bold
-color "+"               142 235
-color "-"               167 235
+color diff-header       white black
+color diff-index        yellow black
+color diff-chunk        blue black bold
+color "diff --"         white black
+color "@@"              blue black bold
+color "+"               green black
+color "-"               red black
