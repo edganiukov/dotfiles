@@ -2,9 +2,9 @@
 	excludesfile = ~/.gitignore
 
 [user]
-	name = <Name>
-	email = <Email>
-	signingkey = <Key ID>
+	name = Ed Ganiukov
+	email = ed@gnkv.io
+	signingkey = 0x7690B0256F1769BB
 
 [commit]
 	gpgsign = true
@@ -14,6 +14,7 @@
 
 [push]
 	default = simple
+	autoSetupRemote = true
 
 [pull]
 	default = simple
@@ -23,6 +24,9 @@
 	current = green
 	remote = yellow
 
+[diff]
+	external = "difft --display=inline"
+
 [alias]
 	lg = log --pretty=format:'%Cblue %as %C(auto)%h%d %s %Cgreen[%aN]' --abbrev-commit
 	fap = fetch --all --prune
@@ -30,8 +34,10 @@
 	pl = pull
 	co = checkout
 	cb = checkout -b
+	sw = switch
 	cm = commit
+	br = branch
 	st = status
+	dl = log -p --ext-diff
+	ds = show --ext-diff
 	d = diff
-	dh = diff --histogram
-	dm = diff --minimal

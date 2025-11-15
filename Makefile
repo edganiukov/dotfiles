@@ -28,7 +28,7 @@ ghostty:
 	ln -sf $(CWD)/ghostty $(HOME)/.config/
 
 git:
-	# cp $(CWD)/gitconfig $(HOME)/.gitconfig
+	ln -sf $(CWD)/gitconfig $(HOME)/.gitconfig
 	ln -sf $(CWD)/tigrc $(HOME)/.tigrc
 
 bash:
