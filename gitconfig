@@ -24,9 +24,6 @@
 	current = green
 	remote = yellow
 
-[diff]
-	external = "difft --display=inline --syntax-highlight=off"
-
 [alias]
 	lg = log --pretty=format:'%Cblue %as %C(auto)%h%d %s %Cgreen[%aN]' --abbrev-commit
 	fap = fetch --all --prune

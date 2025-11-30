@@ -73,7 +73,6 @@ set colorcolumn=120
 set cursorline
 set cursorcolumn
 
-set pastetoggle=<F2>
 set nopaste
 set clipboard=unnamedplus
 
@@ -282,7 +281,7 @@ g:NERDTreeIgnore = [
 	'^\.zig-*',
 ]
 
-map <F3> :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR>
 map <leader>e :NERDTreeExplore<CR>
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
 
