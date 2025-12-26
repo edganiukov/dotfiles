@@ -80,7 +80,7 @@ hi! link Special          Normal
 hi! link SpecialChar      Special
 hi! link Tag              Special
 hi! link Delimiter        Special
-hi! link SpecialComment   Special
+hi! link SpecialComment   Comment
 hi! link Debug            Special
 
 call s:h("Underlined",    {"fg": s:fg, "gui": "underline", "cterm": "underline"})

@@ -59,6 +59,9 @@ dunst:
 	mkdir -p $(HOME)/.config/dunst
 	ln -sf $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
+claude:
+	ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
+
 # email
 mutt:
 	mkdir -p $(HOME)/.mutt
