@@ -342,6 +342,7 @@ var rls = {
 	initialization_options: {
 		cargo: {buildScripts: {enable: v:true}},
 		procMacro: {enable: v:true},
+		rustfmt: {extraArgs: ['--config', 'max_width=120']},
 	},
 	allowlist: ['rust'],
 }

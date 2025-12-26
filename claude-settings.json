@@ -1,0 +1,34 @@
+{
+  "defaultMode": "default",
+  "permissions": {
+    "allow": [
+      "Bash(git diff)",
+      "Bash(git log)",
+      "Bash(ls :*)",
+      "Bash(cat :*)",
+      "Read(./**)",
+      "Glob(./**)",
+      "Grep(./**)"
+    ],
+    "deny": [
+      "Read(./.direnv/**)",
+      "Bash(sudo :*)",
+      "Bash(rm -rf :*)",
+      "Bash(rm -f :*)",
+      "Bash(git push :*)",
+      "Bash(git reset :*)"
+    ]
+  },
+  "model": "sonnet",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "gitCoAuthoredBy": false,
+  "bypassPermissionsMode": "disable",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "true"
+  }
+}
