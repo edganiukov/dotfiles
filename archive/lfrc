@@ -168,8 +168,8 @@ cmd mkfile ${{
 map Mf push :mkfile<space>
 
 # open sxiv for the current directory
-cmd sxiv ${{
-    sxiv -r -t -s d . &
+cmd nsxiv ${{
+    nsxiv -r -t -s d . &
 }}
 
 # }}
