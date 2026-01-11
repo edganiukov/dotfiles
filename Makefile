@@ -62,8 +62,9 @@ dunst:
 	mkdir -p $(HOME)/.config/dunst
 	ln -sf $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
-claude:
+agents:
 	ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
+	ln -sf $(CWD)/opencode.json $(HOME)/.config/opencode/opencode.json
 
 # email
 mutt:

@@ -1,5 +1,8 @@
 {
-  "defaultMode": "default",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "true"
+  },
   "permissions": {
     "allow": [
       "Bash(git diff)",
@@ -8,27 +11,24 @@
       "Bash(cat :*)",
       "Read(./**)",
       "Glob(./**)",
-      "Grep(./**)"
+      "Grep(./**)",
+      "WebFetch(domain:docs.rs)"
     ],
     "deny": [
       "Read(./.direnv/**)",
       "Bash(sudo :*)",
-      "Bash(rm -rf :*)",
-      "Bash(rm -f :*)",
+      "Bash(rm :*)",
       "Bash(git push :*)",
       "Bash(git reset :*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "defaultMode": "default",
   "gitCoAuthoredBy": false,
-  "bypassPermissionsMode": "disable",
-  "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "true"
-  }
+  "bypassPermissionsMode": "disable"
 }
