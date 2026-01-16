@@ -9,6 +9,14 @@
     "grep": "allow",
     "glob": "allow",
     "list": "allow",
+    "question": "allow",
+    "todowrite": "allow",
+    "todoread": "allow",
+    "webfetch": "ask",
+    "websearch": "ask",
+    "codesearch": "ask",
+    "lsp": "allow",
+    "skill": "allow",
     "bash": {
       "*": "ask",
       "cat*": "allow",
@@ -21,10 +29,7 @@
       "terraform*": "deny",
       "sudo*": "deny",
       "rm*": "deny"
-    },
-    "webfetch": "ask",
-    "websearch": "ask",
-    "codesearch": "ask"
+    }
   },
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", ".git/**", ".direnv/**"]
