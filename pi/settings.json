@@ -1,9 +1,9 @@
 {
-  "lastChangelogVersion": "0.45.7",
-  "defaultThinkingLevel": "medium",
+  "lastChangelogVersion": "0.50.5",
+  "defaultThinkingLevel": "high",
   "theme": "dark",
   "collapseChangelog": true,
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-4-5",
   "compaction": {
@@ -11,10 +11,12 @@
     "reserveTokens": 16384,
     "keepRecentTokens": 20000
   },
-  "skills": {
-    "enabled": true
-  },
   "images": {
     "blockImages": false
-  }
+  },
+  "showHardwareCursor": false,
+  "editorPaddingX": 1,
+  "followUpMode": "one-at-a-time",
+  "steeringMode": "one-at-a-time",
+  "quietStartup": false
 }
