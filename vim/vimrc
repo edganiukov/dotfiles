@@ -388,7 +388,7 @@ command! -bang -nargs=* LspStartServer lsp#activate()
 augroup autoformat
 	au FileType go autocmd BufWritePre <buffer> g:Format('gofmt')
 	au FileType zig autocmd BufWritePre <buffer> g:Format('zig fmt --stdin')
-	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt --config max_width=100,chain_width=100 --edition=2024')
+	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt --config max_width=100 --edition=2024')
 	au FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
 	# au FileType c,cpp,hpp autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
 augroup END
