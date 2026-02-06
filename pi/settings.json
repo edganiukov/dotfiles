@@ -1,9 +1,9 @@
 {
-  "lastChangelogVersion": "0.50.5",
+  "lastChangelogVersion": "0.51.1",
   "defaultThinkingLevel": "high",
   "theme": "dark",
   "collapseChangelog": true,
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-4-5",
   "compaction": {
@@ -18,5 +18,6 @@
   "editorPaddingX": 1,
   "followUpMode": "one-at-a-time",
   "steeringMode": "one-at-a-time",
-  "quietStartup": false
+  "quietStartup": false,
+  "enableSkillCommands": true
 }
