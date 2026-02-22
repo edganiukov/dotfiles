@@ -22,13 +22,15 @@
       "Bash(git reset :*)"
     ]
   },
-  "model": "opus",
+  "model": "claude-opus-4-6[1m]",
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
   "defaultMode": "default",
+  "alwaysThinkingEnabled": true,
+  "defaultMode": "plan",
   "gitCoAuthoredBy": false,
   "bypassPermissionsMode": "disable"
 }

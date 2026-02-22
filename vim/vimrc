@@ -279,6 +279,9 @@ g:NERDTreeIgnore = [
 	'^\.git$',
 	'^\.direnv$',
 	'^\.zig-*',
+	'^\.localdev-tmp',
+	'^\.stfolder',
+	'^\.turbo',
 ]
 
 map <F2> :NERDTreeToggle<CR>
