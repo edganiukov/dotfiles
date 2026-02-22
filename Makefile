@@ -64,10 +64,9 @@ dunst:
 
 agents:
 	ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
-	ln -sf $(CWD)/opencode.json $(HOME)/.config/opencode/opencode.json
 	ln -sf $(CWD)/pi/settings.json $(HOME)/.pi/agent/settings.json
-	ln -sf $(CWD)/pi/extensions $(HOME)/.pi/agent/extensions
-	ln -sf $(CWD)/pi/skills $(HOME)/.pi/agent/skills
+	ln -sf $(CWD)/pi/extensions $(HOME)/.pi/agent/extensions/
+	ln -sf $(CWD)/pi/skills $(HOME)/.pi/agent/skills/
 
 # email
 mutt:

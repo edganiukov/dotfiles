@@ -1,6 +1,6 @@
 /**
  * Usage Bar Extension - Shows AI provider usage stats like CodexBar
- * Run /usage to see usage for Claude, Copilot, Gemini, and Codex
+ * Run /usage to see usage for Claude, Gemini, and Codex
  * 
  * Features:
  * - Usage stats with progress bars
@@ -23,7 +23,6 @@ interface RateWindow {
 	label: string;
 	usedPercent: number;
 	resetDescription?: string;
-	resetsAt?: Date;
 }
 
 interface ProviderStatus {
@@ -47,7 +46,6 @@ interface UsageSnapshot {
 const STATUS_URLS: Record<string, string> = {
 	anthropic: "https://status.anthropic.com/api/v2/status.json",
 	codex: "https://status.openai.com/api/v2/status.json",
-	copilot: "https://www.githubstatus.com/api/v2/status.json",
 };
 
 async function fetchProviderStatus(provider: string): Promise<ProviderStatus> {
@@ -93,15 +91,15 @@ async function fetchGeminiStatus(): Promise<ProviderStatus> {
 			const affected = inc.currently_affected_products || inc.affected_products || [];
 			return affected.some((p: any) => p.id === geminiProductId);
 		});
-		
+
 		if (activeIncidents.length === 0) {
 			return { indicator: "none" };
 		}
-		
+
 		// Find most severe
 		let worstIndicator: ProviderStatus["indicator"] = "minor";
 		let description: string | undefined;
-		
+
 		for (const inc of activeIncidents) {
 			const status = inc.most_recent_update?.status || inc.status_impact;
 			if (status === "SERVICE_OUTAGE") {
@@ -112,7 +110,7 @@ async function fetchGeminiStatus(): Promise<ProviderStatus> {
 				description = inc.external_desc;
 			}
 		}
-		
+
 		return { indicator: worstIndicator, description };
 	} catch {
 		return { indicator: "unknown" };
@@ -207,117 +205,10 @@ async function fetchClaudeUsage(): Promise<UsageSnapshot> {
 }
 
 // ============================================================================
-// Copilot Usage
-// ============================================================================
-
-function loadCopilotRefreshToken(): string | undefined {
-	// The copilot_internal/user endpoint needs the GitHub OAuth token (ghu_*),
-	// NOT the Copilot session token (tid=*). The refresh token IS the GitHub OAuth token.
-	const authPath = path.join(os.homedir(), ".pi", "agent", "auth.json");
-	try {
-		if (fs.existsSync(authPath)) {
-			const data = JSON.parse(fs.readFileSync(authPath, "utf-8"));
-			// Use refresh token (GitHub OAuth token ghu_*) for the usage API
-			if (data["github-copilot"]?.refresh) return data["github-copilot"].refresh;
-		}
-	} catch {}
-
-	return undefined;
-}
-
-async function fetchCopilotUsage(_modelRegistry: any): Promise<UsageSnapshot> {
-	const token = loadCopilotRefreshToken();
-	if (!token) {
-		return { provider: "copilot", displayName: "Copilot", windows: [], error: "No token" };
-	}
-
-	const headersBase = {
-		"Editor-Version": "vscode/1.96.2",
-		"User-Agent": "GitHubCopilotChat/0.26.7",
-		"X-Github-Api-Version": "2025-04-01",
-		Accept: "application/json",
-	};
-
-	const tryFetch = async (authHeader: string) => {
-		const controller = new AbortController();
-		setTimeout(() => controller.abort(), 5000);
-
-		const res = await fetch("https://api.github.com/copilot_internal/user", {
-			headers: {
-				...headersBase,
-				Authorization: authHeader,
-			},
-			signal: controller.signal,
-		});
-		return res;
-	};
-
-	try {
-		// Copilot access tokens (from /login github-copilot) expect Bearer. PATs accept "token".
-		// GitHub OAuth token (ghu_*) requires "token" prefix, not Bearer
-		const attempts = [`token ${token}`];
-		let lastStatus: number | undefined;
-		let res: Response | undefined;
-
-		for (const auth of attempts) {
-			res = await tryFetch(auth);
-			lastStatus = res.status;
-			if (res.ok) break;
-			if (res.status === 401 || res.status === 403) continue; // try next scheme
-			break;
-		}
-
-		if (!res || !res.ok) {
-			const status = lastStatus ?? 0;
-			return { provider: "copilot", displayName: "Copilot", windows: [], error: `HTTP ${status}` };
-		}
-
-		const data = await res.json() as any;
-		const windows: RateWindow[] = [];
-
-		// Parse reset date for display
-		const resetDate = data.quota_reset_date_utc ? new Date(data.quota_reset_date_utc) : undefined;
-		const resetDesc = resetDate ? formatReset(resetDate) : undefined;
-
-		// Premium interactions (e.g., Claude, o1 models) - has a cap
-		if (data.quota_snapshots?.premium_interactions) {
-			const pi = data.quota_snapshots.premium_interactions;
-			const remaining = pi.remaining ?? 0;
-			const entitlement = pi.entitlement ?? 0;
-			const usedPercent = Math.max(0, 100 - (pi.percent_remaining || 0));
-			windows.push({
-				label: `Premium`,
-				usedPercent,
-				resetDescription: resetDesc ? `${resetDesc} (${remaining}/${entitlement})` : `${remaining}/${entitlement}`,
-			});
-		}
-
-		// Chat quota - often unlimited, only show if limited
-		if (data.quota_snapshots?.chat && !data.quota_snapshots.chat.unlimited) {
-			const chat = data.quota_snapshots.chat;
-			windows.push({
-				label: "Chat",
-				usedPercent: Math.max(0, 100 - (chat.percent_remaining || 0)),
-				resetDescription: resetDesc,
-			});
-		}
-
-		return {
-			provider: "copilot",
-			displayName: "Copilot",
-			windows,
-			plan: data.copilot_plan,
-		};
-	} catch (e) {
-		return { provider: "copilot", displayName: "Copilot", windows: [], error: String(e) };
-	}
-}
-
-// ============================================================================
 // Gemini Usage
 // ============================================================================
 
-async function fetchGeminiUsage(_modelRegistry: any): Promise<UsageSnapshot> {
+async function fetchGeminiUsage(): Promise<UsageSnapshot> {
 	let token: string | undefined;
 	
 	// Read directly from pi's auth.json
@@ -733,12 +624,12 @@ function formatReset(date: Date): string {
 function getStatusEmoji(status?: ProviderStatus): string {
 	if (!status) return "";
 	switch (status.indicator) {
-		case "none": return "✅";
-		case "minor": return "⚠️";
-		case "major": return "🟠";
-		case "critical": return "🔴";
-		case "maintenance": return "🔧";
-		default: return "";
+		case "none": return "✓";
+		case "minor": return "!";
+		case "major": return "▲";
+		case "critical": return "x";
+		case "maintenance": return "⚙";
+		default: return "?";
 	}
 }
 
@@ -767,26 +658,23 @@ class UsageComponent {
 			Promise.race([p, new Promise<T>((r) => setTimeout(() => r(fallback), ms))]);
 
 		// Fetch usage and status in parallel
-		const [claude, copilot, gemini, codex, antigravity, claudeStatus, copilotStatus, geminiStatus, codexStatus] = await Promise.all([
+		const [claude, gemini, codex, antigravity, claudeStatus, geminiStatus, codexStatus] = await Promise.all([
 			timeout(fetchClaudeUsage(), 6000, { provider: "anthropic", displayName: "Claude", windows: [], error: "Timeout" }),
-			timeout(fetchCopilotUsage(this.modelRegistry), 6000, { provider: "copilot", displayName: "Copilot", windows: [], error: "Timeout" }),
-			timeout(fetchGeminiUsage(this.modelRegistry), 6000, { provider: "gemini", displayName: "Gemini", windows: [], error: "Timeout" }),
+			timeout(fetchGeminiUsage(), 6000, { provider: "gemini", displayName: "Gemini", windows: [], error: "Timeout" }),
 			timeout(fetchCodexUsage(this.modelRegistry), 6000, { provider: "codex", displayName: "Codex", windows: [], error: "Timeout" }),
 			timeout(fetchAntigravityUsage(this.modelRegistry), 6000, { provider: "antigravity", displayName: "Antigravity", windows: [], error: "Timeout" }),
 			timeout(fetchProviderStatus("anthropic"), 3000, { indicator: "unknown" as const }),
-			timeout(fetchProviderStatus("copilot"), 3000, { indicator: "unknown" as const }),
 			timeout(fetchGeminiStatus(), 3000, { indicator: "unknown" as const }),
 			timeout(fetchProviderStatus("codex"), 3000, { indicator: "unknown" as const }),
 		]);
 
 		// Attach status to usage
 		claude.status = claudeStatus;
-		copilot.status = copilotStatus;
 		gemini.status = geminiStatus;
 		codex.status = codexStatus;
 
 		// Filter out providers with no data and no error (not configured)
-		const allUsages = [claude, copilot, gemini, codex, antigravity];
+		const allUsages = [claude, gemini, codex, antigravity];
 		this.usages = allUsages.filter(u => u.windows.length > 0 || u.error !== "No credentials" && u.error !== "No API key");
 		this.loading = false;
 		this.tui.requestRender();
