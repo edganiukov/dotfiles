@@ -1,10 +1,6 @@
-.PHONY: alacritty rofi qutebrowser vifm mc i3 awesome xmonad luakit lf
+.PHONY: rofi qutebrowser vifm mc i3 awesome xmonad luakit lf
 
 CWD=$(shell pwd)
-
-alacritty:
-	mkdir -p $(HOME)/.config/alacritty
-	ln -s $(CWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 # wm
 awesome:
 	ln -s $(CWD)/awesome $(HOME)/.config/awesome

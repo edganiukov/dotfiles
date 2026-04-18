@@ -1,11 +1,11 @@
 {
-  "lastChangelogVersion": "0.54.2",
+  "lastChangelogVersion": "0.67.6",
   "defaultThinkingLevel": "high",
   "theme": "dark",
   "collapseChangelog": true,
   "hideThinkingBlock": false,
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex",
   "compaction": {
     "enabled": true,
     "reserveTokens": 16384,
@@ -16,8 +16,10 @@
   },
   "showHardwareCursor": false,
   "editorPaddingX": 1,
-  "followUpMode": "one-at-a-time",
-  "steeringMode": "one-at-a-time",
+  "followUpMode": "all",
+  "steeringMode": "all",
   "quietStartup": false,
-  "enableSkillCommands": true
+  "enableSkillCommands": true,
+  "treeFilterMode": "default",
+  "enableInstallTelemetry": true
 }

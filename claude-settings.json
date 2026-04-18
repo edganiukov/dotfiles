@@ -30,7 +30,6 @@
   },
   "defaultMode": "default",
   "alwaysThinkingEnabled": true,
-  "defaultMode": "plan",
   "gitCoAuthoredBy": false,
   "bypassPermissionsMode": "disable"
 }
