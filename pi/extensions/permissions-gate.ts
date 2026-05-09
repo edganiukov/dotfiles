@@ -13,6 +13,7 @@ export default function (pi: ExtensionAPI) {
 	   	/\bsudo\b/i,
 	   	/\bdoas\b/i,
 		/\bgit\s+(push|reset|checkout)/i,
+		/\bu?ssh\b/i,
 	];
 
 	pi.on("tool_call", async (event, ctx) => {
