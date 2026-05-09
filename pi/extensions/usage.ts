@@ -1,6 +1,6 @@
 /**
  * Usage Bar Extension - Shows AI provider usage stats like CodexBar
- * Run /usage to see usage for Claude, Gemini, and Codex
+ * Run /usage to see usage for Claude, Codex
  * 
  * Features:
  * - Usage stats with progress bars
@@ -331,23 +331,19 @@ class UsageComponent {
 			Promise.race([p, new Promise<T>((r) => setTimeout(() => r(fallback), ms))]);
 
 		// Fetch usage and status in parallel
-		const [claude, gemini, codex, antigravity, claudeStatus, geminiStatus, codexStatus] = await Promise.all([
+		const [claude,  codex, claudeStatus, codexStatus] = await Promise.all([
 			timeout(fetchClaudeUsage(), 6000, { provider: "anthropic", displayName: "Claude", windows: [], error: "Timeout" }),
-			timeout(fetchGeminiUsage(), 6000, { provider: "gemini", displayName: "Gemini", windows: [], error: "Timeout" }),
 			timeout(fetchCodexUsage(this.modelRegistry), 6000, { provider: "codex", displayName: "Codex", windows: [], error: "Timeout" }),
-			timeout(fetchAntigravityUsage(this.modelRegistry), 6000, { provider: "antigravity", displayName: "Antigravity", windows: [], error: "Timeout" }),
 			timeout(fetchProviderStatus("anthropic"), 3000, { indicator: "unknown" as const }),
-			timeout(fetchGeminiStatus(), 3000, { indicator: "unknown" as const }),
 			timeout(fetchProviderStatus("codex"), 3000, { indicator: "unknown" as const }),
 		]);
 
 		// Attach status to usage
 		claude.status = claudeStatus;
-		gemini.status = geminiStatus;
 		codex.status = codexStatus;
 
 		// Filter out providers with no data and no error (not configured)
-		const allUsages = [claude, gemini, codex, antigravity];
+		const allUsages = [claude, codex];
 		this.usages = allUsages.filter(u => u.windows.length > 0 || u.error !== "No credentials" && u.error !== "No API key");
 		this.loading = false;
 		this.tui.requestRender();
