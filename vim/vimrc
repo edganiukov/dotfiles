@@ -215,7 +215,7 @@ match ErrorMsg '\s\+$'
 def g:Fzf(choice_cmd: string, vim_cmd: string)
 	var output = ''
 	try
-		output = system(choice_cmd .. ' | fzf --height=40%')
+		output = system(choice_cmd .. ' | fzf --height=40% --bind "ctrl-left:backward-word,ctrl-right:forward-word"')
 	catch /Vim:Interrupt/
 	# do not fail on errors from ^C, allow redraw! below
 	endtry
@@ -242,7 +242,7 @@ nnoremap <leader>bb :call g:FzfBuffer()<CR>
 def g:Rg()
 	var output = ''
 	try
-		output = system('fzf --height=40% --ansi --disabled --print-query --bind "change:reload:rg --line-number --no-heading --color=always {q} || true" | tail -1')
+		output = system('fzf --height=40% --ansi --disabled --print-query --bind "ctrl-left:backward-word,ctrl-right:forward-word" --bind "change:reload(rg --line-number --no-heading --color=always {q} || true)" | tail -1')
 	catch /Vim:Interrupt/
 	endtry
 

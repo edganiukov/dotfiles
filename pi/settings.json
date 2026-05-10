@@ -5,7 +5,7 @@
   "collapseChangelog": true,
   "hideThinkingBlock": false,
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
+  "defaultModel": "gpt-5.5",
   "compaction": {
     "enabled": true,
     "reserveTokens": 16384,
