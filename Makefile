@@ -44,6 +44,7 @@ x:
 	ln -sf $(CWD)/xinitrc $(HOME)/.xinitrc
 	ln -sf $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
+	ln -sf $(CWD)/smm.conf $(HOME)/.config/smm.conf
 
 gtk:
 	mkdir -p ~/.config/gtk-3.0
@@ -106,10 +107,6 @@ ncspot:
 
 weechat:
 	ln -sf $(CWD)/weechat $(HOME)/.weechat
-
-
-grobi:
-	ln -sf $(CWD)/grobi.conf $(HOME)/.config/grobi.conf
 
 ripgrep:
 	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc

@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.74.0",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "xhigh",
   "theme": "dark",
   "collapseChangelog": true,
   "hideThinkingBlock": false,
@@ -21,5 +21,6 @@
   "quietStartup": false,
   "enableSkillCommands": true,
   "treeFilterMode": "default",
-  "enableInstallTelemetry": true
+  "enableInstallTelemetry": false,
+  "transport": "auto"
 }
