@@ -126,7 +126,7 @@ else
   call s:h("SpellLocal",  {"cterm": "none", "fg": s:red})
 endif
 
-call s:h("Pmenu",         {"fg": s:fg, "bg": s:bg_subtle})
+call s:h("Pmenu",         {"fg": s:fg, "bg": s:bg_very_subtle})
 call s:h("PmenuSel",      {"fg": s:fg, "bg": s:bg_sel})
 call s:h("PmenuSbar",     {"fg": s:fg, "bg": s:bg})
 call s:h("PmenuThumb",    {"fg": s:fg, "bg": s:bg})

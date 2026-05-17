@@ -67,9 +67,9 @@ set nofoldenable
 set number
 set signcolumn=yes
 set pumheight=20
-set textwidth=100
+set textwidth=120
 set linebreak
-set colorcolumn=100
+set colorcolumn=120
 set cursorline
 set cursorcolumn
 
@@ -296,8 +296,6 @@ augroup END
 
 # Plug 'airblade/vim-gitgutter'
 #
-g:gitgutter_grep = 'rg'
-
 autocmd BufWritePost * GitGutter
 
 # Plug 'lifepillar/vim-mucomplete'
@@ -328,8 +326,6 @@ var gols = {
 	cmd: (server_info) => ['gopls', 'serve'],
 	workspace_config: {
 		gopls: {
-			hoverKind: 'FullDocumentation',
-			linksInHover: v:false,
 			staticcheck: v:false,
 		},
 	},
@@ -374,6 +370,8 @@ g:lsp_document_code_action_signs_hint = {'text': '>'}
 g:lsp_format_sync_timeout = 1000
 
 g:lsp_show_message_log_level = 'none'
+g:lsp_float_max_width = min([88, float2nr(&columns * 0.6)])
+g:lsp_popup_borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<CR>:LspDefinition<CR>
@@ -417,7 +415,7 @@ augroup filetypedetect
 	au FileType yaml setlocal et sw=2 sts=2 ts=2
 	au FileType proto setlocal et sts=4
 
-	au FileType rst,markdown,text setlocal tw=80 cc=80 spell
+	au FileType rst,markdown,text setlocal tw=120 cc=120 spell
 	au FileType mail setlocal tw=72 cc=72 spell
 	au FileType gitcommit setlocal tw=72 cc=72 spell
 	autocmd FileType sql setlocal omnifunc=
