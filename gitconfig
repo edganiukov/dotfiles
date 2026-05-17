@@ -38,3 +38,5 @@
 	dl = log -p --ext-diff
 	ds = show --ext-diff
 	d = diff
+[init]
+	defaultBranch = master

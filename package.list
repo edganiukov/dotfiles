@@ -5,6 +5,7 @@ rustup
 clang
 gdb
 git
+pi-coding-agent
 
 # tools
 bash-completion

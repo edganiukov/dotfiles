@@ -1,33 +1,33 @@
 /* Colors */
 #TabsToolbar {
-    background-color: #282828 !important;
+	background-color: #282828 !important;
 }
 
 #toolbar-menubar {
-    background-color: #282828 !important;
+	background-color: #282828 !important;
 }
 
 tab:not([selected="true"]) {
-    color: #EDEDED !important;
+	color: #EDEDED !important;
 }
 
 /* Menu items color */
 menubar>menu {
-    color: #EDEDED !important;
+	color: #EDEDED !important;
 }
 
 #tabs-newtab-button {
-    color: #EDEDED !important;
+	color: #EDEDED !important;
 }
 
 /* Style */
 menupopup>menu, menupopup>menuitem {
-    padding-block: 2px !important;
+	padding-block: 2px !important;
 }
 
 .tab-background {
-    border-radius: 2px 2px 0px 0px !important;
-    margin-bottom: 0px !important;
+	border-radius: 2px 2px 0px 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .tabbrowser-tab {
