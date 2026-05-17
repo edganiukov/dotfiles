@@ -116,6 +116,10 @@ def g:StatusLineMode(): string
 enddef
 
 def g:GitStatus(): string
+	if !exists('*GitGutterGetHunkSummary')
+		return ''
+	endif
+
 	var [a,m,r] = g:GitGutterGetHunkSummary()
 	return printf('+%d ~%d -%d', a, m, r)
 enddef
@@ -132,17 +136,16 @@ set statusline+=\ \|\ %{&fenc!=#""?&fenc:&enc}  # file enconding
 set statusline+=\ \|\ %{&ft!=#""?&ft:"[none]"}  # file type
 set statusline+=\ \|\ %p%%\ %l:%c\ %* # percentage and lineinfo
 
-set autoread
 set updatetime=100
 
 augroup autoreload
   autocmd!
   autocmd FocusGained,BufEnter * checktime
   autocmd CursorHold,CursorHoldI * checktime
+  autocmd FileChangedShellPost *
+    \ echo "File has been changed. Buffer reloaded." |
+    \ echohl None
 augroup END
-au FileChangedShellPost *
-  \ echo "File has been changed. Buffer reloaded." |
-  \ echohl None
 
 # fix cursor in INSERT mode
 &t_SI = "\e[5 q"
@@ -155,12 +158,14 @@ vnoremap p "_dP
 # delete without yanking
 nnoremap <leader>d "_d
 
-noremap j gj
-noremap k gk
+nnoremap j gj
+nnoremap k gk
+xnoremap j gj
+xnoremap k gk
 
 # indent
-nmap < <<
-nmap > >>
+nnoremap < <<
+nnoremap > >>
 vnoremap < <gv
 vnoremap > >gv
 
@@ -187,8 +192,10 @@ nnoremap fd :bd<CR>
 # disable arrows
 # noremap <Up> <NOP>
 # noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+nnoremap <Left> <NOP>
+nnoremap <Right> <NOP>
+vnoremap <Left> <NOP>
+vnoremap <Right> <NOP>
 
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
@@ -220,8 +227,9 @@ def g:Fzf(choice_cmd: string, vim_cmd: string)
 	# do not fail on errors from ^C, allow redraw! below
 	endtry
 	redraw!
-	if v:shell_error == 0 && !empty(output)
-		exec vim_cmd .. ' ' .. output
+	var choice = trim(output, "\n")
+	if v:shell_error == 0 && !empty(choice)
+		exec vim_cmd .. ' ' .. fnameescape(choice)
 	endif
 enddef
 
@@ -232,7 +240,13 @@ nnoremap <leader>f :call g:Fzf('rg --files', ':e')<CR>
 def g:FzfBuffer()
   var bufnrs: list<number> = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   var buffers = mapnew(bufnrs, 'bufname(v:val)')
-  call g:Fzf('echo "' .. join(buffers, "\n") .. '"', ':b')
+  var tmp = tempname()
+  writefile(buffers, tmp)
+  try
+    g:Fzf('cat ' .. shellescape(tmp), ':b')
+  finally
+    delete(tmp)
+  endtry
 enddef
 
 nnoremap <leader>bb :call g:FzfBuffer()<CR>
@@ -247,10 +261,11 @@ def g:Rg()
 	endtry
 
 	redraw!
+	output = trim(output, "\n")
 	if v:shell_error == 0 && !empty(output)
-		var parts = split(output, ':')
-		if len(parts) >= 2
-			exec ':e +' .. parts[1] .. ' ' .. parts[0]
+		var match = matchlist(output, '^\(.\{-}\):\(\d\+\):\(\d\+\):')
+		if !empty(match[1])
+			exec ':e +' .. match[2] .. ' ' .. fnameescape(match[1])
 		endif
 	endif
 enddef
@@ -284,9 +299,13 @@ g:NERDTreeIgnore = [
 	'^\.turbo',
 ]
 
-map <F2> :NERDTreeToggle<CR>
-map <leader>e :NERDTreeExplore<CR>
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
+nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <leader>e :NERDTreeExplore<CR>
+
+augroup nerdtree
+	autocmd!
+	autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') | quit | endif
+augroup END
 
 # Plug 'tpope/vim-commentary'
 #
@@ -296,7 +315,10 @@ augroup END
 
 # Plug 'airblade/vim-gitgutter'
 #
-autocmd BufWritePost * GitGutter
+augroup gitgutter
+	autocmd!
+	autocmd BufWritePost * GitGutter
+augroup END
 
 # Plug 'lifepillar/vim-mucomplete'
 #
@@ -314,7 +336,10 @@ g:mucomplete#can_complete = {
 }
 
 # mucomplete + vim-lsp
-autocmd FileType go,rust,zig setlocal omnifunc=lsp#complete
+augroup lsp_completion
+	autocmd!
+	autocmd FileType go,rust,zig setlocal omnifunc=lsp#complete
+augroup END
 inoremap <leader>c <C-x><C-o>
 
 
@@ -330,7 +355,6 @@ var gols = {
 		},
 	},
 	allowlist: ['go'],
-	languageId: (server_info) => 'filetype',
 }
 au User lsp_setup lsp#register_server(gols)
 
@@ -365,7 +389,7 @@ g:lsp_diagnostics_signs_error = {'text': 'x'}
 g:lsp_diagnostics_signs_warning = {'text': 'w'}
 g:lsp_diagnostics_signs_information = {'text': '@'}
 g:lsp_diagnostics_signs_hint = {'text': '*'}
-g:lsp_document_code_action_signs_hint = {'text': '>'}
+g:lsp_document_code_action_signs_enabled = 0
 
 g:lsp_format_sync_timeout = 1000
 
@@ -386,11 +410,12 @@ nnoremap <silent> gm :execute('LspCodeActionSync source.organizeImports')<CR>
 command! -bang -nargs=* LspStartServer lsp#activate()
 
 augroup autoformat
-	au FileType go autocmd BufWritePre <buffer> g:Format('gofmt')
-	au FileType zig autocmd BufWritePre <buffer> g:Format('zig fmt --stdin')
-	au FileType rust autocmd BufWritePre <buffer> g:Format('rustfmt --config max_width=100 --edition=2024')
-	au FileType proto autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.proto')
-	# au FileType c,cpp,hpp autocmd BufWritePre <buffer> g:Format('clang-format -assume-filename=foobar.c')
+	autocmd!
+	autocmd BufWritePre *.go g:Format('gofmt')
+	autocmd BufWritePre *.zig g:Format('zig fmt --stdin')
+	autocmd BufWritePre *.rs g:Format('rustfmt --config max_width=100 --edition=2024')
+	autocmd BufWritePre *.proto g:Format('clang-format -assume-filename=foobar.proto')
+	# autocmd BufWritePre *.c,*.cpp,*.hpp g:Format('clang-format')
 augroup END
 
 def g:Format(formatter: string)
