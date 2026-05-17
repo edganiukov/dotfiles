@@ -413,25 +413,44 @@ augroup autoformat
 	autocmd!
 	autocmd BufWritePre *.go g:Format('gofmt')
 	autocmd BufWritePre *.zig g:Format('zig fmt --stdin')
-	autocmd BufWritePre *.rs g:Format('rustfmt --config max_width=100 --edition=2024')
+	autocmd BufWritePre *.rs g:Format('rustfmt --config max_width=120 --edition=2024')
 	autocmd BufWritePre *.proto g:Format('clang-format -assume-filename=foobar.proto')
 	# autocmd BufWritePre *.c,*.cpp,*.hpp g:Format('clang-format')
 augroup END
 
 def g:Format(formatter: string)
-	var winview = winsaveview()
-
-	var content = join(getbufline('%', 1, '$'), "\n")
-	var formatted = systemlist(formatter, content)
-	if v:shell_error == 0
-		deletebufline('%', 1, '$')
-		setline(1, [])
-		setbufline('%', 1, formatted)
-	else
-		echo printf('Formatting failed...')
+	var view = winsaveview()
+	var old = getline(1, '$')
+	var input = join(old, "\n")
+	if &endofline
+		input ..= "\n"
 	endif
 
-	winrestview(winview)
+	var formatted = systemlist(formatter, input)
+	if v:shell_error != 0
+		echohl ErrorMsg
+		echomsg 'Formatting failed: ' .. formatter
+		echohl None
+		return
+	endif
+
+	if empty(formatted)
+		formatted = ['']
+	endif
+
+	if formatted == old
+		return
+	endif
+
+	try
+		keepjumps lockmarks call setline(1, formatted)
+		if line('$') > len(formatted)
+			silent! undojoin
+			keepjumps lockmarks call deletebufline('%', len(formatted) + 1, '$')
+		endif
+	finally
+		winrestview(view)
+	endtry
 enddef
 
 augroup filetypedetect
