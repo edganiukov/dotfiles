@@ -371,7 +371,6 @@ g:lsp_format_sync_timeout = 1000
 
 g:lsp_show_message_log_level = 'none'
 g:lsp_float_max_width = min([88, float2nr(&columns * 0.6)])
-g:lsp_popup_borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gds :sp<CR>:LspDefinition<CR>
