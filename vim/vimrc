@@ -256,7 +256,7 @@ nnoremap <leader>bb :call g:FzfBuffer()<CR>
 def g:Rg()
 	var output = ''
 	try
-		output = system('fzf --height=40% --ansi --disabled --print-query --bind "ctrl-left:backward-word,ctrl-right:forward-word" --bind "change:reload(rg --line-number --no-heading --color=always {q} || true)" | tail -1')
+		output = system('fzf --height=40% --ansi --disabled --print-query --bind "ctrl-left:backward-word,ctrl-right:forward-word" --bind "change:reload(rg --line-number --column --no-heading --color=always {q} || true)" | tail -1')
 	catch /Vim:Interrupt/
 	endtry
 
@@ -266,6 +266,7 @@ def g:Rg()
 		var match = matchlist(output, '^\(.\{-}\):\(\d\+\):\(\d\+\):')
 		if !empty(match[1])
 			exec ':e +' .. match[2] .. ' ' .. fnameescape(match[1])
+			cursor(str2nr(match[2]), str2nr(match[3]))
 		endif
 	endif
 enddef
