@@ -1,4 +1,4 @@
-.PHONY: bash vim tmux screen git x fonts gtk redshift dunst grobi ripgrep
+.PHONY: bash vim nvim tmux screen git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
 .PHONY: system76 qutebrowser alacritty
 
@@ -7,7 +7,7 @@ CWD=$(shell pwd)
 nvim:
 	mkdir -p ~/.config/nvim
 	ln -sf $(CWD)/nvim/init.lua $(HOME)/.config/nvim/init.lua
-	ln -sf $(CWD)/nvim/lua $(HOME)/.config/nvim/lua
+	ln -sfn $(CWD)/nvim/colors $(HOME)/.config/nvim/colors
 
 vim:
 	mkdir -p $(HOME)/.vim

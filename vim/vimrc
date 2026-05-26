@@ -210,9 +210,6 @@ nnoremap <A-up> :m-2<CR>=gv
 vnoremap <A-down> :m'>+<CR>gv=gv
 vnoremap <A-up> :m-2<CR>gv=gv
 
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
@@ -249,7 +246,7 @@ def g:FzfBuffer()
   endtry
 enddef
 
-nnoremap <leader>bb :call g:FzfBuffer()<CR>
+nnoremap <leader>e :call g:FzfBuffer()<CR>
 
 # grep
 #
@@ -301,7 +298,7 @@ g:NERDTreeIgnore = [
 ]
 
 nnoremap <F2> :NERDTreeToggle<CR>
-nnoremap <leader>e :NERDTreeExplore<CR>
+nnoremap <F3> :NERDTreeFind<CR>
 
 augroup nerdtree
 	autocmd!
