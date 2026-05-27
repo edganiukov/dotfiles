@@ -1,72 +1,34 @@
 local opt = vim.opt
 
+vim.g.NERDTreeDirArrows = 1
+vim.g.NERDTreeMinimalUI = 1
+vim.g.NERDTreeShowHidden = 1
+vim.g.NERDTreeMinimalMenu = 1
+vim.g.NERDTreeMapActivateNode = '<Space>'
+vim.g.NERDTreeWinSize = 40
+vim.g.NERDTreeDirArrowExpandable = '+'
+vim.g.NERDTreeDirArrowCollapsible = '-'
+vim.g.NERDTreeIgnore = {
+  '^\\.git$',
+  '^\\.direnv$',
+  '^\\.zig-*',
+  '^\\.localdev-tmp',
+  '^\\.stfolder',
+  '^\\.turbo',
+}
+
 assert(vim.pack, 'This config uses vim.pack and requires Neovim 0.12+')
 vim.pack.add({
-  'https://github.com/nvim-tree/nvim-tree.lua',
+  'https://github.com/preservim/nerdtree',
   'https://github.com/jlanzarotta/bufexplorer',
   'https://github.com/tpope/vim-fugitive',
   'https://github.com/airblade/vim-gitgutter',
 }, { confirm = false, load = true })
 
-local nvim_tree_ok, nvim_tree = pcall(require, 'nvim-tree')
-if nvim_tree_ok then
-  local function nvim_tree_on_attach(bufnr)
-    local api = require('nvim-tree.api')
-    local function opts(desc)
-      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-    end
-
-    api.map.on_attach.default(bufnr)
-    vim.keymap.set('n', '<Space>', api.node.open.edit, opts('Open'))
-  end
-
-  nvim_tree.setup({
-    on_attach = nvim_tree_on_attach,
-    view = {
-      width = 40,
-    },
-    renderer = {
-      group_empty = true,
-      root_folder_label = ':~',
-      icons = {
-        show = {
-          file = false,
-          folder = false,
-          folder_arrow = true,
-          git = false,
-          modified = false,
-          diagnostics = false,
-          bookmarks = false,
-        },
-        glyphs = {
-          folder = {
-            arrow_closed = '+',
-            arrow_open = '-',
-          },
-        },
-      },
-    },
-    git = {
-      enable = false,
-    },
-    filters = {
-      git_ignored = false,
-      custom = {
-        '^\\.git$',
-        '^\\.direnv$',
-        '^\\.zig-*',
-        '^\\.localdev%-tmp$',
-        '^\\.stfolder$',
-        '^\\.turbo$',
-      },
-    },
-  })
-end
-
 pcall(vim.cmd.colorscheme, 'off')
 
 local separator_hl = { fg = '#303030', bg = '#181818', ctermfg = 236, ctermbg = 234 }
-for _, group in ipairs({ 'VertSplit', 'WinSeparator', 'NvimTreeWinSeparator' }) do
+for _, group in ipairs({ 'VertSplit', 'WinSeparator' }) do
   vim.api.nvim_set_hl(0, group, separator_hl)
 end
 vim.api.nvim_set_hl(0, 'LspHoverNormal', { fg = '#C6C6C6', bg = '#303030', ctermfg = 251, ctermbg = 236 })
@@ -379,21 +341,14 @@ autocmd('QuickFixCmdPost', {
 })
 autocmd('FileType', { group = quickfix, pattern = 'qf', command = 'resize 20' })
 
-map('n', '<F2>', ':NvimTreeToggle<CR>', { silent = true } )
-map('n', '<F3>', ':NvimTreeFindFile<CR>', { silent = true } )
+map('n', '<F2>', ':NERDTreeToggle<CR>', { silent = true })
+map('n', '<F3>', ':NERDTreeFind<CR>', { silent = true })
 
-autocmd({ 'BufEnter', 'BufWinEnter', 'WinEnter' }, {
-  group = augroup('nvim_tree', { clear = true }),
+autocmd('BufEnter', {
+  group = augroup('nerdtree', { clear = true }),
   nested = true,
   callback = function()
-    local name = vim.api.nvim_buf_get_name(0)
-    if vim.bo.filetype ~= 'NvimTree' and not name:match('NvimTree_') then
-      return
-    end
-
-    vim.wo.statusline = ' %{getcwd()}'
-
-    if vim.fn.winnr('$') == 1 then
+    if vim.fn.winnr('$') == 1 and vim.b.NERDTree ~= nil then
       pcall(vim.cmd, 'confirm quit')
     end
   end,
