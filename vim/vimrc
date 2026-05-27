@@ -285,7 +285,7 @@ augroup END
 
 # Plug 'airblade/vim-gitgutter'
 #
-augroup gitgutter
+augroup gitgutterrefresh
 	autocmd!
 	autocmd BufWritePost * GitGutter
 augroup END

@@ -218,9 +218,7 @@ local function fzf_term(cmd, on_choice)
   for name, value in pairs({
     statusline = ' ',
     number = false,
-    relativenumber = false,
     signcolumn = 'no',
-    foldcolumn = '0',
     colorcolumn = '',
     cursorline = false,
     cursorcolumn = false,
@@ -368,7 +366,6 @@ autocmd('BufWritePost', {
 })
 
 vim.diagnostic.config({
-  virtual_text = false,
   underline = false,
   signs = {
     text = {
