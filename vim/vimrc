@@ -1,10 +1,8 @@
 vim9script
 
-plug#begin('~/.vim/plugged')
-
 # Plugins
 # https://github.com/junegunn/vim-plug
-
+plug#begin('~/.vim/plugged')
 # Basic
 Plug 'preservim/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
@@ -15,54 +13,34 @@ Plug 'airblade/vim-gitgutter'
 # LSP
 Plug 'prabirshrestha/vim-lsp'
 Plug 'lifepillar/vim-mucomplete'
-
 plug#end()
-
-set nocompatible
-filetype off
 
 filetype plugin indent on
 syntax on
-
-set t_Co=256
-set t_ut=
-
 colorscheme off
 
-set encoding=utf-8
-
-set wildmenu
-set wildoptions-=pum
 set wildignore+=.git/,.direnv/
 set completeopt=menuone,popup,noselect
 
-set nospell
 set hidden
-set noerrorbells
 set visualbell
 set t_vb=
 
 set modelines=0
 set mouse=a
 
+set autoread
 set ignorecase
 set smartcase
 
-set nobackup
 set nowb
 set noswapfile
 
+set nofoldenable
 set noshowmode
 set showmatch
 set matchtime=2
-set showcmd
-
-set scrolljump=1
 set scrolloff=4
-set backspace=2
-
-set conceallevel=0
-set nofoldenable
 
 set number
 set signcolumn=yes
@@ -73,20 +51,14 @@ set colorcolumn=120
 set cursorline
 set cursorcolumn
 
-set nopaste
 set clipboard=unnamedplus
 
 set listchars=tab:>\ ,nbsp:.,trail:.
 set list
 
-set wrap
 set formatoptions=rq1
 
-set autoread
-
 # set autoindent
-set nosmartindent
-set noexpandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -308,7 +280,7 @@ augroup END
 # Plug 'tpope/vim-commentary'
 #
 augroup commentstring
-	autocmd FileType c,h setlocal commentstring=//\ %s
+	autocmd FileType c,h,cpp,hpp setlocal commentstring=//\ %s
 augroup END
 
 # Plug 'airblade/vim-gitgutter'
