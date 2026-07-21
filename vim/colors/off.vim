@@ -140,12 +140,12 @@ call s:h("ColorColumn",   {"bg": s:bg_subtle})
 call s:h("MatchParen",    {"bg": s:bg_sel})
 call s:h("qfLineNr",      {"fg": s:gray})
 
-call s:h("htmlH1",        {"bg": s:bg, "fg": s:fg})
-call s:h("htmlH2",        {"bg": s:bg, "fg": s:fg})
-call s:h("htmlH3",        {"bg": s:bg, "fg": s:fg})
-call s:h("htmlH4",        {"bg": s:bg, "fg": s:fg})
-call s:h("htmlH5",        {"bg": s:bg, "fg": s:fg})
-call s:h("htmlH6",        {"bg": s:bg, "fg": s:fg})
+call s:h("htmlH1",        {"bg": s:bg, "fg": s:title})
+call s:h("htmlH2",        {"bg": s:bg, "fg": s:title})
+call s:h("htmlH3",        {"bg": s:bg, "fg": s:title})
+call s:h("htmlH4",        {"bg": s:bg, "fg": s:title})
+call s:h("htmlH5",        {"bg": s:bg, "fg": s:title})
+call s:h("htmlH6",        {"bg": s:bg, "fg": s:title})
 
 hi SpellBad cterm=undercurl ctermbg=NONE guibg=NONE
 

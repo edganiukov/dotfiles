@@ -1,35 +1,46 @@
 {
   "env": {
+    "DISABLE_AUTHUPDATER": "1",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "true"
   },
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(git diff)",
       "Bash(git log)",
       "Bash(ls :*)",
       "Bash(cat :*)",
-      "Read(./**)",
-      "Glob(./**)",
-      "Grep(./**)",
+      "Bash(wc :*)",
+      "Bash(go doc :*)",
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
       "WebFetch(domain:docs.rs)"
     ],
     "deny": [
       "Read(./.direnv/**)",
+      "Read(./.git/**)",
       "Bash(sudo :*)",
       "Bash(rm :*)",
       "Bash(git push :*)",
-      "Bash(git reset :*)"
+      "Bash(git reset :*)",
+      "Bash(git checkout :*)"
     ]
   },
-  "model": "claude-opus-4-6[1m]",
+  "model": "claude-fable-5[1m]",
+  "statusLine": {
+    "type": "command",
+    "command": "jq -r '\"\\(.model.display_name) [\\(.context_window.used_percentage // 0)%]\"'"
+  },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "defaultMode": "default",
   "alwaysThinkingEnabled": true,
-  "gitCoAuthoredBy": false,
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": false,
+  "defaultMode": "default",
   "bypassPermissionsMode": "disable"
 }

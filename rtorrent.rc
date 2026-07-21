@@ -14,10 +14,6 @@ execute.throw = sh, -c, (cat,\
     "\"",(cfg.watch),"/load\" ",\
     "\"",(cfg.watch),"/start\" ")
 
-## Listening port for incoming peer traffic (fixed; you can also randomize it)
-network.port_range.set = 49164-49164
-network.port_random.set = no
-
 ## Tracker-less torrent and UDP tracker support
 dht.mode.set = auto
 dht.port.set = 6881
@@ -42,9 +38,8 @@ protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
 ## Limits for file handle resources, this is optimized for
 ## an `ulimit` of 1024 (a common default). You MUST leave
 ## a ceiling of handles reserved for rTorrent's internal needs!
-network.http.max_open.set = 50
 network.max_open_files.set = 600
-network.max_open_sockets.set = 300
+network.max_open_sockets.set = 512
 
 ## Basic operational settings (no need to change these)
 session.path.set = (cat, (cfg.session))
@@ -55,7 +50,7 @@ execute.nothrow = sh, -c, (cat, "echo >",\
     (session.path), "rtorrent.pid", " ",(system.pid))
 
 ## Other operational settings (check & adapt)
-encoding.add = utf8
+# encoding.add = utf8
 system.umask.set = 0027
 
 ## Logging:
