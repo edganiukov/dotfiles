@@ -18,7 +18,7 @@
       "Grep(*)",
       "WebFetch(domain:docs.rs)"
     ],
-    "deny": [
+    "ask": [
       "Read(./.direnv/**)",
       "Read(./.git/**)",
       "Bash(sudo :*)",

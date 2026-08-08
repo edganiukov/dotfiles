@@ -1,8 +1,12 @@
 .PHONY: bash vim nvim tmux screen git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
-.PHONY: system76 qutebrowser alacritty
+.PHONY: system76 qutebrowser alacritty bin
 
 CWD=$(shell pwd)
+
+bin:
+	mkdir -p $(HOME)/.local/bin
+	ln -sf $(CWD)/bin/ccs $(HOME)/.local/bin/ccs
 
 nvim:
 	mkdir -p ~/.config/nvim

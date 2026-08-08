@@ -1,0 +1,319 @@
+#!/usr/bin/env python3
+
+"""List, resume and delete claude-code sessions for a project.
+
+usage: ccs [path]            pick a session to resume
+       ccs --delete [path]   pick sessions to delete
+       ccs --preview [path]  show the conversation while picking
+
+Without a tty, or without fzf, it prints the list instead of picking.
+
+claude-code scatters a session across several places, all keyed by session id,
+so removing a transcript on its own orphans the rest. `claude project purge`
+clears the same set but only for a whole project at a time.
+"""
+
+import json
+import os
+import shlex
+import shutil
+import subprocess
+import sys
+import time
+
+ROOT = os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~/.claude")
+SELF = os.path.realpath(__file__)
+SEP = "\x1f"
+
+DIM = "\033[90m"
+YELLOW = "\033[33m"
+OFF = "\033[0m"
+
+# What a session leaves behind under ROOT, keyed by session id. The transcript
+# lives in the project dir and is handled separately.
+SESSION_DIRS = ("session-env", "file-history", "tasks")
+
+
+def parse(line):
+    try:
+        return json.loads(line)
+    except ValueError:
+        return {}
+
+
+def project_dir(target):
+    """claude-code names project dirs after the path, with / and . as -."""
+    return os.path.join(ROOT, "projects", target.replace("/", "-").replace(".", "-"))
+
+
+def human(size):
+    for unit in ("B", "K", "M", "G"):
+        if size < 1024 or unit == "G":
+            return f"{size:.0f}{unit}" if unit == "B" else f"{size:.1f}{unit}"
+        size /= 1024
+
+
+def scan(project):
+    """One pass per transcript for the message count and the newest titles."""
+    try:
+        names = [n for n in os.listdir(project) if n.endswith(".jsonl")]
+    except OSError:
+        return []
+
+    sessions = []
+    for name in names:
+        path = os.path.join(project, name)
+        custom = ai = None
+        messages = 0
+        try:
+            with open(path, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if '"type":"user"' in line or '"type":"assistant"' in line:
+                        messages += 1
+                    elif '-title"' in line:
+                        entry = parse(line)
+                        if entry.get("type") == "custom-title":
+                            custom = entry.get("customTitle") or custom
+                        elif entry.get("type") == "ai-title":
+                            ai = entry.get("aiTitle") or ai
+            stat = os.stat(path)
+        except OSError:
+            continue
+
+        sessions.append({
+            "id": name[: -len(".jsonl")],
+            "mtime": stat.st_mtime,
+            "size": stat.st_size,
+            "messages": messages,
+            # /rename wins over the generated title
+            "title": custom or ai or "<untitled>",
+        })
+
+    sessions.sort(key=lambda s: s["mtime"], reverse=True)
+    return sessions
+
+
+def row(session):
+    """id <sep> display, so the id stays out of what fzf shows."""
+    when = time.strftime("%Y-%m-%d %H:%M", time.localtime(session["mtime"]))
+    return "{}{}{:.8}  {}  {:>6}  {:>5} msg  {}".format(
+        session["id"], SEP, session["id"], when,
+        human(session["size"]), session["messages"], session["title"],
+    )
+
+
+def blocks(content):
+    """User content is either a bare string or a list of typed blocks."""
+    if isinstance(content, str):
+        return [("text", content)]
+    if not isinstance(content, list):
+        return []
+    out = []
+    for block in content:
+        if not isinstance(block, dict):
+            continue
+        if block.get("type") == "text":
+            out.append(("text", block.get("text") or ""))
+        elif block.get("type") == "tool_use":
+            out.append(("tool", block.get("name") or "tool"))
+    return out
+
+
+def render(path, clip=400, tail=3000):
+    """A skimmable conversation: what you asked, roughly what came back.
+
+    Thinking is dropped, each message is flattened to one paragraph for fzf to
+    wrap, and runs of tool calls collapse onto a single dim line. Long sessions
+    are tailed, since the preview redraws on every keystroke.
+    """
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            lines = fh.readlines()[-tail:]
+    except OSError:
+        return
+
+    def shorten(text):
+        text = " ".join(text.split())
+        return text if len(text) <= clip else text[: clip - 1] + "…"
+
+    tools = []
+
+    def flush():
+        if tools:
+            print(f"  {DIM}{'   '.join('· ' + name for name in tools)}{OFF}")
+            tools.clear()
+
+    for line in lines:
+        entry = parse(line)
+        kind = entry.get("type")
+        if kind not in ("user", "assistant"):
+            continue
+        content = (entry.get("message") or {}).get("content")
+
+        if kind == "user":
+            text = shorten(" ".join(t for k, t in blocks(content) if k == "text"))
+            # slash-command plumbing, not something you typed
+            if not text or text.startswith(("<local-command", "<command-name>")):
+                continue
+            flush()
+            print(f"\n{YELLOW}▸ {text}{OFF}")
+            continue
+
+        for kind_, value in blocks(content):
+            if kind_ == "tool":
+                tools.append(value)
+            elif value.strip():
+                flush()
+                print(f"  {shorten(value)}")
+    flush()
+
+
+def fzf(lines, project, preview, *extra):
+    args = [
+        "fzf", "--ansi",
+        "--delimiter", SEP,
+        "--with-nth", "2",
+        "--no-sort", "--reverse", "--info=inline-right",
+        *extra,
+    ]
+    if preview:
+        template = os.path.join(project, "{1}.jsonl")
+        args += [
+            "--preview", f"{shlex.quote(SELF)} --render {shlex.quote(template)}",
+            # follow lands at the end of the transcript, where you left off
+            "--preview-window=right,55%,wrap,follow",
+        ]
+    done = subprocess.run(args, input="\n".join(lines), text=True, stdout=subprocess.PIPE)
+    if done.returncode != 0:
+        return []
+    return [line for line in done.stdout.splitlines() if line]
+
+
+def looks_like_session_id(value):
+    """These become rmtree targets, so only accept the uuid shape."""
+    parts = value.split("-")
+    return len(parts) == 5 and all(
+        part and all(char in "0123456789abcdef" for char in part) for part in parts
+    )
+
+
+def prune_history(ids):
+    """Drop the deleted sessions' prompts from the global prompt history."""
+    path = os.path.join(ROOT, "history.jsonl")
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            lines = fh.readlines()
+    except OSError:
+        return 0
+
+    keep = [line for line in lines if parse(line).get("sessionId") not in ids]
+    dropped = len(lines) - len(keep)
+    if not dropped:
+        return 0
+
+    # Replaced atomically, but a session appending in the gap would lose that
+    # entry, so only rewrite when there is something to drop.
+    tmp = f"{path}.{os.getpid()}.tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        fh.writelines(keep)
+    os.replace(tmp, path)
+    return dropped
+
+
+def remove(session_id, project):
+    os.remove(os.path.join(project, f"{session_id}.jsonl"))
+    for name in SESSION_DIRS:
+        # directories today, but do not silently leave a file behind either
+        path = os.path.join(ROOT, name, session_id)
+        if os.path.isdir(path) and not os.path.islink(path):
+            shutil.rmtree(path, ignore_errors=True)
+        else:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+
+
+def main(argv):
+    delete = preview = False
+    target = None
+
+    args = list(argv)
+    while args:
+        arg = args.pop(0)
+        if arg in ("-d", "--delete"):
+            delete = True
+        elif arg in ("-p", "--preview"):
+            preview = True
+        elif arg == "--render":
+            render(args.pop(0) if args else "")
+            return 0
+        elif arg in ("-h", "--help"):
+            print(__doc__.strip())
+            return 0
+        elif arg.startswith("-"):
+            name = os.path.basename(SELF)
+            print(f"usage: {name} [--delete] [--preview] [path]", file=sys.stderr)
+            return 1
+        else:
+            target = arg
+
+    target = os.path.realpath(target or os.getcwd())
+    project = project_dir(target)
+    sessions = scan(project)
+    if not sessions:
+        print(f"no claude sessions for {target}")
+        return 0
+
+    lines = [row(session) for session in sessions]
+
+    if not shutil.which("fzf") or not sys.stdout.isatty():
+        if delete:
+            name = os.path.basename(SELF)
+            print(f"{name}: --delete needs fzf on a terminal", file=sys.stderr)
+            return 1
+        for line in lines:
+            print(line.split(SEP, 1)[1])
+        return 0
+
+    if not delete:
+        picked = fzf(lines, project, preview,
+                     "--prompt=resume > ", "--footer=enter resume | esc cancel")
+        if not picked:
+            return 0
+        os.chdir(target)
+        os.execvp("claude", ["claude", "--resume", picked[0].split(SEP, 1)[0]])
+
+    picked = fzf(lines, project, preview, "--multi",
+                 "--prompt=delete > ", "--footer=tab mark | enter confirm | esc cancel")
+    if not picked:
+        return 0
+
+    print("about to delete:")
+    for line in picked:
+        print("  " + line.split(SEP, 1)[1])
+    if input(f"delete {len(picked)} session(s)? [y/N] ").strip().lower() != "y":
+        print("aborted")
+        return 0
+
+    removed = set()
+    for line in picked:
+        session_id = line.split(SEP, 1)[0]
+        if not looks_like_session_id(session_id):
+            print(f"skipping unexpected session id: {session_id}", file=sys.stderr)
+            continue
+        remove(session_id, project)
+        removed.add(session_id)
+        print(f"removed {session_id}")
+
+    dropped = prune_history(removed) if removed else 0
+    if dropped:
+        print(f"pruned {dropped} history entr{'y' if dropped == 1 else 'ies'}")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main(sys.argv[1:]))
+    except KeyboardInterrupt:
+        sys.exit(130)
