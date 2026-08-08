@@ -30,8 +30,8 @@ get_tmux_option() {
   fi
 }
 
-readonly busy_icon="$(get_tmux_option "@agents-busy-icon" "○")"
-readonly done_icon="$(get_tmux_option "@agents-done-icon" "●")"
+readonly busy_icon="$(get_tmux_option "@agents-busy-icon" "~")"
+readonly done_icon="$(get_tmux_option "@agents-done-icon" "^")"
 readonly wait_icon="$(get_tmux_option "@agents-wait-icon" "!")"
 readonly busy_style="$(get_tmux_option "@agents-busy-style" "#[fg=#665C54]")"
 readonly done_style="$(get_tmux_option "@agents-done-style" "#[fg=#B8BB26]")"
@@ -67,7 +67,9 @@ readonly key="$(get_tmux_option "@agents-key" "a")"
 readonly plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if type fzf >/dev/null 2>&1; then
-  tmux bind-key "$key" display-popup -E -w 60% -h 40% "$plugin_dir/agents-list.sh"
+  tmux bind-key "$key" if-shell "$plugin_dir/agents-list.sh --any" \
+    "display-popup -E -w 60% -h 40% '$plugin_dir/agents-list.sh'" \
+    "display-message 'agents: none running'"
 else
   tmux display-message "agents: fzf not found on PATH, agent list unbound"
 fi

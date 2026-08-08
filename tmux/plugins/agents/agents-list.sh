@@ -39,8 +39,8 @@ rank() {
 icon() {
   case $1 in
     wait) printf '%s!%s' "${esc}[1;38;5;208m" "$reset" ;;
-    done) printf '%s●%s' "${esc}[38;5;142m" "$reset" ;;
-    busy) printf '%s○%s' "${esc}[38;5;241m" "$reset" ;;
+    done) printf '%s^%s' "${esc}[38;5;142m" "$reset" ;;
+    busy) printf '%s~%s' "${esc}[38;5;241m" "$reset" ;;
     *) printf ' ' ;;
   esac
 }
@@ -97,6 +97,13 @@ agents() {
 
 readonly rows="$(agents | sort -t"$sep" -k1,1n -k3,3)"
 
+# The key binding checks this first, so tmux never opens a popup that would
+# flash straight back shut when nothing is running.
+if [ "${1:-}" = "--any" ]; then
+  [ -n "$rows" ]
+  exit
+fi
+
 if [ -z "$rows" ]; then
   tmux display-message "agents: no agents running"
   exit 0
@@ -110,8 +117,7 @@ selected="$(
     --no-sort \
     --reverse \
     --info=inline-right \
-    --prompt='agents > ' \
-    --footer='enter jump | esc close'
+    --prompt='agents > '
 )"
 
 [ -n "$selected" ] || exit 0
