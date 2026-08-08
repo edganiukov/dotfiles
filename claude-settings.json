@@ -39,74 +39,12 @@
     "typescript-lsp@claude-plugins-official": true
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh clear"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh transcript"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh busy"
-          },
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh transcript"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh busy"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh wait"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh done"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.tmux/plugins/agents/agents.sh clear"
-          }
-        ]
-      }
-    ]
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
+    "PostToolUse": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
+    "Notification": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
+    "SessionEnd": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }]
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
