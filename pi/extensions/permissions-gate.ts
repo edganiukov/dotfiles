@@ -6,6 +6,7 @@
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { publish } from "./lib/tmux-agent-state.ts";
 
 export default function (pi: ExtensionAPI) {
 	const dangerousPatterns = [
@@ -28,7 +29,11 @@ export default function (pi: ExtensionAPI) {
 				return { block: true, reason: "Dangerous command blocked (no UI for confirmation)" };
 			}
 
-			const choice = await ctx.ui.select(`Running command:\n\n  ${command}\n\nAllow?`, ["Yes", "No"]);
+			// This prompt blocks the agent, so flag the tmux tab until it is answered.
+			publish("wait");
+			const choice = await ctx.ui
+				.select(`Running command:\n\n  ${command}\n\nAllow?`, ["Yes", "No"])
+				.finally(() => publish("busy"));
 
 			if (choice !== "Yes") {
 				return { block: true, reason: "Blocked by user" };
