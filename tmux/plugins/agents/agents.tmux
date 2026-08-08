@@ -3,7 +3,7 @@
 # Flags windows where a coding agent (claude-code, pi) is running.
 #
 # Agents publish their state into the pane option @agent_state, via
-# agent-watch.sh for hook-based agents or tmux set-option -p directly:
+# agents.sh for hook-based agents or tmux set-option -p directly:
 #
 #   busy - agent is working
 #   done - agent finished its turn and is idle
@@ -13,8 +13,11 @@
 # The current window skips its own active pane, so the tab already in front of
 # you never flags the agent you are looking at.
 #
-# Put #{agent_watch} in window-status-format and window-status-current-format
+# Put #{agents} in window-status-format and window-status-current-format
 # to place the indicator.
+#
+# prefix + @agents-key lists every agent on the server in a popup and
+# switches to the one you pick.
 
 get_tmux_option() {
   local option=$1
@@ -27,13 +30,13 @@ get_tmux_option() {
   fi
 }
 
-readonly busy_icon="$(get_tmux_option "@agent-watch-busy-icon" "○")"
-readonly done_icon="$(get_tmux_option "@agent-watch-done-icon" "●")"
-readonly wait_icon="$(get_tmux_option "@agent-watch-wait-icon" "!")"
-readonly busy_style="$(get_tmux_option "@agent-watch-busy-style" "#[fg=#665C54]")"
-readonly done_style="$(get_tmux_option "@agent-watch-done-style" "#[fg=#B8BB26]")"
-readonly wait_style="$(get_tmux_option "@agent-watch-wait-style" "#[fg=#FE8019]#[bold]")"
-readonly placeholder="#{agent_watch}"
+readonly busy_icon="$(get_tmux_option "@agents-busy-icon" "○")"
+readonly done_icon="$(get_tmux_option "@agents-done-icon" "●")"
+readonly wait_icon="$(get_tmux_option "@agents-wait-icon" "!")"
+readonly busy_style="$(get_tmux_option "@agents-busy-style" "#[fg=#665C54]")"
+readonly done_style="$(get_tmux_option "@agents-done-style" "#[fg=#B8BB26]")"
+readonly wait_style="$(get_tmux_option "@agents-wait-style" "#[fg=#FE8019]#[bold]")"
+readonly placeholder="#{agents}"
 
 # $1 - format expanding to the states of the panes to watch.
 # States are listed quietest first; each one wraps the previous as its else
@@ -59,3 +62,12 @@ interpolate() {
 
 interpolate "window-status-format" "$(indicator '#{P:#{@agent_state}}')"
 interpolate "window-status-current-format" "$(indicator '#{P:#{@agent_state},}')"
+
+readonly key="$(get_tmux_option "@agents-key" "a")"
+readonly plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if type fzf >/dev/null 2>&1; then
+  tmux bind-key "$key" display-popup -E -w 60% -h 40% "$plugin_dir/agents-list.sh"
+else
+  tmux display-message "agents: fzf not found on PATH, agent list unbound"
+fi

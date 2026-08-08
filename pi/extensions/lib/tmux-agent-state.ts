@@ -1,6 +1,6 @@
 /**
  * Publishes coding agent state to the tmux pane pi runs in. The @agent_state
- * pane option is the contract shared with tmux/plugins/agent-watch/agent-watch.tmux.
+ * pane option is the contract shared with tmux/plugins/agents/agents.tmux.
  *
  * Not an extension: this directory holds helpers, so pi's discovery of
  * extensions/*.ts and extensions/*!/index.ts skips it. No-op outside tmux.
@@ -24,4 +24,15 @@ export function publish(state?: AgentState) {
 
 	// Redraw now instead of waiting for the next status-interval tick.
 	execFile("tmux", args, () => execFile("tmux", ["refresh-client", "-S"], () => {}));
+}
+
+/** Label this pane's agent session for the agent list, or clear it. */
+export function publishSession(label?: string) {
+	if (!pane) return;
+
+	const args = label
+		? ["set-option", "-p", "-t", pane, "@agent_session", label]
+		: ["set-option", "-pu", "-t", pane, "@agent_session"];
+
+	execFile("tmux", args, () => {});
 }
