@@ -111,7 +111,7 @@ selected="$(
     --reverse \
     --info=inline-right \
     --prompt='agents > ' \
-    --header='enter jump   esc close'
+    --footer='enter jump | esc close'
 )"
 
 [ -n "$selected" ] || exit 0

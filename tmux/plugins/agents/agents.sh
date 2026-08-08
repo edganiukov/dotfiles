@@ -15,8 +15,16 @@ if [ -z "$TMUX" ] || [ -z "$TMUX_PANE" ]; then
 fi
 
 case "$1" in
-  busy | done | wait)
+  busy | done)
     tmux set-option -p -t "$TMUX_PANE" @agent_state "$1" 2>/dev/null
+    ;;
+  wait)
+    # claude-code holds this notification back a few seconds and drops it if the
+    # prompt gets answered first, so it can still land after the turn ended.
+    # Only a turn in flight can be blocked, so ignore it otherwise.
+    case "$(tmux show-option -pqv -t "$TMUX_PANE" @agent_state 2>/dev/null)" in
+      busy | wait) tmux set-option -p -t "$TMUX_PANE" @agent_state wait 2>/dev/null ;;
+    esac
     ;;
   clear)
     tmux set-option -pu -t "$TMUX_PANE" @agent_state 2>/dev/null

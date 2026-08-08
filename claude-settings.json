@@ -67,6 +67,16 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.tmux/plugins/agents/agents.sh busy"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [
