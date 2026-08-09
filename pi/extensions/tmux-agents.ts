@@ -5,12 +5,15 @@
  * pi finishes a turn, and labels the pane with this session's name so the agent
  * list can tell two pi sessions in the same project apart.
  *
+ * It also names the window "pi": tmux takes the automatic name from the process
+ * image, which for pi is node, and macOS ignores the process.title pi sets.
+ *
  * pi has no event for "blocked on a dialog", so prompts that block the agent
  * publish "wait" themselves; see permissions-gate.ts.
  */
 
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { inTmux, publish, publishSession } from "./lib/tmux-agent-state.ts";
+import { inTmux, publish, publishName, publishSession } from "./lib/tmux-agent-state.ts";
 
 // pi only names a session when asked to, so fall back to a short id to keep
 // unnamed sessions distinguishable.
@@ -27,6 +30,7 @@ export default function (pi: ExtensionAPI) {
 
 	pi.on("session_start", async (_event, ctx) => {
 		publish();
+		publishName("pi");
 		publishSession(sessionLabel(ctx));
 	});
 
@@ -36,6 +40,7 @@ export default function (pi: ExtensionAPI) {
 
 	pi.on("session_shutdown", async () => {
 		publish();
+		publishName();
 		publishSession();
 	});
 

@@ -26,6 +26,17 @@ export function publish(state?: AgentState) {
 	execFile("tmux", args, () => execFile("tmux", ["refresh-client", "-S"], () => {}));
 }
 
+/** Name this pane's window after the agent, or hand naming back to tmux. */
+export function publishName(name?: string) {
+	if (!pane) return;
+
+	const args = name
+		? ["set-option", "-p", "-t", pane, "@agent_name", name]
+		: ["set-option", "-pu", "-t", pane, "@agent_name"];
+
+	execFile("tmux", args, () => {});
+}
+
 /** Label this pane's agent session for the agent list, or clear it. */
 export function publishSession(label?: string) {
 	if (!pane) return;

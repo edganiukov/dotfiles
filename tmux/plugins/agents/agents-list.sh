@@ -4,9 +4,13 @@
 # you pick. Bound to a key by agents.tmux, run inside a tmux popup.
 #
 # Agents are panes running one of @agents-commands, plus any pane that has
-# published an @agent_state. State names follow the indicator in the status
-# line: wait/done/busy, shown here as blocked/done/working, with panes that run
-# an agent but have published nothing counted as idle.
+# published an @agent_state or an @agent_name. The name is what agents whose
+# process is not their own name go by: pi runs as node, so it never matches
+# @agents-commands and is listed under the name it published instead.
+#
+# State names follow the indicator in the status line: wait/done/busy, shown
+# here as blocked/done/working, with panes that run an agent but have published
+# nothing counted as idle.
 
 get_tmux_option() {
   local option=$1
@@ -78,11 +82,11 @@ truncate_to() {
 agents() {
   local fmt="#{pane_id}${sep}#{session_name}${sep}#{window_index}${sep}#{pane_index}"
   fmt="${fmt}${sep}#{pane_current_command}${sep}#{pane_current_path}${sep}#{@agent_state}"
-  fmt="${fmt}${sep}#{@agent_session}${sep}#{@agent_transcript}"
+  fmt="${fmt}${sep}#{@agent_session}${sep}#{@agent_transcript}${sep}#{@agent_name}"
 
-  local pane sess widx pidx cmd path state agent_session transcript title
-  while IFS="$sep" read -r pane sess widx pidx cmd path state agent_session transcript; do
-    [[ $cmd =~ ^(${commands})$ || -n $state ]] || continue
+  local pane sess widx pidx cmd path state agent_session transcript name title
+  while IFS="$sep" read -r pane sess widx pidx cmd path state agent_session transcript name; do
+    [[ $cmd =~ ^(${commands})$ || -n $state || -n $name ]] || continue
 
     # pi labels its pane directly; claude-code only records where to look.
     title="$agent_session"
@@ -90,7 +94,7 @@ agents() {
 
     printf '%s%s%s%s%s %-7s %-8s %-5s %-12s %-8s %s\n' \
       "$(rank "$state")" "$sep" "$pane" "$sep" \
-      "$(icon "$state")" "$cmd" "$sess" "$widx.$pidx" \
+      "$(icon "$state")" "${name:-$cmd}" "$sess" "$widx.$pidx" \
       "$(truncate_to "${path##*/}" 12)" "$(label "$state")" "$(truncate_to "$title" 28)"
   done < <(tmux list-panes -a -F "$fmt")
 }

@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.1",
   "defaultThinkingLevel": "xhigh",
   "theme": "dark",
   "collapseChangelog": true,
@@ -22,5 +22,9 @@
   "enableSkillCommands": true,
   "treeFilterMode": "default",
   "enableInstallTelemetry": false,
-  "transport": "auto"
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "hidden"
 }

@@ -9,6 +9,10 @@
 #   done - agent finished its turn and is idle
 #   wait - agent is blocked on you, asking for permission or an answer
 #
+# An agent that runs under some other process name also publishes @agent_name,
+# which names the window after the agent and is how the agent list finds it; pi
+# does this, since it runs as node. See tmux.conf's automatic-rename-format.
+#
 # Each window folds its panes' states into the status line, loudest state wins.
 # The current window skips its own active pane, so the tab already in front of
 # you never flags the agent you are looking at.
