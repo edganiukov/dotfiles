@@ -5,7 +5,7 @@
   "collapseChangelog": true,
   "hideThinkingBlock": false,
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-luna",
+  "defaultModel": "gpt-5.6-sol",
   "compaction": {
     "enabled": true,
     "reserveTokens": 16384,
