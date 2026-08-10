@@ -95,7 +95,7 @@ agents() {
     printf '%s%s%s%s%s %-7s %-8s %-5s %-12s %-8s %s\n' \
       "$(rank "$state")" "$sep" "$pane" "$sep" \
       "$(icon "$state")" "${name:-$cmd}" "$sess" "$widx.$pidx" \
-      "$(truncate_to "${path##*/}" 12)" "$(label "$state")" "$(truncate_to "$title" 28)"
+      "$(truncate_to "${path##*/}" 16)" "$(label "$state")" "$(truncate_to "$title" 50)"
   done < <(tmux list-panes -a -F "$fmt")
 }
 

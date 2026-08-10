@@ -68,11 +68,14 @@ interpolate "window-status-format" "$(indicator '#{P:#{@agent_state}}')"
 interpolate "window-status-current-format" "$(indicator '#{P:#{@agent_state},}')"
 
 readonly key="$(get_tmux_option "@agents-key" "a")"
+readonly width="$(get_tmux_option "@agents-width" "50%")"
+readonly height="$(get_tmux_option "@agents-height" "30%")"
 readonly plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if type fzf >/dev/null 2>&1; then
+  # A percentage, so tmux keeps rescaling the popup when the window is resized.
   tmux bind-key "$key" if-shell "$plugin_dir/agents-list.sh --any" \
-    "display-popup -E -w 60% -h 40% '$plugin_dir/agents-list.sh'" \
+    "display-popup -E -w $width -h $height '$plugin_dir/agents-list.sh'" \
     "display-message 'agents: none running'"
 else
   tmux display-message "agents: fzf not found on PATH, agent list unbound"
