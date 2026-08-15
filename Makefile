@@ -1,8 +1,10 @@
-.PHONY: bash vim nvim tmux screen git x fonts gtk redshift dunst grobi ripgrep
-.PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
-.PHONY: system76 qutebrowser alacritty foot bin sway
+.PHONY: etc kanshi
 
 CWD=$(shell pwd)
+
+etc:
+	sudo cp $(CWD)/etc/polkit-1/rules.d/50-fprintd.rules /etc/polkit-1/rules.d/50-fprintd.rules
+	sudo cp $(CWD)/etc/pam.d/* /etc/pam.d/
 
 bin:
 	mkdir -p $(HOME)/.local/bin
@@ -24,12 +26,6 @@ tmux:
 	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
 	ln -sf $(CWD)/tmux $(HOME)/.tmux
 
-screen:
-	ln -sf $(CWD)/screenrc $(HOME)/.screenrc
-
-ghostty:
-	ln -sf $(CWD)/ghostty $(HOME)/.config/
-
 alacritty:
 	mkdir -p $(HOME)/.config/alacritty
 	ln -sf $(CWD)/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
@@ -42,25 +38,20 @@ git:
 	ln -sf $(CWD)/gitconfig $(HOME)/.gitconfig
 	ln -sf $(CWD)/tigrc $(HOME)/.tigrc
 
-bash:
+shell:
 	ln -sf $(CWD)/dir_colors $(HOME)/.dir_colors
 	ln -sf $(CWD)/bash/bashrc $(HOME)/.bashrc
 	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
-
-x:
-	ln -sf $(CWD)/Xresources $(HOME)/.Xresources
-	ln -sf $(CWD)/xinitrc $(HOME)/.xinitrc
-	ln -sf $(CWD)/xbindkeysrc $(HOME)/.xbindkeysrc
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
-	ln -sf $(CWD)/smm.conf $(HOME)/.config/smm.conf
 
 sway:
 	mkdir -p $(HOME)/.config/sway
 	ln -sf $(CWD)/sway/config $(HOME)/.config/sway/config
+	ln -sf $(CWD)/sway/scripts $(HOME)/.config/sway/scripts
 
-gtk:
-	mkdir -p ~/.config/gtk-3.0
-	ln -sf $(CWD)/gtk3-settings.ini $(HOME)/.config/gtk-3.0/settings.ini
+kanshi:
+	mkdir -p $(HOME)/.config/kanshi
+	ln -sf $(CWD)/kanshi/config $(HOME)/.config/kanshi/config
 
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
@@ -75,12 +66,12 @@ dunst:
 	ln -sf $(CWD)/dunstrc $(HOME)/.config/dunst/dunstrc
 
 agents:
-	ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
+	# ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
+	mkdir -p $(HOME)/.pi/agent
 	ln -sf $(CWD)/pi/settings.json $(HOME)/.pi/agent/settings.json
-	ln -sf $(CWD)/pi/extensions $(HOME)/.pi/agent/extensions/
-	ln -sf $(CWD)/pi/skills $(HOME)/.pi/agent/skills/
+	ln -sf $(CWD)/pi/extensions $(HOME)/.pi/agent/extensions
+	ln -sf $(CWD)/pi/skills $(HOME)/.pi/agent/skills
 
-# email
 mutt:
 	mkdir -p $(HOME)/.mutt
 	ln -sf $(CWD)/mutt/muttrc $(HOME)/.mutt/muttrc
@@ -122,6 +113,3 @@ weechat:
 
 ripgrep:
 	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
-
-qutebrowser:
-	ln -s $(CWD)/qutebrowser/config.py $(HOME)/.config/qutebrowser/config.py

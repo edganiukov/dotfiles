@@ -3,4 +3,4 @@
 #
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
-[[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]] && startx
+[[ -z $DISPLAY && -z $WAYLAND_DISPLAY && "$XDG_VTNR" = 1 ]] && exec sway

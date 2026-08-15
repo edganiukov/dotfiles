@@ -1,0 +1,8 @@
+profile docked {
+	output eDP-1 disable
+	output DP-10 enable mode preferred position 0,0 scale 1.55
+}
+
+profile undocked {
+	output eDP-1 enable mode preferred position 0,0 scale 2
+}

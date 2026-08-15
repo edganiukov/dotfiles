@@ -19,9 +19,10 @@ curl
 nmap
 pass
 urlview
-xclip
+wl-clipboard
 brightnessctl
-redshift
+wlsunset
+kanshi
 feh
 isync
 xdg-utils

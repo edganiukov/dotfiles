@@ -21,6 +21,11 @@ menubar>menu {
 }
 
 /* Style */
+:root {
+	--tab-min-height: 32px !important;
+	--tab-block-margin: 3px !important;
+}
+
 menupopup>menu, menupopup>menuitem {
 	padding-block: 2px !important;
 }

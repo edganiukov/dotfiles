@@ -1,0 +1,6 @@
+#%PAM-1.0
+#
+auth include password-fingerprint
+account include system-auth
+session include system-auth
+session optional pam_systemd.so class=none

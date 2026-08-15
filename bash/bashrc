@@ -59,10 +59,11 @@ shopt -s checkwinsize
 # env
 export EDITOR=vim
 export CLICOLOR=YES
-export GPG_TTY=$(tty)
 
+export WMENU_FON="monospace 12"
+export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-export SSH_ASKPASS=dmenu-askpass
+export SSH_ASKPASS=wmenu-askpass
 export SSH_ASKPASS_REQUIRE=force
 
 export GOPATH=$HOME/.go
@@ -90,7 +91,7 @@ alias ussh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
 
 # taugres shell integration (added by `tau setup`)
-eval "$(tau hook bash)"
+# eval "$(tau hook bash)"
 
 # functions
 # n - start nnn file manager

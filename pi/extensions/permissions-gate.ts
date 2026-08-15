@@ -10,7 +10,6 @@ import { publish } from "./lib/tmux-agent-state.ts";
 
 export default function (pi: ExtensionAPI) {
 	const dangerousPatterns = [
-		/\brm\s+(-rf?|--recursive)/i,
 	   	/\bsudo\b/i,
 	   	/\bdoas\b/i,
 		/\bgit\s+(push|reset|checkout)/i,

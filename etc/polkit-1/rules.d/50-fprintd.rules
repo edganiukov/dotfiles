@@ -1,0 +1,6 @@
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("net.reactivated.fprint.") == 0 &&
+        subject.active && subject.local) {
+        return polkit.Result.YES;
+    }
+});

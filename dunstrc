@@ -21,19 +21,17 @@
 
     ### Geometry ###
 
-    # dynamic width from 0 to 300
-    # width = (0, 300)
-    # constant width of 300
-    width = (0, 400)
+    # Keep notifications compact while avoiding very narrow messages.
+    width = (280, 400)
 
-    # The maximum height of a single notification, excluding the frame.
-    height = 100
+    # Dynamic height up to 120 pixels.
+    height = (0, 120)
 
     # Position the notification in the top right corner
     origin = top-right
 
     # Offset from the origin
-    offset = 5x30
+    offset = (5, 5)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -72,27 +70,16 @@
     # present (e.g. xcompmgr, compiz, etc.). (X11 only)
     transparency = 0
 
-    # Padding between text and separator.
-    padding = 8
+    # Padding around notification content.
+    padding = 10
+    horizontal_padding = 12
 
-    # Draw a line of "separator_height" pixel height between two
-    # notifications.
-    # Set to 0 to disable.
-    separator_height = 2
+    # Separate notifications with space rather than a divider.
+    separator_height = 0
+    gap_size = 6
 
-    # Define a color for the separator.
-    # possible values are:
-    #  * auto: dunst tries to find a color fitting to the background;
-    #  * foreground: use the same color as the foreground;
-    #  * frame: use the same color as the frame;
-    #  * anything else will be interpreted as a X color.
-    separator_color = "frame"
-
-    # Defines width in pixels of frame around the notification window.
-    # Set to 0 to disable.
-    frame_width = 2
-
-    # Defines color of the frame around the notification window.
+    # Use a subtle border; critical notifications override its color.
+    frame_width = 1
     frame_color = "#83a598"
 
     ### Text ###
@@ -160,8 +147,9 @@
     # Scale larger icons down to this size, set to 0 to disable
     max_icon_size = 64
 
-    # Paths to default icons.
-    icon_path = /usr/share/icons/Numix/16/actions;/usr/share/icons/Numix/16/status:/usr/share/icons/Numix/16/devices
+    # Look up icons recursively in the installed theme.
+    enable_recursive_icon_lookup = true
+    icon_theme = Adwaita
 
     # Sort messages by urgency.
     sort = yes
@@ -210,7 +198,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 0
+    corner_radius = 6
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -229,18 +217,21 @@
     force_xwayland = false
 
 [urgency_low]
-    background = "#282828"
-    foreground = "#ebdbb2"
-    timeout = 1
+    background = "#181818"
+    foreground = "#b0b0b0"
+    timeout = 3
 
 [urgency_normal]
-    background = "#282828"
-    foreground = "#ebdbb2"
-    timeout = 2
+    background = "#181818"
+    foreground = "#e0e0e0"
+    highlight = "#83a598"
+    timeout = 3
 
 [urgency_critical]
-    background = "#282828"
-    foreground = "#ebdbb2"
-    timeout = 4
+    background = "#181818"
+    foreground = "#ffffff"
+    frame_color = "#cc6666"
+    highlight = "#cc6666"
+    timeout = 3
 
 # vim: ft=cfg
