@@ -1,6 +1,6 @@
 .PHONY: bash vim nvim tmux screen git x fonts gtk redshift dunst grobi ripgrep
 .PHONY: mpv rtorrent sxiv zathura ncspot weechat mutt email ghostty
-.PHONY: system76 qutebrowser alacritty bin sway
+.PHONY: system76 qutebrowser alacritty foot bin sway
 
 CWD=$(shell pwd)
 
@@ -33,6 +33,10 @@ ghostty:
 alacritty:
 	mkdir -p $(HOME)/.config/alacritty
 	ln -sf $(CWD)/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
+
+foot:
+	mkdir -p $(HOME)/.config/foot
+	ln -sf $(CWD)/foot/foot.ini $(HOME)/.config/foot/foot.ini
 
 git:
 	ln -sf $(CWD)/gitconfig $(HOME)/.gitconfig
