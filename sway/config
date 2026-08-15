@@ -22,6 +22,7 @@ floating_modifier $mod normal
 # Programs and session
 bindsym $mod+Return exec $term
 bindsym $mod+r exec $menu
+bindsym $mod+b bar mode toggle
 bindsym $mod+q kill
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+q exit
@@ -66,3 +67,22 @@ bindsym $mod+Shift+6 move container to workspace number 6
 bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
+
+# Built-in status bar. Empty workspaces are hidden by swaybar.
+bar {
+    position top
+    font pango:monospace 10
+    workspace_buttons yes
+    status_command while date +'%a %d %b %R'; do sleep 30; done
+
+    colors {
+        background         #222222
+        statusline         #bbbbbb
+        separator          #444444
+        focused_workspace  #005577 #005577 #eeeeee
+        active_workspace   #005577 #005577 #eeeeee
+        inactive_workspace #444444 #222222 #bbbbbb
+        urgent_workspace   #005577 #005577 #eeeeee
+        binding_mode       #005577 #005577 #eeeeee
+    }
+}
