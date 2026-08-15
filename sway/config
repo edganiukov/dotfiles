@@ -2,10 +2,10 @@
 
 set $mod Mod4
 set $term foot
-set $menu wmenu-run
+set $menu wmenu-run -f "monospace 14" -p ">>" -l 20 -N 222222 -n bbbbbb -M 005577 -m eeeeee -S 005577 -s eeeeee
 
 # Appearance
-font pango:monospace 10
+font pango:monospace 14
 default_border pixel 1
 default_floating_border pixel 1
 
@@ -73,7 +73,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 # Built-in status bar. Empty workspaces are hidden by swaybar.
 bar {
     position top
-    font pango:monospace 10
+    font pango:monospace 14
     workspace_buttons yes
     status_command while date +'%a %d %b %R'; do sleep 30; done
 
