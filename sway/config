@@ -2,7 +2,7 @@
 
 set $mod Mod4
 set $term foot
-set $menu wmenu-run -f "monospace 14" -p ">>" -l 20 -N 222222 -n bbbbbb -M 005577 -m eeeeee -S 005577 -s eeeeee
+set $menu wmenu-run -f "monospace 14px" -p ">>" -l 20 -N 222222 -n bbbbbb -M 005577 -m eeeeee -S 005577 -s eeeeee
 
 # Appearance
 font pango:monospace 14
