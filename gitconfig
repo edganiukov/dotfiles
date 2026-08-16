@@ -4,13 +4,13 @@
 [user]
 	name = Ed Ganiukov
 	email = ed@gnkv.io
-	; signingkey = 0x7690B0256F1769BB
+	signingkey = 0x7690B0256F1769BB
 
-; [commit]
-	; gpgsign = true
+[commit]
+	gpgsign = true
 
-; [gpg]
-	; program = gpg2
+[gpg]
+	program = gpg2
 
 [push]
 	default = simple
