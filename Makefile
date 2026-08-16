@@ -1,10 +1,11 @@
-.PHONY: etc kanshi
+.PHONY: etc kanshi river
 
 CWD=$(shell pwd)
 
 etc:
 	sudo cp $(CWD)/etc/polkit-1/rules.d/50-fprintd.rules /etc/polkit-1/rules.d/50-fprintd.rules
 	sudo cp $(CWD)/etc/pam.d/* /etc/pam.d/
+	sudo install -Dm644 $(CWD)/etc/tlp.d/10-battery.conf /etc/tlp.d/10-battery.conf
 
 bin:
 	mkdir -p $(HOME)/.local/bin
@@ -43,11 +44,18 @@ shell:
 	ln -sf $(CWD)/bash/bashrc $(HOME)/.bashrc
 	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
+	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
 
 sway:
 	mkdir -p $(HOME)/.config/sway
 	ln -sf $(CWD)/sway/config $(HOME)/.config/sway/config
 	ln -sf $(CWD)/sway/scripts $(HOME)/.config/sway/scripts
+
+river:
+	mkdir -p $(HOME)/.config/river
+	ln -sf $(CWD)/river/init $(HOME)/.config/river/init
+	ln -sf $(CWD)/river/bar $(HOME)/.config/river/bar
+	ln -sf $(CWD)/river/status $(HOME)/.config/river/status
 
 kanshi:
 	mkdir -p $(HOME)/.config/kanshi
@@ -56,10 +64,6 @@ kanshi:
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
 	ln -sf $(CWD)/fonts.conf $(HOME)/.config/fontconfig/fonts.conf
-
-redshift:
-	mkdir -p $(HOME)/.config/redshift
-	ln -sf $(CWD)/redshift.conf $(HOME)/.config/redshift/redshift.conf
 
 dunst:
 	mkdir -p $(HOME)/.config/dunst
@@ -112,4 +116,3 @@ weechat:
 	ln -sf $(CWD)/weechat $(HOME)/.weechat
 
 ripgrep:
-	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc

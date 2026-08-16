@@ -21,8 +21,12 @@ pass
 urlview
 wl-clipboard
 brightnessctl
+tlp
 wlsunset
 kanshi
+tllist
+wlopm
+river-shifttags-git
 feh
 isync
 xdg-utils
@@ -41,6 +45,8 @@ aspell
 aspell-en
 
 # gui
+river-classic
+sandbar-git
 dunst
 nsxiv
 mpv

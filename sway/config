@@ -13,15 +13,18 @@ input type:keyboard {
 
 input type:touchpad {
     dwt enabled
+    click_method clickfinger
 }
 
 input type:pointer {
     accel_profile flat
-    pointer_accel 0.5
+    pointer_accel 0.3
 }
 
 # Appearance
-font pango:monospace 12
+font pango:monospace 10
+titlebar_border_thickness 1
+titlebar_padding 2 2
 default_border pixel 1
 default_floating_border pixel 1
 smart_borders on
@@ -37,20 +40,26 @@ bindsym $mod+Return exec $term
 bindsym $mod+r exec $menu
 bindsym $mod+p exec wmenu-pass -f "monospace 12"
 
+bindsym $mod+Up exec wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym $mod+Down exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym $mod+0 exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
 # Focus and sizing
-bindsym $mod+h focus next
-bindsym $mod+l focus prev
-bindsym $mod+Shift+h resize shrink width 5 ppt
-bindsym $mod+Shift+l resize grow width 5 ppt
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+j resize shrink width 5 ppt
+bindsym $mod+Shift+k resize grow width 5 ppt
 bindsym $mod+Tab focus next
 
 # Layouts
 bindsym $mod+t layout splith
 bindsym $mod+f floating toggle
-bindsym $mod+m fullscreen toggle
+bindsym $mod+m layout toggle split tabbed
 bindsym $mod+space layout toggle split
 
 # Outputs
+output "HP Inc. HP Z32 CN49390HL7" scale 1.55 scale_filter nearest
+
 bindsym $mod+comma focus output left
 bindsym $mod+period focus output right
 bindsym $mod+Shift+comma move container to output left
@@ -59,6 +68,8 @@ bindsym $mod+Shift+period move container to output right
 # Workspaces
 bindsym $mod+Left workspace prev_on_output
 bindsym $mod+Right workspace next_on_output
+bindsym $mod+h workspace prev_on_output
+bindsym $mod+l workspace next_on_output
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -88,6 +99,7 @@ exec swayidle -w \
 exec wlsunset -l 47.38 -L 8.54 -T 7000 -t 3500 -g 0.9
 exec dunst
 exec kanshi
+exec_always pkill -HUP -x kanshi
 
 
 # Built-in status bar.

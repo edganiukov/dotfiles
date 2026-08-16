@@ -28,12 +28,24 @@ get_battery() {
     fi
 }
 
+get_volume() {
+    state=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null) || {
+        echo "?"
+        return
+    }
+    level=$(printf '%s\n' "$state" | awk '{ printf "%.0f", $2 * 100 }')
+    case "$state" in
+        *"[MUTED]"*) echo "${level}%M" ;;
+        *)           echo "${level}%" ;;
+    esac
+}
+
 get_time() {
     date +'%a %d %b %R'
 }
 
 while true; do
-    printf '%s < %s < %s\n' "$(get_layout)" "$(get_battery)" "$(get_time)"
+    printf '%s < Þ %s < %s < %s\n' "$(get_layout)" "$(get_volume)" "$(get_battery)" "$(get_time)"
     sleep "$INTERVAL"
 done
 
