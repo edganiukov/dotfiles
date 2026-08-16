@@ -1,0 +1,54 @@
+#!/bin/sh
+
+interval=1
+fifo="$XDG_RUNTIME_DIR/sandbar"
+battery=$(find /sys/class/power_supply -maxdepth 1 -name 'BAT*' -print -quit)
+
+get_layout() {
+    for led in /sys/class/leds/input*::capslock/brightness; do
+        [ -r "$led" ] || continue
+        [ "$(cat "$led")" = 1 ] && {
+            echo ua
+            return
+        }
+    done
+    echo us
+}
+
+get_battery() {
+    if [ -n "$battery" ]; then
+        capacity=$(cat "$battery/capacity" 2>/dev/null)
+        status=$(cat "$battery/status" 2>/dev/null)
+        case "$status" in
+            Charging)            symbol=+ ;;
+            Discharging)         symbol=- ;;
+            'Not charging'|Full) symbol=~ ;;
+            *)                   symbol=? ;;
+        esac
+        printf '%s%s%%\n' "$symbol" "$capacity"
+    else
+        echo 'no battery'
+    fi
+}
+
+get_volume() {
+    state=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null) || {
+        echo '?'
+        return
+    }
+    level=$(printf '%s\n' "$state" | awk '{ printf "%.0f", $2 * 100 }')
+    case "$state" in
+        *'[MUTED]'*) printf '%s%%M\n' "$level" ;;
+        *)           printf '%s%%\n' "$level" ;;
+    esac
+}
+
+while [ ! -p "$fifo" ]; do
+    sleep 0.1
+done
+
+while true; do
+    printf 'all status %s < Þ %s < %s < %s\n' \
+        "$(get_layout)" "$(get_volume)" "$(get_battery)" "$(date +'%a %d %b %R')" > "$fifo"
+    sleep "$interval"
+done

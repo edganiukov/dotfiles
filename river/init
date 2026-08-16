@@ -1,0 +1,89 @@
+#!/bin/sh
+
+mod=Super
+
+# Appearance and dwm-like behavior
+riverctl background-color 0x181818
+riverctl border-width 2
+riverctl border-color-focused 0x005577
+riverctl border-color-unfocused 0x444444
+riverctl border-color-urgent 0x005577
+riverctl default-attach-mode top
+riverctl focus-follows-cursor normal
+riverctl rule-add ssd
+
+# Input
+riverctl set-repeat 32 256
+riverctl keyboard-layout -options 'grp:caps_toggle,grp_led:caps' 'us,ua'
+riverctl input 'touchpad-*' disable-while-typing enabled
+riverctl input 'touchpad-*' click-method clickfinger
+riverctl input 'pointer-*' accel-profile flat
+riverctl input 'pointer-*' pointer-accel 0.3
+
+# Programs and session
+riverctl map normal "$mod" Q close
+riverctl map normal "$mod"+Shift C close
+riverctl map normal "$mod"+Shift Q exit
+riverctl map normal "$mod" B spawn 'printf "all toggle-visibility\n" > "$XDG_RUNTIME_DIR/sandbar"'
+
+riverctl map normal "$mod" Return spawn foot
+riverctl map normal "$mod" R spawn 'wmenu-run-recent -f "monospace 12"'
+riverctl map normal "$mod" P spawn 'wmenu-pass -f "monospace 12"'
+riverctl map normal "$mod"+Shift S spawn 'swaylock -c 181818'
+
+riverctl map normal "$mod" Up spawn 'wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map normal "$mod" Down spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map normal "$mod" 0 spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+
+# Focus and master-stack management
+riverctl map normal "$mod" J focus-view next
+riverctl map normal "$mod" K focus-view previous
+riverctl map normal "$mod" Tab focus-view next
+riverctl map normal "$mod"+Shift H swap next
+riverctl map normal "$mod"+Shift L swap previous
+riverctl map normal "$mod"+Shift Return zoom
+riverctl map normal "$mod"+Shift J send-layout-cmd rivertile 'main-ratio -0.05'
+riverctl map normal "$mod"+Shift K send-layout-cmd rivertile 'main-ratio +0.05'
+riverctl map normal "$mod" I send-layout-cmd rivertile 'main-count +1'
+riverctl map normal "$mod" D send-layout-cmd rivertile 'main-count -1'
+
+# Layouts
+riverctl map normal "$mod" T send-layout-cmd rivertile 'main-location left'
+riverctl map normal "$mod" F toggle-float
+riverctl map normal "$mod" M toggle-fullscreen
+riverctl map normal "$mod"+Shift Space toggle-float
+
+# Outputs
+riverctl map normal "$mod" Comma focus-output previous
+riverctl map normal "$mod" Period focus-output next
+riverctl map normal "$mod"+Shift Comma send-to-output -current-tags previous
+riverctl map normal "$mod"+Shift Period send-to-output -current-tags next
+
+# Tags
+for i in $(seq 1 9); do
+    tags=$((1 << (i - 1)))
+    riverctl map normal "$mod" "$i" set-focused-tags "$tags"
+    riverctl map normal "$mod"+Control "$i" toggle-focused-tags "$tags"
+    riverctl map normal "$mod"+Shift "$i" set-view-tags "$tags"
+    riverctl map normal "$mod"+Control+Shift "$i" toggle-view-tags "$tags"
+done
+
+riverctl map normal "$mod" H spawn 'river-shifttags --shifts -1'
+riverctl map normal "$mod" L spawn 'river-shifttags --shifts 1'
+riverctl map normal "$mod" Left spawn 'river-shifttags --shifts -1'
+riverctl map normal "$mod" Right spawn 'river-shifttags --shifts 1'
+
+# Layout generator
+riverctl default-layout rivertile
+rivertile -view-padding 0 -outer-padding 0 -main-count 1 -main-ratio 0.5 &
+
+# Session services
+~/.config/river/bar &
+kanshi &
+wlsunset -l 47.38 -L 8.54 -T 7000 -t 3500 -g 0.9 &
+dunst &
+swayidle -w \
+    timeout 900 'swaylock -c 181818' \
+    timeout 1800 'wlopm --off "*"' \
+    resume 'wlopm --on "*"' \
+    before-sleep 'swaylock -c 181818' &

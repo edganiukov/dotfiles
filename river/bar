@@ -1,0 +1,31 @@
+#!/bin/sh
+
+fifo="$XDG_RUNTIME_DIR/sandbar"
+rm -f "$fifo"
+mkfifo "$fifo"
+status_pid=
+cleanup() {
+    [ -n "$status_pid" ] && kill "$status_pid" 2>/dev/null
+    rm -f "$fifo"
+}
+trap cleanup EXIT
+trap 'exit 0' HUP INT TERM
+
+~/.config/river/status &
+status_pid=$!
+
+while cat "$fifo"; do :; done | sandbar \
+    -font 'Terminus (TTF):size=12' \
+    -vertical-padding 2 \
+    -no-title \
+    -no-mode \
+    -no-layout \
+    -active-fg-color '#eeeeee' \
+    -active-bg-color '#005577' \
+    -inactive-fg-color '#bbbbbb' \
+    -inactive-bg-color '#222222' \
+    -urgent-fg-color '#eeeeee' \
+    -urgent-bg-color '#005577' \
+    -title-bg-color '#222222' \
+    -tags 9 ' 1 ' ' 2 ' ' 3 ' ' 4 ' ' 5 ' ' 6 ' ' 7 ' ' 8 ' ' 9 ' \
+    -scale 2
