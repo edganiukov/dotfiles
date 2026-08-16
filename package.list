@@ -1,4 +1,7 @@
 # dev
+gcc
+make
+pkgconf
 go
 gopls
 rustup
@@ -20,12 +23,21 @@ nmap
 pass
 urlview
 wl-clipboard
+wayland
+wayland-protocols
+wlroots0.19
+libinput
+libxkbcommon
+pixman
+fcft
 brightnessctl
 tlp
 wlsunset
 kanshi
 tllist
 wlopm
+swayidle
+wireplumber
 river-shifttags-git
 feh
 isync
@@ -47,6 +59,10 @@ aspell-en
 # gui
 river-classic
 sandbar-git
+foot
+terminus-font-ttf
+wmenu
+swaylock
 dunst
 nsxiv
 mpv

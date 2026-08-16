@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# dwl closes this descriptor, but doing so here also makes direct tests safe.
+exec <&-
+
+# Do not duplicate the active desktop's daemons during a nested test.
+if [ "${DWL_NESTED:-0}" = 1 ]; then
+    while :; do
+        sleep 3600
+    done
+fi
+
+kanshi &
+wlsunset -l 47.38 -L 8.54 -T 7000 -t 3500 -g 0.9 &
+dunst &
+swayidle -w \
+    timeout 900 'swaylock -c 181818' \
+    timeout 1800 'wlopm --off "*"' \
+    resume 'wlopm --on "*"' \
+    before-sleep 'swaylock -c 181818' &
+
+wait

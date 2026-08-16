@@ -15,7 +15,7 @@ trap 'exit 0' HUP INT TERM
 status_pid=$!
 
 while cat "$fifo"; do :; done | sandbar \
-    -font 'Terminus (TTF):size=12' \
+    -font 'monospace:size=12' \
     -vertical-padding 2 \
     -no-title \
     -no-mode \

@@ -1,4 +1,4 @@
-.PHONY: etc kanshi river
+.PHONY: etc dwl kanshi river
 
 CWD=$(shell pwd)
 
@@ -46,16 +46,16 @@ shell:
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
 	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
 
-sway:
-	mkdir -p $(HOME)/.config/sway
-	ln -sf $(CWD)/sway/config $(HOME)/.config/sway/config
-	ln -sf $(CWD)/sway/scripts $(HOME)/.config/sway/scripts
-
 river:
 	mkdir -p $(HOME)/.config/river
 	ln -sf $(CWD)/river/init $(HOME)/.config/river/init
 	ln -sf $(CWD)/river/bar $(HOME)/.config/river/bar
 	ln -sf $(CWD)/river/status $(HOME)/.config/river/status
+
+dwl:
+	mkdir -p $(HOME)/.config/dwl
+	ln -sf $(CWD)/dwl/autostart $(HOME)/.config/dwl/autostart
+	ln -sf $(CWD)/dwl/status $(HOME)/.config/dwl/status
 
 kanshi:
 	mkdir -p $(HOME)/.config/kanshi

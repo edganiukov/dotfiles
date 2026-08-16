@@ -1,6 +1,6 @@
 profile docked {
 	output eDP-1 disable
-	output "HP Inc. HP Z32 CN49390HL7" enable mode preferred position 0,0 scale 1.55
+	output "HP Inc. HP Z32 CN49390HL7" enable mode preferred position 0,0
 }
 
 profile undocked {
