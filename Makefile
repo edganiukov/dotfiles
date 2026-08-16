@@ -1,4 +1,4 @@
-.PHONY: etc dwl kanshi river
+.PHONY: etc dwl kanshi swayimg
 
 CWD=$(shell pwd)
 
@@ -35,6 +35,10 @@ foot:
 	mkdir -p $(HOME)/.config/foot
 	ln -sf $(CWD)/foot/foot.ini $(HOME)/.config/foot/foot.ini
 
+swayimg:
+	mkdir -p $(HOME)/.config/swayimg
+	ln -sf $(CWD)/swayimg/init.lua $(HOME)/.config/swayimg/init.lua
+
 git:
 	ln -sf $(CWD)/gitconfig $(HOME)/.gitconfig
 	ln -sf $(CWD)/tigrc $(HOME)/.tigrc
@@ -45,12 +49,6 @@ shell:
 	ln -sf $(CWD)/bash/bash_profile $(HOME)/.bash_profile
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
 	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
-
-river:
-	mkdir -p $(HOME)/.config/river
-	ln -sf $(CWD)/river/init $(HOME)/.config/river/init
-	ln -sf $(CWD)/river/bar $(HOME)/.config/river/bar
-	ln -sf $(CWD)/river/status $(HOME)/.config/river/status
 
 dwl:
 	mkdir -p $(HOME)/.config/dwl
@@ -101,9 +99,6 @@ rtorrent:
 	mkdir -p $(HOME)/.rtorrent
 	ln -sf $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
 
-sxiv:
-	ln -sf $(CWD)/sxiv $(HOME)/.config/sxiv
-
 zathura:
 	mkdir -p $(HOME)/.config/zathura
 	ln -sf $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
@@ -114,5 +109,3 @@ ncspot:
 
 weechat:
 	ln -sf $(CWD)/weechat $(HOME)/.weechat
-
-ripgrep:

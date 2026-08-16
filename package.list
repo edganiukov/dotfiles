@@ -32,14 +32,13 @@ pixman
 fcft
 brightnessctl
 tlp
+trash-cli
 wlsunset
 kanshi
 tllist
 wlopm
 swayidle
 wireplumber
-river-shifttags-git
-feh
 isync
 xdg-utils
 entr
@@ -57,13 +56,10 @@ aspell
 aspell-en
 
 # gui
-river-classic
-sandbar-git
 foot
 terminus-font-ttf
-wmenu
 swaylock
 dunst
-nsxiv
+swayimg
 mpv
 zathura
