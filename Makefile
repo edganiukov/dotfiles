@@ -87,8 +87,6 @@ email:
 	mkdir -p ~/.config/mirador
 	ln -sf $(CWD)/email/mirador.toml ~/.config/mirador/config.toml
 	cp $(CWD)/email/mirador.service $(HOME)/.config/systemd/user/mirador.service
-	# mkdir -p ~/.config/neverest
-	# ln -sf $(CWD)/email/neverest.toml ~/.config/neverest/config.toml
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
