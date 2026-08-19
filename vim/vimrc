@@ -185,6 +185,53 @@ vnoremap <A-up> :m-2<CR>gv=gv
 # trailing whitespaces
 match ErrorMsg '\s\+$'
 
+# Native Wayland clipboard provider.
+def ClipboardAvailable(): bool
+	return $WAYLAND_DISPLAY != '' && executable('wl-copy') && executable('wl-paste')
+enddef
+
+def ClipboardCopy(reg: string, type: string, text: list<string>)
+	var cmd = 'wl-copy'
+	if reg == '*'
+		cmd ..= ' --primary'
+	endif
+	var content = join(text, "\n")
+	if type ==# 'V'
+		content ..= "\n"
+	endif
+	system(cmd, content)
+enddef
+
+def ClipboardPaste(reg: string): tuple<string, list<string>>
+	var cmd = "wl-paste --no-newline --type 'text/plain;charset=utf-8'"
+	if reg == '*'
+		cmd ..= ' --primary'
+	endif
+	var text = system(cmd)
+	if v:shell_error != 0
+		return ('v', [])
+	endif
+	var type = text =~# "\n$" ? 'V' : 'v'
+	if type ==# 'V'
+		text = strpart(text, 0, strlen(text) - 1)
+	endif
+	return (type, text ==# '' ? [''] : split(text, "\n", true))
+enddef
+
+v:clipproviders['wl_clipboard'] = {
+	available: ClipboardAvailable,
+	copy: {
+		'+': ClipboardCopy,
+		'*': ClipboardCopy,
+	},
+	paste: {
+		'+': ClipboardPaste,
+		'*': ClipboardPaste,
+	},
+}
+set clipmethod=wl_clipboard
+
+
 
 # fuzzy finder
 #

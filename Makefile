@@ -3,8 +3,8 @@
 CWD=$(shell pwd)
 
 etc:
-	sudo cp $(CWD)/etc/polkit-1/rules.d/50-fprintd.rules /etc/polkit-1/rules.d/50-fprintd.rules
-	sudo cp $(CWD)/etc/pam.d/* /etc/pam.d/
+	sudo install -Dm644 $(CWD)/etc/polkit-1/rules.d/50-fprintd.rules /etc/polkit-1/rules.d/50-fprintd.rules
+	sudo install -Dm644 $(CWD)/etc/pam.d/* /etc/pam.d/
 	sudo install -Dm644 $(CWD)/etc/tlp.d/10-battery.conf /etc/tlp.d/10-battery.conf
 
 bin:
@@ -57,7 +57,7 @@ dwl:
 
 kanshi:
 	mkdir -p $(HOME)/.config/kanshi
-	ln -sf $(CWD)/kanshi/config $(HOME)/.config/kanshi/config
+	ln -sf $(CWD)/kanshi.config $(HOME)/.config/kanshi/config
 
 fonts:
 	mkdir -p $(HOME)/.config/fontconfig
@@ -82,11 +82,11 @@ mutt:
 
 email:
 	ln -sf $(CWD)/email/mbsyncrc $(HOME)/.mbsyncrc
-	cp $(CWD)/email/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
-	cp $(CWD)/email/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
+	install $(CWD)/email/mbsync.service $(HOME)/.config/systemd/user/mbsync.service
+	install $(CWD)/email/mbsync.timer $(HOME)/.config/systemd/user/mbsync.timer
 	mkdir -p ~/.config/mirador
 	ln -sf $(CWD)/email/mirador.toml ~/.config/mirador/config.toml
-	cp $(CWD)/email/mirador.service $(HOME)/.config/systemd/user/mirador.service
+	install $(CWD)/email/mirador.service $(HOME)/.config/systemd/user/mirador.service
 
 mpv:
 	mkdir -p $(HOME)/.config/mpv
