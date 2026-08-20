@@ -11,12 +11,13 @@ if [ "${DWL_NESTED:-0}" = 1 ]; then
 fi
 
 kanshi &
+~/.config/dwl/refresh-rate --watch &
 wlsunset -l 47.38 -L 8.54 -T 7000 -t 3500 -g 0.9 &
 dunst &
 swayidle -w \
     timeout 900 'swaylock -c 181818' \
     timeout 1800 'wlopm --off "*"' \
-    resume 'wlopm --on "*"' \
+    resume 'wlopm --on "*"; ~/.config/dwl/refresh-rate' \
     before-sleep 'swaylock -c 181818' &
 
 wait

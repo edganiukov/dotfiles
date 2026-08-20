@@ -1,0 +1,2 @@
+# Keep the XDG download directory aligned with Firefox's configured target.
+XDG_DOWNLOAD_DIR="$HOME/tmp"

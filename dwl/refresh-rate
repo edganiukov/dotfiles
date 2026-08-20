@@ -1,0 +1,49 @@
+#!/bin/sh
+
+power_source() {
+    for supply in /sys/class/power_supply/*; do
+        [ -r "$supply/type" ] && [ -r "$supply/online" ] || continue
+        IFS= read -r type < "$supply/type" || continue
+        [ "$type" = Mains ] || continue
+        IFS= read -r online < "$supply/online" || continue
+        [ "$online" = 1 ] && {
+            echo ac
+            return
+        }
+    done
+    echo battery
+}
+
+panel_enabled() {
+    for connector in /sys/class/drm/card*-eDP-1; do
+        [ -r "$connector/enabled" ] || continue
+        IFS= read -r enabled < "$connector/enabled" || continue
+        [ "$enabled" = enabled ] && return 0
+    done
+    return 1
+}
+
+set_refresh_rate() {
+    source=$(power_source)
+    [ "$source" = "${current_source:-}" ] && return
+    panel_enabled || {
+        current_source=
+        return
+    }
+
+    case "$source" in
+        ac)      rate=120 ;;
+        battery) rate=60 ;;
+    esac
+    wlr-randr --output eDP-1 --mode "2880x1920@${rate}Hz" && current_source=$source
+}
+
+set_refresh_rate
+[ "${1:-}" = --watch ] || exit
+
+udevadm monitor --udev --subsystem-match=power_supply |
+while IFS= read -r event; do
+    case "$event" in
+        UDEV*' (power_supply)') set_refresh_rate ;;
+    esac
+done

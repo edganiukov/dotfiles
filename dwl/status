@@ -2,6 +2,7 @@
 
 interval=1
 battery=$(find /sys/class/power_supply -maxdepth 1 -name 'BAT*' -print -quit)
+wifi_interface="wlp192s0"
 
 get_layout() {
     for led in /sys/class/leds/input*::capslock/brightness; do
@@ -42,9 +43,36 @@ get_volume() {
     esac
 }
 
+get_wifi() {
+    iw dev "$wifi_interface" link 2>/dev/null | awk '
+        /^[[:space:]]*SSID: / {
+            sub(/^[[:space:]]*SSID: /, "")
+            ssid = $0
+            found_ssid = 1
+        }
+        /^[[:space:]]*signal: / {
+            rssi = $2
+            found_rssi = 1
+        }
+        END {
+            if (!found_ssid || !found_rssi) {
+                print "# n/a:n/a%"
+                exit
+            }
+            if (rssi >= -50)
+                percent = 100
+            else if (rssi <= -100)
+                percent = 0
+            else
+                percent = 2 * (rssi + 100)
+            printf "# %s:%.0f%%\n", ssid, percent
+        }
+    '
+}
+
 while true; do
-    printf '%s < Þ %s < %s < %s\n' \
-        "$(get_layout)" "$(get_volume)" "$(get_battery)" "$(date +'%a %d %b %R')" \
-        || exit 0
+    printf '%s < Þ %s < %s < %s < %s\n' \
+        "$(get_layout)" "$(get_volume)" "$(get_battery)" "$(get_wifi)" \
+        "$(date +'%a %d %b %R')" || exit 0
     sleep "$interval"
 done

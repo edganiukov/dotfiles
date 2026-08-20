@@ -1,4 +1,4 @@
-.PHONY: etc dwl kanshi swayimg
+.PHONY: etc dwl kanshi swayimg user-dirs
 
 CWD=$(shell pwd)
 
@@ -6,6 +6,8 @@ etc:
 	sudo install -Dm644 $(CWD)/etc/polkit-1/rules.d/50-fprintd.rules /etc/polkit-1/rules.d/50-fprintd.rules
 	sudo install -Dm644 $(CWD)/etc/pam.d/* /etc/pam.d/
 	sudo install -Dm644 $(CWD)/etc/tlp.d/10-battery.conf /etc/tlp.d/10-battery.conf
+	sudo install -Dm644 $(CWD)/etc/systemd/logind.conf.d/10-lid.conf /etc/systemd/logind.conf.d/10-lid.conf
+	sudo install -Dm644 $(CWD)/etc/systemd/sleep.conf.d/10-suspend-then-hibernate.conf /etc/systemd/sleep.conf.d/10-suspend-then-hibernate.conf
 
 bin:
 	mkdir -p $(HOME)/.local/bin
@@ -50,9 +52,14 @@ shell:
 	ln -sf $(CWD)/urlview $(HOME)/.urlview
 	ln -sf $(CWD)/ripgreprc $(HOME)/.ripgreprc
 
+user-dirs:
+	mkdir -p $(HOME)/.config
+	ln -sf $(CWD)/user-dirs.dirs $(HOME)/.config/user-dirs.dirs
+
 dwl:
 	mkdir -p $(HOME)/.config/dwl
 	ln -sf $(CWD)/dwl/autostart $(HOME)/.config/dwl/autostart
+	ln -sf $(CWD)/dwl/refresh-rate $(HOME)/.config/dwl/refresh-rate
 	ln -sf $(CWD)/dwl/status $(HOME)/.config/dwl/status
 
 kanshi:
