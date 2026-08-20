@@ -52,6 +52,8 @@ htop
 rtorrent
 mutt
 weechat
+enchant
+python-websocket-client
 aspell
 aspell-en
 

@@ -1,4 +1,4 @@
-.PHONY: etc dwl kanshi swayimg user-dirs
+.PHONY: etc dwl kanshi swayimg user-dirs email mutt weechat
 
 CWD=$(shell pwd)
 
@@ -104,13 +104,19 @@ rtorrent:
 	mkdir -p $(HOME)/.rtorrent
 	ln -sf $(CWD)/rtorrent.rc $(HOME)/.rtorrent.rc
 
-zathura:
-	mkdir -p $(HOME)/.config/zathura
-	ln -sf $(CWD)/zathurarc $(HOME)/.config/zathura/zathurarc
-
 ncspot:
 	mkdir -p $(HOME)/.config/ncspot
 	ln -sf $(CWD)/ncspot.toml $(HOME)/.config/ncspot/config.toml
 
 weechat:
-	ln -sf $(CWD)/weechat $(HOME)/.weechat
+	mkdir -p $(HOME)/.weechat/python/autoload $(HOME)/.weechat/themes
+	ln -sf $(CWD)/weechat/*.conf $(HOME)/.weechat/
+	ln -sf $(CWD)/weechat/weemoji.json $(HOME)/.weechat/weemoji.json
+	ln -sf $(CWD)/weechat/python/*.py $(HOME)/.weechat/python/
+	ln -sf ../autosort.py $(HOME)/.weechat/python/autoload/autosort.py
+	ln -sf ../buffer_autoset.py $(HOME)/.weechat/python/autoload/buffer_autoset.py
+	ln -sf ../edit.py $(HOME)/.weechat/python/autoload/edit.py
+	ln -sf ../notify_send.py $(HOME)/.weechat/python/autoload/notify_send.py
+	ln -sf ../slack.py $(HOME)/.weechat/python/autoload/slack.py
+	ln -sf ../theme.py $(HOME)/.weechat/python/autoload/theme.py
+	ln -sf $(CWD)/weechat/themes/gnkv.theme $(HOME)/.weechat/themes/gnkv.theme

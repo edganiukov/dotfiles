@@ -50,7 +50,7 @@ try:
     import re
     import datetime
     import time
-    import cgi
+    import html
     import tarfile
     import traceback
     import xml.dom.minidom
@@ -618,7 +618,7 @@ class HtmlTheme(Theme):
         else:
             string = string.rjust(maxlen * -1)
         if escape:
-            string = cgi.escape(string)
+            string = html.escape(string, quote=False)
         return '<span style="{0}">{1}</span>'.format(self.html_style(fg, bg),
                                                      string)
 
