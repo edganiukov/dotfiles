@@ -23,9 +23,11 @@ nmap
 pass
 urlview
 wl-clipboard
+grim
+slurp
 wayland
 wayland-protocols
-wlroots0.19
+wlroots0.20
 libinput
 libxkbcommon
 pixman

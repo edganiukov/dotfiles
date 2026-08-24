@@ -5,3 +5,7 @@
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 [[ -z $DISPLAY && -z $WAYLAND_DISPLAY && "$XDG_VTNR" = 1 ]] \
 	&& exec /usr/local/bin/dwl -s ~/.config/dwl/autostart < <(~/.config/dwl/status)
+
+# >>> railway initialize >>>
+source "$HOME/.railway/env"
+# <<< railway initialize <<<

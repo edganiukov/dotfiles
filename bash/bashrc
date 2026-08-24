@@ -69,6 +69,7 @@ export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/.cargo/bin:$PATH"
 
 export RUSTUP_TOOLCHAIN=stable
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+export GRIM_DEFAULT_DIR=$HOME/tmp
 
 # alias
 alias ..="cd .."
@@ -83,9 +84,10 @@ alias ussh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 # plugins
 # https://github.com/scop/bash-completion
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
-
 # dircolors
 [ -f $HOME/.dir_colors ] && eval "$(dircolors $HOME/.dir_colors)"
+
+[ -f $HOME/.railway/env ] && source "$HOME/.railway/env"
 
 # taugres shell integration (added by `tau setup`)
 # eval "$(tau hook bash)"

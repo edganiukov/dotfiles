@@ -59,7 +59,6 @@ user-dirs:
 dwl:
 	mkdir -p $(HOME)/.config/dwl
 	ln -sf $(CWD)/dwl/autostart $(HOME)/.config/dwl/autostart
-	ln -sf $(CWD)/dwl/refresh-rate $(HOME)/.config/dwl/refresh-rate
 	ln -sf $(CWD)/dwl/status $(HOME)/.config/dwl/status
 
 kanshi:
