@@ -1,5 +1,7 @@
 dofile('/usr/share/swayimg/example.lua')
 
+swayimg.text.visible = false
+
 local function shell_quote(value)
   return "'" .. value:gsub("'", "'\"'\"'") .. "'"
 end
