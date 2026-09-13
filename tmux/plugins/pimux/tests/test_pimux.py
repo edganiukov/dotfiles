@@ -6,6 +6,7 @@ Only pi, fzf, and client switching are stubbed; no real agent is started.
 
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -451,6 +452,51 @@ sys.exit(130)
         [row] = self.rows_text()
         self.assertIn("Refactor auth", row)
         self.assertEqual(row.count("task"), 1)
+
+    def test_row_shows_how_long_the_state_has_held(self):
+        pane = self.create_task()
+        now = int(time.time())
+        for delta, shown in ((5, "5s"), (2700, "45m"), (7200, "2h"), (3 * 86400, "3d")):
+            with self.subTest(age=shown):
+                self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+                self.tmux("set-option", "-p", "-t", pane, "@agent_since", str(now - delta))
+                [row] = self.rows_text()
+                self.assertRegex(row, rf"done\s+{shown}\b")
+        # No stamp (pi predates it, or idle since start): no age, no error.
+        self.tmux("set-option", "-pu", "-t", pane, "@agent_since")
+        [row] = self.rows_text()
+        plain = re.sub(r"\x1b\[[0-9;]*m", "", row)  # colour codes contain digits+m
+        self.assertNotRegex(plain, r"\d+[smhd]\b")
+
+    def paint_pi_screen(self, pane, *box):
+        """Make a pane look like pi while a prompt is up: conversation, then the
+        prompt widget in the box between two rules (question, choices, key
+        hints), then the footer. The stub pi just sleeps, so we draw it."""
+        screen = self.root / "screen"
+        screen.write_text("I will push the branch now.\n\n──────────\n\n" + "\n".join(box) +
+                          "\n\n──────────\n~/repo (task) • task\n↑430k ↓197k $82 50.9%/1.0M (auto)\n")
+        return self.tmux("respawn-pane", "-k", "-t", pane, "bash", "-c", f"clear; cat {screen}; sleep 600")
+
+    def test_blocked_row_shows_the_question_the_agent_is_waiting_on(self):
+        pane = self.create_task()
+        self.paint_pi_screen(pane, " Allow git push to origin?", "", " → Yes", "   No", "",
+                             " ↑↓ navigate  enter select  escape/ctrl+c cancel")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_name", "pi")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_session", "Refactor auth")
+        time.sleep(0.3)
+        # Blocked: the last conversation line (the question) wins over the name.
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "wait")
+        [row] = self.rows_text()
+        self.assertIn("Allow git push to origin?", row)
+        self.assertNotIn("Refactor auth", row)
+        # Never the key hints, the choices, the conversation above, or the footer.
+        for noise in ("navigate", "Yes", "push the branch", "430k", "~/repo"):
+            self.assertNotIn(noise, row)
+        # Not blocked: back to the session name.
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "busy")
+        [row] = self.rows_text()
+        self.assertIn("Refactor auth", row)
+        self.assertNotIn("Allow?", row)
 
     def test_action_output_streams_to_the_screen(self):
         # git's "Preparing worktree" progress goes to stderr; it must reach the

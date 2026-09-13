@@ -67,25 +67,59 @@ project_of() {
 # session name only when it differs from the tmux session. Managed sessions
 # use one name for the branch, worktree, tmux session and pi session, so
 # repeating it across columns just made every row look the same.
+# How long since the agent's state last changed, from the @agent_since stamp
+# the extension sets alongside @agent_state. "done 40m" is time it has been
+# waiting on you; tmux's own activity clock would tick on pi's spinner.
+age() {
+  local since=$1 secs
+  [ -n "$since" ] || return 0
+  secs=$(( $(date +%s) - since ))
+  if [ "$secs" -lt 60 ]; then printf '%ds' "$secs"
+  elif [ "$secs" -lt 3600 ]; then printf '%dm' "$((secs / 60))"
+  elif [ "$secs" -lt 86400 ]; then printf '%dh' "$((secs / 3600))"
+  else printf '%dd' "$((secs / 86400))"
+  fi
+}
+
+# The question a blocked agent is waiting on. While a prompt is up, pi swaps
+# its editor box for the prompt widget, so the question sits inside the box
+# bordered by the bottom two rule lines: the question first, then the
+# choices, then a line of key hints. Below the lower rule is only the footer
+# (path, tokens, model). So: the first non-empty line between those rules.
+last_said() {
+  tmux capture-pane -p -t "$1" 2>/dev/null | tac | awk '
+    /──/ { rules++; next }
+    rules == 1 && NF { sub(/^[[:space:]]+/, ""); last = $0 }
+    rules == 2 { exit }
+    END { if (last != "") print last }
+  '
+}
+
 row() {
-  local rank=$1 id=$2 icon=$3 sess=$4 where=$5 project=$6 status=$7 title=$8
+  local rank=$1 id=$2 icon=$3 sess=$4 where=$5 project=$6 status=$7 age=$8 title=$9
   [ "$title" != "$sess" ] || title=""
-  printf '%s%s%s%s%s %-12s %-5s %-14s %-8s %s\n' \
+  printf '%s%s%s%s%s %-12s %-5s %-14s %-8s %4s  %s\n' \
     "$rank" "$sep" "$id" "$sep" \
     "$icon" "$(truncate_to "$sess" 12)" "$where" "$(truncate_to "$project" 14)" \
-    "$status" "$(truncate_to "$title" 40)"
+    "$status" "$age" "$(truncate_to "$title" 40)"
 }
 
 agents() {
   local fmt="#{pane_id}${sep}#{session_name}${sep}#{window_index}${sep}#{pane_index}"
-  fmt="${fmt}${sep}#{pane_current_path}${sep}#{@agent_state}"
+  fmt="${fmt}${sep}#{pane_current_path}${sep}#{@agent_state}${sep}#{@agent_since}"
   fmt="${fmt}${sep}#{@agent_session}${sep}$pi_pane"
 
-  local pane sess widx pidx path state title is_pi
-  while IFS="$sep" read -r pane sess widx pidx path state title is_pi; do
+  local pane sess widx pidx path state since title is_pi said
+  while IFS="$sep" read -r pane sess widx pidx path state since title is_pi; do
     [ "$is_pi" = 1 ] || continue
+    # A blocked agent's last line is the question it is waiting on, which is
+    # what you need to decide whether to go there; show that over the name.
+    if [ "$state" = wait ]; then
+      said="$(last_said "$pane")"
+      [ -z "$said" ] || title="$said"
+    fi
     row "$(rank "$state")" "$pane" "$(icon "$state")" "$sess" "$widx.$pidx" \
-      "$(project_of "$path")" "$(label "$state")" "$title"
+      "$(project_of "$path")" "$(label "$state")" "$(age "$since")" "$title"
   done < <(tmux list-panes -a -F "$fmt")
 }
 
@@ -107,7 +141,7 @@ stopped_workspaces() {
               [[ $cwd != "$path" && $cwd != "$path/"* ]] || active=true
             done <<< "$running"
             if [ "$active" = false ]; then
-              row 4 "$path" "○" "$branch" - "${main##*/}" stopped ""
+              row 4 "$path" "○" "$branch" - "${main##*/}" stopped "" ""
             fi
           fi
           path="" branch=""

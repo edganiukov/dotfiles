@@ -14,11 +14,18 @@ when something changes, preserving your query and selected row.
 | Ctrl-R | Refresh immediately |
 | Esc | Close the popup; from any prompt, go back to the list instead |
 
-Each row shows state, tmux session, window.pane, project, status, and pi's own
-session name only when it differs from the tmux session. A managed session
-uses one name for its branch, worktree, tmux session and pi session, so the
-name appears once; the project column is the main repo, not the worktree
-directory (whose basename would just repeat the name).
+Each row shows state, tmux session, window.pane, project, status, how long
+that status has held, and a title: for a blocked agent, the question it is
+waiting on; otherwise pi's own session name when it differs from the tmux
+session. A managed session uses one name for its branch, worktree, tmux
+session and pi session, so the name appears once; the project column is the
+main repo, not the worktree directory (whose basename would just repeat the
+name).
+
+The age is measured from when the state last changed (`done 40m` is forty
+minutes waiting on you), stamped by the pi extension as `@agent_since`.
+tmux's own activity clock would not do: it ticks on any output, including
+pi's spinner. Sessions started before this stamp existed show no age.
 
 The popup only closes when an action takes you somewhere else (jump, resume,
 shell, new). Everything that leaves you where you are returns to the list:
