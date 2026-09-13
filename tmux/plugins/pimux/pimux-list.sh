@@ -172,17 +172,50 @@ case "$key" in
     ;;
 esac
 
+# Capture stderr so an error can be shown on a clean screen rather than
+# streaming over whatever the list left behind. The prompts the actions open
+# are fzf on the tty, so they are unaffected by redirecting stderr.
+errors="$(mktemp "${TMPDIR:-/tmp}/pimux-errors.XXXXXXXX")" || exit 1
 if [ "$action" = new ]; then
-  "$plugin_dir/pimux-new.sh"
+  "$plugin_dir/pimux-new.sh" 2> "$errors"
 elif [ -n "$target" ]; then
-  "$plugin_dir/pimux-action.sh" "$action" "$target"
+  "$plugin_dir/pimux-action.sh" "$action" "$target" 2> "$errors"
 else
+  rm -f -- "$errors"
   exit 0
 fi
 status=$?
-if [ "$action" = new ] && [ "$status" -eq 130 ]; then
+
+# Show what went wrong and wait for Enter or Esc. fzf, not read: bash's read
+# cannot see Esc, so it silently swallowed it and the message piled up on
+# every retry. --no-input hides the editor row, so there is no stray cursor
+# blinking under the message; only the keypress matters.
+show_errors() {
+  local footer=$1
+  clear
+  cat -- "$errors"
+  rm -f -- "$errors"
+  fzf --disabled --no-input --reverse --info=hidden --no-separator --height=2 \
+    --footer="$footer" --bind='enter:abort' < /dev/null >/dev/null 2>&1
+  true
+}
+# 0 means you navigated away (jump/resume/shell/new), so the popup closes.
+# $back means nothing took you elsewhere: a cancelled or declined prompt, or a
+# stop/remove that finished while you are still looking at the list.
+if [ "$status" -eq "$back" ]; then
+  rm -f -- "$errors"
   exec "$plugin_dir/pimux-list.sh"
 fi
-# Keep errors visible rather than closing the popup immediately.
-[ "$status" -eq 0 ] || read -r -p "Press Enter to close. "
-exit "$status"
+if [ "$status" -eq 0 ]; then
+  rm -f -- "$errors"
+  exit 0
+fi
+# 2 is "navigated away but with a warning" (a failed setup hook): the new
+# session is already in front of you, so show the message and close.
+if [ "$status" -eq 2 ]; then
+  show_errors 'enter/esc close'
+  exit 0
+fi
+# Keep errors visible, then return to the list rather than vanishing.
+show_errors 'enter/esc back to list'
+exec "$plugin_dir/pimux-list.sh"

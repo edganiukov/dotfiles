@@ -15,6 +15,21 @@ fail() {
   exit 1
 }
 
+# Exit status meaning "nothing happened, show the list again". fzf returns it
+# on Escape, and prompts reuse it for a declined confirmation, so the list
+# script treats one code as back-to-list wherever it comes from.
+readonly back=130
+
+# Prompt for a line using fzf's editor, so Escape works immediately: bash's
+# read cannot see Escape at all, it only returns on Enter. Prints the answer;
+# returns $back on Escape.
+ask() {
+  local prompt=$1
+  fzf --disabled --reverse --info=hidden --no-separator \
+    --prompt="$prompt" --footer="${2:-enter confirm | esc back}" \
+    --bind='enter:accept-or-print-query' < /dev/null
+}
+
 main_worktree() {
   local entry
   IFS= read -r -d '' entry < <(git -C "$1" worktree list --porcelain -z 2>/dev/null) || return 1

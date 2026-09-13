@@ -2,7 +2,7 @@
 
 `prefix + a` opens a popup of running Pi panes and stopped managed workspaces.
 The list checks for updates in the background every second and redraws only
-when something changes, preserving your query and selected row. Escape closes it.
+when something changes, preserving your query and selected row.
 
 | Key | Action |
 | --- | --- |
@@ -12,6 +12,12 @@ when something changes, preserving your query and selected row. Escape closes it
 | Ctrl-X | Stop the selected Pi pane, after confirmation |
 | Ctrl-D | Remove the selected stopped workspace and branch, after safety checks and confirmation |
 | Ctrl-R | Refresh immediately |
+| Esc | Close the popup; from any prompt, go back to the list instead |
+
+The popup only closes when an action takes you somewhere else (jump, resume,
+shell, new). Everything that leaves you where you are returns to the list:
+Esc or a declined answer on a confirmation, a completed stop or remove (the row
+simply disappears), and a failed action after its error has been shown.
 
 ## Create
 
@@ -77,7 +83,9 @@ Running Pi panes outside Git also support this shortcut, using their cwd.
 
 Ctrl-X asks for confirmation and closes **only the selected Pi pane**. It
 keeps shell windows, the worktree, and the branch. Closing the last pane also
-closes its tmux session, subject to tmux's normal detach behavior.
+closes its tmux session, subject to tmux's normal detach behavior. The
+confirmation names the tmux session (and the pi session, if it differs), not
+the bare pane id.
 
 Ctrl-D is a separate, destructive action. It refuses removal if:
 

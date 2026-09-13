@@ -73,10 +73,12 @@ case "$action" in
   stop)
     [[ $target = %* ]] || fail "this workspace is already stopped"
     pane_info "$target"
-    read -r -p "Stop Pi in $label? Its branch and worktree will be kept. [y/N] " answer
-    [[ $answer = y || $answer = Y ]] || exit 0
+    answer="$(ask "Stop Pi in $label? Its branch and worktree will be kept. [y/N] ")" || exit "$back"
+    [[ $answer = y || $answer = Y ]] || exit "$back"
     pane_info "$target"
-    tmux kill-pane -t "$target"
+    tmux kill-pane -t "$target" || exit 1
+    # You are still at the list; the row just went away.
+    exit "$back"
     ;;
   resume)
     workspace_info "$target"
@@ -120,12 +122,14 @@ case "$action" in
       workspace_info "$target"
     fi
     check_removable
-    read -r -p "Remove $worktree and branch $name? Type $name to confirm: " answer
-    [ "$answer" = "$name" ] || exit 0
+    answer="$(ask "Remove $worktree and branch $name? Type $name to confirm: " "type the name | esc back")" ||
+      exit "$back"
+    [ "$answer" = "$name" ] || exit "$back"
     # Recheck after the user prompt. Never force removal or branch deletion.
     workspace_info "$worktree"
     check_removable
-    git -C "$main" worktree remove "$worktree" && git -C "$main" branch -d "$name"
+    git -C "$main" worktree remove "$worktree" && git -C "$main" branch -d "$name" || exit 1
+    exit "$back"
     ;;
   *) fail "unknown action: $action" ;;
 esac

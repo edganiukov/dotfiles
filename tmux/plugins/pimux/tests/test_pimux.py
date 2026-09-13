@@ -7,9 +7,6 @@ Only pi, fzf, and client switching are stubbed; no real agent is started.
 import json
 import os
 from pathlib import Path
-import pty
-import re
-import select
 import shutil
 import subprocess
 import tempfile
@@ -62,8 +59,15 @@ time.sleep(600)
 import json, os, sys
 from pathlib import Path
 root = Path(os.environ["TEST_DIR"])
-if "--prompt=Session name > " in sys.argv:
+if "--disabled" in sys.argv:
+    # A line prompt (session name, stop/remove confirmation), not the list.
     (root / "name-fzf.json").write_text(json.dumps(sys.argv[1:]))
+    def opt(name):  # the error pause has a footer but no prompt
+        return next((a[len(name):] for a in sys.argv if a.startswith(name)), "")
+    with open(root / "prompts", "a") as f:
+        f.write(opt("--prompt=") + "\\n")
+    with open(root / "footers", "a") as f:
+        f.write(opt("--footer=") + "\\n")
     if os.environ.get("NEW_CANCEL"):
         sys.exit(130)
     print(os.environ["NEW_NAME"])
@@ -262,12 +266,16 @@ sys.exit(130)
         self.assertEqual(self.wait_for_pi()["args"], ["--name", "task"])
         self.assertTrue((self.root / "switch.json").exists())
 
-    def test_setup_hook_failure_pauses_popup_instead_of_returning_to_list(self):
+    def test_setup_hook_failure_pauses_then_closes_not_back_to_list(self):
+        # You already switched to the new session, so the popup must not
+        # reappear over it: show the message, then close (exit 0).
         self.write_hook("exit 1\n")
         result = self.run_script("pimux-list.sh", "task", KEY="ctrl-n", KEY_ONCE="1")
-        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((self.root / "picker-count").read_text(), "1")
         self.assertTrue(self.worktree("task").exists())
+        # The pause is an fzf prompt so Esc works, and its footer says close.
+        self.assertEqual(self.footers()[-1], "enter/esc close")
 
     def test_non_executable_or_missing_hook_is_ignored(self):
         self.write_hook("touch hook-ran\n", executable=False)
@@ -466,44 +474,46 @@ sys.exit(130)
         self.assertIn("task", self.git("branch", "--format=%(refname:short)"))
         self.assertIn(str(self.worktree("task")), self.listed_ids())
 
-    def prompt_text(self, *args, cwd=None):
-        """Run a script on a real PTY and return its prompt. `read -p` prints
-        nothing when stdin is a pipe, so plain subprocess tests can't see it."""
-        master, slave = pty.openpty()
-        proc = subprocess.Popen(["bash", str(PLUGIN / args[0]), *args[1:]], stdin=slave, stdout=slave,
-                                stderr=slave, cwd=cwd or self.repo, env=self.env, start_new_session=True)
-        os.close(slave)
-        output = b""
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline and b"] " not in output and b": " not in output:
-            if select.select([master], [], [], 0.05)[0]:
-                try:
-                    output += os.read(master, 4096)
-                except OSError:
-                    break
-        os.write(master, b"\n")  # decline
-        proc.wait(timeout=5)
-        os.close(master)
-        return re.sub(r"\x1b\[[0-9;?]*[A-Za-z]", "", output.decode(errors="replace"))
+    def prompts(self):
+        path = self.root / "prompts"
+        return path.read_text().splitlines() if path.exists() else []
+
+    def footers(self):
+        path = self.root / "footers"
+        return path.read_text().splitlines() if path.exists() else []
 
     def test_stop_prompt_names_the_session_not_the_pane_id(self):
         pane = self.create_task()
         self.tmux("set-option", "-p", "-t", pane, "@agent_session", "task")
-        prompt = self.prompt_text("pimux-action.sh", "stop", pane)
+        self.action("stop", pane)
+        prompt = self.prompts()[-1]
         self.assertIn("Stop Pi in task?", prompt)
         self.assertNotIn(pane, prompt)
         self.assertNotIn("$", prompt)
         # A distinct pi session label is shown alongside the tmux session.
         self.tmux("set-option", "-p", "-t", pane, "@agent_session", "Refactor auth")
-        self.assertIn("Stop Pi in task (Refactor auth)?", self.prompt_text("pimux-action.sh", "stop", pane))
+        self.action("stop", pane)
+        self.assertIn("Stop Pi in task (Refactor auth)?", self.prompts()[-1])
         # Declining left everything running.
         self.assertIn(pane, self.listed_ids())
 
-    def test_stop_requires_confirmation_and_rejects_non_pi_panes(self):
+    def test_stop_declined_or_escaped_returns_to_list(self):
         pane = self.create_task()
-        result = self.action("stop", pane)
+        for how in ({"answer": ""}, {"answer": "n"}, {"NEW_CANCEL": "1"}):
+            with self.subTest(how=how):
+                result = self.action("stop", pane, **how)
+                self.assertEqual(result.returncode, 130, result.stderr)
+                self.assertIn(pane, self.listed_ids())
+
+    def test_stop_confirmed_returns_to_list_without_the_row(self):
+        pane = self.create_task()
+        result = self.run_script("pimux-list.sh", "y", PICK=pane, KEY="ctrl-x", KEY_ONCE="1")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn(pane, self.listed_ids())
+        self.assertNotIn(pane, self.listed_ids())
+        # The list was shown again after the stop, then Esc closed it.
+        self.assertEqual((self.root / "picker-count").read_text(), "2")
+
+    def test_stop_rejects_non_pi_panes(self):
         result = self.action("stop", "%0", "y")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("no longer running", result.stderr)
@@ -511,15 +521,35 @@ sys.exit(130)
 
     def test_remove_requires_confirmation_then_removes_only_workspace(self):
         workspace = self.stopped_task()
-        result = self.action("remove", workspace)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertTrue(workspace.exists())
-        result = self.run_script("pimux-list.sh", "task", PICK=str(workspace), KEY="ctrl-d")
+        for how in ({"answer": ""}, {"answer": "wrong"}, {"NEW_CANCEL": "1"}):
+            with self.subTest(how=how):
+                result = self.action("remove", workspace, **how)
+                self.assertEqual(result.returncode, 130, result.stderr)
+                self.assertTrue(workspace.exists())
+        result = self.run_script("pimux-list.sh", "task", PICK=str(workspace), KEY="ctrl-d", KEY_ONCE="1")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertFalse(workspace.exists())
         self.assertTrue(self.repo.exists())
         self.assertEqual(self.git("branch", "--format=%(refname:short)"), "main")
         self.assertEqual(self.listed_ids(), [])
+        # Back to the (now empty) list after removal, then Esc closed it.
+        self.assertEqual((self.root / "picker-count").read_text(), "2")
+
+    def test_action_error_pauses_then_returns_to_list(self):
+        workspace = self.stopped_task()
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.com",
+                 "commit", "-qm", "unfinished", "--allow-empty", cwd=workspace)
+        result = self.run_script("pimux-list.sh", "task", PICK=str(workspace), KEY="ctrl-d", KEY_ONCE="1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.root / "picker-count").read_text(), "2")
+        self.assertTrue(workspace.exists())
+        # The error is captured and shown once on a clean screen, then an fzf
+        # pause (so Esc works, unlike read -p) leads back to the list.
+        self.assertEqual(result.stdout.count("not merged"), 1)
+        self.assertNotIn("not merged", result.stderr)
+        self.assertNotIn("Press Enter", result.stdout)
+        self.assertEqual(self.footers()[-1], "enter/esc back to list")
+        self.assertEqual(list(self.root.glob("pimux-errors.*")), [], "error capture file leaked")
 
     def test_remove_refuses_unmerged_commits_then_allows_merged(self):
         workspace = self.stopped_task()
@@ -531,7 +561,7 @@ sys.exit(130)
         self.assertTrue(workspace.exists())
         self.git("merge", "--ff-only", "task")
         result = self.action("remove", workspace, "task")
-        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.returncode, 130, result.stderr)
         self.assertFalse(workspace.exists())
 
     def test_remove_refuses_untracked_staged_and_ignored_files(self):
