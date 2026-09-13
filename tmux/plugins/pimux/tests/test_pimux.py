@@ -64,8 +64,9 @@ if "--disabled" in sys.argv:
     (root / "name-fzf.json").write_text(json.dumps(sys.argv[1:]))
     def opt(name):  # the error pause has a footer but no prompt
         return next((a[len(name):] for a in sys.argv if a.startswith(name)), "")
+    # The question lives in --header (folded to width); --prompt is just "> ".
     with open(root / "prompts", "a") as f:
-        f.write(opt("--prompt=") + "\\n")
+        f.write(" ".join(opt("--header=").split()) + "\\n")
     with open(root / "footers", "a") as f:
         f.write(opt("--footer=") + "\\n")
     if os.environ.get("NEW_CANCEL"):
@@ -420,6 +421,45 @@ sys.exit(130)
         pane = self.create_task()
         self.assertEqual(self.listed_ids(), [pane])
 
+    def rows_text(self, cwd=None):
+        result = self.run_script("pimux-list.sh", cwd=cwd, args=("--rows",))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return [line.split(SEP)[2] for line in result.stdout.splitlines()]
+
+    def test_row_does_not_repeat_the_session_name(self):
+        # A managed session uses one name for branch, worktree, tmux session and
+        # pi session; the row should say it once and name the project instead.
+        pane = self.create_task()
+        self.tmux("set-option", "-p", "-t", pane, "@agent_session", "task")
+        # The project column is the main repo (truncated to fit), not the
+        # worktree dir, whose basename would just be "task" again.
+        project = self.repo.name[:13] + "…"
+        [row] = self.rows_text()
+        self.assertEqual(row.count("task"), 1, row)
+        self.assertIn(project, row)
+        self.assertNotIn("pi ", row.split("task")[0])
+        # The stopped row follows the same shape.
+        self.tmux("kill-pane", "-t", pane)
+        [row] = self.rows_text()
+        self.assertEqual(row.count("task"), 1, row)
+        self.assertIn(project, row)
+        self.assertIn("stopped", row)
+
+    def test_row_shows_pi_session_name_only_when_it_differs(self):
+        pane = self.create_task()
+        self.tmux("set-option", "-p", "-t", pane, "@agent_session", "Refactor auth")
+        [row] = self.rows_text()
+        self.assertIn("Refactor auth", row)
+        self.assertEqual(row.count("task"), 1)
+
+    def test_action_output_streams_to_the_screen(self):
+        # git's "Preparing worktree" progress goes to stderr; it must reach the
+        # terminal live, not be swallowed into the error capture.
+        result = self.run_script("pimux-list.sh", "task", KEY="ctrl-n")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Preparing worktree", result.stderr)
+        self.assertEqual(list(self.root.glob("pimux-errors.*")), [], "capture file leaked")
+
     def test_resume_stopped_workspace_from_picker(self):
         workspace = self.stopped_task()
         result = self.run_script("pimux-list.sh", PICK=str(workspace))
@@ -482,6 +522,31 @@ sys.exit(130)
         path = self.root / "footers"
         return path.read_text().splitlines() if path.exists() else []
 
+    def test_prompt_question_is_folded_to_the_terminal_width(self):
+        # fzf truncates a long --prompt at the popup edge, so the question goes
+        # in --header, folded by the real terminal width read from /dev/tty
+        # (stdout is captured and stderr tee'd, so tput would otherwise say 80).
+        workspace = self.stopped_task()
+        # Record the raw --header so we can see the fold, not the re-joined text.
+        self.executable("fzf", '''#!/usr/bin/env python3
+import os, sys
+from pathlib import Path
+for a in sys.argv:
+    if a.startswith("--header="):
+        Path(os.environ["TEST_DIR"], "raw-header").write_text(a[len("--header="):])
+    if a.startswith("--prompt="):
+        Path(os.environ["TEST_DIR"], "raw-prompt").write_text(a[len("--prompt="):])
+sys.exit(130)
+''')
+        self.action("remove", workspace, COLUMNS="40")
+        lines = (self.root / "raw-header").read_text().rstrip("\n").split("\n")
+        self.assertGreater(len(lines), 1, "long question was not folded")
+        self.assertLessEqual(max(len(l) for l in lines), 40 - 4)
+        self.assertEqual(" ".join(" ".join(lines).split()),
+                         f"Remove {workspace} and branch task? Type task to confirm:")
+        # The input row has its own short prompt, so typing is on a new line.
+        self.assertEqual((self.root / "raw-prompt").read_text(), "> ")
+
     def test_stop_prompt_names_the_session_not_the_pane_id(self):
         pane = self.create_task()
         self.tmux("set-option", "-p", "-t", pane, "@agent_session", "task")
@@ -543,10 +608,11 @@ sys.exit(130)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((self.root / "picker-count").read_text(), "2")
         self.assertTrue(workspace.exists())
-        # The error is captured and shown once on a clean screen, then an fzf
-        # pause (so Esc works, unlike read -p) leads back to the list.
+        # The error streams live to the screen (stderr) as it happens, and is
+        # re-shown once on a cleared screen before an fzf pause (so Esc works,
+        # unlike read -p) leads back to the list.
+        self.assertEqual(result.stderr.count("not merged"), 1)
         self.assertEqual(result.stdout.count("not merged"), 1)
-        self.assertNotIn("not merged", result.stderr)
         self.assertNotIn("Press Enter", result.stdout)
         self.assertEqual(self.footers()[-1], "enter/esc back to list")
         self.assertEqual(list(self.root.glob("pimux-errors.*")), [], "error capture file leaked")

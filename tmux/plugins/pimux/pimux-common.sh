@@ -23,10 +23,21 @@ readonly back=130
 # Prompt for a line using fzf's editor, so Escape works immediately: bash's
 # read cannot see Escape at all, it only returns on Enter. Prints the answer;
 # returns $back on Escape.
+#
+# The question goes in the header, folded to the terminal width, not in the
+# prompt: fzf never wraps a prompt, it truncates it to the width, so a long
+# question in a narrow popup was simply cut off. The input line below gets a
+# short prompt of its own, so what you type sits on its own row.
 ask() {
-  local prompt=$1
+  local question=$1 width
+  # Size from the terminal itself: here stdout is captured by $(ask ...) and
+  # stderr is tee'd by the list script, so tput has no tty on either stream
+  # and would fall back to 80 regardless of how narrow the popup really is.
+  width=${COLUMNS:-$(tput cols < /dev/tty 2> /dev/null)}
+  width=${width:-80}
   fzf --disabled --reverse --info=hidden --no-separator \
-    --prompt="$prompt" --footer="${2:-enter confirm | esc back}" \
+    --header="$(printf '%s' "$question" | fold -s -w "$((width - 4))")" \
+    --prompt='> ' --footer="${2:-enter confirm | esc back}" \
     --bind='enter:accept-or-print-query' < /dev/null
 }
 

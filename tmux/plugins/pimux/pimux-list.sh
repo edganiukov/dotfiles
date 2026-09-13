@@ -49,7 +49,33 @@ truncate_to() {
   fi
 }
 
-# rank <sep> pane_id <sep> display, so fzf can show column 3 and we keep the id.
+# The project a directory belongs to. A managed worktree lives at
+# <main>-worktrees/<name>, and its basename is the session name again, which
+# said nothing; the main repo's name is what distinguishes rows.
+project_of() {
+  local dir=$1
+  if [[ $dir =~ ^(.*)-worktrees/[^/]+(/.*)?$ ]]; then
+    dir="${BASH_REMATCH[1]}"
+  else
+    dir="$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null)" || dir=$1
+  fi
+  printf '%s' "${dir##*/}"
+}
+
+# rank <sep> id <sep> display, so fzf can show column 3 and we keep the id.
+# Columns: state, tmux session, window.pane, project, status, then pi's own
+# session name only when it differs from the tmux session. Managed sessions
+# use one name for the branch, worktree, tmux session and pi session, so
+# repeating it across columns just made every row look the same.
+row() {
+  local rank=$1 id=$2 icon=$3 sess=$4 where=$5 project=$6 status=$7 title=$8
+  [ "$title" != "$sess" ] || title=""
+  printf '%s%s%s%s%s %-12s %-5s %-14s %-8s %s\n' \
+    "$rank" "$sep" "$id" "$sep" \
+    "$icon" "$(truncate_to "$sess" 12)" "$where" "$(truncate_to "$project" 14)" \
+    "$status" "$(truncate_to "$title" 40)"
+}
+
 agents() {
   local fmt="#{pane_id}${sep}#{session_name}${sep}#{window_index}${sep}#{pane_index}"
   fmt="${fmt}${sep}#{pane_current_path}${sep}#{@agent_state}"
@@ -58,11 +84,8 @@ agents() {
   local pane sess widx pidx path state title is_pi
   while IFS="$sep" read -r pane sess widx pidx path state title is_pi; do
     [ "$is_pi" = 1 ] || continue
-
-    printf '%s%s%s%s%s %-7s %-8s %-5s %-12s %-8s %s\n' \
-      "$(rank "$state")" "$sep" "$pane" "$sep" \
-      "$(icon "$state")" "pi" "$sess" "$widx.$pidx" \
-      "$(truncate_to "${path##*/}" 16)" "$(label "$state")" "$(truncate_to "$title" 50)"
+    row "$(rank "$state")" "$pane" "$(icon "$state")" "$sess" "$widx.$pidx" \
+      "$(project_of "$path")" "$(label "$state")" "$title"
   done < <(tmux list-panes -a -F "$fmt")
 }
 
@@ -84,9 +107,7 @@ stopped_workspaces() {
               [[ $cwd != "$path" && $cwd != "$path/"* ]] || active=true
             done <<< "$running"
             if [ "$active" = false ]; then
-              printf '4%s%s%s○ %-7s %-8s %-5s %-12s %-8s %s\n' \
-                "$sep" "$path" "$sep" pi "$branch" - \
-                "$(truncate_to "${main##*/}" 16)" stopped "$branch"
+              row 4 "$path" "○" "$branch" - "${main##*/}" stopped ""
             fi
           fi
           path="" branch=""
@@ -172,19 +193,25 @@ case "$key" in
     ;;
 esac
 
-# Capture stderr so an error can be shown on a clean screen rather than
-# streaming over whatever the list left behind. The prompts the actions open
-# are fzf on the tty, so they are unaffected by redirecting stderr.
+# Let the action's output stream to the screen as it happens, so you see git
+# and tmux working ("Preparing worktree..."), while keeping a copy: on failure
+# the copy is shown again on a clean screen instead of being lost under
+# whatever the list left behind. The prompts the actions open are fzf on the
+# tty, so they are unaffected by tee-ing stderr. The tee is on stderr only:
+# git writes its progress there, and stdout is what the actions print for us.
 errors="$(mktemp "${TMPDIR:-/tmp}/pimux-errors.XXXXXXXX")" || exit 1
+clear
 if [ "$action" = new ]; then
-  "$plugin_dir/pimux-new.sh" 2> "$errors"
+  "$plugin_dir/pimux-new.sh" 2> >(tee -- "$errors" >&2)
 elif [ -n "$target" ]; then
-  "$plugin_dir/pimux-action.sh" "$action" "$target" 2> "$errors"
+  "$plugin_dir/pimux-action.sh" "$action" "$target" 2> >(tee -- "$errors" >&2)
 else
   rm -f -- "$errors"
   exit 0
 fi
 status=$?
+# tee runs asynchronously; make sure the copy is complete before reading it.
+wait
 
 # Show what went wrong and wait for Enter or Esc. fzf, not read: bash's read
 # cannot see Esc, so it silently swallowed it and the message piled up on

@@ -14,10 +14,22 @@ when something changes, preserving your query and selected row.
 | Ctrl-R | Refresh immediately |
 | Esc | Close the popup; from any prompt, go back to the list instead |
 
+Each row shows state, tmux session, window.pane, project, status, and pi's own
+session name only when it differs from the tmux session. A managed session
+uses one name for its branch, worktree, tmux session and pi session, so the
+name appears once; the project column is the main repo, not the worktree
+directory (whose basename would just repeat the name).
+
 The popup only closes when an action takes you somewhere else (jump, resume,
 shell, new). Everything that leaves you where you are returns to the list:
 Esc or a declined answer on a confirmation, a completed stop or remove (the row
 simply disappears), and a failed action after its error has been shown.
+
+An action's output (git's "Preparing worktree...", tmux messages) streams to
+the popup as it runs. If the action fails, that output is shown again on a
+cleared screen so it is not lost under the list. Confirmation questions are
+folded to the popup's width rather than cut off, with your answer on its own
+input line beneath them.
 
 ## Create
 
