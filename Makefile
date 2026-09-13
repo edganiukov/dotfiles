@@ -77,6 +77,7 @@ agents:
 	# ln -sf $(CWD)/claude-settings.json $(HOME)/.claude/settings.json
 	mkdir -p $(HOME)/.pi/agent
 	ln -sf $(CWD)/pi/settings.json $(HOME)/.pi/agent/settings.json
+	ln -sf $(CWD)/pi/models.json $(HOME)/.pi/agent/models.json 
 	ln -sf $(CWD)/pi/extensions $(HOME)/.pi/agent/extensions
 	ln -sf $(CWD)/pi/skills $(HOME)/.pi/agent/skills
 
