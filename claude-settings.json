@@ -38,14 +38,6 @@
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "hooks": {
-    "SessionStart": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
-    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
-    "PostToolUse": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
-    "Notification": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
-    "Stop": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }],
-    "SessionEnd": [{ "hooks": [{ "type": "command", "command": "$HOME/.tmux/plugins/agents/agents.sh" }] }]
-  },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "awaySummaryEnabled": false,

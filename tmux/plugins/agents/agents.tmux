@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-# Flags windows where a coding agent (claude-code, pi) is running.
+# Flags windows where pi is running.
 #
-# Agents publish their state into the pane option @agent_state, via
-# agents.sh for hook-based agents or tmux set-option -p directly:
+# pi/extensions/tmux-agents.ts publishes state into the pane option @agent_state:
 #
 #   busy - agent is working
 #   done - agent finished its turn and is idle
 #   wait - agent is blocked on you, asking for permission or an answer
 #
-# An agent that runs under some other process name also publishes @agent_name,
-# which names the window after the agent and is how the agent list finds it; pi
-# does this, since it runs as node. See tmux.conf's automatic-rename-format.
+# pi also publishes @agent_name=pi, which names the window and lets the agent
+# list find it when it runs as node. See tmux.conf's automatic-rename-format.
 #
 # Each window folds its panes' states into the status line, loudest state wins.
 # The current window skips its own active pane, so the tab already in front of
@@ -20,8 +18,8 @@
 # Put #{agents} in window-status-format and window-status-current-format
 # to place the indicator.
 #
-# prefix + @agents-key lists every agent on the server in a popup and
-# switches to the one you pick.
+# prefix + @agents-key lists pi sessions in a popup and switches to the one
+# you pick. The New entry creates a worktree, branch, tmux session and pi session.
 
 get_tmux_option() {
   local option=$1
@@ -34,9 +32,9 @@ get_tmux_option() {
   fi
 }
 
-readonly busy_icon="$(get_tmux_option "@agents-busy-icon" "~")"
-readonly done_icon="$(get_tmux_option "@agents-done-icon" "^")"
-readonly wait_icon="$(get_tmux_option "@agents-wait-icon" "!")"
+readonly busy_icon="$(get_tmux_option "@agents-busy-icon" "●")"
+readonly done_icon="$(get_tmux_option "@agents-done-icon" "✓")"
+readonly wait_icon="$(get_tmux_option "@agents-wait-icon" "▲")"
 readonly busy_style="$(get_tmux_option "@agents-busy-style" "#[fg=#665C54]")"
 readonly done_style="$(get_tmux_option "@agents-done-style" "#[fg=#B8BB26]")"
 readonly wait_style="$(get_tmux_option "@agents-wait-style" "#[fg=#FE8019]#[bold]")"
@@ -52,7 +50,7 @@ indicator() {
     done "$done_style" "$done_icon" \
     wait "$wait_style" "$wait_icon"
   while [ $# -gt 0 ]; do
-    out="#{?#{m:*$1*,$states},$2$3#[default],$out}"
+    out="#{?#{m:*$1*,$states},$2$3#[default]  ,$out}"
     shift 3
   done
   printf '%s' "$out"
@@ -64,8 +62,10 @@ interpolate() {
   tmux set-option -gq "$1" "${value//"$placeholder"/$2}"
 }
 
-interpolate "window-status-format" "$(indicator '#{P:#{@agent_state}}')"
-interpolate "window-status-current-format" "$(indicator '#{P:#{@agent_state},}')"
+# Ignore state left behind by other agents, including old Claude hooks.
+readonly state='#{?#{||:#{==:#{@agent_name},pi},#{==:#{pane_current_command},pi}},#{@agent_state},}'
+interpolate "window-status-format" "$(indicator "#{P:$state}")"
+interpolate "window-status-current-format" "$(indicator "#{P:$state,}")"
 
 readonly key="$(get_tmux_option "@agents-key" "a")"
 readonly width="$(get_tmux_option "@agents-width" "50%")"
@@ -74,9 +74,8 @@ readonly plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if type fzf >/dev/null 2>&1; then
   # A percentage, so tmux keeps rescaling the popup when the window is resized.
-  tmux bind-key "$key" if-shell "$plugin_dir/agents-list.sh --any" \
-    "display-popup -E -w $width -h $height '$plugin_dir/agents-list.sh'" \
-    "display-message 'agents: none running'"
+  tmux bind-key "$key" display-popup -E -w "$width" -h "$height" \
+    -d '#{pane_current_path}' "\"$plugin_dir/agents-list.sh\""
 else
   tmux display-message "agents: fzf not found on PATH, agent list unbound"
 fi

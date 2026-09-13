@@ -1,29 +1,14 @@
 #!/usr/bin/env bash
 
-# Lists every coding agent running on the tmux server and switches to the one
-# you pick. Bound to a key by agents.tmux, run inside a tmux popup.
+# Lists pi panes on the tmux server and switches to the one you pick, or
+# creates a session. Bound by agents.tmux; the popup starts in the invoking
+# pane's directory so new sessions use that repository.
 #
-# Agents are panes running one of @agents-commands, plus any pane that has
-# published an @agent_state or an @agent_name. The name is what agents whose
-# process is not their own name go by: pi runs as node, so it never matches
-# @agents-commands and is listed under the name it published instead.
-#
-# State names follow the indicator in the status line: wait/done/busy, shown
-# here as blocked/done/working, with panes that run an agent but have published
-# nothing counted as idle.
+# pi may run as node, so also recognize the @agent_name its extension publishes.
+# State names follow the status line: wait/done/busy, shown here as
+# blocked/done/working, with panes that have published nothing counted as idle.
 
-get_tmux_option() {
-  local option=$1
-  local default_value=$2
-  local option_value="$(tmux show-option -gqv "$option")"
-  if [ -z "$option_value" ]; then
-    echo "$default_value"
-  else
-    echo "$option_value"
-  fi
-}
-
-readonly commands="$(get_tmux_option "@agents-commands" "claude|pi")"
+readonly plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Unit separator, not a tab: IFS treats tabs as whitespace and would collapse
 # the empty fields that panes without an agent session leave behind.
 readonly sep=$'\x1f'
@@ -42,10 +27,10 @@ rank() {
 
 icon() {
   case $1 in
-    wait) printf '%s!%s' "${esc}[1;38;5;208m" "$reset" ;;
-    done) printf '%s^%s' "${esc}[38;5;142m" "$reset" ;;
-    busy) printf '%s~%s' "${esc}[38;5;241m" "$reset" ;;
-    *) printf ' ' ;;
+    wait) printf '%s▲%s' "${esc}[1;38;5;208m" "$reset" ;;
+    done) printf '%s✓%s' "${esc}[38;5;142m" "$reset" ;;
+    busy) printf '%s●%s' "${esc}[38;5;241m" "$reset" ;;
+    *) printf '○' ;;
   esac
 }
 
@@ -58,17 +43,6 @@ label() {
   esac
 }
 
-# claude-code writes its session title into the transcript some turns in, and
-# /rename overrides it, so read the newest of each from the end of the log.
-transcript_title() {
-  local file=$1 line
-  [ -f "$file" ] && type jq >/dev/null 2>&1 || return 0
-
-  line="$(tac "$file" 2>/dev/null | grep -m1 '"type":"custom-title"')"
-  [ -z "$line" ] && line="$(tac "$file" 2>/dev/null | grep -m1 '"type":"ai-title"')"
-  [ -n "$line" ] && printf '%s' "$line" | jq -r '.customTitle // .aiTitle // empty' 2>/dev/null
-}
-
 truncate_to() {
   local text=$1 width=$2
   if [ "${#text}" -gt "$width" ]; then
@@ -78,43 +52,30 @@ truncate_to() {
   fi
 }
 
-# rank <tab> pane_id <tab> display, so fzf can show column 3 and we keep the id.
+# rank <sep> pane_id <sep> display, so fzf can show column 3 and we keep the id.
 agents() {
   local fmt="#{pane_id}${sep}#{session_name}${sep}#{window_index}${sep}#{pane_index}"
   fmt="${fmt}${sep}#{pane_current_command}${sep}#{pane_current_path}${sep}#{@agent_state}"
-  fmt="${fmt}${sep}#{@agent_session}${sep}#{@agent_transcript}${sep}#{@agent_name}"
+  fmt="${fmt}${sep}#{@agent_session}${sep}#{@agent_name}"
 
-  local pane sess widx pidx cmd path state agent_session transcript name title
-  while IFS="$sep" read -r pane sess widx pidx cmd path state agent_session transcript name; do
-    [[ $cmd =~ ^(${commands})$ || -n $state || -n $name ]] || continue
-
-    # pi labels its pane directly; claude-code only records where to look.
-    title="$agent_session"
-    [ -z "$title" ] && [ -n "$transcript" ] && title="$(transcript_title "$transcript")"
+  local pane sess widx pidx cmd path state title name
+  while IFS="$sep" read -r pane sess widx pidx cmd path state title name; do
+    [[ $cmd = pi || $name = pi ]] || continue
 
     printf '%s%s%s%s%s %-7s %-8s %-5s %-12s %-8s %s\n' \
       "$(rank "$state")" "$sep" "$pane" "$sep" \
-      "$(icon "$state")" "${name:-$cmd}" "$sess" "$widx.$pidx" \
+      "$(icon "$state")" "pi" "$sess" "$widx.$pidx" \
       "$(truncate_to "${path##*/}" 16)" "$(label "$state")" "$(truncate_to "$title" 50)"
   done < <(tmux list-panes -a -F "$fmt")
 }
 
 readonly rows="$(agents | sort -t"$sep" -k1,1n -k3,3)"
 
-# The key binding checks this first, so tmux never opens a popup that would
-# flash straight back shut when nothing is running.
-if [ "${1:-}" = "--any" ]; then
-  [ -n "$rows" ]
-  exit
-fi
-
-if [ -z "$rows" ]; then
-  tmux display-message "agents: no agents running"
-  exit 0
-fi
-
 selected="$(
-  printf '%s\n' "$rows" | fzf \
+  {
+    [ -z "$rows" ] || printf '%s\n' "$rows"
+    printf '4%snew%s+ New pi session\n' "$sep" "$sep"
+  } | fzf \
     --ansi \
     --delimiter="$sep" \
     --with-nth=3 \
@@ -127,6 +88,14 @@ selected="$(
 [ -n "$selected" ] || exit 0
 
 pane="$(printf '%s' "$selected" | cut -d"$sep" -f2)"
+if [ "$pane" = new ]; then
+  "$plugin_dir/agents-new.sh"
+  status=$?
+  # Keep Git/tmux errors visible rather than closing the popup immediately.
+  [ "$status" -eq 0 ] || read -r -p "Press Enter to close. "
+  exit "$status"
+fi
+
 read -r session window < <(tmux display-message -p -t "$pane" "#{session_name}${sep}#{window_id}" | tr "$sep" ' ')
 
 tmux switch-client -t "$session"
