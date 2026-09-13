@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.3",
+  "lastChangelogVersion": "0.85.1",
   "defaultThinkingLevel": "xhigh",
   "theme": "dark",
   "collapseChangelog": true,
@@ -25,6 +25,6 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "tuiMode": "regular",
+  "tuiMode": "fullscreen",
   "fullscreenScrollbar": "auto"
 }
