@@ -1,6 +1,6 @@
 /**
  * Publishes coding agent state to the tmux pane pi runs in. The @agent_state
- * pane option is the contract shared with tmux/plugins/agents/agents.tmux.
+ * pane option is the contract shared with tmux/plugins/pimux/pimux.tmux.
  *
  * Not an extension: this directory holds helpers, so pi's discovery of
  * extensions/*.ts and extensions/*!/index.ts skips it. No-op outside tmux.
