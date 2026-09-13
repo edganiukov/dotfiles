@@ -169,13 +169,15 @@ async function fetchCodexUsage(modelRegistry: any): Promise<UsageSnapshot> {
 	let accountId: string | undefined;
 
 	try {
-		// Try openai-codex provider first (pi's built-in)
-		accessToken = await modelRegistry?.authStorage?.getApiKey?.("openai-codex");
+		// Try openai-codex provider first (pi's built-in); handles OAuth refresh
+		const auth = await modelRegistry?.getProviderAuth?.("openai-codex");
+		accessToken = auth?.auth?.apiKey;
 
-		// Get account ID if available from OAuth credentials
-		const cred = modelRegistry?.authStorage?.get?.("openai-codex");
-		if (cred?.type === "oauth") {
-			accountId = (cred as any).accountId;
+		// Account ID isn't exposed via getProviderAuth; read it from pi's auth.json
+		const piAuthPath = path.join(os.homedir(), ".pi", "agent", "auth.json");
+		if (fs.existsSync(piAuthPath)) {
+			const data = JSON.parse(fs.readFileSync(piAuthPath, "utf-8"));
+			accountId = data["openai-codex"]?.accountId;
 		}
 	} catch {}
 
@@ -250,7 +252,7 @@ async function fetchCodexUsage(modelRegistry: any): Promise<UsageSnapshot> {
 			const sw = data.rate_limit.secondary_window;
 			const resetDate = sw.reset_at ? new Date(sw.reset_at * 1000) : undefined;
 			const windowHours = Math.round((sw.limit_window_seconds || 86400) / 3600);
-			const label = windowHours >= 24 ? "Day" : `${windowHours}h`;
+			const label = windowHours >= 168 ? "Week" : windowHours >= 24 ? "Day" : `${windowHours}h`;
 			windows.push({
 				label,
 				usedPercent: sw.used_percent || 0,

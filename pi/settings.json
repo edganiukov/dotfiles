@@ -26,5 +26,7 @@
     "showTerminalProgress": true
   },
   "tuiMode": "fullscreen",
-  "fullscreenScrollbar": "auto"
+  "fullscreenScrollbar": "auto",
+  "defaultProjectTrust": "always",
+  "httpIdleTimeoutMs": 0
 }
