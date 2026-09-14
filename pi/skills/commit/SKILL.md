@@ -15,7 +15,7 @@ Create a git commit for the current changes using a concise Conventional Commits
 
 ## Notes
 
-- Body is mandatory. Add a blank line after the subject and write short paragraphs.
+- Body is mandatory. Add a blank line after the subject and write short paragraphs, <= 72 chars, no trailing period
 - Do NOT include breaking-change markers or footers.
 - Do NOT add sign-offs (no `Signed-off-by`).
 - Only commit; do NOT push.
