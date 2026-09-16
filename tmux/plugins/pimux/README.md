@@ -120,8 +120,8 @@ Separately stored Pi conversation history is not deleted.
 
 ## Indicators
 
-Icons use plain Unicode supported by the configured Terminus font:
-`○` idle/stopped, `●` busy, `✓` done, and `▲` waiting. No Nerd Font is needed.
+Icons use plain Unicode:
+`▢` idle/stopped, `◌` busy, `◉` done, and `▲` waiting. No Nerd Font is needed.
 Tab indicators appear before the window label, separated by a single space.
 
 `#{pimux_blocked}` in `status-right` shows **▲ N blocked** when any Pi panes

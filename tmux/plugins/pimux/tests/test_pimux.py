@@ -359,7 +359,7 @@ sys.exit(130)
         self.tmux("set-option", "-g", "window-status-format", "#{pimux}")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.run_script("pimux.tmux")
-        for state, icon in (("wait", "▲"), ("busy", "●"), ("done", "✓"), ("", "○")):
+        for state, icon in (("wait", "▲"), ("busy", "◌"), ("done", "◉"), ("", "▢")):
             with self.subTest(state=state):
                 self.tmux("set-option", "-p", "-t", "%0", "@agent_state", state)
                 result = self.run_script("pimux-list.sh")
@@ -391,8 +391,8 @@ sys.exit(130)
         for option in options:
             with self.subTest(option=option):
                 status = self.tmux("display-message", "-p", f"#{{E:{option}}}")
-                self.assertIn("●#[default] 0:pi", status)
-                self.assertNotIn("(●)", status)
+                self.assertIn("◌#[default] 0:pi", status)
+                self.assertNotIn("(◌)", status)
 
     def test_status_ignores_non_pi_state(self):
         self.tmux("set-option", "-g", "window-status-format", "#{pimux}")
@@ -445,6 +445,7 @@ sys.exit(130)
         self.assertEqual(row.count("task"), 1, row)
         self.assertIn(project, row)
         self.assertIn("stopped", row)
+        self.assertTrue(row.startswith("▢ "), row)
 
     def test_row_shows_pi_session_name_only_when_it_differs(self):
         pane = self.create_task()
