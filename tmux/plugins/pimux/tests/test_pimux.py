@@ -359,19 +359,24 @@ sys.exit(130)
         self.tmux("set-option", "-g", "window-status-format", "#{pimux}")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.run_script("pimux.tmux")
-        for state, icon in (("wait", "▲"), ("busy", "◌"), ("done", "◉"), ("", "▢")):
+        for state, icon, ansi, style in (
+            ("wait", "✦", "1;38;5;167", "#[fg=#FB4934]#[bold]"),
+            ("busy", "◌", "38;5;214", "#[fg=#FABD2F]"),
+            ("done", "◉", "38;5;142", "#[fg=#B8BB26]"),
+            ("", "▢", "38;5;142", ""),
+        ):
             with self.subTest(state=state):
                 self.tmux("set-option", "-p", "-t", "%0", "@agent_state", state)
                 result = self.run_script("pimux-list.sh")
                 self.assertEqual(result.returncode, 0, result.stderr)
                 rows = (self.root / "rows").read_text().splitlines()
-                self.assertIn(icon, rows[0])
+                self.assertIn(f"\x1b[{ansi}m{icon}\x1b[0m ", rows[0])
                 self.assertNotIn(f"({icon})", rows[0])
                 self.assertEqual(len(rows), 1)
                 status = self.tmux("display-message", "-p", "#{E:window-status-format}tab")
                 if state:
                     self.assertNotIn(f"({icon})", status)
-                    self.assertTrue(status.endswith(f"{icon}#[default] tab"))
+                    self.assertEqual(status, f"{style}{icon}#[default] tab")
                 else:
                     self.assertEqual(status, "tab")
 
@@ -391,7 +396,7 @@ sys.exit(130)
         for option in options:
             with self.subTest(option=option):
                 status = self.tmux("display-message", "-p", f"#{{E:{option}}}")
-                self.assertIn("◌#[default] 0:pi", status)
+                self.assertIn("#[fg=#FABD2F]◌#[default] 0:pi", status)
                 self.assertNotIn("(◌)", status)
 
     def test_status_ignores_non_pi_state(self):
@@ -400,7 +405,7 @@ sys.exit(130)
         self.run_script("pimux.tmux")
         self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-format}"), "")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
-        self.assertIn("▲", self.tmux("display-message", "-p", "#{E:window-status-format}"))
+        self.assertIn("✦", self.tmux("display-message", "-p", "#{E:window-status-format}"))
 
     def test_current_status_skips_active_pi_pane(self):
         self.tmux("set-option", "-g", "window-status-current-format", "#{pimux}")
@@ -409,7 +414,7 @@ sys.exit(130)
         self.run_script("pimux.tmux")
         self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), "")
         self.tmux("split-window", "-h", "sleep", "600")
-        self.assertIn("▲", self.tmux("display-message", "-p", "#{E:window-status-current-format}"))
+        self.assertIn("✦", self.tmux("display-message", "-p", "#{E:window-status-current-format}"))
 
     def test_stopped_workspaces_are_found_without_a_registry(self):
         workspace = self.stopped_task()
@@ -445,7 +450,7 @@ sys.exit(130)
         self.assertEqual(row.count("task"), 1, row)
         self.assertIn(project, row)
         self.assertIn("stopped", row)
-        self.assertTrue(row.startswith("▢ "), row)
+        self.assertTrue(row.startswith("\x1b[38;5;142m▢\x1b[0m "), row)
 
     def test_row_shows_pi_session_name_only_when_it_differs(self):
         pane = self.create_task()
@@ -811,9 +816,9 @@ os.execv({real_git!r}, [{real_git!r}, *sys.argv[1:]])
         # A stale non-Pi state must not count.
         self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "wait")
         result = self.run_script("pimux-status.sh")
-        self.assertIn("▲ 1 blocked", result.stdout)
+        self.assertEqual(result.stdout, "#[fg=#FB4934]#[bold]✦ 1 blocked#[default] ")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
-        self.assertIn("▲ 2 blocked", self.run_script("pimux-status.sh").stdout)
+        self.assertIn("✦ 2 blocked", self.run_script("pimux-status.sh").stdout)
         self.tmux("set-option", "-p", "-t", pane, "@agent_state", "busy")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "done")
         self.assertEqual(self.run_script("pimux-status.sh").stdout, "")

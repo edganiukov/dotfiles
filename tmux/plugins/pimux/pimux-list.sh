@@ -24,10 +24,10 @@ rank() {
 
 icon() {
   case $1 in
-    wait) printf '%s▲%s' "${esc}[1;38;5;208m" "$reset" ;;
+    wait) printf '%s✦%s' "${esc}[1;38;5;167m" "$reset" ;;
     done) printf '%s◉%s' "${esc}[38;5;142m" "$reset" ;;
-    busy) printf '%s◌%s' "${esc}[38;5;241m" "$reset" ;;
-    *) printf '▢' ;;
+    busy) printf '%s◌%s' "${esc}[38;5;214m" "$reset" ;;
+    *) printf '%s▢%s' "${esc}[38;5;142m" "$reset" ;;
   esac
 }
 
@@ -141,7 +141,7 @@ stopped_workspaces() {
               [[ $cwd != "$path" && $cwd != "$path/"* ]] || active=true
             done <<< "$running"
             if [ "$active" = false ]; then
-              row 4 "$path" "▢" "$branch" - "${main##*/}" stopped "" ""
+              row 4 "$path" "$(icon stopped)" "$branch" - "${main##*/}" stopped "" ""
             fi
           fi
           path="" branch=""

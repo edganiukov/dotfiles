@@ -26,10 +26,10 @@ source "$plugin_dir/pimux-common.sh"
 
 readonly busy_icon="$(get_tmux_option "@pimux-busy-icon" "◌")"
 readonly done_icon="$(get_tmux_option "@pimux-done-icon" "◉")"
-readonly wait_icon="$(get_tmux_option "@pimux-wait-icon" "▲")"
-readonly busy_style="$(get_tmux_option "@pimux-busy-style" "#[fg=#665C54]")"
+readonly wait_icon="$(get_tmux_option "@pimux-wait-icon" "✦")"
+readonly busy_style="$(get_tmux_option "@pimux-busy-style" "#[fg=#FABD2F]")"
 readonly done_style="$(get_tmux_option "@pimux-done-style" "#[fg=#B8BB26]")"
-readonly wait_style="$(get_tmux_option "@pimux-wait-style" "#[fg=#FE8019]#[bold]")"
+readonly wait_style="$(get_tmux_option "@pimux-wait-style" "#[fg=#FB4934]#[bold]")"
 readonly placeholder="#{pimux}"
 
 # $1 - format expanding to the states of the panes to watch.
