@@ -121,12 +121,12 @@ Separately stored Pi conversation history is not deleted.
 ## Indicators
 
 Icons use plain Unicode:
-`▢` idle/stopped, `◌` busy, `◉` done, and `✦` waiting. No Nerd Font is needed.
+`▢` idle/stopped, `◌` busy, `✶` done, and `◆` waiting. No Nerd Font is needed.
 Colours are yellow for busy, green for done/idle/stopped, and red for waiting
 (including the global blocked notice).
 Tab indicators appear before the window label, separated by a single space.
 
-`#{pimux_blocked}` in `status-right` shows **✦ N blocked** when any Pi panes
+`#{pimux_blocked}` in `status-right` shows **◆ N blocked** when any Pi panes
 on the tmux server need input, including panes in other sessions. It disappears
 when none are blocked. A completed turn (`done`) is not counted as blocked.
 Dead panes are excluded from both the list and indicators.
