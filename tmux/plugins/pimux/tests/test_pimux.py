@@ -356,7 +356,9 @@ sys.exit(130)
         self.assertNotIn("if-shell", binding)
 
     def test_status_icons_match_list(self):
-        self.tmux("set-option", "-g", "window-status-format", "#{pimux}")
+        options = ("window-status-format", "window-status-current-format")
+        for option in options:
+            self.tmux("set-option", "-g", option, "#{pimux}")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.run_script("pimux.tmux")
         for state, icon, ansi, style in (
@@ -373,12 +375,14 @@ sys.exit(130)
                 self.assertIn(f"\x1b[{ansi}m{icon}\x1b[0m ", rows[0])
                 self.assertNotIn(f"({icon})", rows[0])
                 self.assertEqual(len(rows), 1)
-                status = self.tmux("display-message", "-p", "#{E:window-status-format}tab")
-                if state:
-                    self.assertNotIn(f"({icon})", status)
-                    self.assertEqual(status, f"{style}{icon}#[default] tab")
-                else:
-                    self.assertEqual(status, "tab")
+                for option in options:
+                    with self.subTest(option=option):
+                        status = self.tmux("display-message", "-p", f"#{{E:{option}}}tab")
+                        if state:
+                            self.assertNotIn(f"({icon})", status)
+                            self.assertEqual(status, f"{style}{icon}#[default] tab")
+                        else:
+                            self.assertEqual(status, "tab")
 
     def test_config_places_indicator_before_tab_label(self):
         options = ("window-status-format", "window-status-current-format")
@@ -390,8 +394,6 @@ sys.exit(130)
         self.tmux("rename-window", "pi")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "busy")
-        # Keep the agent in a background pane so the current-tab indicator shows.
-        self.tmux("split-window", "-h", "sleep", "600")
         self.run_script("pimux.tmux")
         for option in options:
             with self.subTest(option=option):
@@ -407,14 +409,17 @@ sys.exit(130)
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.assertIn("◆", self.tmux("display-message", "-p", "#{E:window-status-format}"))
 
-    def test_current_status_skips_active_pi_pane(self):
+    def test_current_status_includes_active_pi_pane(self):
         self.tmux("set-option", "-g", "window-status-current-format", "#{pimux}")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "wait")
         self.run_script("pimux.tmux")
-        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), "")
+        expected = "#[fg=#FB4934]#[bold]◆#[default]"
+        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
         self.tmux("split-window", "-h", "sleep", "600")
-        self.assertIn("◆", self.tmux("display-message", "-p", "#{E:window-status-current-format}"))
+        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
+        self.tmux("select-pane", "-t", "%0")
+        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
 
     def test_stopped_workspaces_are_found_without_a_registry(self):
         workspace = self.stopped_task()

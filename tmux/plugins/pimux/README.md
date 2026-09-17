@@ -125,6 +125,7 @@ Icons use plain Unicode:
 Colours are yellow for busy, green for done/idle/stopped, and red for waiting
 (including the global blocked notice).
 Tab indicators appear before the window label, separated by a single space.
+They stay visible on the selected tab, including for its active Pi pane.
 
 `#{pimux_blocked}` in `status-right` shows **◆ N blocked** when any Pi panes
 on the tmux server need input, including panes in other sessions. It disappears

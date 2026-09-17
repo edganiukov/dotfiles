@@ -12,8 +12,7 @@
 # list find it when it runs as node. See tmux.conf's automatic-rename-format.
 #
 # Each window folds its panes' states into the status line, loudest state wins.
-# The current window skips its own active pane, so the tab already in front of
-# you never flags the agent you are looking at.
+# Include the active pane even in the selected window.
 #
 # Put #{pimux} in window-status-format and window-status-current-format
 # to place the indicator.
@@ -58,7 +57,7 @@ interpolate() {
 # Ignore state left behind by other agents, including old Claude hooks.
 readonly state="#{?$pi_pane,#{@agent_state},}"
 interpolate "window-status-format" "$(indicator "#{P:$state}")"
-interpolate "window-status-current-format" "$(indicator "#{P:$state,}")"
+interpolate "window-status-current-format" "$(indicator "#{P:$state}")"
 interpolate "status-right" "#(\"$plugin_dir/pimux-status.sh\")" '#{pimux_blocked}'
 
 readonly key="$(get_tmux_option "@pimux-key" "a")"
