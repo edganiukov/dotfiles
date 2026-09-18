@@ -4,13 +4,17 @@ Run with: python3 -m unittest discover -s tmux/plugins/pimux/tests -v
 Only pi, fzf, and client switching are stubbed; no real agent is started.
 """
 
+import fcntl
 import json
 import os
 import re
+import select
 from pathlib import Path
 import shutil
+import struct
 import subprocess
 import tempfile
+import termios
 import time
 import unittest
 
@@ -656,6 +660,199 @@ sys.exit(130)
         self.assertEqual(self.listed_ids(), [])
         # Back to the (now empty) list after removal, then Esc closed it.
         self.assertEqual((self.root / "picker-count").read_text(), "2")
+
+    def test_remove_done_requires_confirmation_then_stops_and_removes(self):
+        pane = self.create_task()
+        workspace = self.worktree("task")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        for how in ({"answer": ""}, {"answer": "wrong"}, {"NEW_CANCEL": "1"}):
+            with self.subTest(how=how):
+                result = self.action("remove", pane, **how)
+                self.assertEqual(result.returncode, 130, result.stderr)
+                self.assertTrue(workspace.exists())
+                self.assertIn(pane, self.listed_ids())
+        self.assertIn("Stop Pi in task", self.prompts()[-1])
+        self.assertIn(f"remove {workspace} and branch task", self.prompts()[-1])
+        result = self.run_script("pimux-list.sh", "task", PICK=pane, KEY="ctrl-d", KEY_ONCE="1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(workspace.exists())
+        self.assertEqual(self.git("branch", "--format=%(refname:short)"), "main")
+        self.assertEqual(self.tmux("list-panes", "-a", "-F", "#{pane_id}"), "%0")
+        self.assertEqual((self.root / "picker-count").read_text(), "2")
+
+    def test_remove_live_pi_requires_done_state(self):
+        pane = self.create_task()
+        for state in ("", "busy", "wait", "unknown"):
+            with self.subTest(state=state):
+                self.tmux("set-option", "-p", "-t", pane, "@agent_state", state)
+                result = self.action("remove", pane, "task")
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn("not done", result.stderr)
+                self.assertTrue(self.worktree("task").exists())
+                self.assertIn(pane, self.listed_ids())
+
+    def test_remove_done_refuses_other_panes_in_workspace(self):
+        pane = self.create_task()
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        nested = self.worktree("task") / "nested"
+        nested.mkdir()
+        for directory in (self.worktree("task"), nested):
+            with self.subTest(directory=directory):
+                other = self.tmux("new-window", "-d", "-P", "-F", "#{pane_id}",
+                                  "-c", str(directory), "sleep", "600")
+                result = self.action("remove", pane, "task")
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn("in use", result.stderr)
+                self.assertIn(pane, self.listed_ids())
+                self.assertIn(other, self.tmux("list-panes", "-a", "-F", "#{pane_id}").splitlines())
+                self.tmux("kill-pane", "-t", other)
+
+    def test_remove_done_keeps_pi_running_if_workspace_is_unsafe(self):
+        pane = self.create_task()
+        workspace = self.worktree("task")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        marker = workspace / "keep"
+        marker.write_text("unfinished")
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("files", result.stderr)
+        self.assertEqual(marker.read_text(), "unfinished")
+        self.assertIn(pane, self.listed_ids())
+        marker.unlink()
+        self.git("-c", "user.name=Test", "-c", "user.email=test@example.com",
+                 "commit", "-qm", "unfinished", "--allow-empty", cwd=workspace)
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("not merged", result.stderr)
+        self.assertTrue(workspace.exists())
+        self.assertIn(pane, self.listed_ids())
+
+    def test_remove_done_rechecks_state_after_confirmation(self):
+        pane = self.create_task()
+        for state in ("busy", "wait", ""):
+            with self.subTest(state=state):
+                self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+                self.executable("fzf", f'''#!/usr/bin/env bash
+tmux set-option -p -t {pane} @agent_state '{state}'
+printf '%s\\n' task
+''')
+                result = self.action("remove", pane, "task")
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn("not done", result.stderr)
+                self.assertTrue(self.worktree("task").exists())
+                self.assertIn(pane, self.listed_ids())
+
+    def test_remove_done_rechecks_files_after_confirmation(self):
+        pane = self.create_task()
+        workspace = self.worktree("task")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        self.executable("fzf", f'''#!/usr/bin/env python3
+from pathlib import Path
+Path({str(workspace / "new-work")!r}).write_text("keep")
+print("task")
+''')
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("files", result.stderr)
+        self.assertEqual((workspace / "new-work").read_text(), "keep")
+        self.assertIn(pane, self.listed_ids())
+
+    def test_remove_done_rechecks_other_panes_after_confirmation(self):
+        pane = self.create_task()
+        workspace = self.worktree("task")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        self.executable("fzf", f'''#!/usr/bin/env python3
+import subprocess
+subprocess.check_call(["tmux", "new-window", "-d", "-c", {str(workspace)!r}, "sleep", "600"])
+print("task")
+''')
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("in use", result.stderr)
+        self.assertTrue(workspace.exists())
+        self.assertIn(pane, self.listed_ids())
+        self.assertEqual(len(self.tmux("list-panes", "-a", "-F", "#{pane_id}").splitlines()), 3)
+
+    def test_remove_done_rechecks_pane_location_after_confirmation(self):
+        pane = self.create_task()
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        self.executable("fzf", f'''#!/usr/bin/env bash
+tmux respawn-pane -k -t {pane} -c "$TEST_DIR" -- sleep 600
+printf '%s\\n' task
+''')
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("moved", result.stderr)
+        self.assertTrue(self.worktree("task").exists())
+        self.assertIn(pane, self.listed_ids())
+
+    def test_remove_done_git_failure_leaves_a_shell_and_workspace(self):
+        pane = self.create_task()
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        real_git = shutil.which("git")
+        self.executable("git", f'''#!/usr/bin/env python3
+import os, sys
+if "worktree" in sys.argv and "remove" in sys.argv:
+    print("simulated removal failure", file=sys.stderr)
+    sys.exit(1)
+os.execv({real_git!r}, [{real_git!r}, *sys.argv[1:]])
+''')
+        result = self.action("remove", pane, "task")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("simulated removal failure", result.stderr)
+        self.assertTrue(self.worktree("task").exists())
+        self.assertIn("task", self.git("branch", "--format=%(refname:short)"))
+        self.assertEqual(self.tmux("display-message", "-p", "-t", pane, "#{pane_current_path}"), str(self.repo))
+        for option in ("@agent_name", "@agent_state", "@agent_session", "@agent_since"):
+            self.assertEqual(self.tmux("show-option", "-pqv", "-t", pane, option), "")
+        self.assertIn(str(self.worktree("task")), self.listed_ids())
+
+    def test_remove_done_from_its_own_popup_finishes_before_session_closes(self):
+        pane = self.create_task()
+        workspace = self.worktree("task")
+        self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
+        # Exercise even the last session on the server. A plain kill-pane
+        # would close the popup and terminate the action before Git cleanup.
+        self.tmux("kill-session", "-t", "origin")
+        for key, value in (("KEY", "ctrl-d"), ("PICK", pane), ("NEW_NAME", "task"), ("KEY_ONCE", "1")):
+            self.tmux("set-environment", "-g", key, value)
+        master, slave = os.openpty()
+        fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", 30, 100, 0, 0))
+        env = dict(self.env, TERM="xterm-256color")
+        env.pop("TMUX", None)
+        client = popup = None
+        try:
+            client = subprocess.Popen([TMUX, "-S", self.socket, "attach-session", "-t", "task"],
+                                      stdin=slave, stdout=slave, stderr=slave, env=env)
+            for _ in range(100):
+                if self.tmux("list-clients"):
+                    break
+                time.sleep(0.02)
+            self.assertTrue(self.tmux("list-clients"), "test client did not attach")
+            popup = subprocess.Popen([TMUX, "-S", self.socket, "display-popup", "-E",
+                                      "-d", str(workspace), "bash", str(PLUGIN / "pimux-list.sh")],
+                                     env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline and client.poll() is None:
+                if select.select([master], [], [], 0.05)[0]:
+                    os.read(master, 65536)
+            self.assertIsNotNone(client.poll(), "removal did not close the session")
+            popup.communicate(timeout=3)
+            self.assertFalse(workspace.exists())
+            self.assertEqual(self.git("branch", "--format=%(refname:short)"), "main")
+            for _ in range(100):
+                if not list(self.root.glob("pimux-errors.*")):
+                    break
+                time.sleep(0.02)
+            self.assertEqual(list(self.root.glob("pimux-errors.*")), [], "error capture leaked")
+        finally:
+            for process in (popup, client):
+                if process is not None:
+                    if process.poll() is None:
+                        process.terminate()
+                    process.communicate(timeout=3)
+            os.close(master)
+            os.close(slave)
 
     def test_action_error_pauses_then_returns_to_list(self):
         workspace = self.stopped_task()

@@ -10,9 +10,9 @@ source "$plugin_dir/pimux-common.sh"
 pane_info() {
   local info session_name pi_session
   info="$(tmux display-message -p -t "$1" \
-    "#{session_id}${sep}#{pane_current_path}${sep}$pi_pane${sep}#{session_name}${sep}#{@agent_session}")" ||
+    "#{session_id}${sep}#{pane_current_path}${sep}$pi_pane${sep}#{session_name}${sep}#{@agent_session}${sep}#{@agent_state}")" ||
     fail "pane no longer exists: $1"
-  IFS="$sep" read -r session path is_pi session_name pi_session <<< "$info"
+  IFS="$sep" read -r session path is_pi session_name pi_session state <<< "$info"
   [ "$is_pi" = 1 ] || fail "Pi is no longer running in pane $1"
   label="$session_name"
   [ -z "$pi_session" ] || [ "$pi_session" = "$session_name" ] || label="$session_name ($pi_session)"
@@ -50,9 +50,17 @@ workspace_session() {
 }
 
 check_removable() {
-  local cwd changes paths
-  paths="$(tmux list-panes -a -F '#{pane_current_path}')" || fail "could not check active tmux panes"
-  while IFS= read -r cwd; do
+  local stop_pane=${1:-} pane cwd changes paths
+  # Only the selected, completed Pi pane may be stopped as part of removal.
+  if [ -n "$stop_pane" ]; then
+    pane_info "$stop_pane"
+    [ "$state" = done ] || fail "Pi is not done; stop it before removing the workspace"
+    [[ $path = "$worktree" || $path = "$worktree/"* ]] ||
+      fail "Pi pane has moved out of the workspace; select it again"
+  fi
+  paths="$(tmux list-panes -a -F "#{pane_id}${sep}#{pane_current_path}")" || fail "could not check active tmux panes"
+  while IFS="$sep" read -r pane cwd; do
+    [ "$pane" != "$stop_pane" ] || continue
     [[ $cwd != "$worktree" && $cwd != "$worktree/"* ]] ||
       fail "workspace is in use; stop Pi and close its shell windows first"
   done <<< "$paths"
@@ -115,20 +123,39 @@ case "$action" in
     fi
     ;;
   remove)
+    stop_pane=""
     if [[ $target = %* ]]; then
       pane_info "$target"
       workspace_info "$path"
+      stop_pane=$target
+      question="Stop Pi in $label, then remove $worktree and branch $name?"
     else
       workspace_info "$target"
+      question="Remove $worktree and branch $name?"
     fi
-    check_removable
-    answer="$(ask "Remove $worktree and branch $name? Type $name to confirm: " "type the name | esc back")" ||
+    check_removable "$stop_pane"
+    answer="$(ask "$question Type $name to confirm: " "type the name | esc back")" ||
       exit "$back"
     [ "$answer" = "$name" ] || exit "$back"
-    # Recheck after the user prompt. Never force removal or branch deletion.
+    # Recheck state and safety before stopping Pi: it may have resumed while
+    # the confirmation was open. Never force removal or branch deletion.
     workspace_info "$worktree"
-    check_removable
+    check_removable "$stop_pane"
+    # The popup itself may have been opened inside the directory being deleted.
+    cd "$main" || exit 1
+    if [ -n "$stop_pane" ]; then
+      # Keep the pane alive until Git cleanup finishes: killing the popup's
+      # own last pane would detach its client and abort this script mid-delete.
+      # On failure, leave a usable shell in the main repo rather than stale Pi.
+      tmux respawn-pane -k -t "$stop_pane" -c "$main" -- "$(get_tmux_option default-shell /bin/sh)" \; \
+        set-option -pu -t "$stop_pane" @agent_name \; \
+        set-option -pu -t "$stop_pane" @agent_state \; \
+        set-option -pu -t "$stop_pane" @agent_session \; \
+        set-option -pu -t "$stop_pane" @agent_since || exit 1
+      check_removable
+    fi
     git -C "$main" worktree remove "$worktree" && git -C "$main" branch -d "$name" || exit 1
+    [ -z "$stop_pane" ] || tmux kill-pane -t "$stop_pane" || exit 1
     exit "$back"
     ;;
   *) fail "unknown action: $action" ;;

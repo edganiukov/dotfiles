@@ -10,7 +10,7 @@ when something changes, preserving your query and selected row.
 | Ctrl-N | Create a new session, even when the list is empty or the filter has no matches |
 | Ctrl-O | Open a shell window in the selected agent's worktree |
 | Ctrl-X | Stop the selected Pi pane, after confirmation |
-| Ctrl-D | Remove the selected stopped workspace and branch, after safety checks and confirmation |
+| Ctrl-D | Remove the selected workspace and branch; also stop Pi if it is done, after safety checks and confirmation |
 | Ctrl-R | Refresh immediately |
 | Esc | Close the popup; from any prompt, go back to the list instead |
 
@@ -27,10 +27,11 @@ minutes waiting on you), stamped by the pi extension as `@agent_since`.
 tmux's own activity clock would not do: it ticks on any output, including
 pi's spinner. Sessions started before this stamp existed show no age.
 
-The popup only closes when an action takes you somewhere else (jump, resume,
-shell, new). Everything that leaves you where you are returns to the list:
-Esc or a declined answer on a confirmation, a completed stop or remove (the row
-simply disappears), and a failed action after its error has been shown.
+Navigation actions (jump, resume, shell, new) close the popup. Other actions
+return to the list: Esc or a declined confirmation, a completed stop or remove,
+and a failed action after its error has been shown. Stopping or removing the
+popup's own last pane can also close the popup and detach the tmux client;
+removal finishes Git cleanup before closing that pane.
 
 An action's output (git's "Preparing worktree...", tmux messages) streams to
 the popup as it runs. If the action fails, that output is shown again on a
@@ -106,17 +107,22 @@ closes its tmux session, subject to tmux's normal detach behavior. The
 confirmation names the tmux session (and the pi session, if it differs), not
 the bare pane id.
 
-Ctrl-D is a separate, destructive action. It refuses removal if:
+Ctrl-D removes a stopped workspace, or stops a **done** Pi pane and removes
+its workspace in one confirmed action. You do not need to use Ctrl-X first.
+The confirmation explicitly says when Pi will be stopped. Removal is refused if:
 
-- Any tmux pane is still in the workspace or a subdirectory, including shells.
+- The selected Pi pane is not `done` (including busy, waiting, or idle).
+- Any other tmux pane is in the workspace or a subdirectory, including shells.
 - There are uncommitted, untracked, or ignored files. This protects local
   configuration too; remove build products manually before cleanup.
 - The workspace branch has commits not merged into the main checkout's current
   `HEAD`, or the workspace no longer follows the managed path/branch convention.
 
-Type the workspace name to confirm. Checks run again after confirmation, and
-Git removal/deletion never uses force. Git worktree locks are respected.
-Separately stored Pi conversation history is not deleted.
+Type the workspace name to confirm. State and safety checks run again before
+stopping Pi, so an agent that resumes work while the prompt is open is left
+running. Git removal/deletion never uses force, and worktree locks are respected.
+If Git fails after Pi has stopped, a shell in the main repo remains so the error
+can be shown. Separately stored Pi conversation history is not deleted.
 
 ## Indicators
 

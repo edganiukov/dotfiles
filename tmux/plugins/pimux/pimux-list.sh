@@ -234,6 +234,9 @@ esac
 # tty, so they are unaffected by tee-ing stderr. The tee is on stderr only:
 # git writes its progress there, and stdout is what the actions print for us.
 errors="$(mktemp "${TMPDIR:-/tmp}/pimux-errors.XXXXXXXX")" || exit 1
+# Removing the popup's own session can close its terminal before we return.
+trap 'rm -f -- "$errors"' EXIT
+trap 'exit 130' HUP TERM
 clear
 if [ "$action" = new ]; then
   "$plugin_dir/pimux-new.sh" 2> >(tee -- "$errors" >&2)
