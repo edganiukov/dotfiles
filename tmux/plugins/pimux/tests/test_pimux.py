@@ -364,7 +364,7 @@ sys.exit(130)
         for state, icon, ansi, style in (
             ("wait", "◆", "1;38;5;167", "#[fg=#FB4934]#[bold]"),
             ("busy", "◌", "38;5;214", "#[fg=#FABD2F]"),
-            ("done", "✶", "38;5;142", "#[fg=#B8BB26]"),
+            ("done", "✿", "38;5;142", "#[fg=#B8BB26]"),
             ("", "▢", "38;5;142", ""),
         ):
             with self.subTest(state=state):
