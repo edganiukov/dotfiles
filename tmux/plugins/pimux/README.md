@@ -121,7 +121,7 @@ Separately stored Pi conversation history is not deleted.
 ## Indicators
 
 Icons use plain Unicode:
-`▢` idle/stopped, `◌` busy, `❁` done, and `◆` waiting. No Nerd Font is needed.
+`▢` idle/stopped, `◌` busy, `✤` done, and `◆` waiting. No Nerd Font is needed.
 Colours are yellow for busy, green for done/idle/stopped, and red for waiting
 (including the global blocked notice).
 Tab indicators appear before the window label, separated by a single space.
