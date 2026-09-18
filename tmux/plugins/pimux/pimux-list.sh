@@ -25,7 +25,7 @@ rank() {
 icon() {
   case $1 in
     wait) printf '%s◆%s' "${esc}[1;38;5;167m" "$reset" ;;
-    done) printf '%s✿%s' "${esc}[38;5;142m" "$reset" ;;
+    done) printf '%s❁%s' "${esc}[38;5;142m" "$reset" ;;
     busy) printf '%s◌%s' "${esc}[38;5;214m" "$reset" ;;
     *) printf '%s▢%s' "${esc}[38;5;142m" "$reset" ;;
   esac
