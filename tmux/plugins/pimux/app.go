@@ -590,7 +590,11 @@ func (a *app) rows() (string, error) {
 				}
 			}
 		}
-		rows = append(rows, makeRow(p.ID, p.Session, p.Location, a.project(p.Path), p.State, stateAge(p.Since, now), title))
+		r := makeRow(p.ID, p.Session, p.Location, a.project(p.Path), p.State, stateAge(p.Since, now), title)
+		if since, err := strconv.ParseInt(p.Since, 10, 64); err == nil && since > 0 {
+			r.Since = since
+		}
+		rows = append(rows, r)
 	}
 	// Git remains the registry. No persistent index of projects or sessions.
 	mains := make(map[string]bool)
@@ -627,6 +631,9 @@ func (a *app) rows() (string, error) {
 	sort.Slice(rows, func(i, j int) bool {
 		if rows[i].Rank != rows[j].Rank {
 			return rows[i].Rank < rows[j].Rank
+		}
+		if rows[i].Since != rows[j].Since {
+			return rows[i].Since > rows[j].Since
 		}
 		if rows[i].Display != rows[j].Display {
 			return rows[i].Display < rows[j].Display

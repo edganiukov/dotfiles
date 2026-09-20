@@ -487,6 +487,24 @@ sys.exit(130)
                     for option in options:
                         self.assertIn(icon, self.tmux("display-message", "-p", f"#{{E:{option}}}"))
 
+    def test_rows_sort_by_state_then_freshest_state_change(self):
+        stopped = self.stopped_task()
+        now = int(time.time())
+        ids = {}
+        for name, state, since in (("a-old", "wait", now - 300), ("z-new", "wait", now - 1),
+                                   ("b-tie", "wait", now - 1), ("a-unknown", "wait", ""),
+                                   ("b-invalid", "wait", "invalid"), ("a-busy-old", "busy", now - 50),
+                                   ("z-busy-new", "busy", now), ("done", "done", now), ("idle", "", now)):
+            pane = self.tmux("new-session", "-d", "-s", name, "-c", str(self.repo),
+                             "-P", "-F", "#{pane_id}", "sleep", "600")
+            ids[name] = pane
+            self.tmux("set-option", "-p", "-t", pane, "@agent_name", "pi")
+            self.tmux("set-option", "-p", "-t", pane, "@agent_state", state)
+            self.tmux("set-option", "-p", "-t", pane, "@agent_since", str(since))
+        expected = [ids[name] for name in ("b-tie", "z-new", "a-old", "a-unknown", "b-invalid",
+                                           "z-busy-new", "a-busy-old", "done", "idle")]
+        self.assertEqual(self.listed_ids(), [*expected, str(stopped)])
+
     def test_stopped_workspaces_are_found_without_a_registry(self):
         workspace = self.stopped_task()
         # The source repo remains open in tmux, so another cwd still finds it.

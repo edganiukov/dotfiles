@@ -10,17 +10,19 @@ import (
 
 type row struct {
 	Rank        int
+	Since       int64
 	ID, Display string
 }
 
+// The rank groups the list: waiting first, then busy, done, idle and stopped.
 func stateDisplay(state agentState) (rank int, icon, label string) {
 	switch state {
 	case wait:
 		return 0, "\x1b[1;38;5;167m◆\x1b[0m", "blocked"
-	case done:
-		return 1, "\x1b[38;5;142m✤\x1b[0m", "done"
 	case busy:
-		return 2, "\x1b[38;5;214m◌\x1b[0m", "working"
+		return 1, "\x1b[38;5;214m◌\x1b[0m", "working"
+	case done:
+		return 2, "\x1b[38;5;142m✤\x1b[0m", "done"
 	case "stopped":
 		return 4, "\x1b[38;5;142m▢\x1b[0m", "stopped"
 	default:
@@ -60,7 +62,7 @@ func makeRow(id, session, location, project string, state agentState, age, title
 	}
 
 	rank, icon, label := stateDisplay(state)
-	return row{rank, id, fmt.Sprintf("%s %-12s %-5s %-14s %-8s %4s  %s",
+	return row{Rank: rank, ID: id, Display: fmt.Sprintf("%s %-12s %-5s %-14s %-8s %4s  %s",
 		icon, truncate(session, 12), location, truncate(project, 14), label, age, truncate(title, 40))}
 }
 

@@ -76,7 +76,7 @@ func TestStateAge(t *testing.T) {
 
 func TestRowLayout(t *testing.T) {
 	r := makeRow("%1", "task", "0.0", "repo", done, "5m", "task")
-	if r.Rank != 1 || r.ID != "%1" || strings.Count(r.Display, "task") != 1 || !strings.HasPrefix(r.Display, "\x1b[38;5;142m✤\x1b[0m ") {
+	if r.Rank != 2 || r.ID != "%1" || strings.Count(r.Display, "task") != 1 || !strings.HasPrefix(r.Display, "\x1b[38;5;142m✤\x1b[0m ") {
 		t.Fatalf("row = %#v", r)
 	}
 	if got := truncate("αβγδε", 4); got != "αβγ…" {

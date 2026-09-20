@@ -4,6 +4,12 @@
 The list checks for updates in the background every second and redraws only
 when something changes, preserving your query and selected row.
 
+Rows are grouped by state, **waiting → busy → done → idle → stopped**, with
+the most recent state change first inside each group. Ties, and sessions with
+no timestamp, sort alphabetically. The status column names each group; there
+are no heading rows, because fzf highlights every line of a multiline item,
+so a heading would look selected along with the row under it.
+
 | Key | Action |
 | --- | --- |
 | Enter | Jump to a running Pi pane or resume a stopped workspace |
