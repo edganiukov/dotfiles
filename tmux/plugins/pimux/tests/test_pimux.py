@@ -235,6 +235,31 @@ sys.exit(130)
                 self.assertFalse((self.repo / "bad").exists())
                 self.assert_unchanged()
 
+    def test_create_without_the_popup_from_an_argument(self):
+        first = self.git("rev-parse", "HEAD")
+        self.commit("second")
+        result = self.run_script("pimux-new.sh", args=("task@HEAD~1",))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        # No prompt: the name came from the command line.
+        self.assertFalse((self.root / "name-fzf.json").exists())
+        self.assertEqual(self.git("rev-parse", "task"), first)
+        self.assertEqual(self.wait_for_pi()["args"], ["--name", "task"])
+        self.assertEqual(json.loads((self.root / "switch.json").read_text()),
+                         ["switch-client", "-t", "=task"])
+
+    def test_create_outside_tmux_leaves_the_client_alone(self):
+        result = self.run_script("pimux-new.sh", args=("task",), TMUX="", TMUX_PANE="")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((self.root / "switch.json").exists())
+        self.assertEqual(self.tmux("list-sessions", "-F", "#{session_name}").split("\n"),
+                         ["origin", "task"])
+
+    def test_create_rejects_extra_arguments(self):
+        result = self.run_script("pimux-new.sh", args=("task", "extra"))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("usage:", result.stderr)
+        self.assert_unchanged()
+
     def test_create_from_linked_worktree_uses_same_parent(self):
         linked = self.root / "linked"
         self.git("worktree", "add", "-qb", "source", str(linked))
@@ -544,14 +569,36 @@ sys.exit(130)
     def test_stopped_rows_are_dated_by_their_last_commit(self):
         workspace = self.stopped_task()
         [row] = self.rows_text()
-        self.assertRegex(row, r"stopped\s+\d+s\b")
+        self.assertRegex(row, r"merged\s+\d+s\b")
         old = int(time.time()) - 3 * 86400
         self.commit("stale", cwd=workspace, date=f"@{old} +0000")
         [row] = self.rows_text()
-        self.assertRegex(row, r"stopped\s+3d\b")
+        self.assertRegex(row, r"unmerged\s+3d\b")
         # The freshest branch leads the stopped group, like live sessions.
         self.git("worktree", "add", "-qb", "fresh", str(self.worktree("fresh")))
         self.assertEqual(self.listed_ids(), [str(self.worktree("fresh")), str(workspace)])
+
+    def test_stopped_rows_say_whether_they_can_be_removed(self):
+        workspace = self.stopped_task()
+        [row] = self.rows_text()
+        self.assertRegex(row, r"merged\s")
+        # Exactly the conditions ctrl-d enforces, in the same order.
+        (workspace / "untracked").write_text("work")
+        self.assertRegex(self.rows_text()[0], r"changes\s")
+        (workspace / "untracked").unlink()
+        self.assertRegex(self.rows_text()[0], r"merged\s")
+        self.commit("unmerged work", cwd=workspace)
+        self.assertRegex(self.rows_text()[0], r"unmerged\s")
+        shell = self.tmux("new-window", "-d", "-P", "-F", "#{pane_id}", "-c",
+                          str(workspace / ""), "sleep", "600")
+        self.assertRegex(self.rows_text()[0], r"in use\s")
+        self.tmux("kill-pane", "-t", shell)
+        # A merged workspace is one ctrl-d can really remove.
+        self.git("merge", "-q", "task")
+        self.assertRegex(self.rows_text()[0], r"merged\s")
+        result = self.action("remove", workspace, "task")
+        self.assertEqual(result.returncode, 130, result.stderr)
+        self.assertEqual(self.rows_text(), [])
 
     def test_scope_narrows_the_list_to_the_invoking_project(self):
         pane = self.create_task()
@@ -629,7 +676,7 @@ sys.exit(130)
         [row] = self.rows_text()
         self.assertEqual(row.count("task"), 1, row)
         self.assertIn(project, row)
-        self.assertIn("stopped", row)
+        self.assertIn("merged", row)
         self.assertTrue(row.startswith("\x1b[38;5;142m▢\x1b[0m "), row)
 
     def test_row_shows_pi_session_name_only_when_it_differs(self):

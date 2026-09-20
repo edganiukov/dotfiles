@@ -40,7 +40,10 @@ minutes waiting on you), stamped by the pi extension as `@agent_since`.
 tmux's own activity clock would not do: it ticks on any output, including
 pi's spinner. Sessions started before this stamp existed show no age.
 A stopped workspace has no live state, so it is dated by its branch's last
-commit instead, which shows how stale the branch is.
+commit instead, which shows how stale the branch is. Its status column says
+whether **Ctrl-D** would take it: `merged` when the branch is merged into the
+main checkout and the worktree is clean, otherwise `in use`, `changes` or
+`unmerged` for the check that would refuse.
 
 Navigation actions (jump, resume, shell, new) close the popup. Other actions
 return to the list: Esc or a declined confirmation, a completed stop or remove,
@@ -59,7 +62,15 @@ input line beneath them.
 Press **Ctrl-N**, enter a name, and press Enter to create it. **Esc** returns
 to the session list; Enter with an empty name stays in the name prompt.
 `name@base` branches from `base` (any revision: a branch, tag or SHA) instead
-of `HEAD`; the base is not part of the name.
+of `HEAD`; the base is not part of the name. The same argument works without
+the popup, from a shell or a tmux binding:
+
+```sh
+pimux new fix-auth@main
+```
+
+Outside tmux that creates the session without switching to it, so a script
+can attach when it is ready.
 Creation uses the **invoking pane's working directory**, not the selected agent's project.
 It must be inside a Git worktree. For a name such as `fix-auth`:
 

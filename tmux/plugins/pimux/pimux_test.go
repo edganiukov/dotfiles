@@ -75,9 +75,17 @@ func TestStateAge(t *testing.T) {
 }
 
 func TestRowLayout(t *testing.T) {
-	r := makeRow("%1", "task", "0.0", "repo", done, "5m", "task")
+	r := makeRow("%1", "task", "0.0", "repo", done, "", "5m", "task")
 	if r.Rank != 2 || r.ID != "%1" || strings.Count(r.Display, "task") != 1 || !strings.HasPrefix(r.Display, "\x1b[38;5;142m✤\x1b[0m ") {
 		t.Fatalf("row = %#v", r)
+	}
+	if !strings.Contains(r.Display, "done") {
+		t.Fatalf("missing state label: %q", r.Display)
+	}
+	// A stopped row replaces that label with why it can be removed.
+	stopped := makeRow("/worktree", "task", "-", "repo", "stopped", "unmerged", "3d", "")
+	if strings.Contains(stopped.Display, "stopped") || !strings.Contains(stopped.Display, "unmerged") {
+		t.Fatalf("stopped row = %q", stopped.Display)
 	}
 	if got := truncate("αβγδε", 4); got != "αβγ…" {
 		t.Fatalf("truncate = %q", got)

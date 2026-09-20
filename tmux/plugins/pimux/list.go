@@ -56,12 +56,17 @@ func stateAge(since string, now time.Time) string {
 	}
 }
 
-func makeRow(id, session, location, project string, state agentState, age, title string) row {
+// An empty status keeps the state's own label; stopped rows pass the reason
+// they can or cannot be removed instead.
+func makeRow(id, session, location, project string, state agentState, status, age, title string) row {
 	if title == session {
 		title = ""
 	}
 
 	rank, icon, label := stateDisplay(state)
+	if status != "" {
+		label = status
+	}
 	return row{Rank: rank, ID: id, Display: fmt.Sprintf("%s %-12s %-5s %-14s %-8s %4s  %s",
 		icon, truncate(session, 12), location, truncate(project, 14), label, age, truncate(title, 40))}
 }

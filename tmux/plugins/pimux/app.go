@@ -50,6 +50,9 @@ func (a *app) dispatch(args []string) (outcome, error) {
 		if len(args) == 1 {
 			return a.newSession()
 		}
+		if len(args) == 2 {
+			return a.createSession(args[1])
+		}
 	case "action":
 		if len(args) == 3 {
 			return a.action(args[1], args[2])
@@ -63,7 +66,7 @@ func (a *app) dispatch(args []string) (outcome, error) {
 			return closePopup, a.initTmux()
 		}
 	}
-	return closePopup, fmt.Errorf("usage: pimux [list [--rows|--refresh|--scope] | new | action <jump|resume|shell|stop|remove> <target> | status | init]")
+	return closePopup, fmt.Errorf("usage: pimux [list [--rows|--refresh|--scope] | new [<name>[@<base>]] | action <jump|resume|shell|stop|remove> <target> | status | init]")
 }
 
 func (a *app) command(name string, args ...string) *exec.Cmd {
@@ -256,6 +259,24 @@ func (a *app) workspaceSession(w workspace) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("tmux session already exists in another directory: %s", w.Name)
+}
+
+// Says in one word why Ctrl-D would refuse this stopped workspace, so the
+// list shows which branches are finished with. It asks the same questions as
+// checkRemovable, in the same order, and "merged" means all of them passed.
+func (a *app) removability(w workspace, panes []pane) string {
+	for _, p := range panes {
+		if within(p.Path, w.Path) {
+			return "in use"
+		}
+	}
+	if changes, err := a.git(w.Path, "status", "--porcelain", "--untracked-files=all", "--ignored"); err != nil || changes != "" {
+		return "changes"
+	}
+	if _, err := a.git(w.Main, "merge-base", "--is-ancestor", "refs/heads/"+w.Name, "HEAD"); err != nil {
+		return "unmerged"
+	}
+	return "merged"
 }
 
 func (a *app) checkRemovable(w workspace, stopPane string) error {
@@ -498,6 +519,10 @@ func (a *app) newSession() (outcome, error) {
 	if err != nil {
 		return backToList, err
 	}
+	return a.createSession(query)
+}
+
+func (a *app) createSession(query string) (outcome, error) {
 	// Branch names here cannot contain @, so it separates the base revision.
 	name, base, _ := strings.Cut(query, "@")
 	if base == "" {
@@ -563,6 +588,10 @@ func (a *app) newSession() (outcome, error) {
 			_ = a.runGit(a.dir, "branch", "-d", name)
 		}
 		return backToList, fmt.Errorf("could not create tmux session: %s: %w", name, err)
+	}
+	// Run from a plain shell rather than a pane, there is no client to move.
+	if os.Getenv("TMUX") == "" {
+		return result, nil
 	}
 	if err := a.run("tmux", "switch-client", "-t", "="+name); err != nil {
 		return closeWithWarning, err
@@ -631,7 +660,7 @@ func (a *app) rows() (string, error) {
 				}
 			}
 		}
-		r := makeRow(p.ID, p.Session, p.Location, a.project(p.Path), p.State, stateAge(p.Since, now), title)
+		r := makeRow(p.ID, p.Session, p.Location, a.project(p.Path), p.State, "", stateAge(p.Since, now), title)
 		if since, err := strconv.ParseInt(p.Since, 10, 64); err == nil && since > 0 {
 			r.Since = since
 		}
@@ -674,7 +703,9 @@ func (a *app) rows() (string, error) {
 			// A stopped workspace has no live state to age, so date it by its
 			// last commit: that is how stale the branch itself is.
 			committed, _ := a.git(main, "log", "-1", "--format=%ct", "refs/heads/"+tree.Branch)
-			r := makeRow(tree.Path, tree.Branch, "-", filepath.Base(main), "stopped", stateAge(committed, now), "")
+			w := workspace{Path: tree.Path, Main: main, Name: tree.Branch}
+			r := makeRow(tree.Path, tree.Branch, "-", filepath.Base(main), "stopped",
+				a.removability(w, panes), stateAge(committed, now), "")
 			if since, err := strconv.ParseInt(committed, 10, 64); err == nil && since > 0 {
 				r.Since = since
 			}
