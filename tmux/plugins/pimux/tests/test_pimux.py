@@ -122,6 +122,14 @@ sys.exit(130)
         return subprocess.check_output(["git", "-C", str(cwd or self.repo), *args],
                                        text=True, stderr=subprocess.STDOUT).strip()
 
+    def commit(self, message, cwd=None, date=None):
+        when = ["--date=" + date] if date else []
+        env = dict(os.environ, GIT_COMMITTER_DATE=date) if date else None
+        return subprocess.check_output(["git", "-C", str(cwd or self.repo),
+                                        "-c", "user.name=Test", "-c", "user.email=test@example.com",
+                                        "commit", "-qm", message, "--allow-empty", *when],
+                                       env=env, text=True, stderr=subprocess.STDOUT).strip()
+
     def tmux(self, *args):
         return subprocess.check_output([TMUX, "-S", self.socket, *args], env=self.env,
                                        text=True, stderr=subprocess.STDOUT).strip()
@@ -198,6 +206,34 @@ sys.exit(130)
         self.assertEqual(launched, {"args": ["--name", "task-1"], "cwd": str(self.worktree("task-1"))})
         self.assertEqual(json.loads((self.root / "switch.json").read_text()),
                          ["switch-client", "-t", "=task-1"])
+
+    def test_create_from_an_explicit_base_revision(self):
+        first = self.git("rev-parse", "HEAD")
+        self.commit("second")
+        result = self.run_script("pimux-new.sh", "task@HEAD~1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.git("rev-parse", "task"), first)
+        # The base is not part of the name shared by branch, worktree, tmux
+        # session and pi session.
+        self.assertEqual(self.git("branch", "--show-current", cwd=self.worktree("task")), "task")
+        self.assertEqual(self.wait_for_pi()["args"], ["--name", "task"])
+        self.assertEqual(json.loads((self.root / "switch.json").read_text()),
+                         ["switch-client", "-t", "=task"])
+
+    def test_empty_base_revision_still_uses_head(self):
+        self.commit("second")
+        result = self.run_script("pimux-new.sh", "task@")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.git("rev-parse", "task"), self.git("rev-parse", "HEAD"))
+
+    def test_unknown_base_revision_does_not_mutate(self):
+        for query in ("task@nope", "task@HEAD~9", "task@refs/heads/missing", "task@$(touch bad)"):
+            with self.subTest(query=query):
+                result = self.run_script("pimux-new.sh", query)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("unknown base revision", result.stderr)
+                self.assertFalse((self.repo / "bad").exists())
+                self.assert_unchanged()
 
     def test_create_from_linked_worktree_uses_same_parent(self):
         linked = self.root / "linked"
@@ -504,6 +540,61 @@ sys.exit(130)
         expected = [ids[name] for name in ("b-tie", "z-new", "a-old", "a-unknown", "b-invalid",
                                            "z-busy-new", "a-busy-old", "done", "idle")]
         self.assertEqual(self.listed_ids(), [*expected, str(stopped)])
+
+    def test_stopped_rows_are_dated_by_their_last_commit(self):
+        workspace = self.stopped_task()
+        [row] = self.rows_text()
+        self.assertRegex(row, r"stopped\s+\d+s\b")
+        old = int(time.time()) - 3 * 86400
+        self.commit("stale", cwd=workspace, date=f"@{old} +0000")
+        [row] = self.rows_text()
+        self.assertRegex(row, r"stopped\s+3d\b")
+        # The freshest branch leads the stopped group, like live sessions.
+        self.git("worktree", "add", "-qb", "fresh", str(self.worktree("fresh")))
+        self.assertEqual(self.listed_ids(), [str(self.worktree("fresh")), str(workspace)])
+
+    def test_scope_narrows_the_list_to_the_invoking_project(self):
+        pane = self.create_task()
+        other = self.root / "other"
+        other.mkdir()
+        self.git("init", "-q", "-b", "main", cwd=other)
+        self.commit("initial", cwd=other)
+        self.git("worktree", "add", "-qb", "side", f"{other}-worktrees/side", cwd=other)
+        # Discovery reaches the other project through a pane sitting in it.
+        self.tmux("new-session", "-d", "-s", "other", "-c", str(other), "sleep", "600")
+        side = f"{other}-worktrees/side"
+        self.assertEqual(sorted(self.listed_ids()), sorted([pane, side]))
+
+        rows, scope = self.root / "rows-file", self.root / "scope-file"
+        rows.write_text("")
+        scope.write_text("")
+        files = {"PIMUX_ROWS_FILE": str(rows), "PIMUX_SCOPE_FILE": str(scope)}
+        result = self.run_script("pimux-list.sh", args=("--scope",), **files)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(scope.read_text(), str(self.repo))
+        self.assertEqual(result.stdout, 'reload-sync(cat "$PIMUX_ROWS_FILE")'
+                                        f"+change-prompt(pimux/{self.repo.name} > )\n")
+        self.assertEqual([row.split(SEP)[1] for row in rows.read_text().splitlines()], [pane])
+        # Both the snapshot and later refreshes follow the scope file.
+        result = self.run_script("pimux-list.sh", args=("--rows",), **files)
+        self.assertEqual([row.split(SEP)[1] for row in result.stdout.splitlines()], [pane])
+
+        result = self.run_script("pimux-list.sh", args=("--scope",), **files)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(scope.read_text(), "")
+        self.assertIn("+change-prompt(pimux > )", result.stdout)
+        self.assertEqual(sorted(row.split(SEP)[1] for row in rows.read_text().splitlines()),
+                         sorted([pane, side]))
+
+    def test_scope_toggle_is_ignored_outside_a_repository(self):
+        rows, scope = self.root / "rows-file", self.root / "scope-file"
+        rows.write_text("")
+        scope.write_text("")
+        result = self.run_script("pimux-list.sh", args=("--scope",), cwd=self.root,
+                                 PIMUX_ROWS_FILE=str(rows), PIMUX_SCOPE_FILE=str(scope))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.assertEqual(scope.read_text(), "")
 
     def test_stopped_workspaces_are_found_without_a_registry(self):
         workspace = self.stopped_task()
@@ -1055,11 +1146,14 @@ os.execv({real_git!r}, [{real_git!r}, *sys.argv[1:]])
         args = json.loads((self.root / "fzf.json").read_text())
         self.assertIn("--track", args)
         self.assertIn("--id-nth=2", args)
+        self.assertIn("--prompt=pimux > ", args)
         self.assertTrue(any("every(1),ctrl-r:bg-transform" in arg and "--refresh" in arg for arg in args))
+        self.assertTrue(any(arg.startswith("--bind=ctrl-p:bg-transform(") and "--scope" in arg for arg in args))
         self.assertFalse(any("every(1),ctrl-r:reload-sync" in arg for arg in args))
         self.assertEqual(list(self.root.glob("pimux-list.*")), [])
         self.assertIn("--expect=ctrl-n,ctrl-o,ctrl-x,ctrl-d", args)
-        self.assertIn("--footer=enter jump/resume | ctrl-n new | ctrl-o shell | ctrl-x stop | ctrl-d remove", args)
+        self.assertIn("--footer=enter jump/resume | ctrl-n new | ctrl-p project | "
+                      "ctrl-o shell | ctrl-x stop | ctrl-d remove", args)
         self.assertFalse(any(arg.startswith("--header") for arg in args))
 
     def test_refresh_is_silent_until_rows_change(self):

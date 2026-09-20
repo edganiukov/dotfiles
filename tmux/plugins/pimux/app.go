@@ -43,6 +43,9 @@ func (a *app) dispatch(args []string) (outcome, error) {
 		if len(args) == 2 && args[1] == "--refresh" {
 			return closePopup, a.refresh()
 		}
+		if len(args) == 2 && args[1] == "--scope" {
+			return closePopup, a.toggleScope()
+		}
 	case "new":
 		if len(args) == 1 {
 			return a.newSession()
@@ -60,7 +63,7 @@ func (a *app) dispatch(args []string) (outcome, error) {
 			return closePopup, a.initTmux()
 		}
 	}
-	return closePopup, fmt.Errorf("usage: pimux [list [--rows|--refresh] | new | action <jump|resume|shell|stop|remove> <target> | status | init]")
+	return closePopup, fmt.Errorf("usage: pimux [list [--rows|--refresh|--scope] | new | action <jump|resume|shell|stop|remove> <target> | status | init]")
 }
 
 func (a *app) command(name string, args ...string) *exec.Cmd {
@@ -486,13 +489,19 @@ func (a *app) remove(target string) error {
 }
 
 func (a *app) newSession() (outcome, error) {
-	name, err := a.prompt([]string{"--prompt=Session name > ", "--footer=enter create | esc back",
+	query, err := a.prompt([]string{"--prompt=Session name > ", "--ghost=name or name@base-revision",
+		"--footer=enter create | esc back",
 		"--bind=enter:transform:if [ -n {q} ]; then echo accept-or-print-query; fi"})
 	if errors.Is(err, Err) {
 		return backToList, nil
 	}
 	if err != nil {
 		return backToList, err
+	}
+	// Branch names here cannot contain @, so it separates the base revision.
+	name, base, _ := strings.Cut(query, "@")
+	if base == "" {
+		base = "HEAD"
 	}
 	if !validName.MatchString(name) {
 		return backToList, fmt.Errorf("use letters, digits, _ or -, starting with a letter or digit")
@@ -508,6 +517,9 @@ func (a *app) newSession() (outcome, error) {
 	if inside, err := a.git(a.dir, "rev-parse", "--is-inside-work-tree"); err != nil || inside != "true" {
 		return backToList, fmt.Errorf("the current pane is not in a Git worktree")
 	}
+	if _, err := a.git(a.dir, "rev-parse", "--verify", "--quiet", base+"^{commit}"); err != nil {
+		return backToList, fmt.Errorf("unknown base revision: %s", base)
+	}
 	if _, err := a.output("tmux", "has-session", "-t", "="+name); err == nil {
 		return backToList, fmt.Errorf("tmux session already exists: %s", name)
 	}
@@ -522,7 +534,7 @@ func (a *app) newSession() (outcome, error) {
 	if _, err := os.Lstat(path); !os.IsNotExist(err) {
 		return backToList, fmt.Errorf("worktree path already exists or is inaccessible: %s", path)
 	}
-	if err := a.runGit(a.dir, "worktree", "add", "-b", name, path, "HEAD"); err != nil {
+	if err := a.runGit(a.dir, "worktree", "add", "-b", name, path, base); err != nil {
 		return backToList, err
 	}
 	result := closePopup
@@ -569,18 +581,47 @@ func (a *app) project(path string) string {
 	return filepath.Base(path)
 }
 
+// The scope file holds the main worktree the list is narrowed to, or nothing
+// for every project. It lives beside the snapshot, so it lasts as long as the
+// popup and never becomes stale state on disk.
+func (a *app) scope() string {
+	main, err := os.ReadFile(os.Getenv("PIMUX_SCOPE_FILE"))
+	if err != nil {
+		return ""
+	}
+	return string(main)
+}
+
+func (a *app) listPrompt() string {
+	main := a.scope()
+	if main == "" {
+		return "pimux > "
+	}
+	// The prompt goes through fzf's change-prompt action, whose argument ends
+	// at a closing parenthesis.
+	return "pimux/" + strings.NewReplacer("(", "", ")", "").Replace(filepath.Base(main)) + " > "
+}
+
 func (a *app) rows() (string, error) {
 	panes, err := a.panes()
 	if err != nil {
 		return "", err
 	}
 	var rows []row
+	scope := a.scope()
 	dirs := map[string]bool{a.dir: true}
 	now := time.Now()
 	for _, p := range panes {
 		dirs[p.Path] = true
 		if !p.Pi {
 			continue
+		}
+		if scope != "" {
+			// Another repository can be checked out inside the project's
+			// directory, so compare main worktrees rather than paths.
+			if main, err := a.mainWorktree(p.Path); err != nil || main != scope {
+				continue
+			}
 		}
 		title := p.Title
 		if p.State == wait {
@@ -598,10 +639,14 @@ func (a *app) rows() (string, error) {
 	}
 	// Git remains the registry. No persistent index of projects or sessions.
 	mains := make(map[string]bool)
-	for dir := range dirs {
-		main, err := a.mainWorktree(dir)
-		if err == nil {
-			mains[main] = true
+	if scope != "" {
+		mains[scope] = true
+	} else {
+		for dir := range dirs {
+			main, err := a.mainWorktree(dir)
+			if err == nil {
+				mains[main] = true
+			}
 		}
 	}
 	for main := range mains {
@@ -623,9 +668,17 @@ func (a *app) rows() (string, error) {
 					break
 				}
 			}
-			if !active {
-				rows = append(rows, makeRow(tree.Path, tree.Branch, "-", filepath.Base(main), "stopped", "", ""))
+			if active {
+				continue
 			}
+			// A stopped workspace has no live state to age, so date it by its
+			// last commit: that is how stale the branch itself is.
+			committed, _ := a.git(main, "log", "-1", "--format=%ct", "refs/heads/"+tree.Branch)
+			r := makeRow(tree.Path, tree.Branch, "-", filepath.Base(main), "stopped", stateAge(committed, now), "")
+			if since, err := strconv.ParseInt(committed, 10, 64); err == nil && since > 0 {
+				r.Since = since
+			}
+			rows = append(rows, r)
 		}
 	}
 	sort.Slice(rows, func(i, j int) bool {
@@ -682,41 +735,73 @@ func (a *app) ask(question, footer string) (string, error) {
 		"--prompt=> ", "--footer=" + footer, "--bind=enter:accept-or-print-query"})
 }
 
-func (a *app) refresh() error {
-	path := os.Getenv("PIMUX_ROWS_FILE")
+// Reports whether the snapshot changed, so an unchanged list is never redrawn.
+func (a *app) writeRows(path string) (bool, error) {
 	before, err := os.ReadFile(path)
 	if err != nil {
-		return err
+		return false, err
 	}
 	after, err := a.rows()
 	if err != nil {
-		return err
+		return false, err
 	}
 	if string(before) == after {
-		return nil
+		return false, nil
 	}
 	// Atomic replacement avoids showing fzf a partial snapshot. The temporary
 	// file is alongside the old one so rename stays on the same filesystem.
 	next, err := os.CreateTemp(filepath.Dir(path), filepath.Base(path)+".*")
 	if err != nil {
-		return err
+		return false, err
 	}
 	defer os.Remove(next.Name())
 	_, writeErr := io.WriteString(next, after)
 	closeErr := next.Close()
 	if writeErr != nil {
-		return writeErr
+		return false, writeErr
 	}
 	if closeErr != nil {
-		return closeErr
+		return false, closeErr
 	}
 	if err := a.ctx.Err(); err != nil {
-		return err
+		return false, err
 	}
 	if err := os.Rename(next.Name(), path); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (a *app) refresh() error {
+	changed, err := a.writeRows(os.Getenv("PIMUX_ROWS_FILE"))
+	if err != nil || !changed {
 		return err
 	}
 	_, err = fmt.Fprintln(a.out, `reload-sync(cat "$PIMUX_ROWS_FILE")`)
+	return err
+}
+
+// Narrow the list to the invoking pane's project, or widen it again. Outside
+// a repository there is no project to narrow to, so the list stays as it is.
+func (a *app) toggleScope() error {
+	path := os.Getenv("PIMUX_SCOPE_FILE")
+	current, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	next := ""
+	if len(current) == 0 {
+		if next, err = a.mainWorktree(a.dir); err != nil {
+			return nil
+		}
+	}
+	if err := os.WriteFile(path, []byte(next), 0600); err != nil {
+		return err
+	}
+	if _, err := a.writeRows(os.Getenv("PIMUX_ROWS_FILE")); err != nil {
+		return err
+	}
+	_, err = fmt.Fprintf(a.out, "reload-sync(cat \"$PIMUX_ROWS_FILE\")+change-prompt(%s)\n", a.listPrompt())
 	return err
 }
 
@@ -734,6 +819,11 @@ func (a *app) pick() (string, error) {
 	if err := os.WriteFile(path, []byte(rows), 0600); err != nil {
 		return "", err
 	}
+	// Every project until Ctrl-P narrows the list to the invoking project.
+	scope := filepath.Join(dir, "scope")
+	if err := os.WriteFile(scope, nil, 0600); err != nil {
+		return "", err
+	}
 	input, err := os.Open(path)
 	if err != nil {
 		return "", err
@@ -742,9 +832,11 @@ func (a *app) pick() (string, error) {
 	cmd := a.command("fzf", "--ansi", "--delimiter="+sep, "--with-nth=3", "--no-sort", "--reverse",
 		"--info=inline-right", "--track", "--id-nth=2",
 		"--bind=every(1),ctrl-r:bg-transform("+shellQuote(a.exe)+" list --refresh)",
+		"--bind=ctrl-p:bg-transform("+shellQuote(a.exe)+" list --scope)",
 		"--expect=ctrl-n,ctrl-o,ctrl-x,ctrl-d",
-		"--footer=enter jump/resume | ctrl-n new | ctrl-o shell | ctrl-x stop | ctrl-d remove", "--prompt=pimux > ")
-	cmd.Env = append(cmd.Environ(), "PIMUX_ROWS_FILE="+path)
+		"--footer=enter jump/resume | ctrl-n new | ctrl-p project | ctrl-o shell | ctrl-x stop | ctrl-d remove",
+		"--prompt="+a.listPrompt())
+	cmd.Env = append(cmd.Environ(), "PIMUX_ROWS_FILE="+path, "PIMUX_SCOPE_FILE="+scope)
 	cmd.Stdin, cmd.Stderr = input, a.errOut
 	out, err := cmd.Output()
 	// Ctrl-N on an empty list returns 1 but still prints its expected key.

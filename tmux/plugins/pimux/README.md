@@ -17,8 +17,15 @@ so a heading would look selected along with the row under it.
 | Ctrl-O | Open a shell window in the selected agent's worktree |
 | Ctrl-X | Stop the selected Pi pane, after confirmation |
 | Ctrl-D | Remove the selected workspace and branch; also stop Pi if it is done, after safety checks and confirmation |
+| Ctrl-P | Narrow the list to the invoking pane's project, or widen it again |
 | Ctrl-R | Refresh immediately |
 | Esc | Close the popup; from any prompt, go back to the list instead |
+
+By default the list spans every project reachable from the invoking pane and
+the panes open in tmux. **Ctrl-P** narrows it to the invoking pane's project
+and puts that project in the prompt; press it again to widen. The scope lasts
+as long as the popup, and outside a repository there is nothing to narrow to,
+so the key does nothing there.
 
 Each row shows state, tmux session, window.pane, project, status, how long
 that status has held, and a title: for a blocked agent, the question it is
@@ -32,6 +39,8 @@ The age is measured from when the state last changed (`done 40m` is forty
 minutes waiting on you), stamped by the pi extension as `@agent_since`.
 tmux's own activity clock would not do: it ticks on any output, including
 pi's spinner. Sessions started before this stamp existed show no age.
+A stopped workspace has no live state, so it is dated by its branch's last
+commit instead, which shows how stale the branch is.
 
 Navigation actions (jump, resume, shell, new) close the popup. Other actions
 return to the list: Esc or a declined confirmation, a completed stop or remove,
@@ -49,10 +58,13 @@ input line beneath them.
 
 Press **Ctrl-N**, enter a name, and press Enter to create it. **Esc** returns
 to the session list; Enter with an empty name stays in the name prompt.
+`name@base` branches from `base` (any revision: a branch, tag or SHA) instead
+of `HEAD`; the base is not part of the name.
 Creation uses the **invoking pane's working directory**, not the selected agent's project.
 It must be inside a Git worktree. For a name such as `fix-auth`:
 
-- Create branch `fix-auth` from the invoking worktree's current `HEAD`.
+- Create branch `fix-auth` from the invoking worktree's current `HEAD`, or
+  from the revision after `@`.
 - Check it out at `<main-repo>-worktrees/fix-auth`, outside the source tree.
   Invoking from a linked worktree uses the same location.
 - Run the repo's setup hook, if any (see below).
