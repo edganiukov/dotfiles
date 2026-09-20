@@ -20,12 +20,18 @@ import unittest
 
 
 PLUGIN = Path(__file__).resolve().parents[1]
+BINARY = PLUGIN / "pimux"
 TMUX = shutil.which("tmux")
 SEP = "\x1f"
 
 
 @unittest.skipUnless(TMUX and shutil.which("git"), "requires tmux and git")
 class AgentsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        subprocess.run(["go", "build", "-trimpath", "-o", str(BINARY), "."],
+                       cwd=PLUGIN, env=dict(os.environ, CGO_ENABLED="0"), check=True)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="pimux-")
         self.addCleanup(self.temp.cleanup)
@@ -34,6 +40,7 @@ class AgentsTest(unittest.TestCase):
         self.repo.mkdir()
         self.bin = self.root / "bin"
         self.bin.mkdir()
+        (self.bin / "pimux").symlink_to(BINARY)
         self.socket = str(self.root / "tmux.sock")
         self.env = dict(os.environ, PATH=f"{self.bin}:{os.environ['PATH']}", HOME=str(self.root),
                         TMPDIR=str(self.root), TEST_DIR=str(self.root), TEST_SOCKET=self.socket, REAL_TMUX=TMUX)
@@ -120,7 +127,16 @@ sys.exit(130)
                                        text=True, stderr=subprocess.STDOUT).strip()
 
     def run_script(self, script, name="", cwd=None, args=(), **env):
-        return subprocess.run(["bash", str(PLUGIN / script), *args], input=name + "\n",
+        # Keep the historical entrypoint names in the behaviour tests; only
+        # this adapter changes while the implementation migrates to Go.
+        commands = {
+            "pimux.tmux": ["sh", str(PLUGIN / "pimux.tmux")],
+            "pimux-list.sh": [str(BINARY), "list"],
+            "pimux-new.sh": [str(BINARY), "new"],
+            "pimux-action.sh": [str(BINARY), "action"],
+            "pimux-status.sh": [str(BINARY), "status"],
+        }
+        return subprocess.run([*commands[script], *args], input=name + "\n",
                               cwd=cwd or self.repo, env=dict(self.env, NEW_NAME=name, **env),
                               text=True, capture_output=True, timeout=10)
 
@@ -260,6 +276,14 @@ sys.exit(130)
         # Ran before pi so the session starts in a usable tree.
         self.assertEqual(self.wait_for_pi()["cwd"], str(workspace))
 
+    def test_setup_hook_preserves_stdin_and_shebangless_bash_support(self):
+        hook = self.write_hook("")
+        hook.write_text('read -r answer\nprintf "%s\\n%s\\n" "$answer" "$1" > hook-input\n')
+        result = self.run_script("pimux-new.sh", "task")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.worktree("task") / "hook-input").read_text().splitlines(),
+                         ["task", str(self.repo)])
+
     def test_setup_hook_failure_keeps_worktree_and_is_reported(self):
         self.write_hook("echo 'npm install exploded' >&2; exit 1\n")
         result = self.run_script("pimux-new.sh", "task")
@@ -369,7 +393,7 @@ sys.exit(130)
             ("wait", "◆", "1;38;5;167", "#[fg=#FB4934]#[bold]"),
             ("busy", "◌", "38;5;214", "#[fg=#FABD2F]"),
             ("done", "✤", "38;5;142", "#[fg=#B8BB26]"),
-            ("", "▢", "38;5;142", ""),
+            ("", "▢", "38;5;142", "#[fg=#B8BB26]"),
         ):
             with self.subTest(state=state):
                 self.tmux("set-option", "-p", "-t", "%0", "@agent_state", state)
@@ -382,11 +406,29 @@ sys.exit(130)
                 for option in options:
                     with self.subTest(option=option):
                         status = self.tmux("display-message", "-p", f"#{{E:{option}}}tab")
-                        if state:
-                            self.assertNotIn(f"({icon})", status)
-                            self.assertEqual(status, f"{style}{icon}#[default] tab")
-                        else:
-                            self.assertEqual(status, "tab")
+                        self.assertNotIn(f"({icon})", status)
+                        self.assertEqual(status, f"{style}{icon}#[default] tab")
+
+    def test_fresh_pi_session_shows_idle_but_shells_and_dead_panes_do_not(self):
+        options = ("window-status-format", "window-status-current-format")
+        for option in options:
+            self.tmux("set-option", "-g", option, "#{pimux}tab")
+        self.tmux("set-option", "-w", "remain-on-exit", "on")
+        self.run_script("pimux.tmux")
+        for agent, dead, expected in (("", False, "tab"), ("claude", False, "tab"),
+                                      ("pi", False, "#[fg=#B8BB26]▢#[default] tab"),
+                                      ("pi", True, "tab")):
+            with self.subTest(agent=agent, dead=dead):
+                self.tmux("set-option", "-p", "-t", "%0", "@agent_name", agent)
+                if dead:
+                    self.tmux("respawn-pane", "-k", "-t", "%0", "false")
+                    for _ in range(100):
+                        if self.tmux("display-message", "-p", "-t", "%0", "#{pane_dead}") == "1":
+                            break
+                        time.sleep(0.02)
+                    self.assertEqual(self.tmux("display-message", "-p", "#{pane_dead}"), "1")
+                for option in options:
+                    self.assertEqual(self.tmux("display-message", "-p", f"#{{E:{option}}}"), expected)
 
     def test_config_places_indicator_before_tab_label(self):
         options = ("window-status-format", "window-status-current-format")
@@ -416,14 +458,34 @@ sys.exit(130)
     def test_current_status_includes_active_pi_pane(self):
         self.tmux("set-option", "-g", "window-status-current-format", "#{pimux}")
         self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
-        self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "wait")
         self.run_script("pimux.tmux")
-        expected = "#[fg=#FB4934]#[bold]◆#[default]"
-        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
-        self.tmux("split-window", "-h", "sleep", "600")
-        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
-        self.tmux("select-pane", "-t", "%0")
-        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
+        other = self.tmux("split-window", "-h", "-P", "-F", "#{pane_id}", "sleep", "600")
+        for state, expected in (("wait", "#[fg=#FB4934]#[bold]◆#[default]"),
+                                 ("", "#[fg=#B8BB26]▢#[default]")):
+            self.tmux("set-option", "-p", "-t", "%0", "@agent_state", state)
+            for active in ("%0", other):
+                with self.subTest(state=state, active=active):
+                    self.tmux("select-pane", "-t", active)
+                    self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-current-format}"), expected)
+
+    def test_go_indicators_keep_state_priority_across_panes(self):
+        options = ("window-status-format", "window-status-current-format")
+        for option in options:
+            self.tmux("set-option", "-g", option, "#{pimux}")
+        other = self.tmux("split-window", "-h", "-P", "-F", "#{pane_id}", "sleep", "600")
+        for pane in ("%0", other):
+            self.tmux("set-option", "-p", "-t", pane, "@agent_name", "pi")
+        self.run_script("pimux.tmux")
+        for first, second, icon in (("busy", "done", "✤"), ("wait", "done", "◆"),
+                                    ("busy", "wait", "◆"), ("busy", "", "◌"),
+                                    ("", "done", "✤"), ("wait", "", "◆"), ("", "", "▢")):
+            with self.subTest(states=(first, second)):
+                self.tmux("set-option", "-p", "-t", "%0", "@agent_state", first)
+                self.tmux("set-option", "-p", "-t", other, "@agent_state", second)
+                for active in ("%0", other):
+                    self.tmux("select-pane", "-t", active)
+                    for option in options:
+                        self.assertIn(icon, self.tmux("display-message", "-p", f"#{{E:{option}}}"))
 
     def test_stopped_workspaces_are_found_without_a_registry(self):
         workspace = self.stopped_task()
@@ -470,13 +532,18 @@ sys.exit(130)
 
     def test_row_shows_how_long_the_state_has_held(self):
         pane = self.create_task()
-        now = int(time.time())
-        for delta, shown in ((5, "5s"), (2700, "45m"), (7200, "2h"), (3 * 86400, "3d")):
-            with self.subTest(age=shown):
+        for delta, unit, divisor in ((5, "s", 1), (2700, "m", 60), (7200, "h", 3600), (3 * 86400, "d", 86400)):
+            with self.subTest(age=delta):
+                since = int(time.time()) - delta
                 self.tmux("set-option", "-p", "-t", pane, "@agent_state", "done")
-                self.tmux("set-option", "-p", "-t", pane, "@agent_since", str(now - delta))
+                self.tmux("set-option", "-p", "-t", pane, "@agent_since", str(since))
                 [row] = self.rows_text()
-                self.assertRegex(row, rf"done\s+{shown}\b")
+                # The real clock can tick while the subprocess runs. Exact
+                # boundary formatting is covered with a fixed clock in Go.
+                match = re.search(rf"done\s+(\d+){unit}\b", row)
+                self.assertIsNotNone(match, row)
+                self.assertGreaterEqual(int(match[1]), delta // divisor)
+                self.assertLessEqual(int(match[1]), (int(time.time()) - since) // divisor)
         # No stamp (pi predates it, or idle since start): no age, no error.
         self.tmux("set-option", "-pu", "-t", pane, "@agent_since")
         [row] = self.rows_text()
@@ -830,7 +897,7 @@ os.execv({real_git!r}, [{real_git!r}, *sys.argv[1:]])
                 time.sleep(0.02)
             self.assertTrue(self.tmux("list-clients"), "test client did not attach")
             popup = subprocess.Popen([TMUX, "-S", self.socket, "display-popup", "-E",
-                                      "-d", str(workspace), "bash", str(PLUGIN / "pimux-list.sh")],
+                                      "-d", str(workspace), str(BINARY), "list"],
                                      env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             deadline = time.monotonic() + 10
             while time.monotonic() < deadline and client.poll() is None:
@@ -1039,11 +1106,96 @@ os.execv({real_git!r}, [{real_git!r}, *sys.argv[1:]])
         self.assertNotIn(pane, self.listed_ids())
         self.assertIn(str(self.worktree("task")), self.listed_ids())
 
+    def test_cancelled_go_picker_cleans_up_snapshot_and_child(self):
+        self.executable("fzf", '''#!/usr/bin/env python3
+import os, time
+from pathlib import Path
+Path(os.environ["TEST_DIR"], "fzf-pid").write_text(str(os.getpid()))
+time.sleep(600)
+''')
+        process = subprocess.Popen([str(BINARY), "list"], cwd=self.repo, env=self.env,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            for _ in range(100):
+                if (self.root / "fzf-pid").exists():
+                    break
+                time.sleep(0.02)
+            self.assertTrue((self.root / "fzf-pid").exists(), "picker did not start")
+            child = int((self.root / "fzf-pid").read_text())
+            process.terminate()
+            process.communicate(timeout=5)
+            self.assertEqual(process.returncode, 130)
+            self.assertEqual(list(self.root.glob("pimux-list.*")), [])
+            with self.assertRaises(ProcessLookupError):
+                os.kill(child, 0)
+        finally:
+            if process.poll() is None:
+                process.kill()
+            process.communicate(timeout=5)
+
+    def test_launcher_reports_missing_installed_binary(self):
+        (self.bin / "pimux").unlink()
+        self.executable("tmux", '#!/bin/sh\nprintf "%s\\n" "$*"\n')
+        result = subprocess.run(["/bin/sh", str(PLUGIN / "pimux.tmux")],
+                                env=dict(self.env, PATH=str(self.bin)), capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("not found on PATH", result.stdout)
+        self.assertIn("make pimux", result.stdout)
+
+    def test_installed_binary_callbacks_work_from_a_path_with_spaces_and_quotes(self):
+        install = self.root / "plugin with 'quotes'"
+        binary = install / "pimux"
+        result = subprocess.run(["make", "pimux"], cwd=PLUGIN.parents[2],
+                                env=dict(os.environ, GOBIN=str(install)),
+                                capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(os.access(binary, os.X_OK))
+        self.tmux("set-option", "-g", "status-right", "#{pimux_blocked}")
+        self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
+        self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "wait")
+        result = subprocess.run(["sh", str(PLUGIN / "pimux.tmux")],
+                                env=dict(self.env, PATH=f"{install}:{self.env['PATH']}"), capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        status = self.tmux("show-option", "-gqv", "status-right")
+        self.assertIn("plugin with", status)
+        result = subprocess.run(["sh", "-c", status[2:-1]], env=self.env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("◆ 1 blocked", result.stdout)
+        result = subprocess.run([str(binary), "list"], cwd=self.repo, env=self.env,
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        args = json.loads((self.root / "fzf.json").read_text())
+        binding = next(arg for arg in args if arg.startswith("--bind=every"))
+        callback = binding.split("bg-transform(", 1)[1][:-1]
+        snapshot = self.root / "snapshot"
+        snapshot.write_text("")
+        result = subprocess.run(["sh", "-c", callback], cwd=self.repo,
+                                env=dict(self.env, PIMUX_ROWS_FILE=str(snapshot)), capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("reload-sync", result.stdout)
+        self.assertIn("blocked", snapshot.read_text())
+
+    def test_tmux_options_are_preserved_by_go_initializer(self):
+        self.tmux("set-option", "-g", "window-status-format", "#{pimux}tab")
+        for key, value in (("busy-icon", "B"), ("busy-style", "#[fg=yellow]"),
+                           ("key", "g"), ("width", "70%"), ("height", "40%")):
+            self.tmux("set-option", "-g", "@pimux-" + key, value)
+        self.tmux("set-option", "-p", "-t", "%0", "@agent_name", "pi")
+        self.tmux("set-option", "-p", "-t", "%0", "@agent_state", "busy")
+        result = self.run_script("pimux.tmux")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.tmux("display-message", "-p", "#{E:window-status-format}"),
+                         "#[fg=yellow]B#[default] tab")
+        binding = next(line for line in self.tmux("list-keys", "-T", "prefix").splitlines()
+                       if line.split()[3] == "g")
+        self.assertRegex(binding, r'-w "?70%"?')
+        self.assertRegex(binding, r'-h "?40%"?')
+
     def test_global_notice_placeholder_is_installed(self):
         self.tmux("set-option", "-g", "status-right", "#{pimux_blocked}clock")
         self.run_script("pimux.tmux")
         status = self.tmux("show-option", "-gqv", "status-right")
-        self.assertIn("pimux-status.sh", status)
+        self.assertIn("pimux' status)", status)
         self.assertNotIn("#{pimux_blocked}", status)
         self.assertTrue(status.endswith("clock"))
 

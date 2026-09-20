@@ -76,7 +76,8 @@ npm ci
 A failing hook does not remove the worktree or branch, since the code itself
 is intact; the error stays on screen and the session still opens so you can
 fix it there. Only the main worktree's hook is used, so it cannot be changed by
-whatever `HEAD` happens to be checked out.
+whatever `HEAD` happens to be checked out. Hooks retain stdin and stream their
+output; executable text hooks without a shebang still run with Bash.
 
 ## Resume and shells
 
@@ -132,6 +133,8 @@ Colours are yellow for busy, green for done/idle/stopped, and red for waiting
 (including the global blocked notice).
 Tab indicators appear before the window label, separated by a single space.
 They stay visible on the selected tab, including for its active Pi pane.
+A newly opened Pi session shows `▢` before its first turn. Shell-only windows
+have no indicator.
 
 `#{pimux_blocked}` in `status-right` shows **◆ N blocked** when any Pi panes
 on the tmux server need input, including panes in other sessions. It disappears
@@ -159,25 +162,71 @@ mid-task while you are elsewhere.
 
 ## Setup
 
-Requires Bash, Git, tmux with popup support, **fzf 0.74+** (timer refresh and
-row-ID tracking), and Pi with `--name` and `--continue` support.
+Runs on Linux and macOS. Requires Git, tmux with popup support, **fzf 0.74+**
+(timer refresh and row-ID tracking), `tput` for prompt sizing, and Pi with
+`--name` and `--continue` support. **Go 1.22+** is needed to build, not to run.
+There are no third-party Go modules or C dependencies.
+
+Install from the dotfiles root:
+
+```sh
+make pimux
+```
+
+This runs `CGO_ENABLED=0 go install -trimpath .` in the plugin directory. Go
+installs `pimux` into `GOBIN`, or `GOPATH/bin` when `GOBIN` is unset (normally
+`~/go/bin`; these dotfiles use `~/.go/bin`). That directory must be on the
+`PATH` seen by tmux. The launcher uses the installed binary, not a local build.
+
+`make tmux` also installs it before creating the tmux symlinks. Run `make pimux`
+after pulling Go source changes, then reload `tmux.conf` (`prefix + r`). The
+entrypoint reports a missing binary rather than compiling during a reload.
+For development, `make -C tmux/plugins/pimux` builds a local, untracked binary
+without installing it; `make -C tmux/plugins/pimux install` installs it.
+
 Install `pi/extensions/tmux.ts` for state and session-name publishing,
 including discovery when Pi runs as `node`. Other agents are ignored.
 
 Existing options: `@pimux-key` (default `a`), `@pimux-width` (`50%`),
-`@pimux-height` (`30%`), and `@pimux-{busy,done,wait}-{icon,style}`.
+`@pimux-height` (`30%`), and `@pimux-{idle,busy,done,wait}-{icon,style}`.
 Put `#{pimux}` before the label in both window status formats, and
 `#{pimux_blocked}` in `status-right`. The global notice updates with tmux's
 `status-interval` (one second in these dotfiles). `@pimux-commands` and Claude
 hooks are no longer supported.
 
-Reload `tmux.conf` (`prefix + r` with these dotfiles) after updating.
+To cross-build without Go on the destination laptop, run from the plugin
+directory, selecting the target OS and architecture:
+
+```sh
+CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -o /tmp/pimux-darwin-arm64 .
+```
+
+Use `linux` or `darwin` and `amd64` or `arm64` as appropriate. Copy the result
+as executable `pimux` into a directory on that machine's tmux `PATH`.
+
+## Implementation
+
+`pimux.tmux` is a thin launcher for the Go executable. The binary handles tmux
+setup (`init`), the popup (`list`), creation (`new`), actions (`action`), and the
+global blocked count (`status`). Internal `list --rows` and `list --refresh`
+commands supply fzf snapshots; unchanged snapshots cause no redraw.
+
+Git and tmux are invoked with argument arrays, not shell-interpolated commands.
+Only fzf callbacks and tmux's popup/status command strings need shell quoting.
+There is no daemon, persistent registry, or replacement TUI: fzf still owns
+selection and prompts, and the TypeScript Pi extension is unchanged.
+
+Action output streams directly while stderr is copied in memory for the error
+screen. Signal cancellation terminates foreground commands and releases popup
+snapshots, without `tee` processes or temporary error logs.
 
 ## Tests
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tmux/plugins/pimux/tests -v
+make -C tmux/plugins/pimux test
 ```
 
-Tests use temporary repositories and an isolated tmux server, with Pi and fzf
-stubbed. They do not touch existing tmux sessions or start a real agent.
+This runs Go unit tests and the Python integration suite (requires Python 3,
+Git and tmux). Integration tests use temporary repositories and an isolated
+tmux server, with Pi and fzf stubbed, including a real popup for last-session
+removal. They do not touch existing tmux sessions or start a real agent.

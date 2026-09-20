@@ -1,4 +1,4 @@
-.PHONY: etc dwl kanshi swayimg user-dirs email mutt weechat
+.PHONY: etc dwl kanshi swayimg user-dirs email mutt weechat tmux pimux
 
 CWD=$(shell pwd)
 
@@ -25,9 +25,12 @@ vim:
 	curl -sfLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-tmux:
+pimux:
+	$(MAKE) -C "$(CWD)/tmux/plugins/pimux" install
+
+tmux: pimux
 	ln -sf $(CWD)/tmux.conf $(HOME)/.tmux.conf
-	ln -sf $(CWD)/tmux $(HOME)/.tmux
+	ln -sfn $(CWD)/tmux $(HOME)/.tmux
 
 alacritty:
 	mkdir -p $(HOME)/.config/alacritty
