@@ -34,4 +34,8 @@ func within(path, root string) bool {
 	return path == root || strings.HasPrefix(path, root+string(filepath.Separator))
 }
 
-func managedPath(main, name string) string { return filepath.Join(main+"-worktrees", name) }
+// Managed worktrees live inside the main checkout, which keeps a project in
+// one directory. Git does not ignore them, so creation excludes them locally.
+const worktreesDir = ".worktrees"
+
+func managedPath(main, name string) string { return filepath.Join(main, worktreesDir, name) }

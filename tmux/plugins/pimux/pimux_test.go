@@ -14,7 +14,7 @@ import (
 
 func TestParseWorktrees(t *testing.T) {
 	main := "/tmp/repo with 'quotes'"
-	linked := main + "-worktrees/task\nwith\ttabs"
+	linked := main + "/.worktrees/task\nwith\ttabs"
 	text := "worktree " + main + "\x00HEAD abc\x00branch refs/heads/main\x00\x00" +
 		"worktree " + linked + "\x00HEAD def\x00branch refs/heads/task\x00locked reason\x00\x00" +
 		"worktree /tmp/detached\x00HEAD abc\x00detached\x00\x00"
@@ -35,12 +35,12 @@ func TestWithin(t *testing.T) {
 		path string
 		want bool
 	}{
-		{"/repo-worktrees/task", true},
-		{"/repo-worktrees/task/src", true},
-		{"/repo-worktrees/task-other", false},
-		{"/repo-worktrees", false},
+		{"/repo/.worktrees/task", true},
+		{"/repo/.worktrees/task/src", true},
+		{"/repo/.worktrees/task-other", false},
+		{"/repo/.worktrees", false},
 	} {
-		if got := within(tc.path, "/repo-worktrees/task"); got != tc.want {
+		if got := within(tc.path, "/repo/.worktrees/task"); got != tc.want {
 			t.Errorf("within(%q) = %v", tc.path, got)
 		}
 	}

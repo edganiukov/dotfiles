@@ -76,8 +76,11 @@ It must be inside a Git worktree. For a name such as `fix-auth`:
 
 - Create branch `fix-auth` from the invoking worktree's current `HEAD`, or
   from the revision after `@`.
-- Check it out at `<main-repo>-worktrees/fix-auth`, outside the source tree.
-  Invoking from a linked worktree uses the same location.
+- Check it out at `<main-repo>/.worktrees/fix-auth`, so a project stays in
+  one directory. Invoking from a linked worktree uses the same location.
+- Add `/.worktrees/` to the repository's `.git/info/exclude` the first time,
+  since Git would otherwise report the new worktree as untracked. That file
+  is local and untracked, so the project's own `.gitignore` is left alone.
 - Run the repo's setup hook, if any (see below).
 - Create tmux session `fix-auth` in that worktree and run `pi --name fix-auth`.
 - Switch to the new session.
@@ -115,7 +118,7 @@ the invoking repository and repositories with a directory open in tmux. To
 find a workspace from a project no longer open in tmux, open the popup from
 that repository. There is no separate persistent session database.
 
-Managed workspaces must have the path `<main-repo>-worktrees/<name>` and a
+Managed workspaces must have the path `<main-repo>/.worktrees/<name>` and a
 matching branch `<name>`. This also discovers workspaces created by earlier
 versions of the plugin. Renamed branches or moved worktrees need manual Git
 management.

@@ -149,7 +149,7 @@ sys.exit(130)
                               text=True, capture_output=True, timeout=10)
 
     def worktree(self, name):
-        return Path(f"{self.repo}-worktrees") / name
+        return self.repo / ".worktrees" / name
 
     def action(self, action, target, answer="", **kwargs):
         return self.run_script("pimux-action.sh", answer, args=(action, str(target)), **kwargs)
@@ -181,7 +181,7 @@ sys.exit(130)
     def assert_unchanged(self):
         self.assertEqual(self.git("branch", "--format=%(refname:short)"), "main")
         self.assertEqual(self.git("worktree", "list", "--porcelain").count("worktree "), 1)
-        self.assertFalse(Path(f"{self.repo}-worktrees").exists())
+        self.assertEqual(list((self.repo / ".worktrees").glob("*")), [])
         self.assertEqual(self.tmux("list-sessions", "-F", "#{session_name}"), "origin")
         self.assertEqual(list(self.root.glob("pimux-list.*")), [])
 
@@ -234,6 +234,44 @@ sys.exit(130)
                 self.assertIn("unknown base revision", result.stderr)
                 self.assertFalse((self.repo / "bad").exists())
                 self.assert_unchanged()
+
+    def exclude_file(self, repo=None):
+        return Path(repo or self.repo, ".git", "info", "exclude")
+
+    def test_worktrees_live_inside_the_repository_and_are_excluded(self):
+        result = self.run_script("pimux-new.sh", "task")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.worktree("task"), self.repo / ".worktrees" / "task")
+        self.assertTrue((self.worktree("task") / ".git").exists())
+        # Git would list the nested worktree as untracked without the exclude.
+        self.assertEqual(self.git("status", "--porcelain", "--untracked-files=all"), "")
+        self.assertIn("!! .worktrees/task/",
+                      self.git("status", "--porcelain", "--untracked-files=all", "--ignored"))
+        self.assertIn("pimux: excluded /.worktrees/", result.stdout)
+        self.assertEqual(self.exclude_file().read_text().count("/.worktrees/"), 1)
+
+        # A second session finds the pattern already there.
+        result = self.run_script("pimux-new.sh", "other")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.exclude_file().read_text().count("/.worktrees/"), 1)
+        self.assertNotIn("excluded", result.stdout)
+        self.assertEqual(self.git("status", "--porcelain", "--untracked-files=all"), "")
+
+    def test_exclude_keeps_existing_patterns(self):
+        self.exclude_file().write_text("# custom\nbuild/")  # no trailing newline
+        result = self.run_script("pimux-new.sh", "task")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.exclude_file().read_text().splitlines(),
+                         ["# custom", "build/", "/.worktrees/"])
+
+    def test_exclude_from_a_linked_worktree_lands_in_the_main_repository(self):
+        linked = self.root / "linked"
+        self.git("worktree", "add", "-qb", "source", str(linked))
+        result = self.run_script("pimux-new.sh", "task", cwd=linked)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.worktree("task"), self.repo / ".worktrees" / "task")
+        self.assertIn("/.worktrees/", self.exclude_file().read_text())
+        self.assertEqual(self.git("status", "--porcelain", "--untracked-files=all"), "")
 
     def test_create_without_the_popup_from_an_argument(self):
         first = self.git("rev-parse", "HEAD")
@@ -606,10 +644,10 @@ sys.exit(130)
         other.mkdir()
         self.git("init", "-q", "-b", "main", cwd=other)
         self.commit("initial", cwd=other)
-        self.git("worktree", "add", "-qb", "side", f"{other}-worktrees/side", cwd=other)
+        self.git("worktree", "add", "-qb", "side", f"{other}/.worktrees/side", cwd=other)
         # Discovery reaches the other project through a pane sitting in it.
         self.tmux("new-session", "-d", "-s", "other", "-c", str(other), "sleep", "600")
-        side = f"{other}-worktrees/side"
+        side = f"{other}/.worktrees/side"
         self.assertEqual(sorted(self.listed_ids()), sorted([pane, side]))
 
         rows, scope = self.root / "rows-file", self.root / "scope-file"

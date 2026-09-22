@@ -71,7 +71,7 @@ func makeRow(id, session, location, project string, state agentState, status, ag
 		icon, truncate(session, 12), location, truncate(project, 14), label, age, truncate(title, 40))}
 }
 
-var managedDirectory = regexp.MustCompile(`^(.*)-worktrees/[^/]+(/.*)?$`)
+var managedDirectory = regexp.MustCompile(`^(.*)/\.worktrees/[^/]+(/.*)?$`)
 
 // Pi's blocking prompt replaces the editor between the bottom two rule lines.
 // Its first nonblank line is the question, not the choices, hints or footer.

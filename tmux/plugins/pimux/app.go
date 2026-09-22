@@ -522,6 +522,51 @@ func (a *app) newSession() (outcome, error) {
 	return a.createSession(query)
 }
 
+// Workspaces sit inside the main checkout, where Git would otherwise report
+// them as untracked. The pattern goes in the repository's own exclude file,
+// which is local and untracked, rather than in a .gitignore the project
+// shares. Adding it is enough; a second session finds it already there.
+func (a *app) excludeWorktrees(main string) error {
+	common, err := a.git(main, "rev-parse", "--git-common-dir")
+	if err != nil {
+		return err
+	}
+	if !filepath.IsAbs(common) {
+		common = filepath.Join(main, common)
+	}
+	path := filepath.Join(common, "info", "exclude")
+	pattern := "/" + worktreesDir + "/"
+	current, err := os.ReadFile(path)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	for _, line := range strings.Split(string(current), "\n") {
+		if strings.TrimSpace(line) == pattern {
+			return nil
+		}
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return err
+	}
+	addition := pattern + "\n"
+	if len(current) > 0 && !strings.HasSuffix(string(current), "\n") {
+		addition = "\n" + addition
+	}
+	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	if _, err := file.WriteString(addition); err != nil {
+		file.Close()
+		return err
+	}
+	if err := file.Close(); err != nil {
+		return err
+	}
+	fmt.Fprintf(a.out, "pimux: excluded %s in %s\n", pattern, path)
+	return nil
+}
+
 func (a *app) createSession(query string) (outcome, error) {
 	// Branch names here cannot contain @, so it separates the base revision.
 	name, base, _ := strings.Cut(query, "@")
@@ -558,6 +603,9 @@ func (a *app) createSession(query string) (outcome, error) {
 	path := managedPath(main, name)
 	if _, err := os.Lstat(path); !os.IsNotExist(err) {
 		return backToList, fmt.Errorf("worktree path already exists or is inaccessible: %s", path)
+	}
+	if err := a.excludeWorktrees(main); err != nil {
+		return backToList, err
 	}
 	if err := a.runGit(a.dir, "worktree", "add", "-b", name, path, base); err != nil {
 		return backToList, err
